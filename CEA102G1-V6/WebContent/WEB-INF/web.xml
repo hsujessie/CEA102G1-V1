@@ -1,0 +1,195 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<web-app xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://xmlns.jcp.org/xml/ns/javaee" xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee http://xmlns.jcp.org/xml/ns/javaee/web-app_4_0.xsd" id="WebApp_ID" version="4.0">
+  <display-name>CEA102G1</display-name>
+  <welcome-file-list>
+    <welcome-file>index.html</welcome-file>
+    <welcome-file>index.htm</welcome-file>
+    <welcome-file>index.jsp</welcome-file>
+    <welcome-file>default.html</welcome-file>
+    <welcome-file>default.htm</welcome-file>
+    <welcome-file>default.jsp</welcome-file>
+  </welcome-file-list>
+  
+<!--   11  -->
+  <servlet>
+  	<servlet-name>FooCatServlet</servlet-name>
+  	<servlet-class>com.food_cate.controller.FooCatServlet</servlet-class>
+  </servlet>
+  <servlet-mapping>
+  	<servlet-name>FooCatServlet</servlet-name>
+  	<url-pattern>/fooCat/fooCat.do</url-pattern>
+  </servlet-mapping>
+  
+  <servlet>
+  	<servlet-name>FooServlet</servlet-name>
+  	<servlet-class>com.food.controller.FooServlet</servlet-class>
+  </servlet>
+  <servlet-mapping>
+  	<servlet-name>FooServlet</servlet-name>
+  	<url-pattern>/foo/foo.do</url-pattern>
+  </servlet-mapping>
+  
+  <servlet>
+  	<servlet-name>ImgReader</servlet-name>
+  	<servlet-class>com.food.controller.fooReadImg</servlet-class>
+  </servlet>
+  <servlet-mapping>
+  	<servlet-name>ImgReader</servlet-name>
+  	<url-pattern>/foo/reader.do</url-pattern>
+  </servlet-mapping>
+  
+  <servlet>
+  	<servlet-name>OrdMasServlet</servlet-name>
+  	<servlet-class>com.order_master.controller.OrdMasServlet</servlet-class>
+  </servlet>
+  <servlet-mapping>
+  	<servlet-name>OrdMasServlet</servlet-name>
+  	<url-pattern>/ordMas/ordMas.do</url-pattern>
+  </servlet-mapping>  
+  
+<!--  05 -->
+  <servlet>
+    <servlet-name>ArtServlet</servlet-name>
+    <servlet-class>com.art.controller.ArtServlet</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>ArtServlet</servlet-name>
+    <url-pattern>/art/art.do</url-pattern>
+  </servlet-mapping>
+  
+  <servlet>
+    <servlet-name>ArtFavServlet</servlet-name>
+    <servlet-class>com.art_fav.controller.ArtFavServlet</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>ArtFavServlet</servlet-name>
+    <url-pattern>/art/artFav.do</url-pattern>
+  </servlet-mapping>
+  
+  <servlet>
+    <servlet-name>ArtRepRptServlet</servlet-name>
+    <servlet-class>com.art_rep_rpt.controller.ArtRepRptServlet</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>ArtRepRptServlet</servlet-name>
+    <url-pattern>/art/artRepRptServlet.do</url-pattern>
+  </servlet-mapping>
+  
+  <servlet>
+    <servlet-name>ArtRepServlet</servlet-name>
+    <servlet-class>com.art_rep.controller.ArtRepServlet</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>ArtRepServlet</servlet-name>
+    <url-pattern>/art/artRepServlet.do</url-pattern>
+  </servlet-mapping>
+
+  <servlet>
+    <servlet-name>ArtRptServlet</servlet-name>
+    <servlet-class>com.art_rpt.controller.ArtRptServlet</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>ArtRptServlet</servlet-name>
+    <url-pattern>/art/artRptServlet.do</url-pattern>
+  </servlet-mapping>   
+
+<!-- 24 -->
+  <servlet>
+    <servlet-name>BoardServlet</servlet-name>
+    <servlet-class>com.board.controller.BoardServlet</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>BoardServlet</servlet-name>
+    <url-pattern>/Board/board.do</url-pattern>
+  </servlet-mapping> 
+  
+  <servlet>
+    <servlet-name>BOARD_TtypeServlet</servlet-name>
+    <servlet-class>com.board_type.controller.BoardTypeServlet</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>BOARD_TtypeServlet</servlet-name>
+    <url-pattern>/BoardType/boardType.do</url-pattern>
+  </servlet-mapping> 
+  
+  <servlet>
+    <servlet-name>MemberServlet</servlet-name>
+    <servlet-class>com.member.controller.MemberServlet</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>MemberServlet</servlet-name>
+    <url-pattern>/Member/member.do</url-pattern>
+  </servlet-mapping> 
+
+<!-- 28 -->
+  <servlet>
+    <servlet-name>TheaterServlet</servlet-name>
+    <servlet-class>com.theater.controller.TheaterServlet</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>TheaterServlet</servlet-name>
+    <url-pattern>/theater/theater.do</url-pattern>
+  </servlet-mapping>
+  <servlet>
+    <servlet-name>Movie_versionServlet</servlet-name>
+    <servlet-class>com.movie_version.controller.Movie_verionServlet</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>Movie_versionServlet</servlet-name>
+    <url-pattern>/movie_version/movie_version.do</url-pattern>
+  </servlet-mapping>
+  <servlet>
+    <servlet-name>IdentityServlet</servlet-name>
+    <servlet-class>com.identity.controller.IdentityServlet</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>IdentityServlet</servlet-name>
+    <url-pattern>/identity/identity.do</url-pattern>
+  </servlet-mapping>
+  <servlet>
+    <servlet-name>Ticket_typeServlet</servlet-name>
+    <servlet-class>com.ticket_type.controller.Ticket_typeServlet</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>Ticket_typeServlet</servlet-name>
+    <url-pattern>/ticket_type/ticket_type.do</url-pattern>
+  </servlet-mapping>
+
+<!-- 31 -->
+   <servlet>
+		<servlet-name>MovServlet</servlet-name>
+		<servlet-class>com.movie.controller.MovServlet</servlet-class>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>MovServlet</servlet-name>
+		<url-pattern>/movie/mov.do</url-pattern>
+	</servlet-mapping>
+
+	<servlet>
+		<servlet-name>SesServlet</servlet-name>
+		<servlet-class>com.session.controller.SesServlet</servlet-class>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>SesServlet</servlet-name>
+		<url-pattern>/session/ses.do</url-pattern>
+	</servlet-mapping>
+
+	<servlet>
+		<servlet-name>ComServlet</servlet-name>
+		<servlet-class>com.comment.controller.ComServlet</servlet-class>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>ComServlet</servlet-name>
+		<url-pattern>/comment/com.do</url-pattern>
+	</servlet-mapping>
+
+	<servlet>
+		<servlet-name>ExpServlet</servlet-name>
+		<servlet-class>com.expectation.controller.ExpServlet</servlet-class>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>ExpServlet</servlet-name>
+		<url-pattern>/expectation/exp.do</url-pattern>
+	</servlet-mapping>
+  
+</web-app>

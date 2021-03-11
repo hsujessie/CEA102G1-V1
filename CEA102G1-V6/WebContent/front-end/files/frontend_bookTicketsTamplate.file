@@ -1,0 +1,13 @@
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<div class="booktickets">
+    <div class="container">
+        <div class="section-header">
+            <h2>Book the Tickets Right Now</h2>
+        </div>
+        <div class="form">
+            <div class="form-control">
+                <button class="combtn">let's  go</button>
+            </div>
+        </div>
+    </div>
+</div>
