@@ -1,29 +1,27 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8"
-	pageEncoding="UTF-8"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 
 <!DOCTYPE html>
 <html>
 <head>
 <meta charset="UTF-8">
-<title>Seenema電影院</title>
-<link
-	href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"
-	rel="stylesheet">
-<link rel="stylesheet"
-	href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
-<script src="https://code.jquery.com/jquery-1.12.4.js"></script>
-<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
-<script
-	src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
-<script>
-	$(function() {
-		$("#tabs").tabs();
-	});
-</script>
+<title>Front-End</title>
+<%@ include file="/front-end/files/frontend_importCss.file"%>
 </head>
 <body>
-	<div class="container">
+        <div class="wrapper">
+            <!-- Nav Bar Start -->
+			<c:set value="${pageContext.request.requestURI}" var="urlRecog"></c:set>
+            <%@ include file="/front-end/files/frontend_navbar.file"%>
+            <!-- Nav Bar End -->
+
+
+            <!-- Page Header Start --> <!-- 看自己需不需要標題 -->
+            <!-- Page Header End -->
+
+
+            <!-- PUT HERE Start -->
+            <div class="container">
 		<div class="row">
 			<div id="a" class="col-9">
 				<form method="post"
@@ -121,5 +119,18 @@
 			</div>
 		</div>
 	</div>
+            <!-- PUT HERE End -->
+            
+            <!-- Book Tickets Start -->
+            <%@ include file="/front-end/files/frontend_bookTicketsTamplate.file"%>
+            <!-- Book Tickets End -->
+
+            <!-- Footer Start -->
+            <%@ include file="/front-end/files/frontend_footer.file"%>
+            <!-- Footer End -->
+        </div>
+        
+<%@ include file="/front-end/files/frontend_importJs.file"%>   
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 </body>
 </html>
