@@ -163,9 +163,7 @@ img {
 	</div>
 
 	<script>
-		$("#ticketCount").change(function() {
-			$("#ticketSubtotal").text($(this).val() * $("#ticketPrice").text())
-		})
+		
 		$("#nextStep").click(function() {
 			$("#form").submit();
 		})
