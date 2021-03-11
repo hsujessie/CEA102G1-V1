@@ -12,11 +12,7 @@
 <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
 <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
-<script>
-	$(function() {
-		$("#tabs").tabs();
-	});
-</script>
+
 <style>
 img {
 	width: 150px;
@@ -45,7 +41,7 @@ img {
 
 						<div class="card">
 							<div class="card-header">
-								一般票種
+								一般票種aaaaaaaaaafffff
 							</div>
 							<div class="card-body">
 								<table class="table">
