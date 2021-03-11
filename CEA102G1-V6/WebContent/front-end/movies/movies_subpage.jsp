@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 
 <!DOCTYPE html>
 <html>
@@ -30,7 +31,7 @@
 		width: 40%;
     	height: 50%;
 		box-sizing: border-box;
-		padding: 3% 0 0 5%;
+		padding: 3% 0 0 3%;
 		position: fixed;
 		top: 20%;
 		left:50%;
@@ -97,7 +98,7 @@
 	
 	/* -- 檢舉btn -- */
 	#comrep a {
-	    color: #454545;
+	    color: #888888;
 	    transition: .3s;
 	    cursor: pointer;
 	}
@@ -227,7 +228,7 @@
 		                                <h2><span>Ratings</span><c:forEach var="i" begin="1" end="${satObj.satRating}"><i class="fa fa-star" aria-hidden="true"></i></c:forEach></h2>	                                
 		                                <p>${comVO.comContent}</p>
 		                                <span>發表人&emsp;${comVO.memNo}</span>
-		                                <span>發表時間&emsp;${comVO.comTime}</span>
+		                                <span>發表時間&emsp;<fmt:formatDate value="${comVO.comTime}" pattern="yyy-MM-dd HH:mm" type="DATE"/></span>
                    						<span id="comrep" onclick='openComRepLightbox(this,${comVO.comNo},${comVO.memNo},${comVO.movNo})'><a>檢舉</a></span>   
 		                            </div>
 		                        </div>
@@ -281,18 +282,19 @@
 <div class="movies-lightbox" id="movies-comrep" style="display: none;">
   	<div class="movies-comrep-content">
 	  	<div class="close"></div>
-		<div class="movies-lightbox-inside"></div>
-		<div>
-			<form id="comrepForm" method="post" action="">
-				<ul>
-				<li><input type="radio" name="comRepReason" value="1"><label>與本電影無關、捏造假冒、不實敘述</label></li>
-				<li><input type="radio" name="comRepReason" value="2"><label>具有廣告性質或大量重複散布</label></li>
-				<li><input type="radio" name="comRepReason" value="3"><label>相互惡意攻訐、猥褻騷擾、人身攻擊</label></li>
-				<li><input type="radio" name="comRepReason" value="4"><label>侵犯隱私權、違反智慧財產權、涉及違法情事</label></li>
-				<li><input type="radio" name="comRepReason" value="5"><label>違背善良風俗</label></li>
-				</ul>
-                <input class="combtn lightbox-btn" type="submit" value="確認送出">
-			</form>
+		<div class="movies-lightbox-inside">
+			<div>
+				<form id="comrepForm" method="post" action="">
+					<ul>
+					<li><input type="radio" name="comRepReason" value="1"><label>與本電影無關、捏造假冒、不實敘述</label></li>
+					<li><input type="radio" name="comRepReason" value="2"><label>具有廣告性質或大量重複散布</label></li>
+					<li><input type="radio" name="comRepReason" value="3"><label>相互惡意攻訐、猥褻騷擾、人身攻擊</label></li>
+					<li><input type="radio" name="comRepReason" value="4"><label>侵犯隱私權、違反智慧財產權、涉及違法情事</label></li>
+					<li><input type="radio" name="comRepReason" value="5"><label>違背善良風俗</label></li>
+					</ul>
+	                <input class="combtn lightbox-btn" type="submit" value="確認送出">
+				</form>
+			</div>
 		</div>
  	</div>
 </div>

@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 
 <!DOCTYPE html>
 <html>
@@ -82,12 +83,13 @@
                      			
                                     			<!-- 只顯示當天，如：2021-03-10星期三 10:00 14:00 20:00 -->
                                     			<c:forEach var="distinctSesDate" items="${sesSvc.getDistinctSesDate()}" >
-	                                    			 <p>${distinctSesDate.sesDate}</p>			                                    			 
+	                                    					                                    			 
 	                                    			 
 				                                   <c:forEach var="sesVO" items="${sesSvc.all}" >
 				                                    	<c:if test="${sesVO.movNo == movVO.movno}">
 				                                    		<c:if test="${distinctSesDate.sesDate == sesVO.sesDate}">
-                                    							<p>${sesVO.sesTime}</p>
+                                    							<p><fmt:formatDate value="${distinctSesDate.sesDate}" type="DATE" dateStyle="FULL"/></p>
+                                    							<p><fmt:formatDate value="${sesVO.sesTime}" pattern="HH:mm" type="DATE"/></p>
 				                                    		</c:if>
 				                                    	</c:if>
 				                                   </c:forEach>	

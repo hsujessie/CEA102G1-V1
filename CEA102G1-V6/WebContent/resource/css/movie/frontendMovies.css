@@ -362,12 +362,13 @@
 .reviews .reviews-container .reviews-content p {
     margin-bottom: 20px;
     font-size: 16px;
-    color: #999999;
+	color: #E0E0E0;
 }
 
 .reviews-content span{
 	font-size: 12px;
 	margin-top: 20px;
+	color: #E0E0E0;
 }
 @media (max-width: 767.98px) {
     .reviews .reviews-container {
