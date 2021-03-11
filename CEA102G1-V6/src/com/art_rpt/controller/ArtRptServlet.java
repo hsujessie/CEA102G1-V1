@@ -15,6 +15,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import com.art.model.ArtDAO;
+import com.art.model.ArtService;
 import com.art_rpt.model.ArtRptService;
 import com.art_rpt.model.ArtRptVO;
 import com.mem.model.MemDAO;
@@ -108,11 +109,34 @@ public class ArtRptServlet extends HttpServlet {
 			
 			/*====================請求參數===================*/
 			Integer artNo = Integer.parseInt(request.getParameter("artNo"));
+			Integer artRptNo = Integer.parseInt(request.getParameter("artRptNo"));
 			
 			/*====================修改資料===================*/
+			ArtService artSvc = new ArtService();
+			Integer artStatus = artSvc.getOneArt(artNo).getArtStatus();
+			if(artStatus == 0) {
+				artSvc.updateStatus(artNo, 1);
+			}else {
+				artSvc.updateStatus(artNo, 0);
+			}
+			System.out.println("新的ArtStatus:"+artSvc.getOneArt(artNo).getArtStatus());
+			
 			ArtRptService artRpeSvc = new ArtRptService();
+			Integer artRptStatus = artRpeSvc.getOneArtRpt(artRptNo).getArtRptStatus();
+			if(artRptStatus == 0) {
+				artRpeSvc.updateArtRpt(1, artRptNo);
+			}else {
+				artRpeSvc.updateArtRpt(0, artRptNo);
+			}
+			System.out.println("新的ArtRptStatus"+artSvc.getOneArt(artNo).getArtStatus());
 			
-			
+			/*==============傳回=============*/
+			response.setContentType("text/plain");
+			response.setCharacterEncoding("UTF-8");
+			PrintWriter out = response.getWriter();
+			out.write(array.toString());
+			out.flush();
+			out.close();
 		}
 	}
 

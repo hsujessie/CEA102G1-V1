@@ -90,6 +90,8 @@
 		$(document).ready(function(){
 			//列出全部文章檢舉
 			listAllArticleReport();
+			//更新文章檢舉狀態
+			changeArticleReport();
 			
 			//列出全部留言檢舉
 		});
@@ -106,8 +108,9 @@
 					debugger;
 					$('#tableTitle').append("文章檢舉列表");
 					$(artRptVO).each(function(i, item){
-						$('#listAllReport').append('<tr><td>'+item.artRptNo+'</td><td>'+item.memName+'</td><td style="width: 50px;"><div id="inner">'+item.artTitle+'</div></td><td>'+item.artRptTime+'</td><td>'+item.reportMemName+'</td><td>'+item.artRptContent+'</td><td>'+item.artRptStatus+'</td><td><button id="checkedButton" data-value="'+artNo+'" style="background-color: #bb9d52;">'+item.artRptStatusButton+'</button></td></tr>');
+						$('#listAllReport').append('<tr><td class="artRptNo" data-value='+item.artRptNo+'>'+item.artRptNo+'</td><td>'+item.memName+'</td><td style="width: 50px;"><div id="inner">'+item.artTitle+'</div></td><td>'+item.artRptTime+'</td><td>'+item.reportMemName+'</td><td>'+item.artRptContent+'</td><td>'+item.artRptStatus+'</td><td><button class="checkedButton" data-value="'+item.artNo+'" style="background-color: #bb9d52;">'+item.artRptStatusButton+'</button></td></tr>');					
 					});
+					
 				},
                 error: function () {
                     console.log("AJAX-listAllArticleReport發生錯誤囉!")
@@ -117,12 +120,13 @@
 		
 		//更改確認文章檢舉
 		function changeArticleReport(){
-			$('#checkedButton').on('click', function(){
+			$('#listAllReport').on('click', '.checkedButton', function(event){
 				console.log('changeArticleReport ok!');
+				debugger;
 				$.ajax({
 					type: 'POST',
 					url: '<%=request.getContextPath()%>/art/artRpt.do',
-					data: {'action':'changeArticleReport', 'artNo':$('#checkedButton').attr('data-value')},
+					data: {'action':'changeArticleReport', 'artNo':$(event.currentTarget).attr('data-value'), 'artRptNo':$(event.currentTarget).parents().find('.artRptNo').attr('data-value')},
 					dataType: 'json',
 					success: function(){
 						
