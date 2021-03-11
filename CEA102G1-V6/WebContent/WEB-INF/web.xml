@@ -72,7 +72,7 @@
   </servlet>
   <servlet-mapping>
     <servlet-name>ArtRepRptServlet</servlet-name>
-    <url-pattern>/art/artRepRptServlet.do</url-pattern>
+    <url-pattern>/art/artRepRpt.do</url-pattern>
   </servlet-mapping>
   
   <servlet>
@@ -81,7 +81,7 @@
   </servlet>
   <servlet-mapping>
     <servlet-name>ArtRepServlet</servlet-name>
-    <url-pattern>/art/artRepServlet.do</url-pattern>
+    <url-pattern>/art/artRep.do</url-pattern>
   </servlet-mapping>
 
   <servlet>
@@ -90,7 +90,7 @@
   </servlet>
   <servlet-mapping>
     <servlet-name>ArtRptServlet</servlet-name>
-    <url-pattern>/art/artRptServlet.do</url-pattern>
+    <url-pattern>/art/artRpt.do</url-pattern>
   </servlet-mapping>   
 
 <!-- 24 -->
