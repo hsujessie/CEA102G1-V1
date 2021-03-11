@@ -277,6 +277,7 @@ function init(){
                     reader.addEventListener('load',function(e){
                         let result = e.target.result;
                         let img = document.createElement('img');
+                 		img.style.width='150px';  //這邊要動態增加css寬度，不然會跑版
                         img.classList.add('img');
                         img.src = result;
                         fileImg.append(img);
@@ -299,6 +300,7 @@ function init(){
                     reader.addEventListener('load',function(e){
                         let result = e.target.result;
                         let video = document.createElement('video');
+                        video.style.width='300px';  //這邊要動態增加css寬度，不然會跑版
                         video.classList.add('vdo');
                         video.src = result;
                         trailerVdo.append(video);

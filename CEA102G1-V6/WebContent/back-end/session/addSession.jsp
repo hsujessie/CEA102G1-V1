@@ -50,9 +50,19 @@
     color: #fff;
     background-color: #bb9d52;
     box-sizing: border-box;
-    padding: 10px;
-    border-radius: 10px;
+    padding: 8px;
+    border-radius: 6px;
     font-size: 16px;
+  }
+  .delete-btn-sty{
+  	width: 50px;
+    border: transparent;
+    color: #fff;
+    background-color: #000;
+    box-sizing: border-box;
+    padding: 6px;
+    border-radius: 6px;
+    font-size: 14px;
   }
 </style>
 </head>
@@ -145,7 +155,7 @@
 		i+=1;
 		let timetb = document.getElementById("timetb");
 		timetb.style.display="block";
-		let tag = "<tr><th>"+i+"</th><td><input type="+"\""+"time"+"\""+"name="+"\""+"sesTime"+"\""+"></td><td><input type="+"\""+"button"+"\""+"value="+"\""+"刪除"+"\""+"id="+"\""+"delete"+"\""+"onclick='removeTr(this)'></td></tr>";
+		let tag = "<tr><th>"+i+"</th><td><input type="+"\""+"time"+"\""+"name="+"\""+"sesTime"+"\""+"></td><td><input type="+"\""+"button"+"\""+"value="+"\""+"刪除"+"\""+"id="+"\""+"delete"+"\""+"class=\"delete-btn-sty\""+"onclick='removeTr(this)'></td></tr>";
 		timetb.innerHTML += tag;
 		
 	},false);

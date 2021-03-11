@@ -296,6 +296,7 @@ function init(){
  	                        </c:when>
  	                        <c:otherwise>
  	                    		let img = document.createElement('img');
+ 	                    		img.style.width='150px';  //這邊要動態增加css寬度，不然會跑版
  	                    		img.classList.add('img');
                          	</c:otherwise>
                      	</c:choose>
@@ -327,6 +328,7 @@ function init(){
  	                        </c:when>
  	                        <c:otherwise>
  	                    		let video = document.createElement('video');
+ 	                            video.style.width='300px';  //這邊要動態增加css寬度，不然會跑版
  	                    		video.classList.add('vdo');
                          	</c:otherwise>
                      	</c:choose>

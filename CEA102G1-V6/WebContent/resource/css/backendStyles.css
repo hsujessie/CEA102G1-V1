@@ -47,9 +47,9 @@ body a:hover,a:focus{
 
 .input-pos{	
     position: absolute;
-    top: 1%;
+    top: 0%;
     right: 0;
-    left: 6%;
+    left: 8%;
     bottom: 0;
     font-size: 14px;
     text-decoration: none; 
@@ -71,9 +71,9 @@ body.barber_version .grd1:focus {
 }
 
 .effect-1:after, .btn-brd {
-    -webkit-border-radius: 10px;
-    -moz-border-radius: 10px;
-    border-radius: 10px;
+    -webkit-border-radius: 6px;
+    -moz-border-radius: 6px;
+    border-radius: 6px;
 }
 
 body.barber_version .effect-1:after {
@@ -127,7 +127,7 @@ body.barber_version .effect-1:after {
     position: absolute;
     width: 100%;
     height: 100%;
-    border-radius: 10px;
+    border-radius: 6px;
     content: '';
     -webkit-box-sizing: content-box;
     -moz-box-sizing: content-box;

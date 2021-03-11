@@ -25,7 +25,10 @@
 		width: 120px;
 	}
 	.form-sty{
-		margin: 20px 0 0 10px;
+		margin: 20px 0 0 30px;
+	}
+	.mr-botm{
+		margin-bottom: 5px;
 	}
 </style>
 <body class="sb-nav-fixed">
@@ -57,8 +60,8 @@
 						
                     	<!-- search Start -->
                     	<div class="row " style="margin: -60px 0 20px 0;">         
-			                <div class="col-2"></div>
-	                        <div class="col-10">          
+			                <div class="col-3"></div>
+	                        <div class="col-9">          
 		            			<jsp:useBean id="movSvcAll" scope="page" class="com.movie.model.MovService"/>                        
 	                           	<FORM class="form-sty" METHOD="post" ACTION="<%=request.getContextPath()%>/movie/mov.do">				                        
 			                        <b>電影名稱</b>
@@ -94,7 +97,7 @@
 			                            </c:forEach>
 			                        </select>
 			                        <input type="hidden" name="action" value="listMovies_ByCompositeQuery">
-				        			<a class="btn btn-light btn-brd grd1 effect-1">
+				        			<a class="btn btn-light btn-brd grd1 effect-1 mr-botm">
 										<input type="submit" value="搜尋" class="input-pos">
 				        			</a>
 		                    	</FORM>                    
