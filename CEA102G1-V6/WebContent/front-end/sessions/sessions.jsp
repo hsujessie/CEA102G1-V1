@@ -51,11 +51,11 @@
                            	<FORM METHOD="post" ACTION="<%=request.getContextPath()%>/session/ses.do">	
 		                        <b>場次日期</b>
                         
-	                            <select name="sesDate" class="vta-bm">
+	                            <select id="sesDateId" name="sesDate" class="vta-bm">
 	                                <!-- 下拉選單，日期搜尋，只顯示當天+6日(共7天日期)，如：2021-03-10星期三、2021-03-11星期四、2021-03-12星期五 -->
-	                                <c:forEach var="sesVO" items="${sesSvc.all}" >
+	                         <%--   <c:forEach var="sesVO" items="${sesSvc.all}" >
 	                                    <option value="${sesVO.sesDate}">${sesVO.sesDate}
-	                                </c:forEach>
+	                                </c:forEach> --%>
 	                            </select>
 	                            
 		                        <input type="hidden" name="action" value="searchSesDate" class="vta-bm">
@@ -78,13 +78,10 @@
 		                                <div class="col-7">
 		                                    <h3>${movVO.movname}</h3>
 		                                    
-		                                    <c:if test="${empty getMovies_BySesDate}"> 		                                    
-
-                     			
+		                                    <c:if test="${empty getMovies_BySesDate}">	                                    
                                     			<!-- 只顯示當天，如：2021-03-10星期三 10:00 14:00 20:00 -->
                                     			<c:forEach var="distinctSesDate" items="${sesSvc.getDistinctSesDate()}" >
-	                                    					                                    			 
-	                                    			 
+	                                    					                                    			                       			 
 				                                   <c:forEach var="sesVO" items="${sesSvc.all}" >
 				                                    	<c:if test="${sesVO.movNo == movVO.movno}">
 				                                    		<c:if test="${distinctSesDate.sesDate == sesVO.sesDate}">
@@ -105,7 +102,8 @@
 				                                   <c:forEach var="sesVO" items="${sesSvc.all}" >
 				                                    	<c:if test="${sesVO.movNo == movVO.movno}">
 				                                    		<c:if test="${distinctSesDate.sesDate == sesVO.sesDate}">
-                                    							<p>${sesVO.sesTime}</p>
+                                    							<p><fmt:formatDate value="${distinctSesDate.sesDate}" type="DATE" dateStyle="FULL"/></p>
+                                    							<p><fmt:formatDate value="${sesVO.sesTime}" pattern="HH:mm" type="DATE"/></p>
 				                                    		</c:if>
 				                                    	</c:if>
 				                                   </c:forEach>					                                   
@@ -139,6 +137,64 @@
 	function sendData(e,movno){
 	    let url = "<%=request.getContextPath()%>/movie/mov.do?action=getOne_For_Display&fromFrontend=true&movno="+movno;
 	    window.location.href = url;
+	}
+	
+	
+	/*========================================================
+		場次日期搜尋 下拉選單 -> 只顯示當天+6日(共7天日期)
+    ==========================================================*/
+	window.onload = function(){
+		let daysDuration = 7;
+		
+		let today = new Date();	
+		let today_year = today.getFullYear();
+		let today_month = getMonth(today);
+		let today_date = getDate(today);	
+		let today_day = today.getDay();	
+		let show_day = "";
+		
+		for (let i = 0; i < daysDuration; i++){
+			
+			if( today_day == 7){
+				show_day = "日";
+				today_day = 0;
+			}
+			if( today_day == 1){
+				show_day = "一";
+			}
+			if( today_day == 2){
+				show_day = "二";
+			}
+			if( today_day == 3){
+				show_day = "三";
+			}
+			if( today_day == 4){
+				show_day = "四";
+			}
+			if( today_day == 5){
+				show_day = "五";
+			}
+			if( today_day == 6){
+				show_day = "六";
+			}
+			
+			console.log(today_day);
+ 			let sesDateValue = today_year + "-" + today_month + "-" + today_date;
+			 $('#sesDateId').append("<option value=" + "\"" + sesDateValue + "\"" +">" + today_year + "-" + today_month + "-" + today_date + " 星期" + show_day + "</option>");
+			
+			today_date++;
+			today_day++;	
+		}
+	}
+
+	function getMonth(mon) {
+	  var month = mon.getMonth() + 1;
+	  return month < 10 ? '0' + month : '' + month;
+	}  
+	
+	function getDate(date) {
+	  var date = date.getDate();
+	  return date < 10 ? '0' + date : '' + date;
 	}
 </script>
 </body>
