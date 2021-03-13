@@ -7,8 +7,8 @@
 <html>
 <head>
 	<title>電影新增</title>	
-	<%@ include file="/back-end/files/sb_head.file"%>
-
+	<%@ include file="/back-end/files/sb_head.file"%>	
+	<link rel="stylesheet" type="text/css" href="<%=request.getContextPath()%>/resource/datetimepicker/jquery.datetimepicker.css" />
 <style>
   table {
 	width: 750px;
@@ -119,11 +119,11 @@
 							%>
 							<tr>
 								<th>上映日期</th>
-								<td><input class="sty-input mr-left mr-btm-normal" name="movondate" id="mov_ondate" type="date" value="<%=movondate%>"></td>
+								<td><input class="sty-input mr-left mr-btm-normal" name="movondate" id="mov_ondate" type="text" value="<%=movondate%>"></td>
 							</tr>
 							<tr>
 								<th>下檔日期</th>
-								<td><input class="sty-input mr-left mr-btm-normal" name="movoffdate" id="mov_offdate" type="date" value=""></td>
+								<td><input class="sty-input mr-left mr-btm-normal" name="movoffdate" id="mov_offdate" type="text" value=""></td>
 							</tr>
 							<tr>
 								<th>片長</th>
@@ -220,8 +220,33 @@
             </div>
         </div>
 		<%@ include file="/back-end/files/sb_importJs.file"%> <!-- 引入template要用的js -->
+		<script src="<%=request.getContextPath()%>/resource/datetimepicker/jquery.js"></script>
+		<script src="<%=request.getContextPath()%>/resource/datetimepicker/jquery.datetimepicker.full.js"></script>
 </body>
 	<script>
+	$.datetimepicker.setLocale('zh');
+	$(function(){
+		 $('#mov_ondate').datetimepicker({
+		  format:'Y-m-d',
+		  onShow:function(){
+		   this.setOptions({
+		    maxDate:$('#mov_offdate').val()?$('#mov_offdate').val():false
+		   })
+		  },
+		  timepicker:false
+		 });
+
+		 $('#mov_offdate').datetimepicker({
+		  format:'Y-m-d',
+		  onShow:function(){
+		   this.setOptions({
+		    minDate:$('#mov_ondate').val()?$('#mov_ondate').val():false
+		   })
+		  },
+		  timepicker:false
+		 });
+	});
+	
 /* =========================================================================================== */
 								/* Varify Inputs */
 /* =========================================================================================== */	

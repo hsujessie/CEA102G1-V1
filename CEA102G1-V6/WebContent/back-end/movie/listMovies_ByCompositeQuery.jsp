@@ -85,7 +85,7 @@
 									<th>上映日期</th>
 									<th>下檔日期</th>
 									<th>片長</th>
-									<th>級數</th>
+									<th>類型</th>
 									<th>查看</th>
 									<th>修改</th>
 								</tr>				
@@ -100,7 +100,7 @@
 									<td>${movVO.getMovondate()}</td>
 									<td>${movVO.getMovoffdate()}</td>
 									<td>${movVO.getMovdurat()}小時</td>
-									<td>${movVO.getMovrating()}</td>
+									<td>${movVO.getMovtype()}</td>
 									<td>
 					        			 <a id="listOne" onclick="getData(this,${movVO.movno})" class="btn btn-light btn-brd grd1 effect-1">
 											<input type="button" value="查看" class="input-pos">
