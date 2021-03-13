@@ -9,7 +9,7 @@
 <head>
 	<title>場次新增</title>	
 	<%@ include file="/back-end/files/sb_head.file"%>
-
+	<link rel="stylesheet" type="text/css" href="<%=request.getContextPath()%>/resource/datetimepicker/jquery.datetimepicker.css" />
 <style>
   table {
 	width: 750px;
@@ -147,8 +147,37 @@
             </div>
         </div>
 		<%@ include file="/back-end/files/sb_importJs.file"%> <!-- 引入template要用的js -->
-</body>
+		<script src="<%=request.getContextPath()%>/resource/datetimepicker/jquery.js"></script>
+		<script src="<%=request.getContextPath()%>/resource/datetimepicker/jquery.datetimepicker.full.js"></script>
 <script>
+
+	$.datetimepicker.setLocale('zh');
+	$(function(){
+		 $('#mov_ondate').datetimepicker({
+		  format:'Y-m-d',
+		  onShow:function(){
+		   this.setOptions({
+		    maxDate:$('#mov_offdate').val()?$('#mov_offdate').val():false
+		   })
+		  },
+		  timepicker:false
+		 });
+	
+		 $('#mov_offdate').datetimepicker({
+		  format:'Y-m-d',
+		  onShow:function(){
+		   this.setOptions({
+		    minDate:$('#mov_ondate').val()?$('#mov_ondate').val():false
+		   })
+		  },
+		  timepicker:false
+		 });
+	});
+	
+	
+	/* =========================================================================================== */
+									/* 新增場次時間 */
+	/* =========================================================================================== */
 	let addtime = document.getElementById("addtime");
 	let i = 0;
 	addtime.addEventListener("click",function(){
@@ -165,4 +194,5 @@
 		e.closest('tr').remove();
 	}
 </script>
+</body>
 </html>

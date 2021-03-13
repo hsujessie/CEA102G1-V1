@@ -222,8 +222,8 @@
 		<%@ include file="/back-end/files/sb_importJs.file"%> <!-- 引入template要用的js -->
 		<script src="<%=request.getContextPath()%>/resource/datetimepicker/jquery.js"></script>
 		<script src="<%=request.getContextPath()%>/resource/datetimepicker/jquery.datetimepicker.full.js"></script>
-</body>
-	<script>
+
+<script>
 	$.datetimepicker.setLocale('zh');
 	$(function(){
 		 $('#mov_ondate').datetimepicker({
@@ -250,13 +250,13 @@
 /* =========================================================================================== */
 								/* Varify Inputs */
 /* =========================================================================================== */	
-	<%@ include file="files/varifyInputs.file"%>
+	<%@ include file="/back-end/movie/files/varifyInputs.file"%>
 	
 	
 /* =========================================================================================== */
 	    						/* CALCULATE mov_ondate & mov_offdate */
 /* =========================================================================================== */
-	<%@ include file="files/changeMovOffDate.file"%>
+	<%@ include file="/back-end/movie/files/changeMovOffDate.file"%>
 		let mov_ondate = document.getElementById('mov_ondate');
 		let mov_offdate_val = document.getElementById('mov_offdate').value;
 		if(mov_offdate_val.length == 0){
@@ -323,4 +323,5 @@ function init(){
 }
 window.onload = init;
 </script>
+</body>
 </html>
