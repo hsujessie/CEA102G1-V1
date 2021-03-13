@@ -18,8 +18,9 @@
 	.success-span{
 	    color: #bb9d52;
 		position: absolute;
-	    top: 10%;
+	    top: 8%;
 	    left: 17%;
+	    font-size: 16px;
 	}
 	.th-adjust{
 		width: 120px;
@@ -47,13 +48,13 @@
 						<c:if test="${addSuccess != null}">
 							<span class="success-span"> 
 								${addSuccess}
-								<i class="fa fa-hand-peace-o"></i>
+								<i class="far fa-smile-wink"></i>
 							</span>
 						</c:if>
 						<c:if test="${updateSuccess != null }">
 							<span class="success-span"> 
 								${updateSuccess}
-								<i class="far fa-laugh-wink"></i>
+								<i class="far fa-smile-wink"></i>
 							</span>
 						</c:if>
                     	<!-- error message End -->

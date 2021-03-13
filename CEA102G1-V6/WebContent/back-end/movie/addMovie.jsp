@@ -223,102 +223,11 @@
 </body>
 	<script>
 /* =========================================================================================== */
-	    							/* Varify Inputs */
+								/* Varify Inputs */
 /* =========================================================================================== */	
-	 let movverFir = $("input[name='movver']")[0];
-	 let movverSec = $("input[name='movver']")[1];
-	 let movverThi = $("input[name='movver']")[2];
-	 let movlanFir = $("input[name='movlan']")[0];
-	 let movlanSec = $("input[name='movlan']")[1];
-	 let movlanThi = $("input[name='movlan']")[2];
-
-	 document.getElementsByTagName('input')[0].addEventListener('keyup', isEmpty, false);	 
-	 document.getElementById('movDurat').addEventListener('keyup', isEmpty, false); 
-	 document.getElementById('movDitor').addEventListener('keyup', isEmpty, false); 
-	 document.getElementById('movCast').addEventListener('keyup', isEmpty, false);
-	 document.getElementById('movDes').addEventListener('keyup', isEmpty, false);
-	 movverFir.addEventListener('change', isEmpty, false);
-	 movverSec.addEventListener('change', isEmpty, false);
-	 movverThi.addEventListener('change', isEmpty, false);
-	 movlanFir.addEventListener('change', isEmpty, false);
-	 movlanSec.addEventListener('change', isEmpty, false);
-	 movlanThi.addEventListener('change', isEmpty, false);
-	 
-	 function isEmpty(e){
-		 let movname = document.querySelector('input[name="movname"]').value.trim();
-		 let movdurat = document.querySelector('input[name="movdurat"]').value;
-		 let movditor = document.querySelector('input[name="movditor"]').value.trim();
-		 let movcast = document.querySelector('input[name="movcast"]').value.trim();
-		 let movdes = document.querySelector('textarea[name="movdes"]').value.trim();
-		 
-		 if(movverFir.checked == false && movverSec.checked == false && movverThi.checked == false){
-			 $("#disabled-btn").css('display','block'); 
-			 $("#abled-btn").css('display','none');
-			 $("#movver-errmsg").css('display','inline-block'); 
-			 $("#movver-errmsg-txt").text("請選擇電影種類!");
-		 }else{
-			 $("#disabled-btn").css('display','none'); 
-			 $("#abled-btn").css('display','block');
-			 $("#movver-errmsg").css('display','none'); 
-		 }
-		 
-		 if(movlanFir.checked == false && movlanSec.checked == false && movlanThi.checked == false){
-			 $("#disabled-btn").css('display','block'); 
-			 $("#abled-btn").css('display','none');
-			 $("#movlan-errmsg").css('display','inline-block'); 
-			 $("#movlan-errmsg-txt").text("請選擇電影語言!");
-		 }else{
-			 $("#disabled-btn").css('display','none'); 
-			 $("#abled-btn").css('display','block');
-			 $("#movlan-errmsg").css('display','none'); 
-		 }
-		 
-		 if(movname.length == 0 || movdurat.length == 0 || movditor.length == 0 || movcast.length == 0 || movdes.length == 0){
-			 $("#disabled-btn").css('display','block'); 
-			 $("#abled-btn").css('display','none');
-		 }
-		 
-		 if(movname.length == 0 ){
-			 $("#movname-errmsg").css('display','inline-block'); 
-			 $("#movname-errmsg-txt").text("請勿空白!");
-		 }else{
-			 $("#movname-errmsg").css('display','none');  
-		 }
-		 
-		 if(movdurat.length == 0 ){
-			 $("#movdurat-errmsg").css('display','inline-block'); 
-			 $("#movdurat-errmsg-txt").text("請勿空白，請填數字!");
-		 }else{
-			 $("#movdurat-errmsg").css('display','none'); 
-		 }
-		 
-		 if(movditor.length == 0 ){
-			 $("#movditor-errmsg").css('display','inline-block'); 
-			 $("#movditor-errmsg-txt").text("請勿空白!");
-		 }else{
-			 $("#movditor-errmsg").css('display','none'); 
-		 }
-		 
-		 if(movcast.length == 0 ){
-			 $("#movcast-errmsg").css('display','inline-block'); 
-			 $("#movcast-errmsg-txt").text("請勿空白!");
-		 }else{
-			 $("#movcast-errmsg").css('display','none'); 
-		 }
-		 
-		 if(movdes.length == 0 ){
-			 $("#movdes-errmsg").css('display','inline-block'); 
-			 $("#movdes-errmsg-txt").text("請勿空白!");
-		 }else{
-			 $("#movdes-errmsg").css('display','none'); 
-		 }
-		 
-		 if(movdurat.length != 0 && movdurat.match(/^[0-9]*$/) && movname.length != 0 && movditor.length != 0 && movcast.length != 0 && movdes.length != 0 ){
-			 $("#disabled-btn").css('display','none'); 
-			 $("#abled-btn").css('display','block');
-		 }
-	 }
-	 
+	<%@ include file="files/varifyInputs.file"%>
+	
+	
 /* =========================================================================================== */
 	    						/* CALCULATE mov_ondate & mov_offdate */
 /* =========================================================================================== */
