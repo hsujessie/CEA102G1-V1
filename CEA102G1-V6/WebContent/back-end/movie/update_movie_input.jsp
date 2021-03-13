@@ -57,18 +57,6 @@
                        <!-- update movie Start -->  
 					   <FORM method="post" action="<%=request.getContextPath()%>/movie/mov.do" name="form_updateMovie" enctype="multipart/form-data">	                 	
                        <h3 class="h3-style listOne-h3-pos">電影修改</h3>
-						<c:if test="${addSuccess != null}">
-							<span style="color: #bb9d52">  
-								${addSuccess}
-								<i class="fa fa-hand-peace-o"></i>
-							</span>
-						</c:if>
-						<c:if test="${updateSuccess != null }">
-							<span style="color: #bb9d52">  
-								${updateSuccess}
-								<i class="fa fa-hand-peace-o"></i>
-							</span>
-						</c:if>
 						
 			            <table>
 							<tr>

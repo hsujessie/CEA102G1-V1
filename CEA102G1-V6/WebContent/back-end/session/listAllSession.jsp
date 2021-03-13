@@ -42,20 +42,20 @@
                     <div class="container-fluid">
                     
                     	<h3 class="h3-style" style="display: inline-block;">場次列表</h3>
-						<!-- error message Start -->
+						<!-- success message Start -->
 						<c:if test="${addSuccess != null}">
-							<span class="success-span">  
+							<span class="success-span"> 
 								${addSuccess}
-								<i class="fa fa-hand-peace-o"></i>
+								<i class="far fa-smile-wink"></i>
 							</span>
 						</c:if>
 						<c:if test="${updateSuccess != null }">
-							<span class="success-span">  
+							<span class="success-span"> 
 								${updateSuccess}
-								<i class="far fa-laugh-wink"></i>
+								<i class="far fa-smile-wink"></i>
 							</span>
 						</c:if>
-                    	<!-- error message End -->
+                    	<!-- success message End -->
 						
                     	<!-- search Start -->
                     	<div class="row " style="margin: -60px 0 20px 50px;">          

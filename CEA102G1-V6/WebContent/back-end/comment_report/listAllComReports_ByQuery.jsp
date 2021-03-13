@@ -1,5 +1,6 @@
 <%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%@ page import="java.util.*"%>
 <%@ page import="com.comment_report.model.*"%>
 
@@ -14,8 +15,9 @@
 	.success-span{
 	    color: #bb9d52;
 		position: absolute;
-	    top: 10%;
+	    top: 8%;
 	    left: 17%;
+	    font-size: 16px;
 	}
 </style>
 <body class="sb-nav-fixed">
@@ -28,22 +30,18 @@
             <div id="layoutSidenav_content">
                 <main>
                     <div class="container-fluid">
-                    
-                    	<!-- listComReports_ByQuery Start -->
+                                      	
                     	<h3 class="h3-style" style="display: inline-block;">短評檢舉列表</h3>
-						<c:if test="${addSuccess != null}">
-							<span class="success-span">  
-								${addSuccess}
-								<i class="fa fa-hand-peace-o"></i>
-							</span>
-						</c:if>
+						<!-- success message Start -->
 						<c:if test="${updateSuccess != null }">
 							<span class="success-span">  
 								${updateSuccess}
 								<i class="far fa-laugh-wink"></i>
 							</span>
 						</c:if>
+                    	<!-- success message End -->
 						
+						<!-- listComReports_ByQuery Start -->
                     	<div class="row " style="margin: -50px 0 50px 0;">         
 			                <div class="col-8"></div>
 	                        <div class="col-4">                                 
@@ -86,8 +84,12 @@
 										<c:if test="${comRepVO.comRepReason eq 3}"><td>相互惡意攻訐、猥褻騷擾、人身攻擊</td></c:if>	
 										<c:if test="${comRepVO.comRepReason eq 4}"><td>侵犯隱私權、違反智慧財產權、涉及違法情事</td></c:if>	
 										<c:if test="${comRepVO.comRepReason eq 5}"><td>違背善良風俗</td></c:if>										
-										<td>${comRepVO.memNo}</td>
-										<td>${comRepVO.comRepTime}</td>
+										<jsp:useBean id="memSvc" scope="page" class="com.member.model.MemberService"/>
+										<c:set value="${memSvc.getOneMember(comRepVO.memNo)}" var="memObj"></c:set>
+										<td>${memObj.memAccount}</td>
+										<td><fmt:formatDate value="${comRepVO.getComRepTime()}" pattern="yyy-MM-dd" type="DATE"/><br>
+											<fmt:formatDate value="${comRepVO.getComRepTime()}" pattern="HH:mm:ss" type="DATE"/>
+										</td>	
 										<c:if test="${comRepVO.comRepStatus eq 0}"><td>未處理</td></c:if>
 										<c:if test="${comRepVO.comRepStatus eq 1}"><td>檢舉成功 </td></c:if>
 										<c:if test="${comRepVO.comRepStatus eq 2}"><td>檢舉失敗</td></c:if>

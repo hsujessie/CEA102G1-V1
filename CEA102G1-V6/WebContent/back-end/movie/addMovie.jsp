@@ -62,7 +62,7 @@
 						<table>
 							<tr>
 								<th>名稱</th>
-								<td><input class="sty-input mr-left mr-btm-normal" type="text" name="movname" value="<%= (movVO==null)? "金牌特務" : movVO.getMovname()%>" />
+								<td><input class="sty-input mr-left mr-btm-normal" type="text" name="movname" value="" />
 									<span id="movname-errmsg" style="display:none;">			
 										<i class="far fa-hand-point-left" style="color:#bb9d52;"></i>
 										<label id="movname-errmsg-txt" class="err-color"></label>
@@ -73,7 +73,7 @@
 								<th>種類</th>
 								<td>
 									<!-- 多選checkbox -->
-									<input class="mr-left mr-btm-sm" type="checkbox" name="movver" value="2D" ${movver == null? "checked":""} ><span class="ml-ten">2D</span><br>
+									<input class="mr-left mr-btm-sm" type="checkbox" name="movver" value="2D"><span class="ml-ten">2D</span><br>
 									<input class="mr-left mr-btm-sm" type="checkbox" name="movver" value="3D"><span class="ml-ten">3D</span><br>
 									<input class="mr-left mr-btm-sm" type="checkbox" name="movver" value="IMAX"><span class="ml-ten">IMAX</span><br>
 									<span id="movver-errmsg" style="display:none;">			
@@ -100,7 +100,7 @@
 								<th>語言</th>
 								<td>
 									<!-- 多選checkbox -->
-									<input class="mr-left mr-btm-sm" type="checkbox" name="movlan" value="英文" ${movlan == null? "checked":""} ><span class="ml-ten">英文</span><br>
+									<input class="mr-left mr-btm-sm" type="checkbox" name="movlan" value="英文"><span class="ml-ten">英文</span><br>
 									<input class="mr-left mr-btm-sm" type="checkbox" name="movlan" value="中文"><span class="ml-ten">中文</span><br>
 									<input class="mr-left mr-btm-sm" type="checkbox" name="movlan" value="日文"><span class="ml-ten">日文</span><br>
 									<span id="movlan-errmsg" style="display:none;">			
@@ -127,7 +127,7 @@
 							</tr>
 							<tr>
 								<th>片長</th>
-								<td class="fake-txt"><input id="movDurat" class="sty-input mr-left mr-btm-normal" type="text" name="movdurat" placeholder="小時" value="<%= (movVO==null)? "2" : movVO.getMovdurat()%>"/>
+								<td class="fake-txt"><input id="movDurat" class="sty-input mr-left mr-btm-normal" type="text" name="movdurat" placeholder="小時" value=""/>
 									<span id="movdurat-errmsg" class="errmsg-pos" style="display:none;">			
 										<i class="far fa-hand-point-left" style="color:#bb9d52"></i>
 										<label id="movdurat-errmsg-txt" class="err-color"></label>
@@ -147,7 +147,7 @@
 							</tr>
 							<tr>
 								<th>導演</th>
-								<td><input id="movDitor" class="sty-input mr-left mr-btm-normal" type="text" name="movditor" value="<%= (movVO==null)? "dicrector" : movVO.getMovditor()%>" />
+								<td><input id="movDitor" class="sty-input mr-left mr-btm-normal" type="text" name="movditor" value="" />
 									<span id="movditor-errmsg" style="display:none;">			
 								        <i class="far fa-hand-point-left" style="color:#bb9d52;"></i>
 								        <label id="movditor-errmsg-txt" class="err-color"></label>
@@ -156,7 +156,7 @@
 							</tr>
 							<tr>
 								<th>演員</th>
-								<td><input id="movCast" class="sty-input mr-left mr-btm-normal" type="text" name="movcast" value="<%= (movVO==null)? "actors" : movVO.getMovcast()%>" />
+								<td><input id="movCast" class="sty-input mr-left mr-btm-normal" type="text" name="movcast" value="" />
 									<span id="movcast-errmsg" style="display:none;">			
 								        <i class="far fa-hand-point-left" style="color:#bb9d52;"></i>
 								        <label id="movcast-errmsg-txt" class="err-color"></label>
@@ -165,7 +165,7 @@
 							</tr>
 							<tr>
 								<th>簡介</th>
-								<td><textarea id="movDes" name="movdes" class="sty-input mr-left"><%= (movVO==null)? "description" : movVO.getMovdes()%></textarea>
+								<td><textarea id="movDes" name="movdes" class="sty-input mr-left"></textarea>
 									<span id="movdes-errmsg" style="display:none;">			
 								        <i class="far fa-hand-point-left" style="color:#bb9d52;"></i>
 								        <label id="movdes-errmsg-txt" class="err-color"></label>
@@ -177,7 +177,7 @@
 								<td>	
 									<label class="btn" style="margin-left: 35%;">
 										<i class="far fa-image"></i>
-									<input id="uploadFile" style="display:none;" type="file" name="movpos" value="<%= (movVO==null)? "poster" : movVO.getMovpos()%>"/>			
+										<input id="uploadFile" style="display:none;" type="file" name="movpos" value=""/>			
 									</label>
 								</td>
 							</tr>
@@ -192,7 +192,7 @@
 								<td>
 									<label class="btn" style="margin-left: 35%;">
 										<i class="far fa-file-video"></i>
-									<input id="uploadTrailer" style="display:none;" type="file" name="movtra" value="<%=(movVO==null)? "trailer" : movVO.getMovtra()%>"/>	
+										<input id="uploadTrailer" style="display:none;" type="file" name="movtra" value=""/>	
 									</label>
 								</td>
 							</tr>
@@ -205,10 +205,10 @@
 						</table>
 						<br>
 						<input type="hidden" name="action" value="insert">
-						<a id="abled-btn" class="btn btn-light btn-brd grd1 effect-1 btn-pos" style="margin: 1% 0 1% 50%; display:block;" >
+						<a id="abled-btn" class="btn btn-light btn-brd grd1 effect-1 btn-pos" style="margin: 1% 0 1% 50%; display:none;" >
 							<input type="submit" value="送出" class="input-pos">
 						</a>
-						<a id="disabled-btn" class="btn btn-light btn-brd grd1 btn-pos" style="display:none; margin: 1% 0 1% 50%; background-color: #808080; border: 2px solid #808080!important; cursor: default;" >
+						<a id="disabled-btn" class="btn btn-light btn-brd grd1 btn-pos" style="display:block; margin: 1% 0 1% 50%; background-color: #808080; border: 2px solid #808080!important; cursor: default;" >
 							<input type="submit" value="送出" class="input-pos" style="background-color: #808080;" disabled>
 						</a>
 						</FORM>

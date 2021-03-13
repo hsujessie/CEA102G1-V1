@@ -51,7 +51,7 @@ public class MemberServlet extends HttpServlet {
 							Integer memNo = new Integer(req.getParameter("memNo"));
 
 /***************************2.開始查詢資料***************************/
-							MemberServic memberServic = new MemberServic();
+							MemberService memberServic = new MemberService();
 							MemberVO memberVO = memberServic.getOneMember(memNo);
 //							BoardTypeService boardTypeService = new BoardTypeService();
 //							List<BoardTypeVO> boardTypeVOList = boardTypeService.getAll();
@@ -125,7 +125,7 @@ public class MemberServlet extends HttpServlet {
 ///***************************2.開始修改資料******************************/
 							
 
-							MemberServic memberSvc = new MemberServic();
+							MemberService memberSvc = new MemberService();
 							memberSvc.updateMember(memNo,memName,memAccount,memPassword,memMail);
 							memberVO = memberSvc.getOneMember(memNo);
 							
@@ -234,7 +234,7 @@ public class MemberServlet extends HttpServlet {
 							}
 //							
 ///***************************2.開始新增資料****************************/
-							MemberServic memberSvc = new MemberServic();							//使用BoardService的addBoard方法將值傳到前端
+							MemberService memberSvc = new MemberService();							//使用BoardService的addBoard方法將值傳到前端
 							memberVO = memberSvc.addMember(memName, memAccount,memPassword,memMail);
 							req.setAttribute("MemberVO", memberVO);
 							
@@ -312,7 +312,7 @@ public class MemberServlet extends HttpServlet {
 								
 					
 	/*************************** 2.開始查詢資料 *****************************************/
-								MemberServic memSvc = new MemberServic();
+								MemberService memSvc = new MemberService();
 								MemberVO memberVO = memSvc.getOneAccount(memAccount,memPassword);
 								if (memberVO == null) {
 									errorMsgs.add("帳號密碼錯誤,請重新登錄");

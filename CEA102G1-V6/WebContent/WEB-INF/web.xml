@@ -192,4 +192,21 @@
 		<url-pattern>/expectation/exp.do</url-pattern>
 	</servlet-mapping>
   
+	<servlet>
+		<servlet-name>SatServlet</servlet-name>
+		<servlet-class>com.satisfaction.controller.SatServlet</servlet-class>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>SatServlet</servlet-name>
+		<url-pattern>/satisfaction/sat.do</url-pattern>
+	</servlet-mapping>
+
+	<servlet>
+		<servlet-name>ComRepServlet</servlet-name>
+		<servlet-class>com.comment_report.controller.ComRepServlet</servlet-class>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>ComRepServlet</servlet-name>
+		<url-pattern>/comment_report/comrep.do</url-pattern>
+	</servlet-mapping>
 </web-app>

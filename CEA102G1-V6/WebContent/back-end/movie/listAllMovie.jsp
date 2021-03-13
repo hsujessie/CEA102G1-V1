@@ -43,8 +43,8 @@
                 <main>
                     <div class="container-fluid">
                     	
-                    	<!-- error message Start -->
                     	<h3 class="h3-style" style="display: inline-block;">電影列表</h3>
+						<!-- success message Start -->
 						<c:if test="${addSuccess != null}">
 							<span class="success-span"> 
 								${addSuccess}
@@ -57,7 +57,7 @@
 								<i class="far fa-smile-wink"></i>
 							</span>
 						</c:if>
-                    	<!-- error message End -->
+                    	<!-- success message End -->
 						
                     	<!-- search Start -->
                     	<div class="row " style="margin: -60px 0 20px 0;">         
