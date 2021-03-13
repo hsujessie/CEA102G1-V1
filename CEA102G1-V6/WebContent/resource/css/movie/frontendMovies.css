@@ -8,6 +8,14 @@
     background: #ffffff;
 }
 
+.movies #movies-flters .filter-active a{
+    color: #454545 !important;
+}
+
+.movies #movies-flters .filter-active{
+    background-color:#bb9d52 !important;
+}
+
 .movies #movies-flters {
     padding: 0;
     margin: -15px 0 25px 0;
@@ -16,8 +24,7 @@
     text-align: center;
 }
 
-.movies #movies-flters li,
-.movies .load-more .btn {
+.movies #movies-flters li {
     cursor: pointer;
     display: inline-block;
     margin: 5px;
@@ -32,25 +39,16 @@
     transition: .3s;
 }
 
-.movies #movies-flters li:hover,
-.movies #movies-flters li.filter-active {
-    background: #aa9166;
-    color: #121518;
+.movies #movies-flters li a{
+    color: #bb9d52;
+} 
+
+.movies #movies-flters li:hover{
+    background-color:#bb9d52;
 }
 
-.movies .load-more {
-    text-align: center;
-}
-
-.movies .load-more .btn {
-    padding: 15px 35px;
-    font-size: 16px;
-    transition: .3s;
-}
-
-.movies .load-more .btn:hover {
-    color: #121518;
-    background: #aa9166;
+.movies #movies-flters a:hover{
+    color: #454545!important;
 }
 
 .movies .movies-item {
@@ -131,6 +129,7 @@
 }
 
 
+
 /*******************************/
 /******** Movies Light Box ********/
 /*******************************/
@@ -197,6 +196,8 @@
     right: 15px;
     transform: rotate(-45deg);
 }
+
+
 /*******************************/
 /********** Information  CSS **********/
 /*******************************/

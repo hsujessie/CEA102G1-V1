@@ -8,18 +8,6 @@
 <title>Movies</title>
 <%@ include file="/front-end/files/frontend_importCss.file"%>
 <link rel="stylesheet" href="<%=request.getContextPath()%>/resource/css/movie/frontendMovies.css">
-
-<style>
-ul li a{
-    color: #bb9d52;
-} 
-ul li a:hover{
-    color: #454545;
-} 
-.filter-active a{
-    color: #454545;
-}
-</style>
 </head>
 <body>
         <div class="wrapper">
