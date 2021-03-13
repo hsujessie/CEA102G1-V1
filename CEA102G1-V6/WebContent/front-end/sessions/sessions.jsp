@@ -11,7 +11,7 @@
 <link rel="stylesheet" href="<%=request.getContextPath()%>/resource/css/movie/frontendMovies.css">
 
 <style type="text/css">
-.combtn {
+.combtn-search {
     padding: 2px 10px;
 }
 .vta-bm{
@@ -59,7 +59,7 @@
 	                            </select>
 	                            
 		                        <input type="hidden" name="action" value="searchSesDate" class="vta-bm">
-								<input type="submit" value="搜尋" class="combtn">
+								<input type="submit" value="搜尋" class="combtn combtn-search">
 	                    	</FORM>                    
                         </div>
                     </div>

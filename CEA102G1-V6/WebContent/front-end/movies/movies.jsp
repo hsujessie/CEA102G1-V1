@@ -10,9 +10,13 @@
 <link rel="stylesheet" href="<%=request.getContextPath()%>/resource/css/movie/frontendMovies.css">
 
 <style>
-#movies-flters a:hover,
-#movies-flters a:active,
-#movies-flters a:focus {
+ul li a{
+    color: #bb9d52;
+} 
+ul li a:hover{
+    color: #454545;
+} 
+.filter-active a{
     color: #454545;
 }
 </style>
@@ -46,8 +50,8 @@
                         <div class="col-12">
                             <ul id="movies-flters">
                                 <li <c:if test="${empty nowShowing && empty commingSoon}">class="filter-active"</c:if> ><a href="${movies}">All</a></li>
-                                <li <c:if test="${not empty nowShowing}">class="filter-active"</c:if> ><a href="<%=request.getContextPath()%>/movie/mov.do?action=now_Showing">Now Showing</a></li>
-                                <li <c:if test="${not empty commingSoon}">class="filter-active"</c:if> ><a href="<%=request.getContextPath()%>/movie/mov.do?action=comming_Soon">Comming Soon</a></li>
+                                <li <c:if test="${not empty nowShowing}">class="filter-active"</c:if> ><a href="<%=request.getContextPath()%>/movie/mov.do?action=now_Showing">現正上映</a></li>
+                                <li <c:if test="${not empty commingSoon}">class="filter-active"</c:if> ><a href="<%=request.getContextPath()%>/movie/mov.do?action=comming_Soon">即將上映</a></li>
                             </ul>
                         </div>
                     </div>
