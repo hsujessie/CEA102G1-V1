@@ -18,8 +18,9 @@
 	.success-span{
 	    color: #bb9d52;
 		position: absolute;
-	    top: 10%;
+	    top: 8%;
 	    left: 17%;
+	    font-size: 16px;
 	}
 	.form-sty{
 		margin: 20px 0 0 0;

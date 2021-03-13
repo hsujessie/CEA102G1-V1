@@ -221,8 +221,11 @@
 						<input type="hidden" name="movno" value="${movVO.movno}">
 						<input type="hidden" name="requestURL" value="<%=request.getParameter("requestURL")%>">
 						<input type="hidden" name="whichPage"  value="<%=request.getParameter("whichPage")%>">
-						<a class="btn btn-light btn-brd grd1 effect-1 btn-pos" style="margin: 1% 0 1% 50%;" >
+						<a id="abled-btn" class="btn btn-light btn-brd grd1 effect-1 btn-pos" style="margin: 1% 0 1% 50%; display:block;" >
 							<input type="submit" value="送出" class="input-pos">
+						</a>
+						<a id="disabled-btn" class="btn btn-light btn-brd grd1 btn-pos" style="display:none; margin: 1% 0 1% 50%; background-color: #808080; border: 2px solid #808080!important; cursor: default;" >
+							<input type="submit" value="送出" class="input-pos" style="background-color: #808080;" disabled>
 						</a>
 						</FORM>
                        <!-- update movie End -->

@@ -6,7 +6,7 @@
 <head>
 	<title>場次修改</title>
 	<%@ include file="/back-end/files/sb_head.file"%>
-	
+	<link rel="stylesheet" type="text/css" href="<%=request.getContextPath()%>/resource/datetimepicker/jquery.datetimepicker.css" />
 <style>
   table {
 	width: 750px;
@@ -36,6 +36,10 @@
   }
   .ml-ten{
   	margin-left: 10px;
+  }
+  .err-color{
+    text-shadow: 0 0 0.1em #f87, 0 0 0.1em #f87;
+    font-size: 14px;
   }
 </style>
 </head>
@@ -84,25 +88,17 @@
 									<input class="mr-left mr-btm-sm" type="radio" name="theNo" value="1" <c:if test="${sesVO.theNo == 1}">checked</c:if> ><span class="ml-ten">A廳 (2D)</span><br>
 									<input class="mr-left mr-btm-sm" type="radio" name="theNo" value="2" <c:if test="${sesVO.theNo == 2}">checked</c:if> ><span class="ml-ten">B廳 (3D)</span><br>
 									<input class="mr-left mr-btm-sm" type="radio" name="theNo" value="3" <c:if test="${sesVO.theNo == 3}">checked</c:if> ><span class="ml-ten">C廳 (IMAX)</span><br>
+									<span id="theNo-errmsg" style="display:none;">			
+										<i class="far fa-hand-point-up" style="color:#bb9d52;"></i>
+										<label id="theNo-errmsg-txt" class="err-color"></label>
+									</span>
 								</td>
-								<c:if test="${not empty errorMsgs.theNo}">
-									<td class="errmsg-pos">		
-										<i class="fa fa-hand-o-left" style="color:#bb9d52"></i>
-										<label class="err-color">${errorMsgs.theNo}</label>
-									</td>
-								</c:if>
 							</tr>
 							<tr>
 								<th>日期</th>
 								<td>
-									<input class="sty-input" name="sesDate" id="" type="date" value="${sesVO.sesDate}">
+									<input class="sty-input" name="sesDate" type="date" value="${sesVO.sesDate}">
 								</td>
-								<c:if test="${not empty errorMsgs.sesDate}">
-									<td class="errmsg-pos">		
-										<i class="fa fa-hand-o-left" style="color:#bb9d52"></i>
-										<label class="err-color">${errorMsgs.sesDate}</label>
-									</td>
-								</c:if>
 							</tr>
 							<tr>
 								<th>時間</th>
@@ -128,5 +124,29 @@
             </div>
         </div>
 		<%@ include file="/back-end/files/sb_importJs.file"%> <!-- 引入template要用的js -->
+<script>
+	/* =========================================================================================== */
+									/* Varify Inputs */
+	/* =========================================================================================== */
+	 let theNoFir = $("input[name='theNo']")[0];
+	 let theNoSec = $("input[name='theNo']")[1];
+	 let theNoThi = $("input[name='theNo']")[2];
+	 theNoFir.addEventListener('change', isEmpty, false);
+	 theNoSec.addEventListener('change', isEmpty, false);
+	 theNoThi.addEventListener('change', isEmpty, false);
+	 
+	 function isEmpty(e){
+		 if(theNoFir.checked || theNoSec.checked || theNoThi.checked){
+			 $("#abled-btn").css('display','block');
+			 $("#disabled-btn").css('display','none'); 
+			 $("#theNo-errmsg").css('display','none'); 
+		 }else{
+			 $("#abled-btn").css('display','none');
+			 $("#disabled-btn").css('display','block'); 
+			 $("#theNo-errmsg").css('display','inline-block'); 
+			 $("#theNo-errmsg-txt").text("請選擇影廳!");
+		 }
+	 }
+</script>
 </body>
 </html>

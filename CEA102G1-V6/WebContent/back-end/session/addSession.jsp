@@ -64,6 +64,10 @@
     border-radius: 6px;
     font-size: 14px;
   }
+  .err-color{
+    text-shadow: 0 0 0.1em #f87, 0 0 0.1em #f87;
+    font-size: 14px;
+  }
 </style>
 </head>
 <body class="sb-nav-fixed">
@@ -100,26 +104,18 @@
 									<input class="mr-left mr-btm-sm" type="checkbox" name="theNo" value="1"><span class="ml-ten">A廳 (2D)</span><br>
 									<input class="mr-left mr-btm-sm" type="checkbox" name="theNo" value="2"><span class="ml-ten">B廳 (3D)</span><br>
 									<input class="mr-left mr-btm-sm" type="checkbox" name="theNo" value="3"><span class="ml-ten">C廳 (IMAX)</span><br>
+									<span id="theNo-errmsg" style="display:none;">			
+										<i class="far fa-hand-point-up" style="color:#bb9d52;"></i>
+										<label id="theNo-errmsg-txt" class="err-color"></label>
+									</span>
 								</td>
-								<c:if test="${not empty errorMsgs.theNo}">
-									<td class="errmsg-pos">		
-										<i class="fa fa-hand-o-left" style="color:#bb9d52"></i>
-										<label class="err-color">${errorMsgs.theNo}</label>
-									</td>
-								</c:if>
 							</tr>
 							<tr>
 								<th>日期</th>
 								<td>
-									<input class="sty-input" name="sesDateBegin" id="" type="date" value=""> 
-							        ~ <input class="sty-input" name="sesDateEnd" id="" type="date" value="">
+									<input class="sty-input" name="sesDateBegin" id="sesdate_begin" type="text" value=""> 
+							        ~ <input class="sty-input" name="sesDateEnd" id="sesdate_end" type="text" value="">
 								</td>
-								<c:if test="${not empty errorMsgs.sesDate}">
-									<td class="errmsg-pos">		
-										<i class="fa fa-hand-o-left" style="color:#bb9d52"></i>
-										<label class="err-color">${errorMsgs.sesDate}</label>
-									</td>
-								</c:if>
 							</tr>
 							<tr>
 								<th>	
@@ -135,8 +131,11 @@
 						</table>
 						<br>
 						<input type="hidden" name="action" value="insert">
-						<a class="btn btn-light btn-brd grd1 effect-1 btn-pos" style="margin: 1% 0 1% 50%;" >
+						<a id="abled-btn" class="btn btn-light btn-brd grd1 effect-1 btn-pos" style="margin: 1% 0 1% 50%; display:none;" >
 							<input type="submit" value="送出" class="input-pos">
+						</a>
+						<a id="disabled-btn" class="btn btn-light btn-brd grd1 btn-pos" style="display:block; margin: 1% 0 1% 50%; background-color: #808080; border: 2px solid #808080!important; cursor: default;" >
+							<input type="submit" value="送出" class="input-pos" style="background-color: #808080;" disabled>
 						</a>
 						</FORM>
                        <!-- addSession End -->
@@ -150,30 +149,52 @@
 		<script src="<%=request.getContextPath()%>/resource/datetimepicker/jquery.js"></script>
 		<script src="<%=request.getContextPath()%>/resource/datetimepicker/jquery.datetimepicker.full.js"></script>
 <script>
-
 	$.datetimepicker.setLocale('zh');
 	$(function(){
-		 $('#mov_ondate').datetimepicker({
+		 $('#sesdate_begin').datetimepicker({
 		  format:'Y-m-d',
 		  onShow:function(){
 		   this.setOptions({
-		    maxDate:$('#mov_offdate').val()?$('#mov_offdate').val():false
+		    maxDate:$('#sesdate_end').val()?$('#sesdate_end').val():false
 		   })
 		  },
 		  timepicker:false
 		 });
 	
-		 $('#mov_offdate').datetimepicker({
+		 $('#sesdate_end').datetimepicker({
 		  format:'Y-m-d',
 		  onShow:function(){
 		   this.setOptions({
-		    minDate:$('#mov_ondate').val()?$('#mov_ondate').val():false
+		    minDate:$('#sesdate_begin').val()?$('#sesdate_begin').val():false
 		   })
 		  },
 		  timepicker:false
 		 });
 	});
 	
+	
+	/* =========================================================================================== */
+									/* Varify Inputs */
+	/* =========================================================================================== */
+	 let theNoFir = $("input[name='theNo']")[0];
+	 let theNoSec = $("input[name='theNo']")[1];
+	 let theNoThi = $("input[name='theNo']")[2];
+	 theNoFir.addEventListener('change', isEmpty, false);
+	 theNoSec.addEventListener('change', isEmpty, false);
+	 theNoThi.addEventListener('change', isEmpty, false);
+	 
+	 function isEmpty(e){
+		 if(theNoFir.checked || theNoSec.checked || theNoThi.checked){
+			 $("#abled-btn").css('display','block');
+			 $("#disabled-btn").css('display','none'); 
+			 $("#theNo-errmsg").css('display','none'); 
+		 }else{
+			 $("#abled-btn").css('display','none');
+			 $("#disabled-btn").css('display','block'); 
+			 $("#theNo-errmsg").css('display','inline-block'); 
+			 $("#theNo-errmsg-txt").text("請選擇影廳!");
+		 }
+	 }
 	
 	/* =========================================================================================== */
 									/* 新增場次時間 */
