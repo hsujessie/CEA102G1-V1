@@ -227,8 +227,12 @@
 		                                <c:set var="satObj" value="${satSvc.getOneSat(comVO.movNo,comVO.memNo)}"></c:set>                            
 		                                <h2><span>Ratings</span><c:forEach var="i" begin="1" end="${satObj.satRating}"><i class="fa fa-star" aria-hidden="true"></i></c:forEach></h2>	                                
 		                                <p>${comVO.comContent}</p>
-		                                <span>發表人&emsp;${comVO.memNo}</span>
-		                                <span>發表時間&emsp;<fmt:formatDate value="${comVO.comTime}" pattern="yyy-MM-dd HH:mm" type="DATE"/></span>
+		                                																														
+										<jsp:useBean id="memSvc" scope="page" class="com.member.model.MemberService"/>
+										<c:set value="${memSvc.getOneMember(comVO.memNo)}" var="memObj"></c:set>
+		                                <span>發表人 <label style="color:#aa9166;">${memObj.memName}</label>&emsp;|&emsp;</span>
+		                                
+		                                <span>發表時間 <label style="color:#aa9166;"><fmt:formatDate value="${comVO.comTime}" pattern="yyy-MM-dd HH:mm" type="DATE"/></label>&emsp;|&emsp;</span>
                    						<span id="comrep" onclick='openComRepLightbox(this,${comVO.comNo},${comVO.memNo},${comVO.movNo})'><a>檢舉</a></span>   
 		                            </div>
 		                        </div>

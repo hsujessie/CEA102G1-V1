@@ -156,8 +156,10 @@
 		for (let i = 0; i < daysDuration; i++){
 			
 			if( today_day == 7){
-				show_day = "日";
 				today_day = 0;
+			}
+			if( today_day == 0){
+				show_day = "日";
 			}
 			if( today_day == 1){
 				show_day = "一";
