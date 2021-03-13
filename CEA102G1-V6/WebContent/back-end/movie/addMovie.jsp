@@ -43,6 +43,9 @@
     text-shadow: 0 0 0.1em #f87, 0 0 0.1em #f87;
     font-size: 14px;
   }
+  .xdsoft_datetimepicker.xdsoft_dark .xdsoft_calendar td, .xdsoft_datetimepicker.xdsoft_dark .xdsoft_calendar th {
+    border-radius: 0px;
+  }
 </style>
 </head>
 <body class="sb-nav-fixed">
@@ -227,6 +230,7 @@
 	$.datetimepicker.setLocale('zh');
 	$(function(){
 		 $('#mov_ondate').datetimepicker({
+		  theme:'dark',
 		  format:'Y-m-d',
 		  onShow:function(){
 		   this.setOptions({
@@ -237,6 +241,7 @@
 		 });
 
 		 $('#mov_offdate').datetimepicker({
+		  theme:'dark',
 		  format:'Y-m-d',
 		  onShow:function(){
 		   this.setOptions({

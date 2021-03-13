@@ -68,6 +68,9 @@
     text-shadow: 0 0 0.1em #f87, 0 0 0.1em #f87;
     font-size: 14px;
   }
+  .xdsoft_datetimepicker.xdsoft_dark .xdsoft_calendar td, .xdsoft_datetimepicker.xdsoft_dark .xdsoft_calendar th {
+   	border-radius: 0px;
+  }
 </style>
 </head>
 <body class="sb-nav-fixed">
@@ -101,9 +104,9 @@
 								<th>廳院</th>
 								<td>
 									<!-- 多選checkbox -->
-									<input class="mr-left mr-btm-sm" type="checkbox" name="theNo" value="1"><span class="ml-ten">A廳 (2D)</span><br>
-									<input class="mr-left mr-btm-sm" type="checkbox" name="theNo" value="2"><span class="ml-ten">B廳 (3D)</span><br>
-									<input class="mr-left mr-btm-sm" type="checkbox" name="theNo" value="3"><span class="ml-ten">C廳 (IMAX)</span><br>
+									<input class="mr-left mr-btm-sm" type="checkbox" name="theNo" value="1"><span class="ml-ten">A廳 【2D】</span><br>
+									<input class="mr-left mr-btm-sm" type="checkbox" name="theNo" value="2"><span class="ml-ten">B廳 【3D】</span><br>
+									<input class="mr-left mr-btm-sm" type="checkbox" name="theNo" value="3"><span class="ml-ten">C廳 【IMAX】</span><br>
 									<span id="theNo-errmsg" style="display:none;">			
 										<i class="far fa-hand-point-up" style="color:#bb9d52;"></i>
 										<label id="theNo-errmsg-txt" class="err-color"></label>
@@ -152,6 +155,7 @@
 	$.datetimepicker.setLocale('zh');
 	$(function(){
 		 $('#sesdate_begin').datetimepicker({
+		  theme:'dark',
 		  format:'Y-m-d',
 		  onShow:function(){
 		   this.setOptions({
@@ -162,6 +166,7 @@
 		 });
 	
 		 $('#sesdate_end').datetimepicker({
+		  theme:'dark',
 		  format:'Y-m-d',
 		  onShow:function(){
 		   this.setOptions({

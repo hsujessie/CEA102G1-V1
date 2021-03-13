@@ -73,9 +73,9 @@
 								<th>廳院</th>
 								<td>
 									<!-- 多選checkbox -->			
-									<input class="mr-left mr-btm-sm" type="radio" name="theNo" value="1" <c:if test="${sesVO.theNo == 1}">checked</c:if> ><span class="ml-ten">A廳 (2D)</span><br>
-									<input class="mr-left mr-btm-sm" type="radio" name="theNo" value="2" <c:if test="${sesVO.theNo == 2}">checked</c:if> ><span class="ml-ten">B廳 (3D)</span><br>
-									<input class="mr-left mr-btm-sm" type="radio" name="theNo" value="3" <c:if test="${sesVO.theNo == 3}">checked</c:if> ><span class="ml-ten">C廳 (IMAX)</span><br>
+									<input class="mr-left mr-btm-sm" type="radio" name="theNo" value="1" <c:if test="${sesVO.theNo == 1}">checked</c:if> ><span class="ml-ten">A廳 【2D】</span><br>
+									<input class="mr-left mr-btm-sm" type="radio" name="theNo" value="2" <c:if test="${sesVO.theNo == 2}">checked</c:if> ><span class="ml-ten">B廳 【3D】</span><br>
+									<input class="mr-left mr-btm-sm" type="radio" name="theNo" value="3" <c:if test="${sesVO.theNo == 3}">checked</c:if> ><span class="ml-ten">C廳 【IMAX】</span><br>
 									<span id="theNo-errmsg" style="display:none;">			
 										<i class="far fa-hand-point-up" style="color:#bb9d52;"></i>
 										<label id="theNo-errmsg-txt" class="err-color"></label>
