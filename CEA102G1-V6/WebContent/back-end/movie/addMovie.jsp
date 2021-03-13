@@ -39,6 +39,10 @@
   .ml-ten{
   	margin-left: 10px;
   }
+  .err-color{
+    text-shadow: 0 0 0.1em #f87, 0 0 0.1em #f87;
+    font-size: 14px;
+  }
 </style>
 </head>
 <body class="sb-nav-fixed">
@@ -58,13 +62,12 @@
 						<table>
 							<tr>
 								<th>名稱</th>
-								<td><input class="sty-input mr-left mr-btm-normal" type="text" name="movname" value="<%= (movVO==null)? "金牌特務" : movVO.getMovname()%>" /></td>		
-								<c:if test="${not empty errorMsgs.movname}">
-									<td class="errmsg-pos">		
-										<i class="fa fa-hand-o-left" style="color:#bb9d52"></i>
-										<label class="err-color">${errorMsgs.movname}</label>
-									</td>
-								</c:if>
+								<td><input class="sty-input mr-left mr-btm-normal" type="text" name="movname" value="<%= (movVO==null)? "金牌特務" : movVO.getMovname()%>" />
+									<span id="movname-errmsg" style="display:none;">			
+										<i class="far fa-hand-point-left" style="color:#bb9d52;"></i>
+										<label id="movname-errmsg-txt" class="err-color"></label>
+									</span>
+								</td>
 							</tr>
 							<tr>
 								<th>種類</th>
@@ -73,13 +76,11 @@
 									<input class="mr-left mr-btm-sm" type="checkbox" name="movver" value="2D" ${movver == null? "checked":""} ><span class="ml-ten">2D</span><br>
 									<input class="mr-left mr-btm-sm" type="checkbox" name="movver" value="3D"><span class="ml-ten">3D</span><br>
 									<input class="mr-left mr-btm-sm" type="checkbox" name="movver" value="IMAX"><span class="ml-ten">IMAX</span><br>
+									<span id="movver-errmsg" style="display:none;">			
+										<i class="far fa-hand-point-up" style="color:#bb9d52;"></i>
+										<label id="movver-errmsg-txt" class="err-color"></label>
+									</span>
 								</td>
-								<c:if test="${not empty errorMsgs.movver}">
-									<td class="errmsg-pos">		
-										<i class="fa fa-hand-o-left" style="color:#bb9d52"></i>
-										<label class="err-color">${errorMsgs.movver}</label>
-									</td>
-								</c:if>
 							</tr>
 							<tr>
 								<th>類型</th>
@@ -94,12 +95,6 @@
 										<option value="恐怖片">恐怖片</option>
 									</select>
 								</td>
-								<c:if test="${not empty errorMsgs.movtype}">
-									<td class="errmsg-pos">		
-										<i class="fa fa-hand-o-left" style="color:#bb9d52"></i>
-										<label class="err-color">${errorMsgs.movtype}</label>
-									</td>
-								</c:if>
 							</tr>
 							<tr>
 								<th>語言</th>
@@ -108,13 +103,11 @@
 									<input class="mr-left mr-btm-sm" type="checkbox" name="movlan" value="英文" ${movlan == null? "checked":""} ><span class="ml-ten">英文</span><br>
 									<input class="mr-left mr-btm-sm" type="checkbox" name="movlan" value="中文"><span class="ml-ten">中文</span><br>
 									<input class="mr-left mr-btm-sm" type="checkbox" name="movlan" value="日文"><span class="ml-ten">日文</span><br>
+									<span id="movlan-errmsg" style="display:none;">			
+										<i class="far fa-hand-point-up" style="color:#bb9d52;"></i>
+										<label id="movlan-errmsg-txt" class="err-color"></label>
+									</span>
 								</td>
-								<c:if test="${not empty errorMsgs.movlan}">
-									<td class="errmsg-pos">		
-										<i class="fa fa-hand-o-left" style="color:#bb9d52"></i>
-										<label class="err-color">${errorMsgs.movlan}</label>
-									</td>
-								</c:if>
 							</tr>
 							<%
 							  java.sql.Date movondate = null;
@@ -127,32 +120,19 @@
 							<tr>
 								<th>上映日期</th>
 								<td><input class="sty-input mr-left mr-btm-normal" name="movondate" id="mov_ondate" type="date" value="<%=movondate%>"></td>
-								<c:if test="${not empty errorMsgs.movondate}">
-									<td class="errmsg-pos">		
-										<i class="fa fa-hand-o-left" style="color:#bb9d52"></i>
-										<label class="err-color">${errorMsgs.movondate}</label>
-									</td>
-								</c:if>
 							</tr>
 							<tr>
 								<th>下檔日期</th>
 								<td><input class="sty-input mr-left mr-btm-normal" name="movoffdate" id="mov_offdate" type="date" value=""></td>
-								<c:if test="${not empty errorMsgs.movoffdate}">
-									<td class="errmsg-pos">		
-										<i class="fa fa-hand-o-left" style="color:#bb9d52"></i>
-										<label class="err-color">${errorMsgs.movoffdate}</label>
-									</td>
-								</c:if>
 							</tr>
 							<tr>
 								<th>片長</th>
-								<td class="fake-txt"><input id="movDurat" class="sty-input mr-left mr-btm-normal" type="text" name="movdurat" value="<%= (movVO==null)? "2" : movVO.getMovdurat()%>"/></td>
-								<c:if test="${not empty errorMsgs.movdurat}">
-									<td class="errmsg-pos" style="padding-left: 25%;">		
-										<i class="fa fa-hand-o-left" style="color:#bb9d52"></i>
-										<label class="err-color">${errorMsgs.movdurat}</label>
-									</td>
-								</c:if>
+								<td class="fake-txt"><input id="movDurat" class="sty-input mr-left mr-btm-normal" type="text" name="movdurat" placeholder="小時" value="<%= (movVO==null)? "2" : movVO.getMovdurat()%>"/>
+									<span id="movdurat-errmsg" class="errmsg-pos" style="display:none;">			
+										<i class="far fa-hand-point-left" style="color:#bb9d52"></i>
+										<label id="movdurat-errmsg-txt" class="err-color"></label>
+									</span>
+								</td>
 							</tr>
 							<tr>
 								<th>級數</th>
@@ -167,33 +147,30 @@
 							</tr>
 							<tr>
 								<th>導演</th>
-								<td><input class="sty-input mr-left mr-btm-normal" type="text" name="movditor" value="<%= (movVO==null)? "dicrector" : movVO.getMovditor()%>" /></td>
-								<c:if test="${not empty errorMsgs.movditor}">
-									<td class="errmsg-pos">		
-										<i class="fa fa-hand-o-left" style="color:#bb9d52"></i>
-										<label class="err-color">${errorMsgs.movditor}</label>
-									</td>
-								</c:if>
+								<td><input id="movDitor" class="sty-input mr-left mr-btm-normal" type="text" name="movditor" value="<%= (movVO==null)? "dicrector" : movVO.getMovditor()%>" />
+									<span id="movditor-errmsg" style="display:none;">			
+								        <i class="far fa-hand-point-left" style="color:#bb9d52;"></i>
+								        <label id="movditor-errmsg-txt" class="err-color"></label>
+								    </span>
+								</td>
 							</tr>
 							<tr>
 								<th>演員</th>
-								<td><input class="sty-input mr-left mr-btm-normal" type="text" name="movcast" value="<%= (movVO==null)? "actors" : movVO.getMovcast()%>" /></td>
-								<c:if test="${not empty errorMsgs.movcast}">
-									<td class="errmsg-pos">		
-										<i class="fa fa-hand-o-left" style="color:#bb9d52"></i>
-										<label class="err-color">${errorMsgs.movcast}</label>
-									</td>
-								</c:if>
+								<td><input id="movCast" class="sty-input mr-left mr-btm-normal" type="text" name="movcast" value="<%= (movVO==null)? "actors" : movVO.getMovcast()%>" />
+									<span id="movcast-errmsg" style="display:none;">			
+								        <i class="far fa-hand-point-left" style="color:#bb9d52;"></i>
+								        <label id="movcast-errmsg-txt" class="err-color"></label>
+								    </span>								
+								</td>
 							</tr>
 							<tr>
 								<th>簡介</th>
-								<td><textarea name="movdes" class="sty-input mr-left"><%= (movVO==null)? "description" : movVO.getMovdes()%></textarea></td>
-								<c:if test="${not empty errorMsgs.movdes}">
-									<td class="errmsg-pos">		
-										<i class="fa fa-hand-o-left" style="color:#bb9d52"></i>
-										<label class="err-color">${errorMsgs.movdes}</label>
-									</td>
-								</c:if>
+								<td><textarea id="movDes" name="movdes" class="sty-input mr-left"><%= (movVO==null)? "description" : movVO.getMovdes()%></textarea>
+									<span id="movdes-errmsg" style="display:none;">			
+								        <i class="far fa-hand-point-left" style="color:#bb9d52;"></i>
+								        <label id="movdes-errmsg-txt" class="err-color"></label>
+								    </span>
+								</td>
 							</tr>
 							<tr>
 								<th>海報</th>
@@ -248,20 +225,95 @@
 /* =========================================================================================== */
 	    							/* Varify Inputs */
 /* =========================================================================================== */	
-	 let movver = $("input[name='movver']").val();
-	 let movlan = $("input[name='movlan']").val();
+	 let movverFir = $("input[name='movver']")[0];
+	 let movverSec = $("input[name='movver']")[1];
+	 let movverThi = $("input[name='movver']")[2];
+	 let movlanFir = $("input[name='movlan']")[0];
+	 let movlanSec = $("input[name='movlan']")[1];
+	 let movlanThi = $("input[name='movlan']")[2];
 
 	 document.getElementsByTagName('input')[0].addEventListener('keyup', isEmpty, false);	 
-	 document.getElementById('movDurat').addEventListener('keyup', isEmpty, false);
+	 document.getElementById('movDurat').addEventListener('keyup', isEmpty, false); 
+	 document.getElementById('movDitor').addEventListener('keyup', isEmpty, false); 
+	 document.getElementById('movCast').addEventListener('keyup', isEmpty, false);
+	 document.getElementById('movDes').addEventListener('keyup', isEmpty, false);
+	 movverFir.addEventListener('change', isEmpty, false);
+	 movverSec.addEventListener('change', isEmpty, false);
+	 movverThi.addEventListener('change', isEmpty, false);
+	 movlanFir.addEventListener('change', isEmpty, false);
+	 movlanSec.addEventListener('change', isEmpty, false);
+	 movlanThi.addEventListener('change', isEmpty, false);
 	 
 	 function isEmpty(e){
-		 let movname = $("input[name='movname']").val().trim();
+		 let movname = document.querySelector('input[name="movname"]').value.trim();
 		 let movdurat = document.querySelector('input[name="movdurat"]').value;
-		 if(movname.length == 0 || movdurat.length == 0 ){
+		 let movditor = document.querySelector('input[name="movditor"]').value.trim();
+		 let movcast = document.querySelector('input[name="movcast"]').value.trim();
+		 let movdes = document.querySelector('textarea[name="movdes"]').value.trim();
+		 
+		 if(movverFir.checked == false && movverSec.checked == false && movverThi.checked == false){
+			 $("#disabled-btn").css('display','block'); 
+			 $("#abled-btn").css('display','none');
+			 $("#movver-errmsg").css('display','inline-block'); 
+			 $("#movver-errmsg-txt").text("請選擇電影種類!");
+		 }else{
+			 $("#disabled-btn").css('display','none'); 
+			 $("#abled-btn").css('display','block');
+			 $("#movver-errmsg").css('display','none'); 
+		 }
+		 
+		 if(movlanFir.checked == false && movlanSec.checked == false && movlanThi.checked == false){
+			 $("#disabled-btn").css('display','block'); 
+			 $("#abled-btn").css('display','none');
+			 $("#movlan-errmsg").css('display','inline-block'); 
+			 $("#movlan-errmsg-txt").text("請選擇電影語言!");
+		 }else{
+			 $("#disabled-btn").css('display','none'); 
+			 $("#abled-btn").css('display','block');
+			 $("#movlan-errmsg").css('display','none'); 
+		 }
+		 
+		 if(movname.length == 0 || movdurat.length == 0 || movditor.length == 0 || movcast.length == 0 || movdes.length == 0){
 			 $("#disabled-btn").css('display','block'); 
 			 $("#abled-btn").css('display','none');
 		 }
-		 if(movdurat.length != 0 && movdurat.match(/^[0-9]*$/) && movname.length != 0){
+		 
+		 if(movname.length == 0 ){
+			 $("#movname-errmsg").css('display','inline-block'); 
+			 $("#movname-errmsg-txt").text("請勿空白!");
+		 }else{
+			 $("#movname-errmsg").css('display','none');  
+		 }
+		 
+		 if(movdurat.length == 0 ){
+			 $("#movdurat-errmsg").css('display','inline-block'); 
+			 $("#movdurat-errmsg-txt").text("請勿空白，請填數字!");
+		 }else{
+			 $("#movdurat-errmsg").css('display','none'); 
+		 }
+		 
+		 if(movditor.length == 0 ){
+			 $("#movditor-errmsg").css('display','inline-block'); 
+			 $("#movditor-errmsg-txt").text("請勿空白!");
+		 }else{
+			 $("#movditor-errmsg").css('display','none'); 
+		 }
+		 
+		 if(movcast.length == 0 ){
+			 $("#movcast-errmsg").css('display','inline-block'); 
+			 $("#movcast-errmsg-txt").text("請勿空白!");
+		 }else{
+			 $("#movcast-errmsg").css('display','none'); 
+		 }
+		 
+		 if(movdes.length == 0 ){
+			 $("#movdes-errmsg").css('display','inline-block'); 
+			 $("#movdes-errmsg-txt").text("請勿空白!");
+		 }else{
+			 $("#movdes-errmsg").css('display','none'); 
+		 }
+		 
+		 if(movdurat.length != 0 && movdurat.match(/^[0-9]*$/) && movname.length != 0 && movditor.length != 0 && movcast.length != 0 && movdes.length != 0 ){
 			 $("#disabled-btn").css('display','none'); 
 			 $("#abled-btn").css('display','block');
 		 }
