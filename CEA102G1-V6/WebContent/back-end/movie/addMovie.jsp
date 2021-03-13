@@ -146,7 +146,7 @@
 							</tr>
 							<tr>
 								<th>片長</th>
-								<td class="fake-txt"><input class="sty-input mr-left mr-btm-normal" type="text" name="movdurat" value="<%= (movVO==null)? "2" : movVO.getMovdurat()%>"/></td>
+								<td class="fake-txt"><input id="movDurat" class="sty-input mr-left mr-btm-normal" type="text" name="movdurat" value="<%= (movVO==null)? "2" : movVO.getMovdurat()%>"/></td>
 								<c:if test="${not empty errorMsgs.movdurat}">
 									<td class="errmsg-pos" style="padding-left: 25%;">		
 										<i class="fa fa-hand-o-left" style="color:#bb9d52"></i>
@@ -155,7 +155,7 @@
 								</c:if>
 							</tr>
 							<tr>
-								<th>片長</th>
+								<th>級數</th>
 								<td>
 									<select class="mr-left mr-btm-normal" name="movrating">
 										<option value="普遍級">普遍級</option>
@@ -228,8 +228,11 @@
 						</table>
 						<br>
 						<input type="hidden" name="action" value="insert">
-						<a class="btn btn-light btn-brd grd1 effect-1 btn-pos" style="margin: 1% 0 1% 50%;" >
+						<a id="abled-btn" class="btn btn-light btn-brd grd1 effect-1 btn-pos" style="margin: 1% 0 1% 50%; display:block;" >
 							<input type="submit" value="送出" class="input-pos">
+						</a>
+						<a id="disabled-btn" class="btn btn-light btn-brd grd1 btn-pos" style="display:none; margin: 1% 0 1% 50%; background-color: #808080; border: 2px solid #808080!important; cursor: default;" >
+							<input type="submit" value="送出" class="input-pos" style="background-color: #808080;" disabled>
 						</a>
 						</FORM>
                        <!-- addMovie End -->
@@ -241,11 +244,32 @@
         </div>
 		<%@ include file="/back-end/files/sb_importJs.file"%> <!-- 引入template要用的js -->
 </body>
-
-<!-- =========================================================================================== 
-    								以下 CALCULATE mov_ondate & mov_offdate
-	 ===========================================================================================  -->
 	<script>
+/* =========================================================================================== */
+	    							/* Varify Inputs */
+/* =========================================================================================== */	
+	 let movver = $("input[name='movver']").val();
+	 let movlan = $("input[name='movlan']").val();
+
+	 document.getElementsByTagName('input')[0].addEventListener('keyup', isEmpty, false);	 
+	 document.getElementById('movDurat').addEventListener('keyup', isEmpty, false);
+	 
+	 function isEmpty(e){
+		 let movname = $("input[name='movname']").val().trim();
+		 let movdurat = document.querySelector('input[name="movdurat"]').value;
+		 if(movname.length == 0 || movdurat.length == 0 ){
+			 $("#disabled-btn").css('display','block'); 
+			 $("#abled-btn").css('display','none');
+		 }
+		 if(movdurat.length != 0 && movdurat.match(/^[0-9]*$/) && movname.length != 0){
+			 $("#disabled-btn").css('display','none'); 
+			 $("#abled-btn").css('display','block');
+		 }
+	 }
+	 
+/* =========================================================================================== */
+	    						/* CALCULATE mov_ondate & mov_offdate */
+/* =========================================================================================== */
 	<%@ include file="files/changeMovOffDate.file"%>
 		let mov_ondate = document.getElementById('mov_ondate');
 		let mov_offdate_val = document.getElementById('mov_offdate').value;
@@ -257,10 +281,9 @@
 		});
 		
 		
-
-	/* =========================================================================================== */
-    								/* 以下 SHOW a UPLOADED IMAGE & VIDEO */
-	/* =========================================================================================== */
+/* =========================================================================================== */
+   							/* SHOW a UPLOADED IMAGE & VIDEO */
+/* =========================================================================================== */
 function init(){
     let uploadFile = document.getElementById('uploadFile');
     let fileImg = document.getElementById('fileImg');
