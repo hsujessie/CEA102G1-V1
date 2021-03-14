@@ -357,9 +357,9 @@ public class ArtDAO implements ArtDAO_interface{
 		
 		try {
 			con = ds.getConnection();
-			String compositeQuerySQL = "select * from article, MEMBER where ARTICLE.MEM_NO = MEMBER.MEM_NO " + 
+			String compositeQuerySQL = "select * from article, MEMBER where ARTICLE.MEM_NO = MEMBER.MEM_NO and ART_STATUS=0 " + 
 										jdbcUtil_CompositeQuery_Art.get_WhereCondition(map) +
-										"order by ART_NO ";
+										"order by ART_NO DESC";
 			pstmt = con.prepareStatement(compositeQuerySQL);
 			System.out.println("ArtDAO_compositeQuerySQL:" + compositeQuerySQL ); //印出最後的SQL
 			rs = pstmt.executeQuery();

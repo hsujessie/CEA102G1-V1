@@ -79,7 +79,11 @@
     	background-color: #F5F5F5;
     }
     #oneArtContent{
+    	padding: 5%;
 		background-color: #ffffff;
+    }
+    #artRep{
+    	padding: 5%;
     }
     #artRepDiv{
     	width: 100%;
@@ -99,6 +103,7 @@
     #artReplyno{
     	color: #808080;
     	text-align: right;
+    	padding: 5%;
     }
 </style>
 
@@ -106,13 +111,14 @@
 
 //列出文章列表	
 function ListArtQuery(){
-// 	debugger;
+	debugger;
 	$.ajax({
 		type: 'POST',
 		url: '<%=request.getContextPath()%>/art/art.do',
 		data: {'action':'art_Show_By_AJAX'},
 		dataType: 'json',
 		success: function (artVO){
+			debugger;
 			//加入文章內容
 			$(artVO).each(function(i, item){
 				$('#artListCenter').append(
