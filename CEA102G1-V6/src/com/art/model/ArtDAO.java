@@ -1,11 +1,9 @@
 package com.art.model;
 
-import java.io.*;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -40,7 +38,7 @@ public class ArtDAO implements ArtDAO_interface{
 			"UPDATE ARTICLE SET ART_STATUS=? WHERE ART_NO=?";
 	private static final String DELETE_STMT="DELETE FROM ARTICLE WHERE ART_NO=?";
 	private static final String FINDBYPK_STMT="SELECT ART_NO, MEM_NO, ART_TITLE, ART_CONTENT, ART_REPLYNO, ART_TIME, ART_STATUS, MOV_TYPE FROM ARTICLE WHERE ART_NO=?";	
-	private static final String GETALL_STMT="SELECT ART_NO, MEM_NO, ART_TITLE, ART_CONTENT, ART_REPLYNO, ART_TIME, ART_STATUS, MOV_TYPE FROM ARTICLE ORDER BY ART_NO";
+	private static final String GETALL_STMT="SELECT ART_NO, MEM_NO, ART_TITLE, ART_CONTENT, ART_REPLYNO, ART_TIME, ART_STATUS, MOV_TYPE FROM ARTICLE WHERE ART_STATUS=0 ORDER BY ART_NO DESC";
 	private static final String GETALL_MOVETYPE_STMT=
 			"select CONCAT('MOV_TYPE', @s:=@s+1) movTypeIndex , aa.* from (select MOV_TYPE,min(ART_TIME) FROM Seenema.ARTICLE group by MOV_TYPE) aa, (SELECT @s:= 0) AS s";
 	

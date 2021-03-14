@@ -133,7 +133,7 @@ public class ArtServlet extends HttpServlet {
 			}
 		}
 		
-		//ArticleContent.jsp呼叫
+		//ArticleContent.jsp / ArticleContent.file呼叫
 		if("select_Upadte_One_Art".equals(action)) {
 			/*====================請求參數===================*/		
 			Integer artNo = new Integer(request.getParameter("artNo"));
@@ -143,14 +143,14 @@ public class ArtServlet extends HttpServlet {
 			ArtService artSvc = new ArtService();
 			ArtVO artVO = artSvc.getOneArt(artNo);
 			
-			/*====================轉送至UpdateArt.jsp===================*/			
+			/*====================轉送至updateArt.jsp===================*/			
 			request.setAttribute("artVO", artVO);
 			RequestDispatcher updateArticle = request.getRequestDispatcher("/front-end/article/updateArticle.jsp");
 			updateArticle.forward(request, response);
 			return;
 		}
 		
-		//UpdateArt.jsp呼叫
+		//updateArt.jsp呼叫
 		if("updateArt".equals(action)) {
 			List<String> errorMsgs = new LinkedList<String>();
 			request.setAttribute("errorMsgs", errorMsgs);
