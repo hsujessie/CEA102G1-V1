@@ -51,7 +51,11 @@ a:focus {
 .iconPos{
     margin-right: 2px;
 }
-
+.loginPos{
+	position:absolute; 
+	top: 0px; 
+	right:0;
+}
 .nav-bar {
     position: relative;
     padding: 20px 0;
@@ -133,6 +137,9 @@ a:focus {
 }
 
 @media (max-width: 991.98px) {
+	.loginPos{
+		position: static;
+	}
     .logo img{
         display: none;
     }
