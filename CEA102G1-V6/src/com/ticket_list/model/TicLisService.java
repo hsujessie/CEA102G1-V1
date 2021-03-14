@@ -9,7 +9,13 @@ public class TicLisService {
 		dao = new TicLisDAO();
 	}
 	
-	public void addFooLis(TicLisVO ticLisVO, Connection con) {
+	public void addTicLis(Integer ordMasNo, Integer ticTypNo, String sesSeatNo, Integer ticTypPrice, Connection con) {
+		TicLisVO ticLisVO = new TicLisVO();
+		
+		ticLisVO.setOrdMasNo(ordMasNo);
+		ticLisVO.setTicTypNo(ticTypNo);
+		ticLisVO.setSesSeatNo(sesSeatNo);
+		ticLisVO.setTicTypPrice(ticTypPrice);
 		dao.insert(ticLisVO, con);
 	}
 }

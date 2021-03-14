@@ -22,6 +22,13 @@ public class FooLisDAO implements FooLisDAO_interface {
 			pstmt.executeUpdate();
 			
 		} catch (SQLException se) {
+			if (con != null) {
+				try {
+					con.rollback();
+				} catch (SQLException excep) {
+					throw new RuntimeException("rollback error occured. " + excep.getMessage());
+				}
+			}
 			throw new RuntimeException("A database error occured(交易失敗). "
 					+ se.getMessage());
 		} finally {

@@ -67,9 +67,10 @@
 						</tbody>
 					</table>
 
-
-					<input type="hidden" name="sesNo" value="${param.sesNo}"> <input
-						type="hidden" name="action" value="check_out">
+					
+					<input type="hidden" name="memNo" value="1"> 
+					<input type="hidden" name="sesNo" value="${param.sesNo}"> 
+					<input type="hidden" name="action" value="check_out">
 				</form>
 			</div>
 
@@ -132,5 +133,11 @@
         
 <%@ include file="/front-end/files/frontend_importJs.file"%>   
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+	<script>
+
+		$("#nextStep").click(function() {
+			$("#form").submit();
+		});
+	</script>
 </body>
 </html>
