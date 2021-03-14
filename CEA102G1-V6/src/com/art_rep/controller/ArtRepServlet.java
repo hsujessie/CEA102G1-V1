@@ -16,6 +16,7 @@ import org.json.JSONObject;
 
 import com.art_rep.model.ArtRepService;
 import com.art_rep.model.ArtRepVO;
+import com.art_rep_rpt.model.ArtRepRptService;
 import com.mem.model.MemDAO;
 
 public class ArtRepServlet extends HttpServlet {
@@ -60,6 +61,7 @@ public class ArtRepServlet extends HttpServlet {
 			
 		}
 		
+		//article.jsp呼叫，印出每篇文章的所有留言
 		if("listAllArtRepByArtNo".equals(action)){
 			JSONArray array = new JSONArray();
 			HttpSession session = request.getSession();
@@ -67,18 +69,32 @@ public class ArtRepServlet extends HttpServlet {
 			ArtRepService artRepSvc = new ArtRepService();
 			MemDAO memDAO = new MemDAO();
 			List<ArtRepVO> list = artRepSvc.findByArtNo(Integer.parseInt(request.getParameter("artNo")));
+			ArtRepRptService artRepRptSvc = new ArtRepRptService();
 			
 			/*==============放入JSONObject==============*/
 			for(ArtRepVO artRepVO : list) {
 				JSONObject obj = new JSONObject();
-				try {
-					obj.put("artNo", artRepVO.getArtNo());
-					obj.put("memName", memDAO.findByPrimaryKey(artRepVO.getMemNo()).getMemName());
-					obj.put("artRepNo", artRepVO.getArtRepNo());
-					obj.put("artRepContent", artRepVO.getArtRepContent());
-					obj.put("artRepTime", artRepVO.getArtRepTime());
-				} catch (JSONException e) {
-					e.printStackTrace();
+				
+				if(artRepVO.getArtRepStatus() == 0) {
+					try {
+						obj.put("artNo", artRepVO.getArtNo());
+						obj.put("memName", memDAO.findByPrimaryKey(artRepVO.getMemNo()).getMemName());
+						obj.put("artRepNo", artRepVO.getArtRepNo());
+						obj.put("artRepContent", artRepVO.getArtRepContent());
+						obj.put("artRepTime", artRepVO.getArtRepTime());
+					} catch (JSONException e) {
+						e.printStackTrace();
+					}					
+				}else if (artRepVO.getArtRepStatus() == 1) {
+					try {
+						obj.put("artNo", artRepVO.getArtNo());
+						obj.put("memName", "回應已刪除");
+						obj.put("artRepNo", artRepVO.getArtRepNo());
+						obj.put("artRepContent", "已經刪除的內容就像下架的電影一樣，錯過是無法再相見的！");
+						obj.put("artRepTime", artRepVO.getArtRepTime());
+					} catch (JSONException e) {
+						e.printStackTrace();
+					}					
 				}
 				array.put(obj);
 			}

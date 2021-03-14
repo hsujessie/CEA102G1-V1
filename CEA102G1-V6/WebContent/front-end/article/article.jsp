@@ -161,8 +161,7 @@
                             clearOneArticle();
                             $('#myModalLabel').attr('data-value', item.artNo);
                             $('#myModalLabel').append(item.artTitle);
-                            $('#oneArtContent').append('<p>' + item.artContent +
-                                '</p>');
+                            $('#oneArtContent').append('<p>' + item.artContent +'</p>');
                             $('#artFav_header_like').attr('data-value', item.artNo);
                             $('#artRptButton').attr('data-value', item.artNo);
                             console.log("item.memNo:" + item.memNo);

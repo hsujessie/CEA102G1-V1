@@ -74,6 +74,13 @@
 	     	max-height: 100vh;
 		}    
     }
+    .modal-body{
+    	padding: 0px;
+    	background-color: #F5F5F5;
+    }
+    #oneArtContent{
+		background-color: #ffffff;
+    }
     #artRepDiv{
     	width: 100%;
     }
@@ -273,7 +280,6 @@ function listAllArtRepByArtNo(){
 					$('#artRep').append('<div style="line-height: 300%"><div id="memName" style="display:inline-block; width: 20%;">'+item.memName+'</div><div id="artRepTime" style="display:inline-block; color: #6C6C6C; width: 60%">'+moment(item.artRepTime).locale('zh_TW').format('llll')+'</div><i id="artRepRpt_icon" class="fas fa-exclamation-circle dropdown-toggle dropdown" data-toggle="dropdown" title="檢舉留言" style="font-size: 1.5rem; color: #94B8D5;"></i><div class="dropdown-menu"><div class="form-group" data-value='+item.artRepNo+'>檢舉留言<input type="text" class="form-control artRepRptReson" placeholder="輸入原因" style="width: 100%;"></div><button class="btn btn-outline-secondary artRepRptButton">確定</button></div><div class="artRepContentList" style="text-indent: 2em;">'+item.artRepContent+'</div><hr>');				
 				});					
 			}
-			
 
 		},
 		error: function(){console.log("AJAX-listAllArtRepByArtNo發生錯誤囉!")}

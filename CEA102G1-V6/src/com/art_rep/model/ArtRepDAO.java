@@ -30,7 +30,7 @@ public class ArtRepDAO implements ArtRepDAO_interface{
 	private static final String UPDATE_STMT="UPDATE ARTICLE_REPLY SET ARTREP_CONTENT=?, ARTREP_STATUS=? WHERE ARTREP_NO=?";
 	private static final String UPDATE_STATUS_STMT="UPDATE ARTICLE_REPLY SET ARTREP_STATUS=? WHERE ARTREP_NO=?";
 	private static final String FINDBYPK_STMT="SELECT * FROM ARTICLE_REPLY WHERE ARTREP_NO=?";
-	private static final String GETALL_STMT="SELECT * FROM ARTICLE_REPLY ORDER BY ARTREP_NO DESC";
+	private static final String GETALL_STMT="SELECT * FROM ARTICLE_REPLY ORDER BY ARTREP_NO";
 	private static final String FINDBYARTNO_STMT="SELECT * FROM ARTICLE_REPLY WHERE ART_NO=?";
 	
 	@Override
