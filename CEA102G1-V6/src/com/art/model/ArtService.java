@@ -9,7 +9,6 @@ public class ArtService {
 	
 	public ArtService() {
 		dao = new ArtDAO();
-//		dao = new ArtJDBCDAO();
 	}
 	
 	public ArtVO insertArt(Integer memNo, String artTitle, String artContent, String artMovTypeSelect) {
@@ -66,6 +65,14 @@ public class ArtService {
 		artVO = dao.findByPrimaryKey(artNo);
 		
 		return artVO;
+	}
+	public Integer updateArtReplyno(Integer artNo, Integer artReplyno) {
+		ArtVO artVO = new ArtVO();
+		artVO.setArtNo(artNo);
+		artVO.setArtReplyno(artReplyno);
+		dao.updateStatus(artVO);
+		
+		return artVO.getArtReplyno();
 	}
 	public List<String> getAllMoveType(){
 		return dao.getAllMoveType();

@@ -14,6 +14,7 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import com.art.model.ArtService;
 import com.art_rep.model.ArtRepService;
 import com.art_rep.model.ArtRepVO;
 import com.art_rep_rpt.model.ArtRepRptService;
@@ -39,6 +40,7 @@ public class ArtRepServlet extends HttpServlet {
 		if("addArtRep".equals(action)) {
 			JSONArray array = new JSONArray();
 			HttpSession session = request.getSession();
+			ArtService artSvc = new ArtService();
 			
 			/*====================請求參數===================*/
 			Integer artNo = Integer.parseInt(request.getParameter("artNo"));
@@ -50,6 +52,10 @@ public class ArtRepServlet extends HttpServlet {
 			ArtRepService artRepSvc = new ArtRepService();
 			artRepSvc.insertArtRep(artNo, memNo, artRepContent);
 			System.out.println("addArtRep成功！");
+			Integer artReplyno = artSvc.getOneArt(artNo).getArtReplyno();
+			artReplyno++;
+			artSvc.updateArtReplyno(artNo, artReplyno);
+			System.out.println("artReplyno更新成功");
 			
 			/*==============傳回=============*/
 			response.setContentType("text/plain");

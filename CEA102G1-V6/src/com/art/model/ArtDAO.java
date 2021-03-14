@@ -36,6 +36,8 @@ public class ArtDAO implements ArtDAO_interface{
 			"UPDATE ARTICLE SET ART_TITLE=?, ART_CONTENT=?, MOV_TYPE=? WHERE ART_NO=?";
 	private static final String UPDATE_STATUS_STMT=
 			"UPDATE ARTICLE SET ART_STATUS=? WHERE ART_NO=?";
+	private static final String UPDATE_ARTREPLYNO_STMT=
+			"UPDATE ARTICLE SET ART_REPLYNO=? WHERE ART_NO=?";
 	private static final String DELETE_STMT="DELETE FROM ARTICLE WHERE ART_NO=?";
 	private static final String FINDBYPK_STMT="SELECT ART_NO, MEM_NO, ART_TITLE, ART_CONTENT, ART_REPLYNO, ART_TIME, ART_STATUS, MOV_TYPE FROM ARTICLE WHERE ART_NO=?";	
 	private static final String GETALL_STMT="SELECT ART_NO, MEM_NO, ART_TITLE, ART_CONTENT, ART_REPLYNO, ART_TIME, ART_STATUS, MOV_TYPE FROM ARTICLE WHERE ART_STATUS=0 ORDER BY ART_NO DESC";
@@ -491,6 +493,43 @@ public class ArtDAO implements ArtDAO_interface{
 		}		
 		return moveTypeList;		
 		
+	}
+
+	@Override
+	public Integer updateArtReplyno(ArtVO artVO) {
+		Connection con = null;
+		PreparedStatement pstmt = null;
+		
+		try {
+			con = ds.getConnection();
+			pstmt = con.prepareStatement(UPDATE_ARTREPLYNO_STMT);
+			
+			
+			pstmt.setInt(1, artVO.getArtReplyno());
+			pstmt.setInt(2, artVO.getArtNo());			
+			
+			pstmt.executeUpdate();	
+		} catch (SQLException se) {
+			throw new RuntimeException("A database error occured. "
+					+ se.getMessage());
+		} finally {
+			if(pstmt != null) {
+				try {
+					pstmt.close();
+				} catch (SQLException e) {
+					e.printStackTrace();
+				}				
+			}
+			
+			if(con != null) {
+				try {
+					con.close();
+				} catch (SQLException e) {
+					e.printStackTrace();
+				}
+			}
+		}
+		return artVO.getArtReplyno();
 	}
 
 }
