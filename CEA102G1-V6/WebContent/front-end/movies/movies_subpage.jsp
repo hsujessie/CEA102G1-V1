@@ -305,21 +305,110 @@
 
 <%@ include file="/front-end/files/frontend_importJs.file"%>
 <script>
-	  $(document).ready(function () {
-	      $('input[name="satRating"]').click(function () {
+	let satRatingZer = $("input[name='satRating']")[0];
+	let satRatingOne = $("input[name='satRating']")[1];
+	let satRatingTwo = $("input[name='satRating']")[2];
+	let satRatingThr = $("input[name='satRating']")[3];
+	let satRatingFou = $("input[name='satRating']")[4];
+	let faStars = document.getElementsByClassName("fa-star");
+	
+	satRatingZer.onclick = function(){
+		console.log("0");
+		if ($(this).prop('checked')) { 
+			$(this).next().addClass('str-color');
+		}
+		else{
+			$(this).next().removeClass('str-color'); 
+			
+			if(!faStars[0].classList.contains('str-color')){
+				faStars[1].classList.remove('str-color');
+				faStars[2].classList.remove('str-color');
+				faStars[3].classList.remove('str-color');
+				faStars[4].classList.remove('str-color');
+			}
+		}
+	}	
+	
+	satRatingOne.onclick = function(){
+		console.log("1");
+		if ($(this).prop('checked')) { 
+			$(this).next().addClass('str-color');
 
-	        if ($(this).prop('checked')) { 
-	           console.log("Checked");
-	           $(this).next().addClass('str-color');
-	        }
-	        else {     
-	           console.log("Unchecked");
-	           $(this).next().removeClass('str-color');
-	        }
-	      });
-	  });
-	  
-      /* -- Light box -- */
+			if(faStars[1].classList.contains('str-color')){
+				faStars[0].classList.add('str-color');
+			}
+		}
+		else{
+			$(this).next().removeClass('str-color'); 
+
+			if(!faStars[1].classList.contains('str-color')){
+				faStars[2].classList.remove('str-color');
+				faStars[3].classList.remove('str-color');
+				faStars[4].classList.remove('str-color');
+			}
+		}
+	}
+	
+	satRatingTwo.onclick = function(){
+		console.log("2");
+		if ($(this).prop('checked')) { 
+			$(this).next().addClass('str-color');
+			
+			if(faStars[2].classList.contains('str-color')){
+				faStars[0].classList.add('str-color');
+				faStars[1].classList.add('str-color');
+			}
+		}
+		else{
+			$(this).next().removeClass('str-color'); 
+			
+			if(!faStars[2].classList.contains('str-color')){
+				faStars[3].classList.remove('str-color');
+				faStars[4].classList.remove('str-color');
+			}
+		}
+	}
+
+	satRatingThr.onclick = function(){
+		console.log("3");
+		if ($(this).prop('checked')) { 
+			$(this).next().addClass('str-color');
+			
+			if(faStars[3].classList.contains('str-color')){
+				faStars[0].classList.add('str-color');
+				faStars[1].classList.add('str-color');
+				faStars[2].classList.add('str-color');
+			}
+		}
+		else{
+			$(this).next().removeClass('str-color'); 
+			if(!faStars[3].classList.contains('str-color')){
+				faStars[4].classList.remove('str-color');
+			}
+		}	
+	}
+	satRatingFou.onclick = function(){
+		console.log("4");
+		$(this).next().addClass('str-color');
+		if ($(this).prop('checked')) { 
+
+			if(faStars[4].classList.contains('str-color')){
+				faStars[0].classList.add('str-color');
+				faStars[1].classList.add('str-color');
+				faStars[2].classList.add('str-color');
+				faStars[3].classList.add('str-color');
+			}
+		}
+		else{
+			$(this).next().removeClass('str-color'); 
+		}	
+	}
+
+	
+	
+/* =========================================================================================== */
+   							/* Light box */
+/* =========================================================================================== */
 	  let lightbox = document.getElementsByClassName("movies-lightbox")[0];
 	  let closeLightbox = document.getElementsByClassName("close")[0];
       closeLightbox.onclick=function(){
