@@ -159,11 +159,13 @@
                             //取include ArticleContent.jsp後的id
                             console.log(item.artTitle);
                             clearOneArticle();
+                            clearArtReplyno();
                             $('#myModalLabel').attr('data-value', item.artNo);
                             $('#myModalLabel').append(item.artTitle);
                             $('#oneArtContent').append('<p>' + item.artContent +'</p>');
                             $('#artFav_header_like').attr('data-value', item.artNo);
                             $('#artRptButton').attr('data-value', item.artNo);
+                            $('#artReplyno').append('回應數量 '+item.artReplyno);
                             console.log("item.memNo:" + item.memNo);
 
                             //判斷是否為會員本人發表的文章

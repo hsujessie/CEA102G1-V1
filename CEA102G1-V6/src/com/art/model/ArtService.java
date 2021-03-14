@@ -70,7 +70,7 @@ public class ArtService {
 		ArtVO artVO = new ArtVO();
 		artVO.setArtNo(artNo);
 		artVO.setArtReplyno(artReplyno);
-		dao.updateStatus(artVO);
+		dao.updateArtReplyno(artVO);
 		
 		return artVO.getArtReplyno();
 	}

@@ -275,6 +275,7 @@ public class ArtServlet extends HttpServlet {
 					obj.put("artContent", artVO.getArtContent());
 					obj.put("artTime", artVO.getArtTime());
 					obj.put("artMovType", artVO.getMovType());
+					obj.put("artReplyno", artVO.getArtReplyno());
 					
 					array.put(obj);
 					System.out.println("=================art_Show_One_By_AJAX==============");

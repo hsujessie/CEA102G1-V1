@@ -54,8 +54,18 @@ public class ArtRepServlet extends HttpServlet {
 			System.out.println("addArtRep成功！");
 			Integer artReplyno = artSvc.getOneArt(artNo).getArtReplyno();
 			artReplyno++;
+			System.out.println("artReplyno:"+artReplyno);
 			artSvc.updateArtReplyno(artNo, artReplyno);
 			System.out.println("artReplyno更新成功");
+			
+			/*==============放入JSONObject==============*/
+			JSONObject obj = new JSONObject();
+			try {
+				obj.put("artReplyno", artReplyno);
+			} catch (JSONException e) {
+				e.printStackTrace();
+			}
+			array.put(obj);
 			
 			/*==============傳回=============*/
 			response.setContentType("text/plain");
@@ -75,7 +85,6 @@ public class ArtRepServlet extends HttpServlet {
 			ArtRepService artRepSvc = new ArtRepService();
 			MemDAO memDAO = new MemDAO();
 			List<ArtRepVO> list = artRepSvc.findByArtNo(Integer.parseInt(request.getParameter("artNo")));
-			ArtRepRptService artRepRptSvc = new ArtRepRptService();
 			
 			/*==============放入JSONObject==============*/
 			for(ArtRepVO artRepVO : list) {

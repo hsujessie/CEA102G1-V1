@@ -96,6 +96,10 @@
     	font-size: 2rem;
     	
     }
+    #artReplyno{
+    	color: #808080;
+    	text-align: right;
+    }
 </style>
 
 <script type="text/javascript">
@@ -135,10 +139,12 @@ function ListArtQuery(){
 			success: function (artVO){
 				$(artVO).each(function(i, item){
 					clearOneArticle();
+					clearArtReplyno();
  					$('#myModalLabel').append(item.artTitle);
  					$('#artFav_header_like').attr('data-value', item.artNo)
  					$('#myModalLabel').attr('data-value', item.artNo)
  					$('#oneArtContent').append('<p>'+item.artContent+'</p>');
+ 					$('#artReplyno').append('回應數量 '+item.artReplyno);
 					console.log("item.memNo:"+item.memNo);
 						
  					//判斷是否為會員本人發表的文章
@@ -251,10 +257,14 @@ function addArtRep(){
 			url: '<%=request.getContextPath()%>/art/artRep.do',
 			data: {'action':'addArtRep', 'artNo':$('#myModalLabel').attr('data-value'), 'artRepContent':$('#artRepContent').val()},
 			dataType: 'json',
-			success: function(){
+			success: function(artRepVO){
 				clearArtRepContent();
+				clearArtReplyno();
 				listAllArtRepByArtNo();
 				toastr['success']('回覆成功', '成功');
+				$(artRepVO).each(function(i, item){
+					$('#artReplyno').append('回應數量 '+item.artReplyno);
+				});
 
 			},
 			error: function(){console.log("AJAX-addArtRpe發生錯誤囉!")}
@@ -308,8 +318,11 @@ function addRepRpt(){
 function clearOneArticle(){
 	$('#oneArtContent').empty();
 	$('#myModalLabel').empty();
-}
-
+};
+//清空回文數量
+function clearArtReplyno(){
+	$('#artReplyno').empty();
+};
 //清空回文列表
 function clearArtRepList(){
 	$('#artRep').empty();
@@ -381,11 +394,11 @@ function clearRepRptReson(){
                     <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
                 </div>			
 			<div class="modal-body">
-<!-- ====================include ArticleContent.jsp==================== -->
+<!-- ====================include ArticleContent.file==================== -->
 				<div id="art_modal_body" data-value="">
 					<%@ include file="/front-end/article/ArticleContent.file" %> 
 				</div>
-<!-- ====================include ArticleContent.jsp==================== -->
+<!-- ====================include ArticleContent.file==================== -->
 			</div>
 
 			<div id="art_modal-footer" class="modal-footer" style="padding: 0px">
