@@ -3,6 +3,30 @@
 
 <html>
 <head>
+	<style>
+		.inlineBlockDIV{
+			display: inline-block; 
+			width: 5vw; 
+			height: 10vh;
+			text-align: left;
+			font-size: 1rem;
+            vertical-align: middle; 
+			
+		}
+        .inlineBlockLongDIV{
+            display: inline-block; 
+			width: 10vw; 
+			height: 10vh;
+			text-align: left;
+			font-size: 1rem;
+            vertical-align: middle;
+        }
+        .longText{
+        	white-space:nowrap;
+			overflow:hidden;
+			text-overflow:ellipsis;
+        }
+	</style>
 	<title>Back-End Management</title>
 	<%@ include file="/back-end/files/sb_head.file"%>
 </head>
@@ -10,7 +34,7 @@
 		<%@ include file="/back-end/files/sb_navbar.file"%> <!-- 引入navbar (上方) -->
         <div id="layoutSidenav">
             <div id="layoutSidenav_nav">            
-            	<%-- <c:set value="${pageContext.request.requestURI}" var="urlRecog"></c:set> --%> <!-- 在listAllXXX.jsp，加上這行，給sb_sidebar.file的參數-Home -->
+            	<c:set value="${pageContext.request.requestURI}" var="urlRecog"></c:set> <!-- 在listAllXXX.jsp，加上這行，給sb_sidebar.file的參數-Home -->
                 <%-- <c:set value="movieAdd" var="urlRecog"></c:set> --%> <!-- 在addXXX.jsp，加上這行，「value」請參照「sb_sidebar.file」給予相對應的值，給sb_sidebar.file的參數-Add -->
                 <%-- <c:set value="movieSub" var="urlRecog"></c:set> --%> <!-- 在除了以上兩個jsp以外的子頁面，加上這行，「value」請參照「sb_sidebar.file」給予相對應的值，給sb_sidebar.file的參數-Sub -->         
 				<%@ include file="/back-end/files/sb_sidebar.file"%> <!-- 引入sidebar (左方) -->
@@ -18,63 +42,23 @@
             <div id="layoutSidenav_content">
                 <main>
                     <div class="container-fluid">
-                    
+                    <br>
+                    <br>
                     <!-- PUT HERE Start-->
-                    
-                    <!-- table Start -->
+                    <div style="height: 10vh;">
+                    	<b>請選擇欲查看的檢舉分類：</b>
+                    	<select id="selectReportType">
+                    		<option>請選擇</option>
+                    		<option value="listAllArticleReport">文章檢舉列表</option>
+                    		<option value="listAllArticleReplyReport">留言檢舉列表</option>
+                    	</select>
+                    </div>
+
                     <h3 id="tableTitle" class="h3-style" style="display: inline-block;"></h3>
-				
-		            <table id="listAllReport" class="table table-hover">
-						<thead>
-							<tr style="border-bottom: 3px solid #bb9d52;">
-								<th>檢舉編號</th>
-								<th>作者</th>
-								<th>文章標題</th>
-								<th>檢舉時間</th>
-								<th>檢舉人</th>
-								<th>檢舉理由</th>
-								<th>狀態</th>
-								<th>確認/取消</th>
-							</tr>				
-						</thead>
-							<tr>
-								<td></td>
-								<td></td>
-								<td></td>
-								<td></td>
-								<td></td>
-								<td></td>
-								<td></td>
-							</tr>
-						<tbody>						
-						</tbody>
-					</table>
-                    <!-- table End -->
-                    
-                                        <!-- table Start -->
-                    <h3 class="h3-style" style="display: inline-block;">留言檢舉列表</h3>
-				
-		            <table id="listAllReport" class="table table-hover">
-						<thead>
-							<tr style="border-bottom: 3px solid #bb9d52;">
-								<th>標題1</th>
-								<th>標題2</th>
-								<th>標題3</th>
-								<th>標題4</th>
-								<th>標題5</th>
-							</tr>				
-						</thead>
-							<tr>
-								<td>內容1</td>
-								<td>內容2</td>
-								<td>內容3</td>
-								<td>內容4</td>
-								<td>內容5</td>
-							</tr>
-						<tbody>						
-						</tbody>
-					</table>
-                    <!-- table End -->
+					<hr>
+		            <div id="listAllReport" style="font-size: 0px">
+
+					</div>
                                         
                     <!-- PUT HERE End-->
                     
@@ -85,38 +69,66 @@
         </div>
 		<%@ include file="/back-end/files/sb_importJs.file"%> <!-- 引入template要用的js -->
 		<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+		<script src="<%=request.getContextPath()%>/resource/js/moment-with-locales.min.js" ></script>
 		
 		<script>
 		$(document).ready(function(){
-			//列出全部文章檢舉
-			listAllArticleReport();
+			$('#listAllReport').hide();
+			
+			$('#selectReportType').change(function(){
+				if($(this).val() == "listAllArticleReport"){
+					//全部文章檢舉
+					debugger;
+					clearListAllReport();
+					$.ajax({
+						type: 'POST',
+						url: '<%=request.getContextPath()%>/art/artRpt.do',
+						data: {'action':$(this).val()},
+						dataType: 'json',
+						success: function(artRptVO){
+							$('#listAllReport').append('<div><div class="inlineBlockDIV">檢舉編號</div><div class="inlineBlockDIV">作者</div><div class="inlineBlockLongDIV">文章標題</div><div class="inlineBlockLongDIV">檢舉時間</div><div class="inlineBlockLongDIV">檢舉人</div><div class="inlineBlockLongDIV">檢舉理由</div><div class="inlineBlockDIV">狀態</div><div class="inlineBlockLongDIV">確認/取消</div></div>');
+							$('#tableTitle').append("文章檢舉列表");
+							$('#listAllReport').show();
+							$(artRptVO).each(function(i, item){
+								$('#listAllReport').append('<div><div class="artRptNo inlineBlockDIV" data-value='+item.artRptNo+'>'+item.artRptNo+'</div><div class="inlineBlockDIV longText">'+item.memName+'</div><div class="inlineBlockLongDIV longText">'+item.artTitle+'</div><div class="inlineBlockLongDIV">'+moment(item.artRptTime).locale('zh_TW').format('LL')+'</div><div class="inlineBlockLongDIV longText">'+item.reportMemName+'</div><div class="inlineBlockLongDIV">'+item.artRptContent+'</div><div class="inlineBlockDIV">'+item.artRptStatus+'</div><div class="inlineBlockLongDIV"><button class="checkedButton" data-value="'+item.artNo+'" style="background-color: #bb9d52;">'+item.artRptStatusButton+'</button></div></div>');					
+							});						
+						},
+		                error: function () {
+		                    console.log("AJAX-listAllArticleReport發生錯誤囉!")
+		                }
+					});
+				}else if($(this).val() == "listAllArticleReplyReport"){
+					//列出全部留言檢舉
+					debugger;
+					clearListAllReport();
+					$.ajax({
+						type: 'POST',
+						url: '<%=request.getContextPath()%>/art/artRepRpt.do',
+						data: {'action':$(this).val()},
+						dataType: 'json',
+						success: function(artRepRptVO){
+							$('#listAllReport').append('<div><div class="inlineBlockDIV">檢舉編號</div><div class="inlineBlockDIV">留言人</div><div class="inlineBlockLongDIV">留言內容</div><div class="inlineBlockLongDIV">檢舉時間</div><div class="inlineBlockLongDIV">檢舉人</div><div class="inlineBlockLongDIV">檢舉理由</div><div class="inlineBlockDIV">狀態</div><div class="inlineBlockLongDIV">確認/取消</div></div>');
+							$('#listAllReport').show();
+							$('#tableTitle').append("留言檢舉列表");
+							$(artRepRptVO).each(function(i, item){
+								$('#listAllReport').append('<div><div class="artRepRptNo inlineBlockDIV" data-value='+item.artRepRptNo+'>'+item.artRepRptNo+'</div><div class="inlineBlockDIV longText">'+item.memName+'</div><div class="inlineBlockLongDIV">'+item.artRepContent+'</div><div class="inlineBlockLongDIV">'+moment(item.artRepRptTime).locale('zh_TW').format('LL')+'</div><div class="inlineBlockLongDIV longText">'+item.reportMemName+'</div><div class="inlineBlockLongDIV">'+item.artRepRptReson+'</div><div class="inlineBlockDIV">'+item.artRepRptStatus+'</div><div class="inlineBlockLongDIV"><button class="checkedReplyButton" data-value="'+item.artRepNo+'" style="background-color: #bb9d52;">'+item.artRepRptStatusButton+'</button></div></div>');					
+							});						
+						},
+		                error: function () {
+		                    console.log("AJAX-listAllArticleReplyReport發生錯誤囉!")
+		                }
+					});
+				}
+			});				
+
 			//更新文章檢舉狀態
 			changeArticleReport();
 			
-			//列出全部留言檢舉
+			//更新留言檢舉狀態
+			changeArticleReplyReport();
+						
 		});
-		
-		//全部文章檢舉
-		function listAllArticleReport(){
-			debugger;
-			$.ajax({
-				type: 'POST',
-				url: '<%=request.getContextPath()%>/art/artRpt.do',
-				data: {'action':'listAllArticleReport'},
-				dataType: 'json',
-				success: function(artRptVO){
-					debugger;
-					$('#tableTitle').append("文章檢舉列表");
-					$(artRptVO).each(function(i, item){
-						$('#listAllReport').append('<tr><td class="artRptNo" data-value='+item.artRptNo+'>'+item.artRptNo+'</td><td>'+item.memName+'</td><td style="width: 50px;"><div id="inner">'+item.artTitle+'</div></td><td>'+item.artRptTime+'</td><td>'+item.reportMemName+'</td><td>'+item.artRptContent+'</td><td>'+item.artRptStatus+'</td><td><button class="checkedButton" data-value="'+item.artNo+'" style="background-color: #bb9d52;">'+item.artRptStatusButton+'</button></td></tr>');					
-					});
-					
-				},
-                error: function () {
-                    console.log("AJAX-listAllArticleReport發生錯誤囉!")
-                }
-			});
-		};
+
 		
 		//更改確認文章檢舉
 		function changeArticleReport(){
@@ -126,16 +138,48 @@
 				$.ajax({
 					type: 'POST',
 					url: '<%=request.getContextPath()%>/art/artRpt.do',
-					data: {'action':'changeArticleReport', 'artNo':$(event.currentTarget).attr('data-value'), 'artRptNo':$(event.currentTarget).parents().find('.artRptNo').attr('data-value')},
+					data: {'action':'changeArticleReport', 'artNo':$(event.currentTarget).attr('data-value'), 'artRptNo':$(event.currentTarget).parent().siblings('.artRptNo').attr('data-value')},
 					dataType: 'json',
-					success: function(){
-						
+					success: function(artRptVO){
+						debugger;
+						$(artRptVO).each(function(i, item){
+							$(event.currentTarget).text(item.artRptStatusButton);
+						});
 					},
 	                error: function () {
 	                    console.log("AJAX-changeArticleReport發生錯誤囉!")
 	                }					
 				});
 			});
+		};
+		
+		//更改確認留言檢舉
+		function changeArticleReplyReport(){
+			$('#listAllReport').on('click', '.checkedReplyButton', function(event){
+				console.log('changeArticleReplyReport ok!');
+				debugger;
+				$.ajax({
+					type: 'POST',
+					url: '<%=request.getContextPath()%>/art/artRepRpt.do',
+					data: {'action':'changeArticleReplyReport', 'artRepNo':$(event.currentTarget).attr('data-value'), 'artRepRptNo':$(event.currentTarget).parent().siblings('.artRepRptNo').attr('data-value')},
+					dataType: 'json',
+					success: function(artRepRptVO){
+						debugger;
+						$(artRepRptVO).each(function(i, item){
+							$(event.currentTarget).text(item.artRepRptStatusButton);
+						});
+					},
+	                error: function () {
+	                    console.log("AJAX-changeArticleReplyReport發生錯誤囉!")
+	                }					
+				});
+			});
+		};
+		
+		//清除檢舉列表
+		function clearListAllReport(){
+			$('#listAllReport').empty();
+			$('#tableTitle').empty();
 		};
 		</script>
     </body>

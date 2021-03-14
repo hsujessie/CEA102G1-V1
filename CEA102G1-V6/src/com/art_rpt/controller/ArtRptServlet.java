@@ -60,7 +60,7 @@ public class ArtRptServlet extends HttpServlet {
 			out.close();
 		}
 		
-		//articlereport.jsp呼叫
+		//articlereport.jsp呼叫，列出全部文章檢舉
 		if("listAllArticleReport".equals(action)) {
 			JSONArray array = new JSONArray();
 			
@@ -103,13 +103,15 @@ public class ArtRptServlet extends HttpServlet {
 			out.close();			
 		}
 		
-		//
+		////articlereport.jsp呼叫，更新文章檢舉資料
 		if("changeArticleReport".equals(action)) {
 			JSONArray array = new JSONArray();
 			
 			/*====================請求參數===================*/
 			Integer artNo = Integer.parseInt(request.getParameter("artNo"));
 			Integer artRptNo = Integer.parseInt(request.getParameter("artRptNo"));
+			System.out.println("artNo:"+artNo);
+			System.out.println("artRptNo:"+artRptNo);
 			
 			/*====================修改資料===================*/
 			ArtService artSvc = new ArtService();
@@ -121,14 +123,29 @@ public class ArtRptServlet extends HttpServlet {
 			}
 			System.out.println("新的ArtStatus:"+artSvc.getOneArt(artNo).getArtStatus());
 			
-			ArtRptService artRpeSvc = new ArtRptService();
-			Integer artRptStatus = artRpeSvc.getOneArtRpt(artRptNo).getArtRptStatus();
+			ArtRptService artRptSvc = new ArtRptService();
+			Integer artRptStatus = artRptSvc.getOneArtRpt(artRptNo).getArtRptStatus();
 			if(artRptStatus == 0) {
-				artRpeSvc.updateArtRpt(1, artRptNo);
+				artRptSvc.updateArtRpt(1, artRptNo);
 			}else {
-				artRpeSvc.updateArtRpt(0, artRptNo);
+				artRptSvc.updateArtRpt(0, artRptNo);
 			}
-			System.out.println("新的ArtRptStatus"+artSvc.getOneArt(artNo).getArtStatus());
+			System.out.println("新的ArtRptStatus"+artRptSvc.getOneArtRpt(artRptNo).getArtRptStatus());
+			
+			/*==============放入JSONObject==============*/
+				JSONObject obj = new JSONObject();
+				try { 
+					if(artRptSvc.getOneArtRpt(artRptNo).getArtRptStatus() == 0) {
+						obj.put("artRptStatusButton", "確認檢舉");
+						System.out.println("artRptStatusButton: 確認檢舉");
+					}else {
+						obj.put("artRptStatusButton", "已檢舉");
+						System.out.println("artRptStatusButton: 已檢舉");
+					}
+				} catch (JSONException e) {
+					e.printStackTrace();
+				}
+				array.put(obj);		
 			
 			/*==============傳回=============*/
 			response.setContentType("text/plain");

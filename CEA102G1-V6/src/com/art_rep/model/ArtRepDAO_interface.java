@@ -3,9 +3,11 @@ package com.art_rep.model;
 import java.util.List;
 import java.util.Map;
 
+
 public interface ArtRepDAO_interface {
 	public void insert(ArtRepVO artRepVO);
 	public void update(ArtRepVO artRepVO);
+	public void updateStatus(ArtRepVO artRepVO);
 	public ArtRepVO findByPrimaryKey(Integer artRepNo);
 	public List<ArtRepVO> findByArtNo(Integer artNo);
 	public List<ArtRepVO> getAll();
