@@ -12,6 +12,7 @@ import javax.servlet.annotation.MultipartConfig;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import javax.servlet.http.Part;
 import com.admin.model.AdmService;
 import com.admin.model.AdmVO;
@@ -219,10 +220,10 @@ public class AdmServlet extends HttpServlet {
 				
 				/*************************** 2.開始查詢資料 ***************************************/
 				AdmService admSvc = new AdmService();
-				AdmVO admVO = admSvc.login(admAccount, admPassword);
+				AdmVO admVO = admSvc.allowAdmin(admAccount, admPassword);
 				
 				if (admVO == null) {
-					errorMsgs.add("查無此員工,請確認帳號或密碼");
+					errorMsgs.add("登入失敗,請重新確認帳號及密碼");
 				}
 				
 				if (!errorMsgs.isEmpty()) {
@@ -232,10 +233,14 @@ public class AdmServlet extends HttpServlet {
 				}
 				
 				/*************************** 3.查詢完成,準備轉交(Send the Success view) ***********/
-				req.setAttribute("admVO", admVO);
-				String url = "/back-end/admin/listAllAdmin.jsp";
-				RequestDispatcher successView = req.getRequestDispatcher(url);
-				successView.forward(req, res);
+				HttpSession session = req.getSession();
+				session.setAttribute("admVO", admVO);
+				
+				String url = (String) session.getAttribute("location");
+				if (url == null) {
+					url = req.getContextPath() + "/back-end/admin/listAllAdmin.jsp";
+				}
+				res.sendRedirect(url);
 			} catch (Exception e) {
 				errorMsgs.add(e.getMessage());
 				RequestDispatcher failureView = req.getRequestDispatcher("/back-end/admin/updateAdmin.jsp");

@@ -10,6 +10,21 @@
     <welcome-file>default.jsp</welcome-file>
   </welcome-file-list>
   
+  <filter>
+  	<filter-name>LoginFilter</filter-name>
+  	<filter-class>com.admin.controller.LoginFilter</filter-class>
+  </filter>
+  <filter-mapping>
+  	<filter-name>LoginFilter</filter-name>
+  	<url-pattern>/back-end/admin/*</url-pattern>
+  	<dispatcher>REQUEST</dispatcher>
+    <dispatcher>FORWARD</dispatcher>
+    <dispatcher>INCLUDE</dispatcher>
+    <dispatcher>ERROR</dispatcher>
+    <dispatcher>ASYNC</dispatcher>
+  </filter-mapping>
+  
+  
 <!--   11  -->
   <servlet>
   	<servlet-name>FooCatServlet</servlet-name>

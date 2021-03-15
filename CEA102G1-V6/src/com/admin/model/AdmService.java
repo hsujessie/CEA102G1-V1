@@ -76,8 +76,8 @@ public class AdmService {
 		return dao.getAuthsByAdmNo(admNo);
 	}
 	
-	public AdmVO login(String admAccount, String admPassword) {
+	public AdmVO allowAdmin(String admAccount, String admPassword) {
 		
-		return dao.login(admAccount, Password.passwordEncoder(admPassword));
+		return dao.allowAdmin(admAccount, Password.passwordEncoder(admPassword));
 	}
 }

@@ -398,7 +398,7 @@ public class AdmDAO implements AdmDAO_interface{
 	}
 
 	@Override
-	public AdmVO login(String admAccount, String admPassword) {
+	public AdmVO allowAdmin(String admAccount, String admPassword) {
 		AdmVO admVO = null;
 		
 		Connection con = null;
