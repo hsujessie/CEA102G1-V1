@@ -139,13 +139,7 @@ public class AdmServlet extends HttpServlet {
 				// 照片
 				Part part = req.getPart("admImg");
 				byte[] admImg = null;
-				if (part == null || part.getSize() == 0) {
-					errorMsgs.add("必須上傳照片");
-				} else {
-					InputStream is = part.getInputStream();
-					admImg = new byte[is.available()];
-					is.read(admImg);
-				}
+				
 
 				// 狀態
 				Integer admStatus = new Integer(req.getParameter("admStatus"));
@@ -172,7 +166,15 @@ public class AdmServlet extends HttpServlet {
 
 				/*************************** 2.開始新增資料 ***************************************/
 				AdmService admSvc = new AdmService();
-				admVO = admSvc.updateAdm(admNo, admName, admImg, admAccount, admPassword, admMail, admStatus, funNoArray);
+				
+				if (part.getSize() != 0) {
+					InputStream is = part.getInputStream();
+					admImg = new byte[is.available()];
+					is.read(admImg);
+					admVO = admSvc.updateAdm(admNo, admName, admImg, admAccount, admPassword, admMail, admStatus, funNoArray);
+				} else {
+					admVO = admSvc.updateAdmNoImg(admNo, admName, admAccount, admPassword, admMail, admStatus, funNoArray);
+				}
 				/*************************** 3.新增完成,準備轉交(Send the Success view) ***********/
 				String url = "/back-end/admin/listAllAdmin.jsp";
 				RequestDispatcher successView = req.getRequestDispatcher(url);

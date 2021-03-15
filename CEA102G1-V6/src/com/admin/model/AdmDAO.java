@@ -37,6 +37,7 @@ public class AdmDAO implements AdmDAO_interface{
 	
 	
 	private static final String UPDATE = "UPDATE ADMINISTRATOR SET ADM_NAME=?, ADM_IMG=?, ADM_ACCOUNT=?, ADM_PASSWORD=?, ADM_MAIL=?, ADM_STATUS=? WHERE ADM_NO=?";
+	private static final String UPDATE_NOIMG = "UPDATE ADMINISTRATOR SET ADM_NAME=?, ADM_ACCOUNT=?, ADM_PASSWORD=?, ADM_MAIL=?, ADM_STATUS=? WHERE ADM_NO=?";
 	
 	@Override
 	public void insertWithAuth(AdmVO admVO, String[] funNoArray) {
@@ -280,8 +281,63 @@ public class AdmDAO implements AdmDAO_interface{
 	}
 
 	@Override
-	public void updateNoImg(AdmVO admVO) {
+	public void updateNoImg(AdmVO admVO, String[] funNoArray) {
+		Connection con = null;
+		PreparedStatement pstmt = null;
 		
+		try {
+			con = ds.getConnection();
+			con.setAutoCommit(false); 
+			
+			pstmt = con.prepareStatement(UPDATE_NOIMG);
+			
+			pstmt.setString(1, admVO.getAdmName());
+			pstmt.setString(2, admVO.getAdmAccount());
+			pstmt.setString(3, admVO.getAdmPassword());
+			pstmt.setString(4, admVO.getAdmMail());
+			pstmt.setInt(5, admVO.getAdmStatus());
+			pstmt.setInt(6, admVO.getAdmNo());
+			
+			pstmt.executeUpdate();
+			
+			Integer admNo = new Integer(admVO.getAdmNo());
+			AdmAutService admAutSvc = new AdmAutService();
+			
+			admAutSvc.deleteAdmAut(admNo, con);
+			
+			for (int i = 0; i < funNoArray.length; i++) {
+				Integer funNo = new Integer(funNoArray[i]);
+				admAutSvc.addAdmAut(admNo, funNo, con);
+			}
+			
+			con.commit();
+			con.setAutoCommit(true);
+			
+		} catch (SQLException se) {
+			if (con != null) {
+				try {
+					con.rollback();
+				} catch (SQLException e) {
+					throw new RuntimeException("A rollback error occured. " + e.getMessage());
+				}
+			}
+			throw new RuntimeException("A database error occured. " + se.getMessage());
+		} finally {
+			if (pstmt != null) {
+				try {
+					pstmt.close();
+				} catch (SQLException se) {
+					se.printStackTrace(System.err);
+				}
+			}
+			if (con != null) {
+				try {
+					con.close();
+				} catch (Exception e) {
+					e.printStackTrace(System.err);
+				}
+			}
+		}
 	}
 
 	@Override

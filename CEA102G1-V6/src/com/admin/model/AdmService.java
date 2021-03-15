@@ -39,6 +39,20 @@ public class AdmService {
 		return admVO;
 	}
 	
+	public AdmVO updateAdmNoImg(Integer admNo, String admName, String admAccount, String admPassword, String admMail, Integer admStatus, String[] funNoArray) {
+		AdmVO admVO = new AdmVO();
+		
+		admVO.setAdmNo(admNo);
+		admVO.setAdmName(admName);
+		admVO.setAdmAccount(admAccount);
+		admVO.setAdmPassword(admPassword);
+		admVO.setAdmMail(admMail);
+		admVO.setAdmStatus(admStatus);
+		dao.updateNoImg(admVO, funNoArray);
+		
+		return admVO;
+	}
+	
 	public List<AdmVO> getAll() {
 		return dao.getAll();
 	}
