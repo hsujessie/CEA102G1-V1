@@ -42,11 +42,11 @@
 							<jsp:useBean id="sesSvc" scope="page"
 								class="com.session.model.SesService" />
 							<jsp:useBean id="theSvc" scope="page"
-								class="com.theater.model.TheaterService" />
+								class="com.theater.model.TheService" />
 							<jsp:useBean id="ticTypSvc" scope="page"
-								class="com.ticket_type.model.Ticket_typeService" />
+								class="com.ticket_type.model.TicTypService" />
 							<jsp:useBean id="ideSvc" scope="page"
-								class="com.identity.model.IdentityService" />
+								class="com.identity.model.IdeService" />
 
 							<c:forEach var="ticTypCartVO" items="${ticTypCartSet}">
 								<tr>

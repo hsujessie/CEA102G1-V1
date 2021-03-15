@@ -22,7 +22,7 @@ import com.food.model.FooVO;
 import com.session.model.SesService;
 import com.ticket_list.model.TicLisVO;
 import com.ticket_type.model.TicTypCartVO;
-import com.ticket_type.model.Ticket_typeService;
+import com.ticket_type.model.TicTypService;
 
 public class OrdMasServlet extends HttpServlet {
        
@@ -71,7 +71,7 @@ public class OrdMasServlet extends HttpServlet {
 			FooService fooSvc = new FooService();
 			Set<FooCartVO> fooCartSet = fooSvc.getFooCart(foodMap);
 			
-			Ticket_typeService ticTypSvc = new Ticket_typeService();
+			TicTypService ticTypSvc = new TicTypService();
 			Set<TicTypCartVO> ticTypCartSet = ticTypSvc.getTicTypCart(ticTypMap);
 			
 			/***************************3.新增完成,準備轉交(Send the Success view)***********/

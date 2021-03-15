@@ -3,7 +3,7 @@
 <%@ page import="com.theater.model.*"%>
 
 <%
-  TheaterVO theaterVO = (TheaterVO) request.getAttribute("theaterVO");
+	TheVO theaterVO = (TheVO) request.getAttribute("theaterVO");
 %>
 
 <html>
@@ -68,7 +68,7 @@
 <FORM METHOD="post" ACTION="<%=request.getContextPath()%>/theater/theater.do" name="form1">
 <table>
 	<tr>
-	<jsp:useBean id="movie_versionSvc" scope="page" class="com.movie_version.model.Movie_versionService" />
+	<jsp:useBean id="movie_versionSvc" scope="page" class="com.movie_version.model.MovVerService" />
 		<td>©ñ¬MºØÃþ:<font color=red><b>*</b></font></td>
 		<td><select size="1" name="movver_no">
 			<c:forEach var="movie_versionVO" items="${movie_versionSvc.all}">

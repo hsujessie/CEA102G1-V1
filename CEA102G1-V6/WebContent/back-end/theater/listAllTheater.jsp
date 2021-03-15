@@ -6,11 +6,11 @@
 
 
 <%
-	TheaterService theSvc = new TheaterService();
-	List<TheaterVO> list = theSvc.getAll();
+	TheService theSvc = new TheService();
+	List<TheVO> list = theSvc.getAll();
 	pageContext.setAttribute("list",list);
 %>
-<jsp:useBean id="movie_versionSvc" scope="page" class="com.movie_version.model.Movie_versionService" />
+<jsp:useBean id="movie_versionSvc" scope="page" class="com.movie_version.model.MovVerService" />
 <!DOCTYPE html>
 <html>
 <head>

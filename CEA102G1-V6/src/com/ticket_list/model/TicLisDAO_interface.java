@@ -4,7 +4,7 @@ import java.sql.Connection;
 import java.util.Map;
 import java.util.Set;
 
-import com.ticket_type.model.Ticket_typeVO;
+import com.ticket_type.model.TicTypVO;
 
 public interface TicLisDAO_interface {
 	public void insert(TicLisVO ticLisVO, Connection con);

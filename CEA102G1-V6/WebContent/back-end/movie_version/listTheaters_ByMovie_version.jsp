@@ -2,7 +2,7 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ page import="com.theater.model.*"%>
 
-<jsp:useBean id="movie_versionSvc" scope="page" class="com.movie_version.model.Movie_versionService" />
+<jsp:useBean id="movie_versionSvc" scope="page" class="com.movie_version.model.MovVerService" />
 
 
 <html>

@@ -3,10 +3,12 @@
 <%@ page import="com.theater.model.*"%>
 <%@ page import="com.movie_version.model.*"%>
 
-<% TheaterVO theaterVO = (TheaterVO) request.getAttribute("theaterVO"); %>
 <%
-  Movie_versionService movie_versionSvc = new Movie_versionService();
-  Movie_versionVO movie_versionVO = movie_versionSvc.getOneMovie_version(theaterVO.getMovver_no());
+	TheVO theaterVO = (TheVO) request.getAttribute("theaterVO");
+%>
+<%
+	MovVerService movie_versionSvc = new MovVerService();
+  MovVerVO movie_versionVO = movie_versionSvc.getOneMovie_version(theaterVO.getMovver_no());
 %>
 <!DOCTYPE html>
 <html>

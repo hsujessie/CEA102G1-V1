@@ -6,12 +6,12 @@
 
 
 <%
-	Ticket_typeService ticket_typeSvc = new Ticket_typeService();
-	List<Ticket_typeVO> list = ticket_typeSvc.getAll();
+	TicTypService ticket_typeSvc = new TicTypService();
+	List<TicTypVO> list = ticket_typeSvc.getAll();
 	pageContext.setAttribute("list",list);
 %>
-<jsp:useBean id="identitySvc" scope="page" class="com.identity.model.IdentityService" />
-<jsp:useBean id="movie_versionSvc" scope="page" class="com.movie_version.model.Movie_versionService" />
+<jsp:useBean id="identitySvc" scope="page" class="com.identity.model.IdeService" />
+<jsp:useBean id="movie_versionSvc" scope="page" class="com.movie_version.model.MovVerService" />
 <!DOCTYPE html>
 <html>
 <head>

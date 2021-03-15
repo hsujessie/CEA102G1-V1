@@ -2,7 +2,9 @@
     pageEncoding="BIG5"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ page import="com.theater.model.*" %>
-<% TheaterVO theaterVO = (TheaterVO) request.getAttribute("theaterVO"); %>
+<%
+	TheVO theaterVO = (TheVO) request.getAttribute("theaterVO");
+%>
 <!DOCTYPE html>
 <html>
 <head>
@@ -69,7 +71,7 @@
 		<td>廳院編號:<font color=red><b>*</b></font></td>
 		<td><%=theaterVO.getThe_no()%></td>
 	</tr>
-	<jsp:useBean id="movie_versionSvc" scope="page" class="com.movie_version.model.Movie_versionService" />
+	<jsp:useBean id="movie_versionSvc" scope="page" class="com.movie_version.model.MovVerService" />
 	<tr>
 		<td>放映種類:<font color=red><b>*</b></font></td>
 		<td><select size="1" name="movver_no">

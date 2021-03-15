@@ -58,7 +58,7 @@
     </FORM>
    <br></li>
      
-  <jsp:useBean id="theSvc" scope="page" class="com.theater.model.TheaterService" />
+  <jsp:useBean id="theSvc" scope="page" class="com.theater.model.TheService" />
    
   <li>
      <FORM METHOD="post" ACTION="<%=request.getContextPath()%>/theater/theater.do" >
@@ -75,7 +75,7 @@
 
   
   
-   <jsp:useBean id="movie_versionSvc" scope="page" class="com.movie_version.model.Movie_versionService" />
+   <jsp:useBean id="movie_versionSvc" scope="page" class="com.movie_version.model.MovVerService" />
   
   <li>
      <FORM METHOD="post" ACTION="<%=request.getContextPath()%>/movie_version/movie_version.do" >

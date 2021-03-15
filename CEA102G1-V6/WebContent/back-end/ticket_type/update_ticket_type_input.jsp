@@ -3,7 +3,7 @@
 <%@ page import="com.ticket_type.model.*"%>
 
 <%
-Ticket_typeVO ticket_typeVO = (Ticket_typeVO) request.getAttribute("ticket_typeVO"); //EmpServlet.java (Concroller) 存入req的empVO物件 (包括幫忙取出的empVO, 也包括輸入資料錯誤時的empVO物件)
+	TicTypVO ticket_typeVO = (TicTypVO) request.getAttribute("ticket_typeVO"); //EmpServlet.java (Concroller) 存入req的empVO物件 (包括幫忙取出的empVO, 也包括輸入資料錯誤時的empVO物件)
 %>
 
 <html>
@@ -71,7 +71,7 @@ Ticket_typeVO ticket_typeVO = (Ticket_typeVO) request.getAttribute("ticket_typeV
 		<td>票種編號:<font color=red><b>*</b></font></td>
 		<td><%=ticket_typeVO.getTictyp_no()%></td>
 	</tr>
-	<jsp:useBean id="movie_versionSvc" scope="page" class="com.movie_version.model.Movie_versionService" />
+	<jsp:useBean id="movie_versionSvc" scope="page" class="com.movie_version.model.MovVerService" />
 	<tr>
 		<td>放映種類:<font color=red><b>*</b></font></td>
 		<td><select size="1" name="movver_no">
@@ -80,7 +80,7 @@ Ticket_typeVO ticket_typeVO = (Ticket_typeVO) request.getAttribute("ticket_typeV
 			</c:forEach>
 		</select></td>
 	</tr>
-	<jsp:useBean id="identitySvc" scope="page" class="com.identity.model.IdentityService" />
+	<jsp:useBean id="identitySvc" scope="page" class="com.identity.model.IdeService" />
 	<tr>
 		<td>身分名稱:<font color=red><b>*</b></font></td>
 		<td><select size="1" name="ide_no">

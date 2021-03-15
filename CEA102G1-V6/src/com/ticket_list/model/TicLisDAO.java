@@ -7,7 +7,7 @@ import java.util.LinkedHashSet;
 import java.util.Map;
 import java.util.Set;
 
-import com.ticket_type.model.Ticket_typeVO;
+import com.ticket_type.model.TicTypVO;
 
 public class TicLisDAO implements TicLisDAO_interface{
 	private static final String INSERT_STMT = "INSERT INTO TICKET_LIST(ORDMAS_NO, TICTYPE_NO, SES_SEATNO, TICTYP_PRICE) VALUES(?,?,?,?)";

@@ -98,7 +98,7 @@ div.seatCharts-legend {
 					<div class="card-body">
 						<table class="table">
 							<tbody>
-								<jsp:useBean id="ideSvc" scope="page" class="com.identity.model.IdentityService" />
+								<jsp:useBean id="ideSvc" scope="page" class="com.identity.model.IdeService" />
 								<c:forEach var="ticTypCartVO" items="${ticTypCartSet}">
 									<tr>
 										<td>

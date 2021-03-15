@@ -3,7 +3,7 @@
 <%@ page import="java.util.*"%>
 <%@ page import="com.ticket_type.model.*"%>
 
-<jsp:useBean id="identitySvc" scope="page" class="com.identity.model.IdentityService" />
+<jsp:useBean id="identitySvc" scope="page" class="com.identity.model.IdeService" />
 
 <html>
 <head><title>所有身分</title>
