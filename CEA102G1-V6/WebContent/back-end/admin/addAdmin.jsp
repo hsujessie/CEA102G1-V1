@@ -80,13 +80,6 @@
 									<input class="sty-input mr-left mr-btm-normal" type="text" name="admAccount" value="${admVO.admAccount}" />
 								</td>
 							</tr>
-							<tr>
-								<th>密碼</th>
-								<td>
-									<input class="sty-input mr-left mr-btm-normal" type="text" name="admPassword" value="${admVO.admPassword}" />
-								</td>
-								
-							</tr>
 							
 							<tr>
 								<th>信箱</th>

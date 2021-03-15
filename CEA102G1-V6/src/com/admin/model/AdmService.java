@@ -4,6 +4,9 @@ import java.util.List;
 
 import com.admin_auth.model.AdmAutVO;
 
+import jdbc.util.admin_password.Password;
+import jdbc.util.sendEmail.MailService;
+
 public class AdmService {
 	public AdmDAO_interface dao;
 	
@@ -11,15 +14,23 @@ public class AdmService {
 		dao = new AdmDAO();
 	}
 	
-	public AdmVO addAdm(String admName, byte[] admImg, String admAccount, String admPassword, String admMail, String[] funNoArray) {
+	public AdmVO addAdm(String admName, byte[] admImg, String admAccount, String admMail, String[] funNoArray) {
 		AdmVO admVO = new AdmVO();
+		
+		String realAdmPassword = Password.generateRandomPassword();
+		String fakeAdmPassword = Password.passwordEncoder(realAdmPassword);
 		
 		admVO.setAdmName(admName);
 		admVO.setAdmImg(admImg);
 		admVO.setAdmAccount(admAccount);
-		admVO.setAdmPassword(admPassword);
+		admVO.setAdmPassword(fakeAdmPassword);
 		admVO.setAdmMail(admMail);
 		dao.insertWithAuth(admVO, funNoArray);
+		
+		String to = "jacky55444@gmail.com";
+		String subject = "密碼通知";
+		String messageText =admName + "您好, " + "請謹記此密碼: " + realAdmPassword;
+		MailService.sendMail(to, subject, messageText);
 		
 		return admVO;
 	}

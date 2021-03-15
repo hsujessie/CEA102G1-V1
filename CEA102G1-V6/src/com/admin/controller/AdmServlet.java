@@ -47,11 +47,6 @@ public class AdmServlet extends HttpServlet {
 					errorMsgs.add("帳號不可為空白");
 				}
 
-				// 密碼
-				String admPassword = req.getParameter("admPassword");
-				if (admPassword == null || admPassword.trim().isEmpty()) {
-					errorMsgs.add("密碼不可為空白");
-				}
 				// 信箱
 				String admMail = req.getParameter("admMail");
 				if (admMail == null || admMail.trim().isEmpty()) {
@@ -77,7 +72,6 @@ public class AdmServlet extends HttpServlet {
 				admVO.setAdmAccount(admAccount);
 				admVO.setAdmImg(admImg);
 				admVO.setAdmMail(admMail);
-				admVO.setAdmPassword(admPassword);
 
 				// 有錯誤時，轉交回新增頁面
 				if (!errorMsgs.isEmpty()) {
@@ -89,7 +83,7 @@ public class AdmServlet extends HttpServlet {
 
 				/*************************** 2.開始新增資料 ***************************************/
 				AdmService admSvc = new AdmService();
-				admVO = admSvc.addAdm(admName, admImg, admAccount, admPassword, admMail, funNoArray);
+				admVO = admSvc.addAdm(admName, admImg, admAccount, admMail, funNoArray);
 
 				/*************************** 3.新增完成,準備轉交(Send the Success view) ***********/
 				String url = "/back-end/admin/listAllAdmin.jsp";
