@@ -40,7 +40,6 @@ public class SesServlet extends HttpServlet {
 		System.out.println("action:"+action);
 
 		
-		// 來自select_page.jsp的請求
 		if("getOne_For_Display".equals(action)) { 
 			List<String> errorMsgs = new LinkedList<String>();
 			req.setAttribute("errorMsgs", errorMsgs);
@@ -77,12 +76,11 @@ public class SesServlet extends HttpServlet {
 				
 			}catch (Exception e) {
 				errorMsgs.add("無法取得資料:" + e.getMessage());
-				RequestDispatcher failureVoew = req.getRequestDispatcher("/back-end/session/select_page.jsp");
+				RequestDispatcher failureVoew = req.getRequestDispatcher("/back-end/session/listAllSession.jsp");
 				failureVoew.forward(req,res);
 			}
 		}
 
-		// 來自select_page.jsp的請求---複合查詢
 		if("listSessions_ByCompositeQuery".equals(action)) {
 			List<String> errorMsgs = new LinkedList<String>();
 			req.setAttribute("errorMsgs", errorMsgs);
@@ -167,8 +165,10 @@ public class SesServlet extends HttpServlet {
 
 	             // Send the use back to the form, if there were errors   
 	             if (!errorMsgs.isEmpty()) {
+					  System.out.println(errorMsgs);
+					  
 					  req.setAttribute("sesVO", sesVO);
-					  String url = "/back-end/session/select_page.jsp";
+					  String url = "/back-end/session/addSession.jsp";
 					  RequestDispatcher failureView = req.getRequestDispatcher(url);
 					  failureView.forward(req, res);
 					  return;
@@ -199,8 +199,10 @@ public class SesServlet extends HttpServlet {
                
                /***************************其他可能的錯誤處理**********************************/
 			}catch (Exception e) {
+				System.out.println("Exception= " + e.getMessage());
+				
 	            errorMsgs.put("Exception",e.getMessage());
-	            String url = "/back-end/session/select_page.jsp";
+	            String url = "/back-end/session/addSession.jsp";
 	            RequestDispatcher failureView = req.getRequestDispatcher(url);
 	            failureView.forward(req, res);
 	        }		

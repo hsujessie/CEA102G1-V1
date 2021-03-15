@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%@ page import="com.session.model.*"%>
 <%@ page import="com.movie.model.*"%>
 
@@ -10,6 +11,7 @@
 	<title>場次新增</title>	
 	<%@ include file="/back-end/files/sb_head.file"%>
 	<link rel="stylesheet" type="text/css" href="<%=request.getContextPath()%>/resource/datetimepicker/jquery.datetimepicker.css" />
+	<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/timepicker/1.3.5/jquery.timepicker.min.css">
 <style>
   table {
 	width: 750px;
@@ -71,6 +73,15 @@
   .xdsoft_datetimepicker.xdsoft_dark .xdsoft_calendar td, .xdsoft_datetimepicker.xdsoft_dark .xdsoft_calendar th {
    	border-radius: 0px;
   }
+  .ui-timepicker-standard .ui-state-hover{
+  	background-color: #bb9d52;
+  	border: 1px solid #aa9166;
+  	color: #fff;
+  	cursor: pointer;
+  }
+  #abled-btn{
+    z-index: 0;
+  }
 </style>
 </head>
 <body class="sb-nav-fixed">
@@ -90,14 +101,24 @@
 						<table>
 							<tr>
 							<jsp:useBean id="movSvc" scope="page" class="com.movie.model.MovService"/>
-								<th>電影</th>
+								<th>電影</th>																		<!-- Only display the movies which are the difference of 上映日期 minus 當天日期 is greater than 7days -->
 								<td>
-									<select name="movNo">
+									<select name="movNo" style="width: 400px;">
 							             <option value=""></option>
-							             <c:forEach var="movVO" items="${movSvc.all}" >
-							             	<option value="${movVO.movno}">${movVO.movname}
+							             <c:forEach var="movVO" items="${movSvc.all}" >											
+											<jsp:useBean id="now" class="java.util.Date"/>
+											<c:if test="${movVO.movondate gt now}">
+												<c:set value="${movVO.movondate.time - now.time}" var="dateDiff"/>  <!-- the difference of 上映日期 minus 當天日期 has to greater than 7days --> 												
+												<c:if test="${dateDiff gt 604800000}">                              <!-- 7日 = 604800000毫秒 -->
+													<option value="${movVO.movno}" data-movver="${movVO.movver}" data-movondate="${movVO.movondate}">${movVO.movname}
+												</c:if>
+											</c:if>
 							             </c:forEach>
 						             </select>
+						             <span id="movNo-errmsg" style="display:none;">			
+										<i class="far fa-hand-point-up" style="color:#bb9d52;"></i>
+										<label id="movNo-errmsg-txt" class="err-color"></label>
+									</span>
 								</td>
 							</tr>
 							<tr>
@@ -118,11 +139,19 @@
 								<td>
 									<input class="sty-input" name="sesDateBegin" id="sesdate_begin" type="text" value=""> 
 							        ~ <input class="sty-input" name="sesDateEnd" id="sesdate_end" type="text" value="">
+							        <span id="sesDate-errmsg" style="display:none;">			
+										<i class="far fa-hand-point-up" style="color:#bb9d52;"></i>
+										<label id="sesDate-errmsg-txt" class="err-color"></label>
+									</span>
 								</td>
 							</tr>
 							<tr>
 								<th>	
 									<input id="addtime" type="button" value="新增時間">
+									<span id="addtime-errmsg" style="display:none;">			
+										<i class="far fa-hand-point-up" style="color:#bb9d52;"></i>
+										<label id="addtime-errmsg-txt" class="err-color"></label>
+									</span>
 								</th>
 							</tr>
 						</table>
@@ -151,6 +180,7 @@
 		<%@ include file="/back-end/files/sb_importJs.file"%> <!-- 引入template要用的js -->
 		<script src="<%=request.getContextPath()%>/resource/datetimepicker/jquery.js"></script>
 		<script src="<%=request.getContextPath()%>/resource/datetimepicker/jquery.datetimepicker.full.js"></script>
+		<script src="//cdnjs.cloudflare.com/ajax/libs/timepicker/1.3.5/jquery.timepicker.min.js"></script>
 <script>
 	$.datetimepicker.setLocale('zh');
 	$(function(){
@@ -176,33 +206,39 @@
 		  timepicker:false
 		 });
 	});
+
 	
 	
-	/* =========================================================================================== */
-									/* Varify Inputs */
-	/* =========================================================================================== */
-	 let theNoFir = $("input[name='theNo']")[0];
-	 let theNoSec = $("input[name='theNo']")[1];
-	 let theNoThi = $("input[name='theNo']")[2];
-	 theNoFir.addEventListener('change', isEmpty, false);
-	 theNoSec.addEventListener('change', isEmpty, false);
-	 theNoThi.addEventListener('change', isEmpty, false);
+	let theNoZero = $("input[name='theNo']")[0];
+	let theNoFirst = $("input[name='theNo']")[1];
+	let theNoSecond = $("input[name='theNo']")[2];
+	$('select[name="movNo"]').change(function(){
+		/* =========================================================================================== */
+										/* 選擇電影後，自動勾選相對應的廳院 */
+		/* =========================================================================================== */
+		let movVer = $("select[name='movNo'] :selected").data('movver');
+		if(movVer == "2D"){
+			theNoZero.checked = true;
+		}
+		if(movVer == "3D"){
+			theNoFirst.checked = true;
+		}
+		if(movVer == "IMAX"){
+			theNoSecond.checked = true;
+		}	
+		
+
+		/* =========================================================================================== */
+									  /* 選擇電影後，自動帶出相對應的上映日期 */
+		/* =========================================================================================== */
+		let movOndate = $("select[name='movNo'] :selected").data('movondate');
+		$('#sesdate_begin').val(movOndate);
+		$('#sesdate_end').val(movOndate);
+	});
+	
 	 
-	 function isEmpty(e){
-		 if(theNoFir.checked || theNoSec.checked || theNoThi.checked){
-			 $("#abled-btn").css('display','block');
-			 $("#disabled-btn").css('display','none'); 
-			 $("#theNo-errmsg").css('display','none'); 
-		 }else{
-			 $("#abled-btn").css('display','none');
-			 $("#disabled-btn").css('display','block'); 
-			 $("#theNo-errmsg").css('display','inline-block'); 
-			 $("#theNo-errmsg-txt").text("請選擇影廳!");
-		 }
-	 }
-	
 	/* =========================================================================================== */
-									/* 新增場次時間 */
+									/* 新增時間 */
 	/* =========================================================================================== */
 	let addtime = document.getElementById("addtime");
 	let i = 0;
@@ -210,14 +246,89 @@
 		i+=1;
 		let timetb = document.getElementById("timetb");
 		timetb.style.display="block";
-		let tag = "<tr><th>"+i+"</th><td><input type="+"\""+"time"+"\""+"name="+"\""+"sesTime"+"\""+"></td><td><input type="+"\""+"button"+"\""+"value="+"\""+"刪除"+"\""+"id="+"\""+"delete"+"\""+"class=\"delete-btn-sty\""+"onclick='removeTr(this)'></td></tr>";
+		let tag = "<tr><th>"+i+"</th><td><input type="+"\""+"text"+"\""+"name="+"\""+"sesTime"+"\""+"></td><td><input type="+"\""+"button"+"\""+"value="+"\""+"刪除"+"\""+"id="+"\""+"delete"+"\""+"class=\"delete-btn-sty\""+"onclick='removeTr(this)'></td></tr>";
 		timetb.innerHTML += tag;
+		
+		
+		/* =========================================================================================== */
+		  						  /* timepicker */
+		/* =========================================================================================== */
+		 $('input[name="sesTime"]').timepicker({
+		    timeFormat: 'h:mm p',
+		    interval: 120,     //時間間隔 120 min
+		   	defaultTime: '10', //預設起始時間
+		    dynamic: true,
+		    dropdown: true,
+		    scrollbar: false
+		 });
 		
 	},false);
 	
 	function removeTr(e){
 		i--;
 		e.closest('tr').remove();
+	}
+	
+	
+	/* =========================================================================================== */
+									/* Varify Inputs */
+	/* =========================================================================================== */
+	let theNoFir = $("input[name='theNo']")[0];
+	let theNoSec = $("input[name='theNo']")[1];
+	let theNoThi = $("input[name='theNo']")[2];
+	let movNoselect = $("select[name='movNo']")[0];
+	
+	theNoFir.addEventListener('change', isEmpty, false);
+	theNoSec.addEventListener('change', isEmpty, false);
+	theNoThi.addEventListener('change', isEmpty, false);
+	movNoselect.addEventListener('change', isEmpty, false);
+	addtime.addEventListener("click", isEmpty, false);
+	$('#sesdate_begin').change(isEmpty);
+	$('#sesdate_end').change(isEmpty);
+	
+	function isEmpty(e){
+		if(!theNoFir.checked && !theNoSec.checked && !theNoThi.checked){
+			$("#abled-btn").css('display','none');
+			$("#disabled-btn").css('display','block'); 
+			$("#theNo-errmsg").css('display','inline-block'); 
+			$("#theNo-errmsg-txt").text("請選擇影廳");
+		}
+		
+		if(theNoFir.checked || theNoSec.checked || theNoThi.checked){
+			$("#abled-btn").css('display','block');
+			$("#disabled-btn").css('display','none'); 
+			$("#theNo-errmsg").css('display','none'); 
+		}
+		
+		if($("select[name='movNo'] :selected").text() == ''){
+			$("#abled-btn").css('display','none');
+			$("#disabled-btn").css('display','block'); 
+			$("#movNo-errmsg").css('display','inline-block'); 
+			$("#movNo-errmsg-txt").text("請選擇電影");
+		}else{
+			$("#movNo-errmsg").css('display','none');
+			$("#movNo-errmsg-txt").text("");
+		}
+		
+		if($('#sesdate_begin').val() == '' || $('#sesdate_end').val() == ''){
+			$("#abled-btn").css('display','none');
+			$("#disabled-btn").css('display','block'); 
+			$("#sesDate-errmsg").css('display','inline-block'); 
+			$("#sesDate-errmsg-txt").text("請選擇日期");
+		}else{
+			$("#sesDate-errmsg").css('display','none');
+			$("#sesDate-errmsg-txt").text("");
+		}
+		
+		if(!document.querySelector('input[name="sesTime"]')){
+			$("#abled-btn").css('display','none');
+			$("#disabled-btn").css('display','block'); 
+			$("#addtime-errmsg").css('display','inline-block'); 
+			$("#addtime-errmsg-txt").text("請新增時間");
+		}else{
+			$("#addtime-errmsg").css('display','none');
+			$("#addtime-errmsg-txt").text("");
+		}
 	}
 </script>
 </body>
