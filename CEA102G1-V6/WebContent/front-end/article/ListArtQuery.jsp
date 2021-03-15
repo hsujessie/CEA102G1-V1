@@ -409,7 +409,7 @@ function clearRepRptReson(){
 
 			<div id="art_modal-footer" class="modal-footer" style="padding: 0px">
 				<div id="artRepDiv">
-					<textarea id="artRepContent"></textarea>
+					<textarea id="artRepContent" placeholder="輸入留言"></textarea>
 	            	<i id="artRepButton" class="fas fa-reply-all" title="回覆"></i>
             	</div>
             </div>
