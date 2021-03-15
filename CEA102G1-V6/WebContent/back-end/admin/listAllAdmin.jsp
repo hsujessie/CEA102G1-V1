@@ -38,7 +38,7 @@
                     <div class="container-fluid">
                     	
                     	<!-- error message Start -->
-                    	<h3 class="h3-style" style="display: inline-block;">電影列表</h3>
+                    	<h3 class="h3-style" style="display: inline-block;">員工列表</h3>
 						<c:if test="${addSuccess != null}">
 							<span class="success-span"> 
 								${addSuccess}
@@ -111,6 +111,7 @@
 									<th>密碼</th>
 									<th>信箱</th>
 									<th>在職狀態</th>
+									<th>修改</th>
 								</tr>				
 							</thead>
 									
@@ -125,7 +126,13 @@
 									<td>${admVO.admMail}</td>
 									<td>${admVO.admStatus=="0" ?"在職中":"已離職"}</td>
 									<td>
-										
+										<form method="post" action="<%=request.getContextPath()%>/adm/adm.do">
+											<a class="btn btn-light btn-brd grd1 effect-1">
+												<input type="hidden" name="admNo" value="${admVO.admNo}">
+												<input type="hidden" name="action" value="getOne_for_update">
+												<input type="submit" value="修改" class="input-pos">
+					        				 </a>
+					        			 </form>
 									</td>
 								</tr>
 								</c:forEach>

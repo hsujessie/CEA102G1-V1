@@ -1,6 +1,6 @@
 package com.func.model;
 
-import java.util.Set;
+import java.util.List;
 
 public class FunService {
 	private FunDAO_interface dao;
@@ -9,7 +9,7 @@ public class FunService {
 		dao = new FunDAO();
 	}
 	
-	public Set<FunVO> getAll() {
+	public List<FunVO> getAll() {
 		return dao.getAll();
 	}
 }

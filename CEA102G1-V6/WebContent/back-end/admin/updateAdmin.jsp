@@ -4,7 +4,7 @@
 
 <html>
 <head>
-	<title>電影新增</title>	
+	<title>員工修改</title>	
 	<%@ include file="/back-end/files/sb_head.file"%>
 
 <style>
@@ -61,7 +61,7 @@
 					   </c:if>
                        
 						<FORM method="post" action="<%=request.getContextPath()%>/adm/adm.do" enctype="multipart/form-data">
-						<h3 class="h3-style listOne-h3-pos">員工新增</h3>
+						<h3 class="h3-style listOne-h3-pos">員工修改</h3>
 						<table>
 							<tr>
 								<th>姓名</th>
@@ -92,21 +92,33 @@
 								<th>信箱</th>
 								<td><input class="sty-input mr-left mr-btm-normal" name="admMail" type="text" value="${admVO.admMail}"></td>
 							</tr>
+							<tr>
+								<th>狀態</th>
+								<td>
+									<select name="admStatus">
+										<c:forEach varStatus="i" begin="0" end="1">
+											<option value="${i.index}" ${i.index==admVO.admStatus ? "selected" :""}>${i.index=="0" ? "在職" : "離職"}
+										</c:forEach>
+									</select>
+								</td>
+							</tr>
 							
 							<tr>
 								<th>設定權限</th>
 								<td>
 									<jsp:useBean id="funSvc" scope="page" class="com.func.model.FunService"></jsp:useBean>
+									<jsp:useBean id="admAutSvc" scope="page" class="com.admin_auth.model.AdmAutService"></jsp:useBean>
 									<div class="row">
 										<c:forEach var="funVO" items="${funSvc.all}">
-											<div class="col-4"><input type="checkbox" name="funNo" value="${funVO.funNo}">${funVO.funName}</div>
+												<div class="col-4"><input type="checkbox" name="funNo" value="${funVO.funNo}" ${admAutSvc.checkAdmAut(admVO.admNo, funVO.funNo)? "checked" :""}>${funVO.funName}</div>
 										</c:forEach>
 									</div>
 								</td>
 							</tr>
 						</table>
 						<br>
-						<input type="hidden" name="action" value="insert">
+						<input type="hidden" name="admNo" value="${admVO.admNo}">
+						<input type="hidden" name="action" value="update">
 						<a class="btn btn-light btn-brd grd1 effect-1 btn-pos" style="margin: 1% 0 1% 50%;" >
 							<input type="submit" value="送出" class="input-pos">
 						</a>
