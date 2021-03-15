@@ -8,6 +8,7 @@ public class AdmVO implements Serializable {
 	private byte[] admImg;
 	private String admAccount;
 	private String admPassword;
+	private String admMail;
 	private Integer admStatus;
 	
 	public AdmVO() {}
@@ -58,6 +59,18 @@ public class AdmVO implements Serializable {
 
 	public void setAdmStatus(Integer admStatus) {
 		this.admStatus = admStatus;
+	}
+
+	public String getAdmMail() {
+		return admMail;
+	}
+
+	public void setAdmMail(String admMail) {
+		this.admMail = admMail;
+	}
+	
+	public String getAdmImgParam() {
+		return "?columnName=adm_img&tableName=administrator&fieldName=adm_no&fieldValue=" + admNo;
 	}
 
 }

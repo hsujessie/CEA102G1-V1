@@ -3,12 +3,6 @@
 <%@ page import="java.util.*"%>
 <%@ page import="com.movie.model.*"%>
 
-<%
-    MovService movSvc = new MovService();
-    List<MovVO> list = movSvc.getAll();
-    pageContext.setAttribute("list",list);
-%>
-
 <html>
 <head>
 	<title>Movies Management</title>
@@ -26,6 +20,10 @@
 	}
 	.form-sty{
 		margin: 20px 0 0 10px;
+	}
+	img {
+		width: 50px;
+		height: 50px;
 	}
 </style>
 <body class="sb-nav-fixed">
@@ -59,7 +57,7 @@
                     	<div class="row " style="margin: -60px 0 20px 0;">         
 			                <div class="col-2"></div>
 	                        <div class="col-10">          
-		            			<jsp:useBean id="movSvcAll" scope="page" class="com.movie.model.MovService"/>                        
+		            			<jsp:useBean id="admSvc" scope="page" class="com.admin.model.AdmService"/>                        
 	                           	<FORM class="form-sty" METHOD="post" ACTION="<%=request.getContextPath()%>/movie/mov.do">				                        
 			                        <b>電影名稱</b>
 			                            <select name="mov_no" style="width: 80px;">
@@ -107,41 +105,32 @@
 							<thead>
 								<tr style="border-bottom: 3px solid #bb9d52;">
 									<th>列表編號</th>
-									<th class="th-adjust">名稱</th>
-									<th>上映日期</th>
-									<th>下檔日期</th>
-									<th>片長</th>
-									<th>級數</th>
-									<th>查看</th>
-									<th>修改</th>
+									<th class="th-adjust">姓名</th>
+									<th>照片</th>
+									<th>帳號</th>
+									<th>密碼</th>
+									<th>信箱</th>
+									<th>在職狀態</th>
 								</tr>				
 							</thead>
 									
 							<tbody>
-								<%@ include file="/back-end/movie/pages/page1.file" %> 
-								<c:forEach var="movVO" items="${list}" varStatus="no" begin="<%=pageIndex%>" end="<%=pageIndex+rowsPerPage-1%>">					
-								<tr class="sty-height" valign='middle' ${(movVO.movno==param.movno) ? 'style="background-color:#bb9d52; color:#fff;"':''}>
+								<c:forEach var="admVO" items="${admSvc.all}" varStatus="no">					
+								<tr class="sty-height" valign='middle' ${(admVO.admNo==param.admNo) ? 'style="background-color:#bb9d52; color:#fff;"':''}>
 									<td>${no.index+1}</td>
-									<td>${movVO.getMovname()}</td>
-									<td>${movVO.getMovondate()}</td>
-									<td>${movVO.getMovoffdate()}</td>
-									<td>${movVO.getMovdurat()}小時</td>
-									<td>${movVO.getMovrating()}</td>
+									<td>${admVO.admName}</td>
+									<td><img src="<%=request.getContextPath()%>/util/imgReader${admVO.admImgParam}"></td>
+									<td>${admVO.admAccount}</td>
+									<td>${admVO.admPassword}</td>
+									<td>${admVO.admMail}</td>
+									<td>${admVO.admStatus=="0" ?"在職中":"已離職"}</td>
 									<td>
-					        			 <a id="listOne" onclick="getData(this,${movVO.movno})" class="btn btn-light btn-brd grd1 effect-1">
-											<input type="button" value="查看" class="input-pos">
-					        			 </a>	
-									</td>
-									<td>
-										<a class="btn btn-light btn-brd grd1 effect-1" onclick="updateData(this,${movVO.movno})" >
-											<input type="submit" value="修改" class="input-pos">
-					        			 </a>
+										
 									</td>
 								</tr>
 								</c:forEach>
 							</tbody>
 						</table>
-					   <%@ include file="/back-end/movie/pages/page2.file" %>
                        <!-- listAllMovie End -->
                     
                     </div>
@@ -151,15 +140,6 @@
         </div>
 		<%@ include file="/back-end/files/sb_importJs.file"%> <!-- 引入template要用的js -->
 		
-	<script>				
-		function getData(e,movno){
-			let href = "<%=request.getContextPath()%>/movie/mov.do?action=getOne_For_Display&requestURL=<%=request.getServletPath()%>&movno="+movno;
-			e.setAttribute("href", href);
-		}				
-		function updateData(e,movno){
-			let href = "<%=request.getContextPath()%>/movie/mov.do?action=getOne_For_Update&requestURL=<%=request.getServletPath()%>&whichPage=<%=whichPage%>&movno="+movno;
-			e.setAttribute("href", href);
-		}
-	</script>
+
 </body>
 </html>
