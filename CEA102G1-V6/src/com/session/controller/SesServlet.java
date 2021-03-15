@@ -6,12 +6,15 @@ import java.sql.Time;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.time.Duration;
+import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 
 import javax.servlet.RequestDispatcher;
@@ -143,18 +146,47 @@ public class SesServlet extends HttpServlet {
 	             String[] sesDateArr = new String[sesDateList.size()];
 	             sesDateArr = sesDateList.toArray(sesDateArr);
 	             
-           
-	             Time sesTime = null;              
-	             String[] sesTimeArr = req.getParameterValues("sesTime");
+	             
+	             Time sesTime = null;   
+	             String[] sesTimeArr = req.getParameterValues("sesTime");	             
+	             List<LocalTime> sesTimeListEven = new ArrayList<LocalTime>();
+	             List<LocalTime> sesTimeListOdd = new ArrayList<LocalTime>();
+	             Duration diff = null;
 	             if (sesTimeArr == null || sesTimeArr.length == 0) {
-				   errorMsgs.put("sesTime"," 請選擇電影時間");
-                   System.out.println("sesTime is empty!");
+					   errorMsgs.put("sesTime"," 請選擇電影時間");
+	                   System.out.println("sesTime is empty!");
 	             }else {
-                   for(int j = 0; j < sesTimeArr.length; j++) {
-                     sesTime = Time.valueOf(java.time.LocalTime.parse(sesTimeArr[j]));  
-                   }
+	            	 
+	            	/* =====================================================================
+	            	                          場次時間間距，錯誤驗證
+	            	   =====================================================================*/
+	            	 if(sesTimeArr.length > 0) {
+						System.out.println("if= " + sesTimeArr.length);
+						for(int j = 0; j < sesTimeArr.length; j++) {	
+							if(j%2 == 0) {                                                                   //取到的時間格式為"10:00AM"，需轉為24小時制格式，才能取時間的difference
+								sesTimeListEven.add(java.time.LocalTime.parse(convertTimes(sesTimeArr[j]))); //將偶數索引值的時間轉換後，存進list
+							}
+							if(j%2 != 0) {
+								sesTimeListOdd.add(java.time.LocalTime.parse(convertTimes(sesTimeArr[j])));  //將奇數索引值的時間轉換後，存進list
+							}
+						}
+						
+						for(int i = 0; i < sesTimeListEven.size(); i++) {
+							System.out.println("Even List: " + sesTimeListEven.get(i));
+							System.out.println("Odd  List: " + sesTimeListOdd.get(i));
+							diff = Duration.between(sesTimeListEven.get(i),sesTimeListOdd.get(i));  //將兩個list裡面的時間相減
+							System.out.println("diff= " + diff.toHours()); 
+							if(diff.toHours() < 2 && diff.toHours() > 0) {   // 判斷 > 0 為了避免 10:00AM - 12:00AM 的相差等於 -10 負數
+								errorMsgs.put("sesTime"," 間距不可少於2小時");  							
+							}
+						}
+						
+						
+					}else {
+						System.out.println("else= " +  + sesTimeArr.length);
+						sesTime = Time.valueOf(java.time.LocalTime.parse(convertTimes(sesTimeArr[0])));
+					}
 	             }
-
 
 	             // Here're parameters for sending back to the front page, if there were errors   
              	 SesVO sesVO = new SesVO();
@@ -165,8 +197,7 @@ public class SesServlet extends HttpServlet {
 
 	             // Send the use back to the form, if there were errors   
 	             if (!errorMsgs.isEmpty()) {
-					  System.out.println(errorMsgs);
-					  
+					  System.out.println("enter errorMsgs not empty= " + errorMsgs);
 					  req.setAttribute("sesVO", sesVO);
 					  String url = "/back-end/session/addSession.jsp";
 					  RequestDispatcher failureView = req.getRequestDispatcher(url);
@@ -179,7 +210,7 @@ public class SesServlet extends HttpServlet {
                for(int i = 0; i < sesDateArr.length; i++) {
 	                 sesDate = Date.valueOf(sesDateArr[i]);  
                    for(int j = 0; j < sesTimeArr.length; j++) {
-                       sesTime = Time.valueOf(java.time.LocalTime.parse(sesTimeArr[j])); 
+						sesTime = Time.valueOf(java.time.LocalTime.parse(convertTimes(sesTimeArr[j])));
                        for(int k = 0; k < theNoArr.length; k++) {                       
                            theNo = new Integer(theNoArr[k]);
                            /***************************2.開始新增資料***************************************/   
@@ -358,5 +389,10 @@ public class SesServlet extends HttpServlet {
         TimeList.add(times);
 		return TimeList;
 	}
-
+	
+	public static String convertTimes(String twelveHourTime) throws ParseException {
+		DateFormat twenty_tf = new SimpleDateFormat("hh:mm a", Locale.ENGLISH);
+		DateFormat twenty_four_tf = new SimpleDateFormat("HH:mm");
+		return twenty_four_tf.format(twenty_tf.parse(twelveHourTime));
+	}
 }

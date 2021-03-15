@@ -151,14 +151,20 @@
 									<span id="addtime-errmsg" style="display:none;">			
 										<i class="far fa-hand-point-up" style="color:#bb9d52;"></i>
 										<label id="addtime-errmsg-txt" class="err-color"></label>
-									</span>
+									</span>	
 								</th>
 							</tr>
-						</table>
-						<table id="timetb" style="display:none;">
+						</table>   									<!-- ${(movVO.movno==param.movno) ? 'style="background-color:#bb9d52; color:#fff;"':''} -->
+						<table id="timetb" ${not empty errorMsgs.sesTime? 'style="display:block;"' : 'style="display:none;"'}>
 							<tr>
 								<th>編號</th>
-								<th style="padding-left: 10px;">時間</th>
+								<th style="padding-left: 10px;">時間
+									<c:if test="${not empty errorMsgs.sesTime}">					
+										<span id="sesTime-errmsg">		
+											<label class="err-color"><i class="far fa-hand-point-down" style="color:#bb9d52;"></i>${errorMsgs.sesTime}</label>
+										</span>
+									</c:if>	
+								</th>								
 							</tr>
 						</table>
 						<br>
@@ -242,33 +248,46 @@
 	/* =========================================================================================== */
 	let addtime = document.getElementById("addtime");
 	let i = 0;
+	let timeCount = 0;
+	let count = 0;
 	addtime.addEventListener("click",function(){
+		$('#sesTime-errmsg').css('display','none');
 		i+=1;
 		let timetb = document.getElementById("timetb");
 		timetb.style.display="block";
-		let tag = "<tr><th>"+i+"</th><td><input type="+"\""+"text"+"\""+"name="+"\""+"sesTime"+"\""+"></td><td><input type="+"\""+"button"+"\""+"value="+"\""+"刪除"+"\""+"id="+"\""+"delete"+"\""+"class=\"delete-btn-sty\""+"onclick='removeTr(this)'></td></tr>";
+		let tag = "<tr><th>"+i+"</th><td><input type="+"\""+"text"+"\""+"name="+"\""+"sesTime"+"\""+"class"+"="+"\""+"sesTimeInput"+"\""+"></td><td><input type="+"\""+"button"+"\""+"value="+"\""+"刪除"+"\""+"id="+"\""+"delete"+"\""+"class=\"delete-btn-sty\""+"onclick='removeTr(this)'></td></tr>";
 		timetb.innerHTML += tag;
 		
 		
 		/* =========================================================================================== */
 		  						  /* timepicker */
 		/* =========================================================================================== */
-		 $('input[name="sesTime"]').timepicker({
+		let timeGap = 10 + ":" + "00 AM";
+		let timeVal = $('input[name="sesTime"]').val(timeGap);
+		let timeSlice = timeVal.val().slice(0, 2);
+		let timeInt = parseInt(timeSlice);
+		timeGap = timeInt + timeCount;
+		console.log("timeGap= " + timeGap);
+		
+		for(count; count < $('input[name="sesTime"]').length; count++){
+			console.log(count);
+			document.getElementsByClassName("sesTimeInput")[count].value = timeGap + ":" + "00 AM";
+		} 
+		
+		$('input[name="sesTime"]').timepicker({
 		    timeFormat: 'h:mm p',
 		    interval: 120,     //時間間隔 120 min
-		   	defaultTime: '10', //預設起始時間
 		    dynamic: true,
 		    dropdown: true,
 		    scrollbar: false
 		 });
-		
+		timeCount+=2;
 	},false);
 	
 	function removeTr(e){
 		i--;
 		e.closest('tr').remove();
 	}
-	
 	
 	/* =========================================================================================== */
 									/* Varify Inputs */
