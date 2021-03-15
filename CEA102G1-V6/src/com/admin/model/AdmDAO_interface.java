@@ -13,4 +13,5 @@ public interface AdmDAO_interface {
 	public List<AdmVO> getAll();
 	public List<AdmAutVO> getAuthsByAdmNo(Integer admNo);
 	public AdmVO findByprimaryKey(Integer admNo);
+	public AdmVO login(String admAccount, String admPassword);
 }

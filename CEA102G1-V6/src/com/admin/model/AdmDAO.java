@@ -34,6 +34,7 @@ public class AdmDAO implements AdmDAO_interface{
 	private static final String GET_ALL_STMT = "SELECT ADM_NO, ADM_NAME, ADM_ACCOUNT, ADM_PASSWORD, ADM_MAIL, ADM_STATUS FROM ADMINISTRATOR ORDER BY ADM_NO";
 	private static final String GET_ONE_STMT = "SELECT ADM_NO, ADM_NAME, ADM_ACCOUNT, ADM_PASSWORD, ADM_MAIL, ADM_STATUS FROM ADMINISTRATOR WHERE ADM_NO=?";
 	private static final String GET_AUTHS_BYADMNO_STMT = "SELECT ADM_NO, FUN_NO FROM ADMIN_AUTHORITY WHERE ADM_NO=?";
+	private static final String LOGIN_STMT = "SELECT ADM_NO, ADM_NAME, ADM_ACCOUNT, ADM_PASSWORD, ADM_MAIL, ADM_STATUS FROM ADMINISTRATOR WHERE ADM_ACCOUNT=? AND ADM_PASSWORD=?";
 	
 	
 	private static final String UPDATE = "UPDATE ADMINISTRATOR SET ADM_NAME=?, ADM_IMG=?, ADM_ACCOUNT=?, ADM_PASSWORD=?, ADM_MAIL=?, ADM_STATUS=? WHERE ADM_NO=?";
@@ -394,6 +395,63 @@ public class AdmDAO implements AdmDAO_interface{
 		}
 		
 		return list;
+	}
+
+	@Override
+	public AdmVO login(String admAccount, String admPassword) {
+		AdmVO admVO = null;
+		
+		Connection con = null;
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+		
+		try {
+			con = ds.getConnection();
+			pstmt = con.prepareStatement(LOGIN_STMT);
+			
+			pstmt.setString(1, admAccount);
+			pstmt.setString(2, admPassword);
+			rs = pstmt.executeQuery();
+			
+			while (rs.next()) {
+				admVO = new AdmVO();
+				
+				admVO.setAdmNo(rs.getInt("ADM_NO"));
+				admVO.setAdmName(rs.getString("ADM_NAME"));
+				admVO.setAdmAccount(rs.getString("ADM_ACCOUNT"));
+				admVO.setAdmPassword(rs.getString("ADM_PASSWORD"));
+				admVO.setAdmMail(rs.getString("ADM_MAIL"));
+				admVO.setAdmStatus(rs.getInt("ADM_STATUS"));
+			}
+			
+			
+		} catch (SQLException se) {
+			throw new RuntimeException("A database error occured. " + se.getMessage());
+		} finally {
+			if (rs != null) {
+				try {
+					rs.close();
+				} catch (SQLException se) {
+					se.printStackTrace(System.err);
+				}
+			}
+			
+			if (pstmt != null) {
+				try {
+					pstmt.close();
+				} catch (SQLException se) {
+					se.printStackTrace(System.err);
+				}
+			}
+			if (con != null) {
+				try {
+					con.close();
+				} catch (Exception e) {
+					e.printStackTrace(System.err);
+				}
+			}
+		}
+		return admVO;
 	}
 	
 	
