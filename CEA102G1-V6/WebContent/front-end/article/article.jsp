@@ -186,8 +186,11 @@
                                 $('#memUpdateArt').hide();
                             }
 
-                            //判斷是否已收藏
-                            isArtFav();
+        					//判斷是否已收藏
+        					debugger;
+        					if('${memNo}' != ""){
+        						isArtFav();
+        					}
 
                             //呼叫列全部回文
                             debugger;

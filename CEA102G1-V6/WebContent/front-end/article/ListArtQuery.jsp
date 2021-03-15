@@ -163,7 +163,10 @@ function ListArtQuery(){
  					}
  					 					
 					//判斷是否已收藏
-	 				isArtFav();
+					debugger;
+					if('${memNo}' != ""){
+						isArtFav();
+					}
 					
 	 			  	//呼叫列全部回文
 	 			    listAllArtRepByArtNo();
@@ -293,7 +296,7 @@ function listAllArtRepByArtNo(){
 				$('#artRep').append('<div style="font-size: 3rem; color: #808080">尚無回文</div>');
 			}else{
 				$(artRepVO).each(function(i, item){
-					$('#artRep').append('<div style="line-height: 300%"><div id="memName" style="display:inline-block; width: 20%;">'+item.memName+'</div><div id="artRepTime" style="display:inline-block; color: #6C6C6C; width: 60%">'+moment(item.artRepTime).locale('zh_TW').format('llll')+'</div><i id="artRepRpt_icon" class="fas fa-exclamation-circle dropdown-toggle dropdown" data-toggle="dropdown" title="檢舉留言" style="font-size: 1.5rem; color: #94B8D5;"></i><div class="dropdown-menu"><div class="form-group" data-value='+item.artRepNo+'>檢舉留言<input type="text" class="form-control artRepRptReson" placeholder="輸入原因" style="width: 100%;"></div><button class="btn btn-outline-secondary artRepRptButton">確定</button></div><div class="artRepContentList" style="text-indent: 2em;">'+item.artRepContent+'</div><hr>');				
+					$('#artRep').append('<div style="line-height: 300%"><div id="memName" style="display:inline-block; width: 20%;">'+item.memName+'</div><div id="artRepTime" style="display:inline-block; color: #6C6C6C; width: 60%">'+moment(item.artRepTime).locale('zh_TW').format('llll')+'</div><c:if test="${memNo != null}"><i id="artRepRpt_icon" class="fas fa-exclamation-circle dropdown-toggle dropdown" data-toggle="dropdown" title="檢舉留言" style="font-size: 1.5rem; color: #94B8D5;"></i></c:if><div class="dropdown-menu"><div class="form-group" data-value='+item.artRepNo+'>檢舉留言<input type="text" class="form-control artRepRptReson" placeholder="輸入原因" style="width: 100%;"></div><button class="btn btn-outline-secondary artRepRptButton">確定</button></div><div class="artRepContentList" style="text-indent: 2em;">'+item.artRepContent+'</div><hr>');				
 				});					
 			}
 
@@ -376,7 +379,9 @@ function clearRepRptReson(){
                         
                         <!-- 檢舉button -->
 						<div class="btn-group float-right" style="box-sizing: border-box;">
-							<i id="artRpt_icon" class="fas fa-frown dropdown-toggle dropdown" data-toggle="dropdown" title="檢舉" style="font-size: 1.8em; color: #94B8D5;"></i>
+							<c:if test="${memNo != null}">
+								<i id="artRpt_icon" class="fas fa-frown dropdown-toggle dropdown" data-toggle="dropdown" title="檢舉" style="font-size: 1.8em; color: #94B8D5;"></i>
+						    </c:if>
 						    <div class="dropdown-menu">
 						         <div class="form-group">
 						              <label for="artRptReson">檢舉文章</label>
