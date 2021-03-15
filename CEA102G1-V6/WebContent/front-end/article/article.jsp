@@ -19,8 +19,7 @@
 
 <head>
     <meta charset="UTF-8">
-    <%@ include file="/front-end/files/frontend_importJs.file"%> 
-<!--     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script> -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
     <link rel="stylesheet" type="text/css"
         href="<%=request.getContextPath()%>/resource/datetimepicker/jquery.datetimepicker.css" />
     <script src="<%=request.getContextPath()%>/resource/datetimepicker/jquery.js"></script>
@@ -30,10 +29,14 @@
         integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous">
     </script>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
-<!--     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script> -->
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
     <!-- toastr v2.1.4 -->
     <link href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/2.1.4/toastr.min.css" rel="stylesheet" />
     <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/2.1.4/toastr.min.js"></script>
+<!--     fronend_importJs -->
+	<script src="<%=request.getContextPath()%>/resource/easing/easing.min.js"></script>
+	<script src="<%=request.getContextPath()%>/resource/owlcarousel/owl.carousel.min.js"></script>
+	<script src="<%=request.getContextPath()%>/resource/js/frontend.js"></script>
 
     <script>
         toastr.options = {
@@ -233,9 +236,6 @@
                 format: 'Y-m-d', //format:'Y-m-d H:i:s',
                 value: '', // value:   new Date(),
             });
-
-            //增加button class
-            $('button').addClass('btn btn-outline-secondary');
 
             //修改成功訊息
             if ('${updateSuccess}' == 'updateSuccess') {
@@ -518,5 +518,7 @@
 	    <%@ include file="/front-end/files/frontend_footer.file"%>
 	    <!-- Footer End -->
 	</div>
-	
+	<script src="<%=request.getContextPath()%>/resource/easing/easing.min.js"></script>
+	<script src="<%=request.getContextPath()%>/resource/owlcarousel/owl.carousel.min.js"></script>
+	<script src="<%=request.getContextPath()%>/resource/js/frontend.js"></script>
 </html>
