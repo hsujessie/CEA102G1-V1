@@ -48,6 +48,7 @@ public class ArtServlet extends HttpServlet {
 		if("newArt".equals(action)) {
 			ArtVO artVO = new ArtVO();
 			request.setAttribute("artVO", artVO);
+			String requestURL = request.getParameter("requestURL"); // 送出修改的來源網頁路徑
 			
 			if(request.getSession().getAttribute("memNo") != null) {
 				
@@ -56,8 +57,9 @@ public class ArtServlet extends HttpServlet {
 				RequestDispatcher newArticle = request.getRequestDispatcher(url);			
 				newArticle.forward(request, response);				
 			}else {
-				String url = request.getContextPath()+"/front-end/Login.jsp";
-				response.sendRedirect(url);
+				String url = "/front-end/Member_Login/login.jsp";
+				RequestDispatcher newArticleLogin = request.getRequestDispatcher(url);			
+				newArticleLogin.forward(request, response);
 			}
 		}
 		
@@ -137,7 +139,9 @@ public class ArtServlet extends HttpServlet {
 		if("select_Upadte_One_Art".equals(action)) {
 			/*====================請求參數===================*/		
 			Integer artNo = new Integer(request.getParameter("artNo"));
+			String artManageUpdate = request.getParameter("artManageUpdate");
 			System.out.println("select_Upadte_One_Art(artNo)："+artNo);
+			System.out.println("select_Upadte_One_Art(artManageUpdate)："+artManageUpdate);
 			
 			/*====================查詢資料===================*/			
 			ArtService artSvc = new ArtService();
@@ -145,6 +149,7 @@ public class ArtServlet extends HttpServlet {
 			
 			/*====================轉送至updateArt.jsp===================*/			
 			request.setAttribute("artVO", artVO);
+			request.setAttribute("artManageUpdate", artManageUpdate);
 			RequestDispatcher updateArticle = request.getRequestDispatcher("/front-end/article/updateArticle.jsp");
 			updateArticle.forward(request, response);
 			return;
@@ -157,7 +162,14 @@ public class ArtServlet extends HttpServlet {
 			System.out.println("errorMsgs.size():"+errorMsgs.size());
 
 			try {
-				/*====================請求參數===================*/			
+				/*====================請求參數===================*/
+				HttpSession session = request.getSession();
+				String artManageUpdate = null;
+				if(session.getAttribute("artManageUpdate") != null) {
+					artManageUpdate = (String) session.getAttribute("artManageUpdate");
+					System.out.println("artManageUpdate:"+artManageUpdate);					
+				}
+				
 				Integer artNo = new Integer(request.getParameter("artNo").trim());
 				System.out.println("updateArt_error: artNo ok");
 				
@@ -204,7 +216,6 @@ public class ArtServlet extends HttpServlet {
 				
 				//Bootstrap_modal
 				String openModal="openModal";
-				HttpSession session = request.getSession();
 				session.setAttribute("openModal",openModal );
 				
 				session.setAttribute("artNo", artNo);
@@ -212,12 +223,21 @@ public class ArtServlet extends HttpServlet {
 				session.setAttribute("updateSuccess", "updateSuccess");
 				System.out.println("updateArt_ok");	
 				
-				/*====================轉送至文章===================*/			
-				String url = request.getContextPath()+"/front-end/article/article.jsp";
-				System.out.println(url);
-//				RequestDispatcher showUpdateArticle = request.getRequestDispatcher(url);			
-//				showUpdateArticle.forward(request, response);
-				response.sendRedirect(url);
+				/*====================轉送至文章===================*/	
+				if(artManageUpdate != null) {
+					session.removeAttribute("artManageUpdate");
+					String url = request.getContextPath()+"/front-end/article/articleManage.jsp";
+					System.out.println(url);
+					response.sendRedirect(url);
+					return;
+				}else {
+					String url = request.getContextPath()+"/front-end/article/article.jsp";
+					System.out.println(url);
+//					RequestDispatcher showUpdateArticle = request.getRequestDispatcher(url);			
+//					showUpdateArticle.forward(request, response);
+					response.sendRedirect(url);
+					return;
+				}
 				
 			} catch (Exception e) {
 				System.out.println("e.getMessage():"+e.getMessage());
@@ -291,45 +311,6 @@ public class ArtServlet extends HttpServlet {
 			out.flush();
 			out.close();
 		}
-		
-//		//article.jsp呼叫，title查詢
-//		if("find_By_Title_Use_AJAX".equals(action)) {
-//			JSONArray array = new JSONArray();
-//
-//			/*====================請求參數===================*/
-//				String artTitle = request.getParameter("artTitle");
-//				System.out.println("find_ByTitle:"+artTitle);
-//				
-//			/*====================查詢資料，title查詢=========*/
-//				ArtService artSvc = new ArtService();
-//				List<ArtVO> list = artSvc.findByTitle(artTitle);
-//				System.out.println("find_ByTitle_List:"+list);
-//			/*==============放入JSONObject==================*/
-//				for (ArtVO artVO : list) {
-//					JSONObject obj = new JSONObject();
-//					MemDAO memDAO = new MemDAO();
-//					try {
-//						obj.put("artNo", artVO.getArtNo());
-//						obj.put("memName", memDAO.findByPrimaryKey(artVO.getMemNo()).getMemName());
-//						obj.put("memNo", artVO.getMemNo());
-//						obj.put("artTitle", artVO.getArtTitle());
-//						obj.put("artContent", artVO.getArtContent());
-//						obj.put("artTime", artVO.getArtTime());
-//						array.put(obj);
-//					} catch (JSONException e) {
-//						e.printStackTrace();
-//					}
-//				}
-//				System.out.println("=================art_Show_By_Title==============");
-//				
-//				/*==============傳回=============*/
-//				response.setContentType("text/plain");
-//				response.setCharacterEncoding("UTF-8");
-//				PrintWriter out = response.getWriter();
-//				out.write(array.toString());
-//				out.flush();
-//				out.close();
-//		}
 		
 		//article.jsp呼叫，複合查詢
 		if("find_By_CompositeQuery_Use_AJAX".equals(action)) {

@@ -1,25 +1,28 @@
+<%@page import="com.member.model.MemberVO"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt"%>
 <%@ page import="java.util.*" %>
 <%@ page import="com.art.model.*" %>
 <jsp:useBean id="artSvc" scope="page" class="com.art.model.ArtService" />
-<jsp:useBean id="memSvc" class="com.mem.model.MemDAO" />
 
 <!DOCTYPE html>
 <%		
-// 		session.getAttribute("memVO");
 
-		String memNo = "1"; //假設會員1登入
-		session.setAttribute("memNo", memNo);
-		session.getAttribute("memNo");
+		if(session.getAttribute("MemberVO") != null){
+			MemberVO memberVO = (MemberVO)session.getAttribute("MemberVO");
+			session.setAttribute("memNo", memberVO.getMemNo());
+			session.getAttribute("memNo");			
+		}
 
 %>
 <html>
 
 <head>
     <meta charset="UTF-8">
+    <%@ include file="/front-end/files/frontend_importCss.file"%>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+<!--     datetimepicker -->
     <link rel="stylesheet" type="text/css"
         href="<%=request.getContextPath()%>/resource/datetimepicker/jquery.datetimepicker.css" />
     <script src="<%=request.getContextPath()%>/resource/datetimepicker/jquery.js"></script>
@@ -133,11 +136,6 @@
 
     <script>
         $(document).ready(function () {
-            debugger;
-            $('body').scroll(function(){
-            	$('#articleTop').css('margin-top',73);
-            });
-            
             //列出側邊欄電影類型
             showArtMoveType();
 
@@ -309,7 +307,7 @@
                         $('#artListCenter').append(
                             '<div id="artAuthor" style="display: inline-block"><div style="display: inline-block">作者：</div> <div style="display: inline-block">' +
                             item.memName + '</div></div>' +
-                            '<div id="artAuthor" style="display: inline-block"><div style="display: inline-block">電影類型：</div> <div style="display: inline-block">' +
+                            '<div id="movType" style="display: inline-block"><div style="display: inline-block">電影類型：</div> <div style="display: inline-block">' +
                             item.artMovType + '</div></div>' +
                             '<div id="artTitle"><div style="font-size: 1.2rem;"><b>' + item
                             .artTitle + '</b></div></div>' +
@@ -379,7 +377,6 @@
         };
     </script>
     <title>--SEENEMA ARTICLE--</title>
-    <%@ include file="/front-end/files/frontend_importCss.file"%>
 </head>
 
 <body>
@@ -418,6 +415,7 @@
 	                                        <!-- 新增文章 -->
 	                                        <form method="post" action="<%=request.getContextPath()%>/art/art.do">
 	                                            <input type="hidden" name="action" value="newArt">
+	                                            <input type="hidden" name="requestURL" value="<%=request.getServletPath()%>"><!--送出本網頁的路徑給Controller-->
 	                                            <label>
 	                                                <div id="newArtDiv">
 	                                                    <input type="image" id="newArt"
@@ -435,7 +433,6 @@
 	                                            <div class="input-group-append">
 	                                                <button class="btn btn-outline-secondary" type="button"
 	                                                    id="findArtByTitleButton">查詢</button>
-	                                                <!--                                               <input type="hidden" name="action" value="find_ByTitle"> -->
 	                                            </div>
 	                                        </div>
 	                                    </li>
