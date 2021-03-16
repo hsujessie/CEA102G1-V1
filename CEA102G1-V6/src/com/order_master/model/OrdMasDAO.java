@@ -4,6 +4,8 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Set;
 
 import javax.naming.Context;
@@ -34,8 +36,8 @@ public class OrdMasDAO implements OrdMasDAO_interface {
 	}
 	
 	private static final String INSERT_STMT = "INSERT INTO ORDER_MASTER(MEM_NO, SES_NO, ORDMAS_PRICE) VALUES(?,?,?)";
-	private static final String GET_ALL_STMT = "SELECT ORDMAS_NO, MEM_NO, SES_NO, ORDMAS_DATE, ORDMAS_PRICE, ORDMAS_GETNO, ORDMAS_STATUS FROM ORDER_MASTER ORDER BY ORDMAS_NO";
-	private static final String GET_ONE_STMT = "SELECT ORDMAS_NO, MEM_NO, SES_NO, ORDMAS_DATE, ORDMAS_PRICE, ORDMAS_GETNO, ORDMAS_STATUS FROM ORDER_MASTER WHERE ORDMAS_NO=?";
+	private static final String GET_ALL_STMT = "SELECT ORDMAS_NO, MEM_NO, SES_NO, ORDMAS_DATE, ORDMAS_PRICE, ORDMAS_STATUS FROM ORDER_MASTER ORDER BY ORDMAS_NO";
+	private static final String GET_ONE_STMT = "SELECT ORDMAS_NO, MEM_NO, SES_NO, ORDMAS_DATE, ORDMAS_PRICE, ORDMAS_STATUS FROM ORDER_MASTER WHERE ORDMAS_NO=?";
 	
 	@Override
 	public void insertWithDetail(OrdMasVO ordMasVO, Set<TicTypCartVO> ticTypCartSet, Set<FooCartVO> fooCartSet) {
@@ -111,9 +113,62 @@ public class OrdMasDAO implements OrdMasDAO_interface {
 	}
 
 	@Override
-	public Set<OrdMasVO> getAll() {
-		// TODO Auto-generated method stub
-		return null;
+	public List<OrdMasVO> getAll() {
+		List<OrdMasVO> list = new ArrayList<OrdMasVO>();
+		OrdMasVO ordMasVO = null;
+		
+		Connection con = null;
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+		
+		try {
+			con = ds.getConnection();
+			pstmt = con.prepareStatement(GET_ALL_STMT);
+			rs = pstmt.executeQuery();
+			
+			while (rs.next()) {
+				ordMasVO = new OrdMasVO();
+				
+				ordMasVO.setOrdMasNo(rs.getInt("ORDMAS_NO"));
+				ordMasVO.setMemNo(rs.getInt("MEM_NO"));
+				ordMasVO.setSesNo(rs.getInt("SES_NO"));
+				ordMasVO.setOrdMasDate(rs.getTimestamp("ORDMAS_DATE"));
+				ordMasVO.setOrdMasPrice(rs.getInt("ORDMAS_PRICE"));
+				ordMasVO.setOrdMasStatus(rs.getInt("ORDMAS_STATUS"));
+				
+				list.add(ordMasVO);
+			}
+			
+			
+		} catch (SQLException se) {
+			throw new RuntimeException("A database error occured. " + se.getMessage());
+		} finally {
+			if (rs != null) {
+				try {
+					rs.close();
+				} catch (SQLException se) {
+					se.printStackTrace(System.err);
+				}
+			}
+			
+			if (pstmt != null) {
+				try {
+					pstmt.close();
+				} catch (SQLException se) {
+					se.printStackTrace(System.err);
+				}
+			}
+			if (con != null) {
+				try {
+					con.close();
+				} catch (Exception e) {
+					e.printStackTrace(System.err);
+				}
+			}
+		}
+		
+		
+		return list;
 	}
 
 	@Override

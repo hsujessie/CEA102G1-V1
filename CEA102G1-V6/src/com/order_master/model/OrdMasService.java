@@ -1,6 +1,7 @@
 package com.order_master.model;
 
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 import com.food.model.FooCartVO;
@@ -30,5 +31,9 @@ public class OrdMasService {
 		ordMasVO.setOrdMasPrice(ordMasPrice);
 		
 		dao.insertWithDetail(ordMasVO, ticTypCartSet, fooCartSet);
+	}
+	
+	public List<OrdMasVO> getAll() {
+		return dao.getAll();
 	}
 }

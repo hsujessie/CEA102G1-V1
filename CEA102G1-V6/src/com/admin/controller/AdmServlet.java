@@ -87,6 +87,9 @@ public class AdmServlet extends HttpServlet {
 				admVO = admSvc.addAdm(admName, admImg, admAccount, admMail, funNoArray);
 
 				/*************************** 3.新增完成,準備轉交(Send the Success view) ***********/
+				String addSuccess = "【  " + admName + " 】" + "新增成功";
+				req.setAttribute("addSuccess", addSuccess);	
+				
 				String url = "/back-end/admin/listAllAdmin.jsp";
 				RequestDispatcher successView = req.getRequestDispatcher(url);
 				successView.forward(req, res);
@@ -171,6 +174,9 @@ public class AdmServlet extends HttpServlet {
 					admVO = admSvc.updateAdmNoImg(admNo, admName, admAccount, admPassword, admMail, admStatus, funNoArray);
 				}
 				/*************************** 3.新增完成,準備轉交(Send the Success view) ***********/
+				String updateSuccess = "【  " + admName + " 】" + "修改成功";
+				req.setAttribute("updateSuccess", updateSuccess);
+				
 				String url = "/back-end/admin/listAllAdmin.jsp";
 				RequestDispatcher successView = req.getRequestDispatcher(url);
 				successView.forward(req, res);
@@ -238,7 +244,7 @@ public class AdmServlet extends HttpServlet {
 				
 				String url = (String) session.getAttribute("location");
 				if (url == null) {
-					url = req.getContextPath() + "/back-end/admin/listAllAdmin.jsp";
+					url = req.getContextPath() + "/back-end/index.jsp";
 				}
 				res.sendRedirect(url);
 			} catch (Exception e) {

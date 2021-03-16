@@ -27,6 +27,7 @@
 	}
 </style>
 <body class="sb-nav-fixed">
+
 		<%@ include file="/back-end/files/sb_navbar.file"%> <!-- 引入navbar (上方) -->
         <div id="layoutSidenav">
             <div id="layoutSidenav_nav">
@@ -38,7 +39,7 @@
                     <div class="container-fluid">
                     	
                     	<!-- error message Start -->
-                    	<h3 class="h3-style" style="display: inline-block;">員工列表</h3>
+                    	<h3 class="h3-style" style="display: inline-block;">訂單列表</h3>
 						<c:if test="${addSuccess != null}">
 							<span class="success-span"> 
 								${addSuccess}
@@ -57,7 +58,7 @@
                     	<div class="row " style="margin: -60px 0 20px 0;">         
 			                <div class="col-2"></div>
 	                        <div class="col-10">          
-		            			<jsp:useBean id="admSvc" scope="page" class="com.admin.model.AdmService"/>                        
+		            			<jsp:useBean id="ordMasSvc" scope="page" class="com.order_master.model.OrdMasService"/>                        
 	                           	<FORM class="form-sty" METHOD="post" ACTION="<%=request.getContextPath()%>/movie/mov.do">				                        
 			                        <b>電影名稱</b>
 			                            <select name="mov_no" style="width: 80px;">
@@ -105,30 +106,31 @@
 							<thead>
 								<tr style="border-bottom: 3px solid #bb9d52;">
 									<th>列表編號</th>
-									<th class="th-adjust">姓名</th>
-									<th>照片</th>
-									<th>帳號</th>
-									<th>密碼</th>
-									<th>信箱</th>
-									<th>在職狀態</th>
+									<th class="th-adjust">會員編號</th>
+									<th>場次編號</th>
+									<th>訂單日期</th>
+									<th>訂單總金額</th>
+									<th>訂單狀態</th>
 									<th>修改</th>
 								</tr>				
 							</thead>
 									
 							<tbody>
-								<c:forEach var="admVO" items="${admSvc.all}" varStatus="no">					
-								<tr class="sty-height" valign='middle' ${(admVO.admNo==param.admNo) ? 'style="background-color:#bb9d52; color:#fff;"':''}>
-									<td>${no.index+1}</td>
-									<td>${admVO.admName}</td>
-									<td><img src="<%=request.getContextPath()%>/util/imgReader${admVO.admImgParam}"></td>
-									<td>${admVO.admAccount}</td>
-									<td>${admVO.admPassword}</td>
-									<td>${admVO.admMail}</td>
-									<td>${admVO.admStatus=="0" ?"在職中":"已離職"}</td>
+								<c:forEach var="ordMasVO" items="${ordMasSvc.all}" varStatus="index">					
+								<tr class="sty-height" valign='middle' ${(ordMasVO.ordMasNo==param.ordMasNo) ? 'style="background-color:#bb9d52; color:#fff;"':''}>
+									<td>${index.count}</td>
+									<td>${ordMasVO.memNo}</td>
+									<td>${ordMasVO.sesNo}</td>
+									<td>${ordMasVO.ordMasDate}</td>
 									<td>
-										<form method="post" action="<%=request.getContextPath()%>/adm/adm.do">
+										$
+										<span>${ordMasVO.ordMasPrice}</span>
+									</td>
+									<td>${ordMasVO.ordMasStatus == "0" ? "未取票" : "已取票"}</td>
+									<td>
+										<form method="post" action="<%=request.getContextPath()%>/ordMas/ordMas.do">
 											<a class="btn btn-light btn-brd grd1 effect-1">
-												<input type="hidden" name="admNo" value="${admVO.admNo}">
+												<input type="hidden" name="ordMasNo" value="${ordMasVO.ordMasNo}">
 												<input type="hidden" name="action" value="getOne_for_update">
 												<input type="submit" value="修改" class="input-pos">
 					        				 </a>

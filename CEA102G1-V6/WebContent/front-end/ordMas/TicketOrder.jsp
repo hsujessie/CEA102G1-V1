@@ -150,7 +150,7 @@
 													<div class="food col-4">
 														<div>
 															<img
-																src="<%=request.getContextPath()%>/foo/reader.do?columnName=foo_img&tableName=food&fieldName=foo_no&fieldValue=${fooVO.fooNo}">
+																src="<%=request.getContextPath()%>/util/imgReader${fooVO.fooImgParam}">
 														</div>
 														<div>
 															<p>${fooVO.fooName}</p>

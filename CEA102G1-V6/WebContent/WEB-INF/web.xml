@@ -10,19 +10,20 @@
     <welcome-file>default.jsp</welcome-file>
   </welcome-file-list>
   
-  <filter>
-  	<filter-name>LoginFilter</filter-name>
-  	<filter-class>com.admin.controller.LoginFilter</filter-class>
-  </filter>
-  <filter-mapping>
-  	<filter-name>LoginFilter</filter-name>
-  	<url-pattern>/back-end/admin/*</url-pattern>
-  	<dispatcher>REQUEST</dispatcher>
-    <dispatcher>FORWARD</dispatcher>
-    <dispatcher>INCLUDE</dispatcher>
-    <dispatcher>ERROR</dispatcher>
-    <dispatcher>ASYNC</dispatcher>
-  </filter-mapping>
+<!--   後臺登入濾器 -->
+<!--   <filter> -->
+<!--   	<filter-name>LoginFilter</filter-name> -->
+<!--   	<filter-class>com.admin.controller.LoginFilter</filter-class> -->
+<!--   </filter> -->
+<!--   <filter-mapping> -->
+<!--   	<filter-name>LoginFilter</filter-name> -->
+<!--   	<url-pattern>/back-end/admin/*</url-pattern> -->
+<!--   	<dispatcher>REQUEST</dispatcher> -->
+<!--     <dispatcher>FORWARD</dispatcher> -->
+<!--     <dispatcher>INCLUDE</dispatcher> -->
+<!--     <dispatcher>ERROR</dispatcher> -->
+<!--     <dispatcher>ASYNC</dispatcher> -->
+<!--   </filter-mapping> -->
   
   
 <!--   11  -->
