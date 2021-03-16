@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 
 <!DOCTYPE html>
 <html>
@@ -8,6 +9,21 @@
 <title>SEENEMA</title>
 <%@ include file="/front-end/files/frontend_importCss.file"%>
 <link rel="stylesheet" href="<%=request.getContextPath()%>/resource/css/frontendIndex.css">
+
+<style>
+.art-box {
+	width: 230px;
+}
+.art-content {
+	overflow:hidden;
+	white-space: nowrap;
+	text-overflow: ellipsis;
+	display: -webkit-box;
+	-webkit-line-clamp: 5;
+	-webkit-box-orient: vertical;
+	white-space: normal;
+}
+</style>
 </head>
 <body>
         <div class="wrapper">
@@ -118,110 +134,33 @@
             <!-- About End -->
 
             <!-- Forum Start -->
+            <jsp:useBean id="artSvc" scope="page" class="com.art.model.ArtService"/>
             <div class="forum">
                 <div class="container">
                     <div class="section-header">
                         <h2>Forum</h2>
                     </div>
                     <div class="owl-carousel forum-carousel">
-                        <div class="forum-item">
-                            <img src="img/blog-1.jpg" alt="Forum Image">
-                            <h3>Lorem ipsum dolor</h3>
-                            <div class="meta">
-                                <i class="fa fa-list-alt"></i>
-                                <a href="">Civil Law</a>
-                                <i class="fa fa-calendar-alt"></i>
-                                <p>01-Jan-2045</p>
-                            </div>
-                            <p>
-                                Lorem ipsum dolor sit amet elit. Phasellus nec pretium mi. Curabitur facilisis ornare velit non vulputate. Aliquam metus tortor
-                            </p>
-                            <a class="btn" href="">Read More <i class="fa fa-angle-right"></i></a>
-                        </div>
-                        <div class="forum-item">
-                            <img src="img/blog-2.jpg" alt="Forum Image">
-                            <h3>Lorem ipsum dolor</h3>
-                            <div class="meta">
-                                <i class="fa fa-list-alt"></i>
-                                <a href="">Family Law</a>
-                                <i class="fa fa-calendar-alt"></i>
-                                <p>01-Jan-2045</p>
-                            </div>
-                            <p>
-                                Lorem ipsum dolor sit amet elit. Phasellus nec pretium mi. Curabitur facilisis ornare velit non vulputate. Aliquam metus tortor
-                            </p>
-                            <a class="btn" href="">Read More <i class="fa fa-angle-right"></i></a>
-                        </div>
-                        <div class="forum-item">
-                            <img src="img/blog-3.jpg" alt="Forum Image">
-                            <h3>Lorem ipsum dolor</h3>
-                            <div class="meta">
-                                <i class="fa fa-list-alt"></i>
-                                <a href="">Business Law</a>
-                                <i class="fa fa-calendar-alt"></i>
-                                <p>01-Jan-2045</p>
-                            </div>
-                            <p>
-                                Lorem ipsum dolor sit amet elit. Phasellus nec pretium mi. Curabitur facilisis ornare velit non vulputate. Aliquam metus tortor
-                            </p>
-                            <a class="btn" href="">Read More <i class="fa fa-angle-right"></i></a>
-                        </div>
-                        <div class="forum-item">
-                            <img src="img/blog-1.jpg" alt="Forum Image">
-                            <h3>Lorem ipsum dolor</h3>
-                            <div class="meta">
-                                <i class="fa fa-list-alt"></i>
-                                <a href="">Education Law</a>
-                                <i class="fa fa-calendar-alt"></i>
-                                <p>01-Jan-2045</p>
-                            </div>
-                            <p>
-                                Lorem ipsum dolor sit amet elit. Phasellus nec pretium mi. Curabitur facilisis ornare velit non vulputate. Aliquam metus tortor
-                            </p>
-                            <a class="btn" href="">Read More <i class="fa fa-angle-right"></i></a>
-                        </div>
-                        <div class="forum-item">
-                            <img src="img/blog-2.jpg" alt="Forum Image">
-                            <h3>Lorem ipsum dolor</h3>
-                            <div class="meta">
-                                <i class="fa fa-list-alt"></i>
-                                <a href="">Criminal Law</a>
-                                <i class="fa fa-calendar-alt"></i>
-                                <p>01-Jan-2045</p>
-                            </div>
-                            <p>
-                                Lorem ipsum dolor sit amet elit. Phasellus nec pretium mi. Curabitur facilisis ornare velit non vulputate. Aliquam metus tortor
-                            </p>
-                            <a class="btn" href="">Read More <i class="fa fa-angle-right"></i></a>
-                        </div>
-                        <div class="forum-item">
-                            <img src="img/blog-3.jpg" alt="Forum Image">
-                            <h3>Lorem ipsum dolor</h3>
-                            <div class="meta">
-                                <i class="fa fa-list-alt"></i>
-                                <a href="">Cyber Law</a>
-                                <i class="fa fa-calendar-alt"></i>
-                                <p>01-Jan-2045</p>
-                            </div>
-                            <p>
-                                Lorem ipsum dolor sit amet elit. Phasellus nec pretium mi. Curabitur facilisis ornare velit non vulputate. Aliquam metus tortor
-                            </p>
-                            <a class="btn" href="">Read More <i class="fa fa-angle-right"></i></a>
-                        </div>
-                        <div class="forum-item">
-                            <img src="img/blog-1.jpg" alt="Forum Image">
-                            <h3>Lorem ipsum dolor</h3>
-                            <div class="meta">
-                                <i class="fa fa-list-alt"></i>
-                                <a href="">Business Law</a>
-                                <i class="fa fa-calendar-alt"></i>
-                                <p>01-Jan-2045</p>
-                            </div>
-                            <p>
-                                Lorem ipsum dolor sit amet elit. Phasellus nec pretium mi. Curabitur facilisis ornare velit non vulputate. Aliquam metus tortor
-                            </p>
-                            <a class="btn" href="">Read More <i class="fa fa-angle-right"></i></a>
-                        </div>
+                    
+						<c:forEach var="artVO" items="${artSvc.all}" >
+	                        <div class="forum-item">
+	                            <!-- <img src="" alt="Forum Image"> -->
+	                            <h3>${artVO.artTitle}</h3>
+	                            <div class="meta">
+	                                <i class="fas fa-user-edit"></i>																				
+									<jsp:useBean id="memSvc" scope="page" class="com.member.model.MemberService"/>
+									<c:set value="${memSvc.getOneMember(artVO.memNo)}" var="memObj"></c:set>
+	                                <p>${memObj.memName}</p>
+	                                <i class="fa fa-calendar-alt"></i>
+	                                <p><fmt:formatDate value="${artVO.artTime}" type="DATE" pattern="yyyy-MM-dd"/></p>
+	                            </div>
+	                            <div class="art-box">
+	                            	<p class="art-content">${artVO.artContent}</p>
+	                            </div>
+	                            <a class="btn" href="<%=request.getContextPath()%>/front-end/article/ArticleContent.jsp">Read More <i class="fa fa-angle-right"></i></a>
+	                        </div>
+                        </c:forEach>
+                        
                     </div>
                 </div>
             </div>

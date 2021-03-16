@@ -92,6 +92,7 @@ a:focus {
     color: rgb(80,80,80);
     text-shadow: rgba(255, 255, 255) 0em 0em 0.2em;
     transition: none;
+    background-color: transparent;
 }
 
 .nav-bar .dropdown-menu {
@@ -119,7 +120,7 @@ a:focus {
 
     .nav-bar,
     .nav-bar .navbar {
-        background: transparent !important;
+        background: #fff !important;
     }
     .nav-bgcolor {
         background: transparent !important;
