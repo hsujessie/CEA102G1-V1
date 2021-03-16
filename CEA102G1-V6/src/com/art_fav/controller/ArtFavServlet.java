@@ -46,15 +46,6 @@ public class ArtFavServlet extends HttpServlet {
 			/*====================新增資料===================*/
 			ArtFavService artFavSvc = new ArtFavService();
 			artFavSvc.insertArtFav(artNo, memNo);
-//			JSONObject obj = new JSONObject();
-			
-//			try {
-//				obj.put("addArtFav", true);
-//				obj.put("artNo", artNo);
-//			} catch (JSONException e) {
-//				e.printStackTrace();
-//			}
-//			array.put(obj);
 			
 			/*==============傳回=============*/
 			response.setContentType("text/plain");
@@ -80,17 +71,7 @@ public class ArtFavServlet extends HttpServlet {
 			/*====================新增資料===================*/
 			ArtFavService artFavSvc = new ArtFavService();
 			artFavSvc.deleteArtFav(artNo, memNo);
-//			JSONObject obj = new JSONObject();
-			
-			/*====================回傳新增成功===================*/
-//			try {
-//				obj.put("addArtFav", true);
-//				obj.put("artNo", artNo);
-//			} catch (JSONException e) {
-//				e.printStackTrace();
-//			}
-//			array.put(obj);
-			
+						
 			/*==============傳回=============*/
 			response.setContentType("text/plain");
 			response.setCharacterEncoding("UTF-8");
