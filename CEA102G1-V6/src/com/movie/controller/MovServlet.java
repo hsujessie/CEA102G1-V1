@@ -629,10 +629,13 @@ public class MovServlet extends HttpServlet{
 			List<MovVO> nowShowingList = new ArrayList<MovVO>();
 			for(int i = 0; i < list.size(); i++) {
 				movObj = (MovVO)list.get(i);
-				if (movObj.getMovondate().before(date)) {
-				    System.out.println("now_Showing======" + movObj.getMovondate());
-				    nowShowingList.add(movObj);
-				    req.setAttribute("nowShowing", nowShowingList);
+				if (movObj.getMovondate().before(date) || movObj.getMovondate().equals(date)) {
+					if(date.before(movObj.getMovoffdate())) {
+					    System.out.println("now_Showing ondate======" + movObj.getMovondate());
+					    System.out.println("now_Showing offdate======" + movObj.getMovoffdate());
+					    nowShowingList.add(movObj);
+					    req.setAttribute("nowShowing", nowShowingList);
+					}
 				}
 			}
 			RequestDispatcher successView = req.getRequestDispatcher("/front-end/movies/movies.jsp");

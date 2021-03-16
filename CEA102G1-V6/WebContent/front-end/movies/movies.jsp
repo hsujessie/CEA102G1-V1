@@ -47,10 +47,16 @@
                     
 						<c:if test="${empty nowShowing && empty commingSoon}">	
 						<c:forEach var="movVO" items="${movSvc.all}" >
-							<c:if test="${not empty movVO.movpos}">						    
 		                        <div class="col-lg-4 col-md-6 col-sm-12 movies-item">
-		                            <div class="movies-wrap" onclick="sendData(this,${movVO.movno})" style="cursor:pointer;">
-		                                <img src="<%=request.getContextPath()%>/movie/mov.do?movno=${movVO.movno}&img=movpos&action=get_One_MovPos" alt="Movies Image">
+		                            <div class="movies-wrap" onclick="sendData(this,${movVO.movno})" style="cursor:pointer;">		                               
+										
+										<c:if test="${not empty movVO.movpos}">						    
+		                                	<img src="<%=request.getContextPath()%>/movie/mov.do?movno=${movVO.movno}&img=movpos&action=get_One_MovPos" alt="Movies Image">		                                
+	                        			</c:if>	
+										<c:if test="${empty movVO.movpos}">											
+	                                        <img src="<%=request.getContextPath()%>/resource/images/film.jpg" alt="Movie Image">		                                	
+                        				</c:if>
+                        				
 		                                <figure>
 		                                    <p><img style="width:100%; max-width: 40px;" src="<%=request.getContextPath()%>/resource/images/logos/seenema_W.ico" alt="Logo"></p>
 		                                    <a href="<%=request.getContextPath()%>/movie/mov.do?action=getOne_For_Display&fromFrontend=true&movno=${movVO.movno}">${movVO.movname}</a>
@@ -58,35 +64,41 @@
 		                                </figure>
 		                            </div>
 		                        </div>
-	                        </c:if>
 						</c:forEach>
 	                    </c:if>
 						
 						<!-- Now Showing -->
 						<c:if test="${not empty nowShowing}">	
-						<c:forEach var="movVO" items="${nowShowing}" >
-							<%-- <c:if test="${not empty movVO.movpos}">	 --%>					    
-		                        <div class="col-lg-4 col-md-6 col-sm-12 movies-item">
-		                            <div class="movies-wrap" onclick="sendData(this,${movVO.movno})" style="cursor:pointer;">
-		                                <img src="<%=request.getContextPath()%>/movie/mov.do?movno=${movVO.movno}&img=movpos&action=get_One_MovPos" alt="Movies Image">
-		                                <figure>
-		                                    <p><img style="width:100%; max-width: 40px;" src="<%=request.getContextPath()%>/resource/images/logos/seenema_W.ico" alt="Logo"></p>
-		                                    <a href="<%=request.getContextPath()%>/movie/mov.do?action=getOne_For_Display&fromFrontend=true&movno=${movVO.movno}">${movVO.movname}</a>
-		                                    <span>${movVO.movondate}</span>
-		                                </figure>
-		                            </div>
-		                        </div>
-	                       <%--  </c:if> --%>
+						<c:forEach var="movVO" items="${nowShowing}" >				    
+	                        <div class="col-lg-4 col-md-6 col-sm-12 movies-item">
+	                            <div class="movies-wrap" onclick="sendData(this,${movVO.movno})" style="cursor:pointer;">
+	                                <c:if test="${not empty movVO.movpos}">
+	                                	<img src="<%=request.getContextPath()%>/movie/mov.do?movno=${movVO.movno}&img=movpos&action=get_One_MovPos" alt="Movies Image">
+	                                </c:if>
+									<c:if test="${empty movVO.movpos}">											
+                                        <img src="<%=request.getContextPath()%>/resource/images/film.jpg" alt="Movie Image">		                                	
+                       				</c:if>
+	                                <figure>
+	                                    <p><img style="width:100%; max-width: 40px;" src="<%=request.getContextPath()%>/resource/images/logos/seenema_W.ico" alt="Logo"></p>
+	                                    <a href="<%=request.getContextPath()%>/movie/mov.do?action=getOne_For_Display&fromFrontend=true&movno=${movVO.movno}">${movVO.movname}</a>
+	                                    <span>${movVO.movondate}</span>
+	                                </figure>
+	                            </div>
+	                        </div>
 						</c:forEach>
 	                    </c:if>
 	                    
 						<!-- Comming Soon -->
 						<c:if test="${not empty commingSoon}">	
-						<c:forEach var="movVO" items="${commingSoon}" >
-							<%-- <c:if test="${not empty movVO.movpos}">		 --%>				    
+						<c:forEach var="movVO" items="${commingSoon}" >				    
 		                        <div class="col-lg-4 col-md-6 col-sm-12 movies-item">
 		                            <div class="movies-wrap" onclick="sendData(this,${movVO.movno})" style="cursor:pointer;">
-		                                <img src="<%=request.getContextPath()%>/movie/mov.do?movno=${movVO.movno}&img=movpos&action=get_One_MovPos" alt="Movies Image">
+		                                <c:if test="${not empty movVO.movpos}">
+		                                	<img src="<%=request.getContextPath()%>/movie/mov.do?movno=${movVO.movno}&img=movpos&action=get_One_MovPos" alt="Movies Image">
+		                                </c:if>
+										<c:if test="${empty movVO.movpos}">											
+	                                        <img src="<%=request.getContextPath()%>/resource/images/film.jpg" alt="Movie Image">		                                	
+	                       				</c:if>
 		                                <figure>
 		                                    <p><img style="width:100%; max-width: 40px;" src="<%=request.getContextPath()%>/resource/images/logos/seenema_W.ico" alt="Logo"></p>
 		                                    <a href="<%=request.getContextPath()%>/movie/mov.do?action=getOne_For_Display&fromFrontend=true&movno=${movVO.movno}">${movVO.movname}</a>
@@ -94,7 +106,6 @@
 		                                </figure>
 		                            </div>
 		                        </div>
-	                        <%-- </c:if> --%>
 						</c:forEach>
 	                    </c:if>
                     </div>
