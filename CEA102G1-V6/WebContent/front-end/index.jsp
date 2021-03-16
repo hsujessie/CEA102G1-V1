@@ -86,12 +86,17 @@
                     <div class="owl-carousel movie-carousel">
                         <!-- move content Start -->
 						<c:forEach var="movVO" items="${movSvc.all}" >
-							<c:if test="${not empty movVO.movpos}">	
 		                        <div class="col-lg-10 col-md-12">
 		                            <div class="movie-item">
-		                                <div class="movie-img">
-		                                <img src="<%=request.getContextPath()%>/movie/mov.do?movno=${movVO.movno}&img=movpos&action=get_One_MovPos" alt="Movie Image">
-		                                </div>
+			                            <div class="movie-img">
+											<c:if test="${not empty movVO.movpos}">
+			                                	<img src="<%=request.getContextPath()%>/movie/mov.do?movno=${movVO.movno}&img=movpos&action=get_One_MovPos" alt="Movie Image">
+	                        				</c:if>
+											<c:if test="${empty movVO.movpos}">											
+		                                        <a href="<%=request.getContextPath()%>/movie/mov.do?action=getOne_For_Display&requestURL=<%=request.getServletPath()%>&movno=${movVO.movno}&fromFrontend=true"><img src="<%=request.getContextPath()%>/resource/images/film.jpg" alt="Movie Image"></a>			                                	
+	                        				</c:if>
+	                        				
+	                        			</div>
 		                                <div class="movie-text">
 		                                    <h2>${movVO.movrating}</h2>
 		                                    <p>${movVO.movondate}</p>
@@ -101,7 +106,6 @@
 		                                </div>
 		                            </div>
 		                        </div>
-	                        </c:if>
 						</c:forEach>
                         <!-- move content End -->
                     </div>
