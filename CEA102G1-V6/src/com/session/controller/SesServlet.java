@@ -61,7 +61,7 @@ public class SesServlet extends HttpServlet {
 				
 				if (!errorMsgs.isEmpty()) {
 					RequestDispatcher failureView = req
-							.getRequestDispatcher("/back-end/session/select_page.jsp");
+							.getRequestDispatcher("/back-end/session/listAllSession.jsp");
 					failureView.forward(req, res);
 					return;
 				}
@@ -112,7 +112,7 @@ public class SesServlet extends HttpServlet {
 			/***************************其他可能的錯誤處理**********************************/
 			}catch(Exception e) {
 				errorMsgs.add(e.getMessage());
-				RequestDispatcher failureView = req.getRequestDispatcher("/back-end/session/select_page.jsp");
+				RequestDispatcher failureView = req.getRequestDispatcher("/back-end/session/listAllSession.jsp");
 				failureView.forward(req, res);
 			}
 		}
@@ -197,7 +197,6 @@ public class SesServlet extends HttpServlet {
 
 	             // Send the use back to the form, if there were errors   
 	             if (!errorMsgs.isEmpty()) {
-					  System.out.println("enter errorMsgs not empty= " + errorMsgs);
 					  req.setAttribute("sesVO", sesVO);
 					  String url = "/back-end/session/addSession.jsp";
 					  RequestDispatcher failureView = req.getRequestDispatcher(url);
@@ -309,7 +308,7 @@ public class SesServlet extends HttpServlet {
 					HttpSession session = req.getSession();
 					Map<String, String[]> map = (Map<String, String[]>)session.getAttribute("map");
 					List<SesVO> list  = sesSvc.getAll(map);
-					req.setAttribute("listSessions_ByCompositeQuery",list); //  複合查詢, 資料庫取出的list物件,存入
+					req.setAttribute("listSessions_ByCompositeQuery",list); // 複合查詢, 資料庫取出的list物件,存入
 				}
 				
 				String updateSuccess = "【 場次 】" + "修改成功";
@@ -361,22 +360,34 @@ public class SesServlet extends HttpServlet {
 		
 	}
 	
+	/*=======================================================================
+	 	* 取出 dateBegin 到 dateEnd 內的所有時間，因新增場次時，可以選擇日期範圍。
+	 	* ex: Monday to Thursday，的某幾場場次時間是相同的，每一筆都需寫進資料庫。
+	 =========================================================================*/
 	public List<String> getDates(String dateBegin, String dateEnd) throws ParseException, java.text.ParseException {
 		DateFormat format = new SimpleDateFormat("yyyy-MM-dd");
  
-        // parse String dateBegin to Date
+        /* ===================================
+         	* parse String dateBegin to Date 
+         ===================================== */
         Calendar calBegin = Calendar.getInstance();
         calBegin.setTime(format.parse(dateBegin));
  
-        // parse String dateEnd to Date
+
+        /* ===================================
+         	* parse String dateEnd to Date 
+         ===================================== */
         Calendar calEnd = Calendar.getInstance();
         calEnd.setTime(format.parse(dateEnd));
         
         List<String> Datelist = new ArrayList<String>();
         Datelist.add(format.format(calBegin.getTime()));
         
-        // whether dateEnd is after calBegin
-        // if it's true -> calBegin will be plus a day via using「 Calendar.DAY_OF_MONTH 」
+        
+        /* ====================================================================================
+     		* whether dateEnd is after calBegin
+     		* if it's true -> calBegin will be plus a day via using「 Calendar.DAY_OF_MONTH 」 
+     	======================================================================================= */
         while (format.parse(dateEnd).after(calBegin.getTime()))  {
             calBegin.add(Calendar.DAY_OF_MONTH, 1);   // DAY_OF_MONTH 取出當前月的第幾天
             Datelist.add(format.format(calBegin.getTime()));
@@ -390,6 +401,11 @@ public class SesServlet extends HttpServlet {
 		return TimeList;
 	}
 	
+	
+    /* ====================================================================================
+     	* 新增場次，場次時間間距，錯誤驗證。
+ 		* 需把前台來的時間格式改為24小時制，才可判斷，場次時間之間是否少於2hr。
+ 	======================================================================================= */
 	public static String convertTimes(String twelveHourTime) throws ParseException {
 		DateFormat twenty_tf = new SimpleDateFormat("hh:mm a", Locale.ENGLISH);
 		DateFormat twenty_four_tf = new SimpleDateFormat("HH:mm");
