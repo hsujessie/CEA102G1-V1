@@ -130,11 +130,12 @@
 							</tr>
 							<tr>
 								<th>片長</th>
-								<td class="fake-txt"><input id="movDurat" class="sty-input mr-left mr-btm-normal" type="text" name="movdurat" placeholder="小時" value=""/>
-									<span id="movdurat-errmsg" class="errmsg-pos" style="display:none;">			
-										<i class="far fa-hand-point-left" style="color:#bb9d52"></i>
-										<label id="movdurat-errmsg-txt" class="err-color"></label>
-									</span>
+								<td class="fake-txt">
+									<select class="mr-left mr-btm-normal" name="movdurat">
+										<option value="1">1小時</option>
+										<option value="2">2小時</option>
+										<option value="3">3小時</option>
+									</select>
 								</td>
 							</tr>
 							<tr>

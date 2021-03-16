@@ -4,8 +4,7 @@
 	/* =========================================================================================== */
 									/* Varify Inputs */
 	/* =========================================================================================== */
-	 document.getElementsByTagName('input')[0].addEventListener('keyup', isEmpty, false);	 
-	 document.getElementById('movDurat').addEventListener('keyup', isEmpty, false); 
+	 document.getElementsByTagName('input')[0].addEventListener('keyup', isEmpty, false);
 	 document.getElementById('movDitor').addEventListener('keyup', isEmpty, false); 
 	 document.getElementById('movCast').addEventListener('keyup', isEmpty, false);
 	 document.getElementById('movDes').addEventListener('keyup', isEmpty, false);
