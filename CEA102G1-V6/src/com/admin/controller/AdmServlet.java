@@ -73,10 +73,14 @@ public class AdmServlet extends HttpServlet {
 				admVO.setAdmAccount(admAccount);
 				admVO.setAdmImg(admImg);
 				admVO.setAdmMail(admMail);
+				
+				if(funNoArray == null) {
+					errorMsgs.add("至少選擇一項權限");
+				}
 
 				// 有錯誤時，轉交回新增頁面
 				if (!errorMsgs.isEmpty()) {
-					req.setAttribute("admVO", admVO);
+					req.setAttribute("addAdmVO", admVO);
 					RequestDispatcher failureView = req.getRequestDispatcher("/back-end/admin/addAdmin.jsp");
 					failureView.forward(req, res);
 					return;

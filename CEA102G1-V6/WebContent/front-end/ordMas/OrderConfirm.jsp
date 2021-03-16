@@ -24,54 +24,78 @@
             <div class="container">
 		<div class="row">
 			<div id="a" class="col-9">
-				<form method="post"
-					action="<%=request.getContextPath()%>/ordMas/ordMas.do" id="form">
-					<table class="table">
-						<thead>
-							<tr class="table-secondary">
-								<th>商品</th>
-								<th>價格</th>
-								<th>數量</th>
-								<th>小計</th>
-							</tr>
-						</thead>
-						<tbody>
+				<div class="list-group">
+					<div class="list-group-item">
+						<div class="row">
+							<jsp:useBean id="sesSvc" scope="page" class="com.session.model.SesService" />
+							<jsp:useBean id="movSvc" scope="page" class="com.movie.model.MovService" />
 
-							<jsp:useBean id="sesSvc" scope="page"
-								class="com.session.model.SesService" />
-							<jsp:useBean id="theSvc" scope="page"
-								class="com.theater.model.TheaterService" />
-							<jsp:useBean id="ticTypSvc" scope="page"
-								class="com.ticket_type.model.Ticket_typeService" />
-							<jsp:useBean id="ideSvc" scope="page"
-								class="com.identity.model.IdentityService" />
+							<div class="col-2">
+								<div id="grade" class="text-center">
+									<div id="grade-number"></div>
+									<div id="grade-word">${movSvc.getOneMov(sesSvc.getOneSes(1).movNo).movrating}</div>
+								</div>
+							</div>
+							<div class="col-7">
+								<h3>(${movSvc.getOneMov(sesSvc.getOneSes(1).movNo).movver}${movSvc.getOneMov(sesSvc.getOneSes(1).movNo).movlan})${movSvc.getOneMov(sesSvc.getOneSes(1).movNo).movname}</h3>
+							</div>
+							<div class="col-3">
+								<p>
+									<img src="<%=request.getContextPath()%>/resource/images/ordMasIcons/sesTime.png"><span></span>${sesSvc.getOneSes(1).sesDate} ${sesSvc.getOneSes(1).sesTime}
+								</p>
+								<p>
+									<img src="<%=request.getContextPath()%>/resource/images/ordMasIcons/theater.png"><span></span>第${sesSvc.getOneSes(1).theNo}廳
+								</p>
+							</div>
+						</div>
+					</div>
+					<div class="list-group-item">
+						<form method="post" action="<%=request.getContextPath()%>/ordMas/ordMas.do" id="form">
+							<table class="table">
+								<thead>
+									<tr class="table-secondary">
+										<th>商品</th>
+										<th>價格</th>
+										<th>數量</th>
+										<th>小計</th>
+									</tr>
+								</thead>
+								<tbody>
 
-							<c:forEach var="ticTypCartVO" items="${ticTypCartSet}">
-								<tr>
-									<td>${ideSvc.getOneDept(ticTypCartVO.ideNo).ide_name}</td>
-									<td>$<span>${ticTypCartVO.ticLisPrice}</span></td>
-									<td>${ticTypCartVO.ticTypCount}</td>
-									<td>123</td>
-								</tr>
-							</c:forEach>
+								<jsp:useBean id="theSvc" scope="page" class="com.theater.model.TheaterService" />
+								<jsp:useBean id="ticTypSvc" scope="page" class="com.ticket_type.model.Ticket_typeService" />
+								<jsp:useBean id="ideSvc" scope="page" class="com.identity.model.IdentityService" />
+
+									<c:forEach var="ticTypCartVO" items="${ticTypCartSet}">
+										<tr>
+											<td>${ideSvc.getOneDept(ticTypCartVO.ideNo).ide_name}</td>
+											<td>$<span>${ticTypCartVO.ticLisPrice}</span></td>
+											<td>${ticTypCartVO.ticTypCount}</td>
+											<td>123</td>
+										</tr>
+									</c:forEach>
 							
-							<c:forEach var="fooCartVO" items="${fooCartSet}">
-								<tr>
-									<td>${fooCartVO.fooName}</td>
-									<td>$<span>${fooCartVO.fooPrice}</span>
-									</td>
-									<td>${fooCartVO.fooCount}</td>
-									<td>123</td>
-								</tr>
-							</c:forEach>
-						</tbody>
-					</table>
+									<c:forEach var="fooCartVO" items="${fooCartSet}">
+										<tr>
+											<td>${fooCartVO.fooName}</td>
+											<td>
+												$
+												<span>${fooCartVO.fooPrice}</span>
+											</td>
+											<td>${fooCartVO.fooCount}</td>
+											<td>123</td>
+										</tr>
+									</c:forEach>
+								</tbody>
+							</table>
 
 					
-					<input type="hidden" name="memNo" value="1"> 
-					<input type="hidden" name="sesNo" value="${param.sesNo}"> 
-					<input type="hidden" name="action" value="check_out">
-				</form>
+							<input type="hidden" name="memNo" value="1"> 
+							<input type="hidden" name="sesNo" value="${param.sesNo}"> 
+							<input type="hidden" name="action" value="check_out">
+						</form>
+					</div>
+				</div>
 			</div>
 
 			<div id="b" class="col-3">
@@ -80,9 +104,9 @@
 					<div class="card-body">XXX 你好</div>
 				</div>
 
-				<div class="card border-primary mb-3">
-					<div class="card-header">購物清單</div>
-					<div class="card-body">
+<!-- 				<div class="card border-primary mb-3"> -->
+<!-- 					<div class="card-header">購物清單</div> -->
+<!-- 					<div class="card-body"> -->
 <!-- 						<table class="table"> -->
 <!-- 							<tbody> -->
 <%-- 								<c:forEach var="ticTypCartVO" items="${ticTypCartSet}"> --%>
@@ -114,8 +138,8 @@
 <!-- 								</tr> -->
 <!-- 							</tbody> -->
 <!-- 						</table> -->
-					</div>
-				</div>
+<!-- 					</div> -->
+<!-- 				</div> -->
 				<button id="nextStep" class="btn btn-primary btn-lg">確認結帳</button>
 			</div>
 		</div>
@@ -123,7 +147,7 @@
             <!-- PUT HERE End -->
             
             <!-- Book Tickets Start -->
-            <%@ include file="/front-end/files/frontend_bookTicketsTamplate.file"%>
+<%--             <%@ include file="/front-end/files/frontend_bookTicketsTamplate.file"%> --%>
             <!-- Book Tickets End -->
 
             <!-- Footer Start -->

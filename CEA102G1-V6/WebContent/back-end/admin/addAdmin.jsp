@@ -65,7 +65,7 @@
 						<table>
 							<tr>
 								<th>姓名</th>
-								<td><input class="sty-input mr-left mr-btm-normal" type="text" name="admName" value="${admVO.admName}" /></td>		
+								<td><input class="sty-input mr-left mr-btm-normal" type="text" name="admName" value="${addAdmVO.admName}" /></td>		
 							</tr>
 							<tr>
 								<th>照片</th>
@@ -77,13 +77,13 @@
 							<tr>
 								<th>帳號</th>
 								<td>
-									<input class="sty-input mr-left mr-btm-normal" type="text" name="admAccount" value="${admVO.admAccount}" />
+									<input class="sty-input mr-left mr-btm-normal" type="text" name="admAccount" value="${addAdmVO.admAccount}" />
 								</td>
 							</tr>
 							
 							<tr>
 								<th>信箱</th>
-								<td><input class="sty-input mr-left mr-btm-normal" name="admMail" type="text" value="${admVO.admMail}"></td>
+								<td><input class="sty-input mr-left mr-btm-normal" name="admMail" type="text" value="${addAdmVO.admMail}"></td>
 							</tr>
 							
 							<tr>

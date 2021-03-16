@@ -42,6 +42,12 @@ div.seatCharts-seat.unavailable {
 div.seatCharts-legend {
 	position: static;
 }
+
+#nextStep {
+	position: absolute;
+	bottom: 1%;
+	right: 5%;
+}
 </style>
 </head>
 <body>
@@ -61,19 +67,55 @@ div.seatCharts-legend {
             <div class="container">
 		<div class="row">
 			<div class="col-9">
-				<form method="post" action="<%=request.getContextPath()%>/ordMas/ordMas.do" id="form">
-					<div class="row">
-						<div class="col">
-							<div id="seat-map">
-								<div id="legend"></div>
-								<div class="front-indicator">螢幕</div>
+				<div class="list-group">
+					<div class="list-group-item">
+						<div class="row">
+							<jsp:useBean id="sesSvc" scope="page" class="com.session.model.SesService" />
+							<jsp:useBean id="movSvc" scope="page" class="com.movie.model.MovService" />
+
+							<div class="col-2">
+								<div id="grade" class="text-center">
+									<div id="grade-number"></div>
+									<div id="grade-word">${movSvc.getOneMov(sesSvc.getOneSes(1).movNo).movrating}</div>
+								</div>
+							</div>
+							<div class="col-7">
+								<h3>(${movSvc.getOneMov(sesSvc.getOneSes(1).movNo).movver}${movSvc.getOneMov(sesSvc.getOneSes(1).movNo).movlan})${movSvc.getOneMov(sesSvc.getOneSes(1).movNo).movname}</h3>
+							</div>
+							<div class="col-3">
+								<p>
+									<img src="<%=request.getContextPath()%>/resource/images/ordMasIcons/sesTime.png"><span></span>${sesSvc.getOneSes(1).sesDate} ${sesSvc.getOneSes(1).sesTime}
+								</p>
+								<p>
+									<img src="<%=request.getContextPath()%>/resource/images/ordMasIcons/theater.png"><span></span>第${sesSvc.getOneSes(1).theNo}廳
+								</p>
 							</div>
 						</div>
 					</div>
-					<input type="hidden" name="sesNo" value="${param.sesNo}">
-					<input type="hidden" name="chooseSeatNo" value="" id="chooseSeatNo">
-					<input type="hidden" name="action" value="confirm_order">
-				</form>
+					<div class="list-group-item">
+						<div class="row">
+							<div class="col text-center">
+								<h2 class="title">選擇座位</h2>
+								<p>選擇您希望的購買的座位, 每筆交易最多可購買10張電影票</p>
+							</div>
+						</div>
+					</div>
+					<div class="list-group-item">
+						<form method="post" action="<%=request.getContextPath()%>/ordMas/ordMas.do" id="form">
+							<div class="row">
+								<div class="col">
+									<div id="seat-map">
+										<div id="legend"></div>
+										<div class="front-indicator">螢幕</div>
+									</div>
+								</div>
+							</div>
+							<input type="hidden" name="sesNo" value="${param.sesNo}">
+							<input type="hidden" name="chooseSeatNo" value="" id="chooseSeatNo">
+							<input type="hidden" name="action" value="confirm_order">
+						</form>
+					</div>
+				</div>
 			</div>
 
 			<div class="col-3">
@@ -129,7 +171,7 @@ div.seatCharts-legend {
             <!-- PUT HERE End -->
             
             <!-- Book Tickets Start -->
-            <%@ include file="/front-end/files/frontend_bookTicketsTamplate.file"%>
+<%--             <%@ include file="/front-end/files/frontend_bookTicketsTamplate.file"%> --%>
             <!-- Book Tickets End -->
 
             <!-- Footer Start -->
