@@ -331,7 +331,7 @@ public class MemberServlet extends HttpServlet {
 								
 								//轉送回有set requestURL的網頁
 								String requestURL = req.getParameter("requestURL");
-								if(requestURL != null) {
+								if(!requestURL.equals("null")) {
 									String url = req.getContextPath()+requestURL;
 //									RequestDispatcher successView = req.getRequestDispatcher(url);   // 修改成功後,轉交回送出修改的來源網頁
 //									successView.forward(req, res);
