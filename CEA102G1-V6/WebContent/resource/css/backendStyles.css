@@ -156,3 +156,65 @@ body.barber_version .effect-1:after {
     transform: scale(1);
     opacity: 1;
 }
+
+/***************************************************/
+/*********** Login successful CSS **********/
+/***************************************************/
+.loginSucs {
+    position: relative;
+    width: 100%;
+    padding: 45px 0 15px 0;
+}
+
+.loginSucs .loginSucs-item {
+    margin-bottom: 30px;
+}
+
+.loginSucs .loginSucs-img {
+    position: relative;
+}
+
+.loginSucs .loginSucs-img::after {
+    position: absolute;
+    content: "";
+    top: 15px;
+    right: 15px;
+    bottom: 15px;
+    left: 15px;
+    background: transparent;
+    border: 1px solid #F6F6F7;
+    transition: .3s;
+    z-index: 1;
+}
+
+.loginSucs .loginSucs-img img {
+    width: 100%;
+}
+
+.loginSucs .loginSucs-text {
+    position: relative;
+    margin: -60px 15px 0 15px;
+    padding: 30px 15px;
+    text-align: center;
+    background: #F6F6F7;
+    transition: .3s;
+    z-index: 2;
+}
+
+.loginSucs .loginSucs-text h2 {
+    font-size: 18px;
+    font-weight: 600;
+}
+
+.loginSucs .loginSucs-text p {
+    margin: 0;
+    color: #333333;
+}
+
+.loginSucs .loginSucs-item .loginSucs-text {
+    background: #D5B981;
+}
+
+.loginSucs .loginSucs-item.loginSucs-img::after {
+    border-color: #D5B981;
+}
