@@ -25,6 +25,10 @@ import com.art.model.ArtService;
 import com.art.model.ArtVO;
 import com.mem.model.MemDAO;
 
+import redis.JedisUtil;
+import redis.clients.jedis.Jedis;
+import redis.clients.jedis.JedisPool;
+
 
 public class ArtServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
@@ -43,6 +47,9 @@ public class ArtServlet extends HttpServlet {
 		request.setCharacterEncoding("UTF-8");
 		String action = request.getParameter("action");
 		System.out.println("action---"+action);
+		
+		//redis
+		JedisPool pool = JedisUtil.getJedisPool();
 		
 		//article.jsp呼叫，新增文章
 		if("newArt".equals(action)) {
@@ -276,6 +283,11 @@ public class ArtServlet extends HttpServlet {
 				
 			} else {				
 				System.out.println("artNo != null");
+				//建立redis連線
+				Jedis jedis = pool.getResource();
+				jedis.auth("123456");
+				System.out.println(jedis.ping());
+				
 				JSONObject obj = new JSONObject();
 				ArtService artSvc = new ArtService();
 				MemDAO memDAO = new MemDAO();
@@ -285,6 +297,25 @@ public class ArtServlet extends HttpServlet {
 					/*====================請求參數===================*/	
 					Integer artNo = Integer.parseInt(request.getParameter("artNo"));
 					ArtVO artVO = artSvc.getOneArt(artNo);
+					
+					System.out.println(jedis.hget("artNo:"+artVO.getArtNo(), "clickTimes"));
+					//新增點擊次數熱門度
+					if(jedis.hexists("artNo:"+artVO.getArtNo(), "clickTimes") == false) {
+						//第一次新增
+						Integer clickTimesN = 0;
+						clickTimesN++;
+						String clickTimes = String.valueOf(clickTimesN);
+						jedis.hset("artNo:"+artVO.getArtNo(), "movType", artVO.getMovType());
+						jedis.hset("artNo:"+artVO.getArtNo(), "clickTimes", clickTimes);
+												
+					}else {
+						//第n次新增
+						Integer clickTimesN = new Integer(jedis.hget("artNo:"+artVO.getArtNo(), "clickTimes"));
+						clickTimesN++;
+						String clickTimes = String.valueOf(clickTimesN);
+						jedis.hset("artNo:"+artVO.getArtNo(), "clickTimes", clickTimes);
+
+					}
 					
 					System.out.println("artNo:"+artVO.getArtNo());
 					/*==============放入JSONObject==============*/
@@ -302,7 +333,9 @@ public class ArtServlet extends HttpServlet {
 				} catch (JSONException e) {
 					e.printStackTrace();
 				}
+				jedis.close();
 			}
+			
 			/*==============傳回=============*/
 			response.setContentType("text/plain");
 			response.setCharacterEncoding("UTF-8");
