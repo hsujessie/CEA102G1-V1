@@ -10,7 +10,7 @@
 <c:set var="movieComreport" value="${pageContext.request.contextPath}/back-end/comment_report/listAllComReport.jsp"/>
 <c:set var="articleComreport" value="${pageContext.request.contextPath}/back-end/articleReport.jsp"/>                                  
 <c:set var="theater" value=""/> 
-<c:set var="food" value=""/>
+<c:set var="food" value="${pageContext.request.contextPath}/back-end/foo/fooSelectPage.jsp"/>
 <c:set var="board" value=""/> 
 <c:set var="faq" value=""/>
 
@@ -22,7 +22,7 @@
 <c:set var="movieAdd" value="${pageContext.request.contextPath}/back-end/movie/addMovie.jsp"/>       
 <c:set var="clientAdd" value=""/>                            
 <c:set var="theaterAdd" value=""/> 
-<c:set var="foodAdd" value=""/>
+<c:set var="foodAdd" value="${pageContext.request.contextPath}/back-end/foo/addFoo.jsp"/>
 <c:set var="boardAdd" value=""/> 
 <c:set var="faqAdd" value=""/>
 
