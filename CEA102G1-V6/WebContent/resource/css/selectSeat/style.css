@@ -13,15 +13,15 @@
             padding: 3px;
             border-radius: 5px;
         }
-        .wrapper {
-            width: 100%;
-            text-align: center;
-        }
-        .container {
-            margin: 0 auto;
-            width: 500px;
-            text-align: left;
-        }
+/*         .wrapper { */
+/*             width: 100%; */
+/*             text-align: center; */
+/*         } */
+/*         .container { */
+/*             margin: 0 auto; */
+/*             width: 500px; */
+/*             text-align: left; */
+/*         } */
         .booking-details {
             float: left;
             text-align: left;

@@ -5,8 +5,10 @@ import java.io.Serializable;
 public class AdmVO implements Serializable {
 	private Integer admNo;
 	private String admName;
+	private byte[] admImg;
 	private String admAccount;
 	private String admPassword;
+	private String admMail;
 	private Integer admStatus;
 	
 	public AdmVO() {}
@@ -25,6 +27,14 @@ public class AdmVO implements Serializable {
 
 	public void setAdmName(String admName) {
 		this.admName = admName;
+	}
+
+	public byte[] getAdmImg() {
+		return admImg;
+	}
+
+	public void setAdmImg(byte[] admImg) {
+		this.admImg = admImg;
 	}
 
 	public String getAdmAccount() {
@@ -50,4 +60,17 @@ public class AdmVO implements Serializable {
 	public void setAdmStatus(Integer admStatus) {
 		this.admStatus = admStatus;
 	}
+
+	public String getAdmMail() {
+		return admMail;
+	}
+
+	public void setAdmMail(String admMail) {
+		this.admMail = admMail;
+	}
+	
+	public String getAdmImgParam() {
+		return "?columnName=adm_img&tableName=administrator&fieldName=adm_no&fieldValue=" + admNo;
+	}
+
 }

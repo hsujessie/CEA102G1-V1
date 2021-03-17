@@ -92,7 +92,7 @@
 			<td>${fooVO.fooName}</td>
 			<td>${fooVO.fooCatNo}-${fooCatSvc.getOneFooCat(fooVO.fooCatNo).fooCatName}</td>
 			<td>${fooVO.fooIntro}</td>
-			<td><img src="<%=request.getContextPath()%>/foo/reader.do?columnName=foo_img&tableName=food&fieldName=foo_no&fieldValue=${fooVO.fooNo}"></td>
+			<td><img src="<%=request.getContextPath()%>/util/imgReader${fooVO.fooImgParam}"></td>
 			<td>${fooVO.fooPrice}</td>			
 			<td>${fooVO.fooStatus}--${(fooVO.fooStatus==0)?"上架":"下架"}</td>			
 			<td>

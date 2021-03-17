@@ -9,7 +9,7 @@
 <html>
 <head>
 <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1"/>
-<title>員工資料新增 - addEmp.jsp</title>
+<title>餐點資料新增 - addFoo.jsp</title>
 
 <style>
   table#table-1 {

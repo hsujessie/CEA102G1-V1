@@ -1,7 +1,7 @@
 package com.func.model;
 
-import java.util.Set;
+import java.util.List;
 
 public interface FunDAO_interface {
-	public Set<FunVO> getAll();
+	public List<FunVO> getAll();
 }
