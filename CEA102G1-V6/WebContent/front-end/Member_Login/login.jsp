@@ -32,7 +32,6 @@
 						  <input type="text" class="user" name="memAccount" placeholder="ursername"/>
 						  <span class="entypo-key inputPassIcon"> <i class="fa fa-key"></i>  </span>
 						  <input type="password" class="pass" name="memPassword" placeholder="password"/>
-						  <input type="hidden"  name="requestURL" value="<%=request.getParameter("requestURL")%>"><!--送出本網頁的路徑給Controller-->
 				</form>
 
 </body>
