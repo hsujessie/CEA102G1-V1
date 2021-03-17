@@ -422,21 +422,6 @@ public class MovServlet extends HttpServlet{
 					}
 				}
 
-                /* 以下有問題，傻眼，解開註解，前台就抓不到值??? */
-//				if (movondate.getTime() == movoffdate.getTime()) {
-//					errorMsgs.put("movondate","日期不正確，請重新輸入!		* 註:1.上映日期與下檔日期不可相等、2.上映日期不可於下檔日期之後、3.下檔日期不可於上映日期之前");
-//
-//					//先split字串，再把值送到update_movie_input.jsp
-//			        if (movverStr != null) {  
-//						movverToken = token(movverStrs, movverToken);
-//						req.setAttribute("movverToken", movverToken);	
-//					}
-//					if (movlanStr != null ) {
-//						movlanToken = token(movlanStrs, movlanToken);	  
-//						req.setAttribute("movlanToken", movlanToken); 	
-//					} 
-//				}
-
 				Integer movdurat = null;
 				try {
 					movdurat = new Integer(req.getParameter("movdurat").trim());

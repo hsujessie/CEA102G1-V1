@@ -109,7 +109,7 @@
 											<jsp:useBean id="now" class="java.util.Date"/>
 											<c:if test="${movVO.movondate gt now}">
 												<c:set value="${movVO.movondate.time - now.time}" var="dateDiff"/>  <!-- the difference of 上映日期 minus 當天日期 has to greater than 7days --> 												
-												<c:if test="${dateDiff gt 604800000}">                              <!-- 7日 = 604800000毫秒 -->  <!-- ${not empty movNo && movNo == movVO.movno ? selected: ""} -->
+												<c:if test="${dateDiff gt 604800000}">                              <!-- 7日 = 604800000毫秒 -->
 													<option value="${movVO.movno}" data-movver="${movVO.movver}" data-movondate="${movVO.movondate}" <c:if test="${not empty movNo and movNo eq movVO.movno}">selected</c:if> >${movVO.movname}
 												</c:if>
 											</c:if>
