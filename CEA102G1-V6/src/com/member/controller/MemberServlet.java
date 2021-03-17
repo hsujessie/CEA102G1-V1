@@ -339,6 +339,17 @@ public class MemberServlet extends HttpServlet {
 								failureView.forward(req, res);
 							}
 						}
+					
+					if("ajaxGetMemberName".equals(action)) {
+						res.setCharacterEncoding("UTF-8");
+						res.setContentType("text; charset=utf-8");
+						PrintWriter out = res.getWriter();
+						Integer memNo = new Integer(req.getParameter("memNo").trim());
+						MemberServic memSvc = new MemberServic();
+						String memName = memSvc.getOneMember(memNo).getMemName();
+						out.print(memName);
+						return;
+					}
 		
 		
 		

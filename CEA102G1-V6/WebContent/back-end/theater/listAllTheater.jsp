@@ -1,5 +1,4 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8"
-    pageEncoding="BIG5"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ page import="java.util.*"%>
 <%@ page import="com.theater.model.*"%>
@@ -11,56 +10,27 @@
 	pageContext.setAttribute("list",list);
 %>
 <jsp:useBean id="movie_versionSvc" scope="page" class="com.movie_version.model.MovVerService" />
-<!DOCTYPE html>
 <html>
 <head>
-<meta charset="BIG5">
-<title>ÆU°|¸ê®Æ</title>
-
-<style>
-  table#table-1 {
-	background-color: #CCCCFF;
-    border: 2px solid black;
-    text-align: center;
-  }
-  table#table-1 h4 {
-    color: red;
-    display: block;
-    margin-bottom: 1px;
-  }
-  h4 {
-    color: blue;
-    display: inline;
-  }
-</style>
-
-<style>
-  table {
-	width: 800px;
-	background-color: white;
-	margin-top: 5px;
-	margin-bottom: 5px;
-  }
-  table, th, td {
-    border: 1px solid #CCCCFF;
-  }
-  th, td {
-    padding: 5px;
-    text-align: center;
-  }
-</style>
-
+	<title>Theater</title>
+	<%@ include file="/back-end/files/sb_head.file"%>
 </head>
-<body bgcolor='white'>
-
-<table id="table-1">
-	<tr><td>
-		 <h3>ÆU°|¸ê®Æ</h3>
-		 <h4><a href="<%=request.getContextPath()%>/back-end/theater/select_page.jsp">¦^ÆU°|­º­¶</a></h4>
-	</td></tr>
+<body class="sb-nav-fixed">
+		<%@ include file="/back-end/files/sb_navbar.file"%> <!-- å¼•å…¥navbar (ä¸Šæ–¹) -->
+        <div id="layoutSidenav">
+            <div id="layoutSidenav_nav">            
+            	<c:set value="${pageContext.request.requestURI}" var="urlRecog"></c:set> <!-- åœ¨listAllXXX.jspï¼ŒåŠ ä¸Šé€™è¡Œï¼Œçµ¦sb_sidebar.fileçš„åƒæ•¸-Home -->
+				<%@ include file="/back-end/files/sb_sidebar.file"%> <!-- å¼•å…¥sidebar (å·¦æ–¹) -->
+            </div>
+            <div id="layoutSidenav_content">
+                <main>
+                    <div class="container-fluid">
+                    
+                    <!-- PUT HERE Start-->
+                    <table id="table-1">
 </table>
 <c:if test="${not empty errorMsgs}">
-	<font style="color:red">½Ð­×¥¿¥H¤U¿ù»~:</font>
+	<font style="color:red">è«‹ä¿®æ­£ä»¥ä¸‹éŒ¯èª¤:</font>
 	<ul>
 		<c:forEach var="message" items="${errorMsgs}">
 			<li style="color:red">${message}</li>
@@ -68,16 +38,14 @@
 	</ul>
 </c:if>
 
-<table>
-	<tr>
-		<th>ÆU°|½s¸¹</th>
-		<th>¼vÆUºØÃþ</th>
-		<th>ÆU°|®y¦ì½s±Æ</th>
-		<th>ÆU°|®y¦ì½s¸¹</th>
+			            <table class="table table-hover">
+							<thead>
+								<tr style="border-bottom: 3px solid #bb9d52;">
+		<th>å»³é™¢ç·¨è™Ÿ</th>
+		<th>å½±å»³ç¨®é¡ž</th>
 	</tr>
-	<%@ include file="/resource/pages/page1.file" %> 
-	<c:forEach var="theaterVO" items="${list}" begin="<%=pageIndex%>" end="<%=pageIndex+rowsPerPage-1%>">
-		<tr ${(theaterVO.the_no==param.the_no) ? 'bgcolor=#CCCCFF':''}><!--±N­×§ïªº¨º¤@µ§¥[¤J¹ï¤ñ¦â¦Ó¤w-->
+	<c:forEach var="theaterVO" items="${list}" >
+		<tr ${(theaterVO.the_no==param.the_no) ? 'bgcolor=#CCCCFF':''}><!--å°‡ä¿®æ”¹çš„é‚£ä¸€ç­†åŠ å…¥å°æ¯”è‰²è€Œå·²-->
 			<td>${theaterVO.the_no}</td>
 			<td><c:forEach var="movie_versionVO" items="${movie_versionSvc.all}">
                     <c:if test="${theaterVO.movver_no==movie_versionVO.movver_no}">
@@ -85,20 +53,29 @@
                     </c:if>
                 </c:forEach>
 			</td>
-			<td>${theaterVO.the_seat}</td>
-			<td>${theaterVO.the_seatno}</td>		
+			<td>
+				<a class="btn btn-light btn-brd grd1 effect-1"  >
+				<input type="submit" value="æŸ¥çœ‹" class="input-pos">
+				</a>
+				</td>		
 			<td>
 			  <FORM METHOD="post" ACTION="<%=request.getContextPath()%>/theater/theater.do" style="margin-bottom: 0px;">
-			     <input type="submit" value="­×§ï"> 
+			     <input type="submit" value="ä¿®æ”¹"> 
 			     <input type="hidden" name="the_no"     value="${theaterVO.the_no}">
-			     <input type="hidden" name="requestURL"	value="<%=request.getServletPath()%>"><!--°e¥X¥»ºô­¶ªº¸ô®|µ¹Controller-->
-			     <input type="hidden" name="whichPage"	value="<%=whichPage%>">               <!--°e¥X·í«e¬O²Ä´X­¶µ¹Controller-->
+			     <input type="hidden" name="requestURL"	value="<%=request.getServletPath()%>"><!--é€å‡ºæœ¬ç¶²é çš„è·¯å¾‘çµ¦Controller-->
 			     <input type="hidden" name="action"	    value="getOne_For_Update"></FORM>
 			</td>
 
 		</tr>
 	</c:forEach>
 </table>
-<%@ include file="/resource/pages/page2.file" %>
-</body>
+                    <!-- PUT HERE End-->
+                    
+                    </div>
+                </main>
+                <%@ include file="/back-end/files/sb_footer.file"%>
+            </div>
+        </div>
+		<%@ include file="/back-end/files/sb_importJs.file"%> <!-- å¼•å…¥templateè¦ç”¨çš„js -->
+    </body>
 </html>

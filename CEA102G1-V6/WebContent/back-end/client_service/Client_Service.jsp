@@ -1,19 +1,31 @@
-<%@ page language="java" contentType="text/html; charset=BIG5"
-    pageEncoding="BIG5"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
-<!DOCTYPE html>
+
 <html>
 <head>
-<meta charset="BIG5">
-<title>Insert title here</title>
-      <link rel="stylesheet" href="<%=request.getContextPath()%>/resource/css/chatbox/cliSerForBac.css" >
+	<title>Back-End Management</title>
+	<%@ include file="/back-end/files/sb_head.file"%>
+	  <link rel="stylesheet" href="<%=request.getContextPath()%>/resource/css/chatbox/cliSerForBac.css" >
 </head>
-<body>
-<div class="wrapper">
+<body class="sb-nav-fixed">
+		<%@ include file="/back-end/files/sb_navbar.file"%> <!-- 引入navbar (上方) -->
+        <div id="layoutSidenav">
+            <div id="layoutSidenav_nav">            
+            	<c:set value="${pageContext.request.requestURI}" var="urlRecog"></c:set> <!-- 在listAllXXX.jsp，加上這行，給sb_sidebar.file的參數-Home -->
+                <%-- <c:set value="movieAdd" var="urlRecog"></c:set> --%> <!-- 在addXXX.jsp，加上這行，「value」請參照「sb_sidebar.file」給予相對應的值，給sb_sidebar.file的參數-Add -->
+                <%-- <c:set value="movieSub" var="urlRecog"></c:set> --%> <!-- 在除了以上兩個jsp以外的子頁面，加上這行，「value」請參照「sb_sidebar.file」給予相對應的值，給sb_sidebar.file的參數-Sub -->         
+				<%@ include file="/back-end/files/sb_sidebar.file"%> <!-- 引入sidebar (左方) -->
+            </div>
+            <div id="layoutSidenav_content">
+                <main>
+                    <div class="container-fluid">
+                    
+                    <!-- PUT HERE Start-->
+                    <div class="wrapper">
             <div class="container">
                 <div class="left">
                     <div class="top" id="chatArea">
-                        <span class="name"><i class="far fa-user"></i>�ȪA�M���G -</span>
+                        <span class="name"><i class="far fa-user"></i>客服專員： -</span>
                     </div>
                     <div class="write">
                         <input type="text" id="sendMessage" onkeydown="if (event.keyCode == 13) sendMessage();" disabled />
@@ -27,8 +39,15 @@
                 </div>
             </div>
         </div>
-        
-            <script>
+                    <!-- PUT HERE End-->
+                    
+                    </div>
+                </main>
+                <%@ include file="/back-end/files/sb_footer.file"%>
+            </div>
+        </div>
+		<%@ include file="/back-end/files/sb_importJs.file"%> <!-- 引入template要用的js -->
+		           <script>
         //WebSocket
         var MyPoint = "/serviceWS/admin/${admVO.admNo}";
 		var host = window.location.host;
@@ -39,7 +58,7 @@
 		var chat;
 		var webSocket;
 		
-		// ���U�C���I���ƥ�ç���n�ͦW�r�H���o���v�T��
+		// 註冊列表點擊事件並抓取好友名字以取得歷史訊息
 
 		
 		
@@ -54,9 +73,9 @@
 	
 			webSocket.onmessage = function(event) {
 				var jsonObj = JSON.parse(event.data);
-				if ("open" === jsonObj.type) { //�|���W�u
+				if ("open" === jsonObj.type) { //會員上線
 					refreshCustomerList(jsonObj);
-				} else if ("openAdm" === jsonObj.type) { //�ȪA�W�u
+				} else if ("openAdm" === jsonObj.type) { //客服上線
 					refreshCustomerList(jsonObj);
 						members = {
 				            list: document.querySelector("ul.people"),
@@ -110,7 +129,7 @@
 							div.append(showMsg);
 						}
 						chatBox = document.getElementById("chat-"+ memNo);
-						// �ھڵo�e�̬O�ۤv�٬O���ӵ������P��class�W, �H�F��T�����k�Ϥ�
+						// 根據發送者是自己還是對方來給予不同的class名, 以達到訊息左右區分
 						chatBox.append(div);
 						chatBox.scrollTop = chatBox.scrollHeight;
 					}
@@ -216,7 +235,7 @@
 			memberBox.text(msg);
 		}
 		
-		// ���s���Ȥ�W�u�����u�N��s�C��
+		// 有新的客戶上線或離線就更新列表
 		function refreshCustomerList(jsonObj) {
 			let memNos = jsonObj.memNos;
 			let currentChatMember = $(".container .left .active-chat").eq(0).attr("id")
@@ -227,16 +246,16 @@
 				let memNo = memNos[i];
 				var memName = "";
 				$.ajax({
-					url: "<%=request.getContextPath()%>/MembersServlet?action=ajaxGetmemName",
+					url: "<%=request.getContextPath()%>/Member/member.do?action=ajaxGetmemName",
 					data: {
-						mb_id: memNo,
+						memNo: memNo,
 					},
 					type: "POST",
 					success: function(msg){
 						memName = msg;
 						memberList.innerHTML += 
 							`
-							<li class="person" id="\${memNo}" data-mbid="\${memNo}" data-mbname="\${memName}">
+							<li class="person" id="${memNo}" data-mbid="${memNo}" data-mbname="${memName}">
 		                            <img src="pic---for---mem---!!!" alt="" />
 		                            <span class="name">\${memName}</span>
 		                            <span class="preview"></span>
@@ -247,17 +266,17 @@
 						div.classList.add("chat");
 						div.setAttribute("id", "chat-" + memNo);
 						chatArea.after(div);
-						let aMember = memNo + "-" + memName;
+						let aMember = "mem-" + memNo + "-" + memName;
 						$("#" + memNo).children(".unread").hide();
 						let jsonObj = {
 								"type" : "history",
-								"sender" : "${empVO.emp_id}-${empVO.emp_name}",
+								"sender" : "adm-${admVO.admNo}-${admVO.admName}",
 								"receiver" : aMember,
 								"message" : ""
 							};
 						webSocket.send(JSON.stringify(jsonObj));
 						if (currentChatMember != null) {
-							let id = currentChatMember.split("-")[1];
+							let id = currentChatMember;
 							$("#" + id).addClass("active");
 						}
 					}
@@ -271,5 +290,5 @@
 			document.getElementById('sendMessage').disabled = true;
 		}
     </script>
-</body>
+    </body>
 </html>

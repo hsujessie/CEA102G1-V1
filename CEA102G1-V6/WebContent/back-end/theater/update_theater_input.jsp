@@ -1,106 +1,134 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8"
-    pageEncoding="BIG5"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ page import="com.theater.model.*" %>
 <%
 	TheVO theaterVO = (TheVO) request.getAttribute("theaterVO");
 %>
-<!DOCTYPE html>
 <html>
 <head>
-<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1"/>
-<title>­û¤u¸ê®Æ­×§ï - update_emp_input.jsp</title>
-
-<style>
-  table#table-1 {
-	background-color: #CCCCFF;
-    border: 2px solid black;
-    text-align: center;
-  }
-  table#table-1 h4 {
-    color: red;
-    display: block;
-    margin-bottom: 1px;
-  }
-  h4 {
-    color: blue;
-    display: inline;
-  }
-</style>
-
-<style>
+	<title>Back-End Management</title>
+	<%@ include file="/back-end/files/sb_head.file"%>
+	<style>
   table {
-	width: 450px;
-	background-color: white;
-	margin-top: 1px;
-	margin-bottom: 1px;
+	width: 750px;
+	margin: 5px auto 5px auto;
+    background-color: rgb(255,255,255);
+    border-radius: 10px;
+	-webkit-box-shadow: 0px 3px 5px rgb(8,8,8, 0.3);
+	-moz-box-shadow: 0px 3px 5px rgb(8,8,8, 0.3);
+	box-shadow: 0px 3px 5px rgb(8,8,8, 0.3);
   }
-  table, th, td {
-    border: 0px solid #CCCCFF;
+  th,td{
+  	box-sizing:border-box;
+    border-radius: 10px;
   }
-  th, td {
-    padding: 1px;
+  th{
+  	width: 200px;
+  	padding: 10px 0px 10px 70px;
+  }
+  td{
+  	width: 250px;
+  	padding: 10px 20px 10px 30px;
+    border-bottom: 2px dotted #bb9d52;
+  }
+  .listOne-h3-pos{
+  	display: inline-block;	
+  	margin-left: 45%;
+  }
+  .ml-ten{
+  	margin-left: 10px;
   }
 </style>
-
 </head>
-<body bgcolor='white'>
-
-<table id="table-1">
-	<tr><td>
-		 <h3>­û¤u¸ê®Æ­×§ï - update_emp_input.jsp</h3>
-		 <h4><a href="<%=request.getContextPath()%>/back-end/theater/select_page.jsp">¦^­º­¶</a></h4>
-	</td></tr>
-</table>
-
-<h3>¸ê®Æ­×§ï:</h3>
-
-<%-- ¿ù»~ªí¦C --%>
-<c:if test="${not empty errorMsgs}">
-	<font style="color:red">½Ğ­×¥¿¥H¤U¿ù»~:</font>
-	<ul>
-		<c:forEach var="message" items="${errorMsgs}">
-			<li style="color:red">${message}</li>
-		</c:forEach>
-	</ul>
-</c:if>
-
-<FORM METHOD="post" ACTION="theater.do" name="form1">
-<table>
-	<tr>
-		<td>ÆU°|½s¸¹:<font color=red><b>*</b></font></td>
-		<td><%=theaterVO.getThe_no()%></td>
-	</tr>
-	<jsp:useBean id="movie_versionSvc" scope="page" class="com.movie_version.model.MovVerService" />
-	<tr>
-		<td>©ñ¬MºØÃş:<font color=red><b>*</b></font></td>
-		<td><select size="1" name="movver_no">
-			<c:forEach var="movie_versionVO" items="${movie_versionSvc.all}">
-				<option value="${movie_versionVO.movver_no}" ${(theaterVO.movver_no==movie_versionVO.movver_no)?'selected':'' } >${movie_versionVO.movver_name}
-			</c:forEach>
-		</select></td>
-	</tr>
-	<tr>
-		<td>ÆU°|®y¦ì½s±Æ:</td>
-		<td><input type="TEXT" name="the_seat" size="45" value="<%=theaterVO.getThe_seat()%>" /></td>
-	</tr>
-	<tr>
-		<td>ÆU°|®y¦ì½s¸¹:</td>
-		<td><input type="TEXT" name="the_seatno" size="45"	value="<%=theaterVO.getThe_seatno()%>" /></td>
-	</tr>
-
-
-
-</table>
-<br>
-<input type="hidden" name="action" value="update">
-<input type="hidden" name="the_no"  value="<%=theaterVO.getThe_no()%>">
-<input type="hidden" name="requestURL" value="<%=request.getParameter("requestURL")%>"> <!--±µ¦¬­ì°e¥X­×§ïªº¨Ó·½ºô­¶¸ô®|«á,¦A°eµ¹Controller·Ç³ÆÂà¥æ¤§¥Î-->
-<input type="hidden" name="whichPage"  value="<%=request.getParameter("whichPage")%>">  <!--¥u¥Î©ó:istAllEmp.jsp-->
-<input type="submit" value="°e¥X­×§ï"></FORM>
-
-<br>°e¥X­×§ïªº¨Ó·½ºô­¶¸ô®|:<br><b>
-   <font color=blue>request.getParameter("requestURL"):</font> <%=request.getParameter("requestURL")%><br>
-   <font color=blue>request.getParameter("whichPage"): </font> <%=request.getParameter("whichPage")%> (¦¹½d¨Ò¥Ø«e¥u¥Î©ó:istAllEmp.jsp))</b>
-</body>
+<body class="sb-nav-fixed">
+		<%@ include file="/back-end/files/sb_navbar.file"%> <!-- å¼•å…¥navbar (ä¸Šæ–¹) -->
+        <div id="layoutSidenav">
+            <div id="layoutSidenav_nav">            
+            	<%-- <c:set value="${pageContext.request.requestURI}" var="urlRecog"></c:set> --%> <!-- åœ¨listAllXXX.jspï¼ŒåŠ ä¸Šé€™è¡Œï¼Œçµ¦sb_sidebar.fileçš„åƒæ•¸-Home -->
+                <%-- <c:set value="movieAdd" var="urlRecog"></c:set> --%> <!-- åœ¨addXXX.jspï¼ŒåŠ ä¸Šé€™è¡Œï¼Œã€Œvalueã€è«‹åƒç…§ã€Œsb_sidebar.fileã€çµ¦äºˆç›¸å°æ‡‰çš„å€¼ï¼Œçµ¦sb_sidebar.fileçš„åƒæ•¸-Add -->
+                <%-- <c:set value="movieSub" var="urlRecog"></c:set> --%> <!-- åœ¨é™¤äº†ä»¥ä¸Šå…©å€‹jspä»¥å¤–çš„å­é é¢ï¼ŒåŠ ä¸Šé€™è¡Œï¼Œã€Œvalueã€è«‹åƒç…§ã€Œsb_sidebar.fileã€çµ¦äºˆç›¸å°æ‡‰çš„å€¼ï¼Œçµ¦sb_sidebar.fileçš„åƒæ•¸-Sub -->         
+				<%@ include file="/back-end/files/sb_sidebar.file"%> <!-- å¼•å…¥sidebar (å·¦æ–¹) -->
+            </div>
+            <div id="layoutSidenav_content">
+                <main>
+                    <div class="container-fluid">
+                    
+                    <!-- PUT HERE Start-->
+                    <FORM METHOD="post" ACTION="theater.do" ">
+                    <h3 class="h3-style listOne-h3-pos">é›»å½±ä¿®æ”¹</h3>
+                    <table>
+                    	<tr>
+                    		<th>å»³é™¢ç·¨è™Ÿ</th>
+                    		<td><%=theaterVO.getThe_no()%></td>
+                    	</tr>
+                    		<jsp:useBean id="movie_versionSvc" scope="page" class="com.movie_version.model.MovVerService" />
+						<tr>
+							<th>ç¨®é¡</th>
+							<td><select size="1" name="movver_no">
+								<c:forEach var="movie_versionVO" items="${movie_versionSvc.all}">
+									<option value="${movie_versionVO.movver_no}" ${(theaterVO.movver_no==movie_versionVO.movver_no)?'selected':'' } >${movie_versionVO.movver_name}
+								</c:forEach>
+							</select></td>
+						</tr>
+                    </table>
+                    <table>
+					    <tbody id="tbody1">
+					    </tbody>
+					</table>
+					<!-- PUT HERE End-->
+                    
+                    </div>
+                </main>
+                <%@ include file="/back-end/files/sb_footer.file"%>
+            </div>
+        </div>
+		<%@ include file="/back-end/files/sb_importJs.file"%> <!-- å¼•å…¥templateè¦ç”¨çš„js -->
+		<script type="text/javascript">
+		window.onload=function () {
+			let index = 0;
+			let theSeat = '<%=theaterVO.getThe_seat()%>';
+			let tableData="<tr><td></td>";
+			let classstr = "";
+			
+// 			  for(var i=0;i<theSeat.length;i++){
+// 			    tableData+="<td>"+theSeat.charAt(i)+"</td>"
+// 			  }
+			for(i=0;i<20;i++){
+				classstr+="Column"+(i+1);
+				tableData+=`<td class=`+classstr+`>`;
+				classstr="";
+			}
+			tableData+="</tr>"
+			for(i=0;i<20;i++){
+				tableData+="<tr>";
+					classstr+="Row"+(i+1);
+					tableData+="<td class="+classstr+">";
+				for(j=0;j<20;j++){
+					switch(theSeat.charAt(index)) {
+						case '0':
+							tableData+=`<td class=s0`;
+							break;
+						case '3':
+							tableData+="<td class=s3";
+							break;
+						case '9':
+							tableData+="<td class=s9";
+							break;
+					}
+					tableData+="></td>";
+					index++;
+				}
+					classstr="";
+			  tableData+="</tr>"
+			}
+		
+		
+			  //ç¾åœ¨tableDataå·²ç¶“ç”Ÿæˆå¥½äº†ï¼ŒæŠŠä»–è³¦å€¼çµ¦ä¸Šé¢çš„tbody
+			  $("#tbody1").html(tableData)
+				console.log(theSeat);
+				console.log(theSeat.length);
+				console.log(theSeat.charAt(0));
+  		}
+</script>
+    </body>
 </html>

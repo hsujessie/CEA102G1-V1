@@ -6,7 +6,7 @@
 <c:set var="order" value=""/>     		
 <c:set var="session" value="/CEA102G1/back-end/session/listAllSession.jsp"/>
 <c:set var="movie" value="/CEA102G1/back-end/movie/listAllMovie.jsp"/>       
-<c:set var="client" value=""/>  
+<c:set var="client" value="/CEA102G1/back-end/client_service/Client_Service.jsp"/>  
 <c:set var="movieComreport" value="/CEA102G1/back-end/comment_report/listAllComReport.jsp"/>
 <c:set var="articleComreport" value="/CEA102G1/back-end/articleReport.jsp"/>                                  
 <c:set var="theater" value=""/> 
@@ -98,7 +98,7 @@
                     <a class="nav-link <c:if test="${urlRecog == movieAdd}">active</c:if>" href="${movieAdd}">電影新增</a>
                 </nav>
             </div>
-            <a class="nav-link collapsed" href="#">
+            <a class="nav-link collapsed" <c:if test="${urlRecog == client}">active</c:if>" href="${client}">
                 <div class="sb-nav-link-icon"><i class="fas fa-user-friends"></i></div>
                 即時客服管理
             </a>
