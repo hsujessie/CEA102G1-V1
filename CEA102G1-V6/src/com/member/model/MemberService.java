@@ -4,11 +4,11 @@ import java.util.List;
 
 import com.member.model.*;
 
-public class MemberServic {
+public class MemberService {
 
 	private MemberDAO_infterface dao;
 
-	public MemberServic() {
+	public MemberService() {
 		dao = new MemberDAO();
 	}
 	

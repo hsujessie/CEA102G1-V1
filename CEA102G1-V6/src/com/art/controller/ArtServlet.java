@@ -22,7 +22,7 @@ import org.json.JSONObject;
 
 import com.art.model.ArtService;
 import com.art.model.ArtVO;
-import com.member.model.MemberServic;
+import com.member.model.MemberService;
 
 import redis.JedisUtil;
 import redis.clients.jedis.Jedis;
@@ -263,7 +263,7 @@ public class ArtServlet extends HttpServlet {
 			if(request.getParameter("artNo") == null) {
 				System.out.println("artNo == null");
 				ArtService artSvc = new ArtService();
-				MemberServic memSvc = new MemberServic();
+				MemberService memSvc = new MemberService();
 				List<ArtVO> list = artSvc.getAll();	
 				/*==============放入JSONObject==============*/
 				for (ArtVO artVO : list) {
@@ -291,7 +291,7 @@ public class ArtServlet extends HttpServlet {
 				
 				JSONObject obj = new JSONObject();
 				ArtService artSvc = new ArtService();
-				MemberServic memSvc = new MemberServic();
+				MemberService memSvc = new MemberService();
 				
 				try {
 					System.out.println("artNo:"+request.getParameter("artNo"));
@@ -355,7 +355,7 @@ public class ArtServlet extends HttpServlet {
 		if("artTopThree_Show_By_AJAX".equals(action)) {
 			JSONArray array = new JSONArray();
 			ArtService artSvc = new ArtService();
-			MemberServic memSvc = new MemberServic();
+			MemberService memSvc = new MemberService();
 			
 			/*====================從redis取前三筆點擊率===================*/
 			//建立redis連線
@@ -401,7 +401,7 @@ public class ArtServlet extends HttpServlet {
 		if("movTypeHotArticle".equals(action)) {
 			JSONArray array = new JSONArray();
 			ArtService artSvc = new ArtService();
-			MemberServic memSvc = new MemberServic();
+			MemberService memSvc = new MemberService();
 			
 			String movType = request.getParameter("movType");
 			
@@ -470,7 +470,7 @@ public class ArtServlet extends HttpServlet {
 			/*==============放入JSONObject==================*/
 			for (ArtVO artVO : list) {
 				JSONObject obj = new JSONObject();
-				MemberServic memSvc = new MemberServic();
+				MemberService memSvc = new MemberService();
 				try {
 					obj.put("artNo", artVO.getArtNo());
 					obj.put("memNo", artVO.getMemNo());

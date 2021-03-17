@@ -19,7 +19,7 @@ import com.art.model.ArtService;
 import com.art_rep.model.ArtRepService;
 import com.art_rep.model.ArtRepVO;
 import com.art_rep_rpt.model.ArtRepRptService;
-import com.member.model.MemberServic;
+import com.member.model.MemberService;
 
 public class ArtRepServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
@@ -99,7 +99,7 @@ public class ArtRepServlet extends HttpServlet {
 			HttpSession session = request.getSession();
 			
 			ArtRepService artRepSvc = new ArtRepService();
-			MemberServic memSvc = new MemberServic();
+			MemberService memSvc = new MemberService();
 			List<ArtRepVO> list = artRepSvc.findByArtNo(Integer.parseInt(request.getParameter("artNo")));
 			
 			/*==============放入JSONObject==============*/

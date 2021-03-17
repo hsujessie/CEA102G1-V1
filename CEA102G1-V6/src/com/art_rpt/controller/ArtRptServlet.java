@@ -18,7 +18,7 @@ import com.art.model.ArtDAO;
 import com.art.model.ArtService;
 import com.art_rpt.model.ArtRptService;
 import com.art_rpt.model.ArtRptVO;
-import com.member.model.MemberServic;
+import com.member.model.MemberService;
 
 
 public class ArtRptServlet extends HttpServlet {
@@ -66,7 +66,7 @@ public class ArtRptServlet extends HttpServlet {
 			
 			ArtDAO artDAO = new ArtDAO();
 			ArtRptService artRptSvc = new ArtRptService();
-			MemberServic memSvc = new MemberServic();
+			MemberService memSvc = new MemberService();
 			List<ArtRptVO> list = artRptSvc.getAll();
 			
 			/*==============放入JSONObject==============*/
