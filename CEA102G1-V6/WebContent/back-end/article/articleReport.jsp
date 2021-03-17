@@ -26,6 +26,9 @@
 			overflow:hidden;
 			text-overflow:ellipsis;
         }
+        .bgGray:hover{
+            background-color: rgba(166, 166, 166, 0.5);
+        }
 	</style>
 	<title>Back-End Management</title>
 	<%@ include file="/back-end/files/sb_head.file"%>
@@ -86,11 +89,11 @@
 						data: {'action':$(this).val()},
 						dataType: 'json',
 						success: function(artRptVO){
-							$('#listAllReport').append('<div><div class="inlineBlockDIV">檢舉編號</div><div class="inlineBlockDIV">作者</div><div class="inlineBlockLongDIV">文章標題</div><div class="inlineBlockLongDIV">檢舉時間</div><div class="inlineBlockLongDIV">檢舉人</div><div class="inlineBlockLongDIV">檢舉理由</div><div class="inlineBlockDIV">狀態</div><div class="inlineBlockLongDIV">確認/取消</div></div>');
+							$('#listAllReport').append('<div><div class="inlineBlockLongDIV">檢舉編號</div><div class="inlineBlockDIV">作者</div><div class="inlineBlockLongDIV">文章標題</div><div class="inlineBlockLongDIV">檢舉時間</div><div class="inlineBlockLongDIV">檢舉人</div><div class="inlineBlockLongDIV">檢舉理由</div><div class="inlineBlockDIV">狀態</div><div class="inlineBlockLongDIV">確認/取消</div></div>');
 							$('#tableTitle').append("文章檢舉列表");
 							$('#listAllReport').show();
 							$(artRptVO).each(function(i, item){
-								$('#listAllReport').append('<div><div class="artRptNo inlineBlockDIV" data-value='+item.artRptNo+'>'+item.artRptNo+'</div><div class="inlineBlockDIV longText">'+item.memName+'</div><div class="inlineBlockLongDIV longText">'+item.artTitle+'</div><div class="inlineBlockLongDIV">'+moment(item.artRptTime).locale('zh_TW').format('LL')+'</div><div class="inlineBlockLongDIV longText">'+item.reportMemName+'</div><div class="inlineBlockLongDIV">'+item.artRptContent+'</div><div class="inlineBlockDIV">'+item.artRptStatus+'</div><div class="inlineBlockLongDIV"><button class="checkedButton" data-value="'+item.artNo+'" style="background-color: #bb9d52;">'+item.artRptStatusButton+'</button></div></div>');					
+								$('#listAllReport').append('<div class="bgGray"><div class="artRptNo inlineBlockLongDIV" data-value='+item.artRptNo+'>'+item.artRptNo+'</div><div class="inlineBlockDIV longText">'+item.memName+'</div><div class="inlineBlockLongDIV longText">'+item.artTitle+'</div><div class="inlineBlockLongDIV">'+moment(item.artRptTime).locale('zh_TW').format('LL')+'</div><div class="inlineBlockLongDIV longText">'+item.reportMemName+'</div><div class="inlineBlockLongDIV">'+item.artRptContent+'</div><div class="inlineBlockDIV">'+item.artRptStatus+'</div><div class="inlineBlockLongDIV"><button class="checkedButton btn-light btn-brd grd1 effect-1" style="color: #fff" data-value="'+item.artNo+'">'+item.artRptStatusButton+'</button></div></div>');					
 							});						
 						},
 		                error: function () {
@@ -111,7 +114,7 @@
 							$('#listAllReport').show();
 							$('#tableTitle').append("留言檢舉列表");
 							$(artRepRptVO).each(function(i, item){
-								$('#listAllReport').append('<div><div class="artRepRptNo inlineBlockDIV" data-value='+item.artRepRptNo+'>'+item.artRepRptNo+'</div><div class="inlineBlockDIV longText">'+item.memName+'</div><div class="inlineBlockLongDIV">'+item.artRepContent+'</div><div class="inlineBlockLongDIV">'+moment(item.artRepRptTime).locale('zh_TW').format('LL')+'</div><div class="inlineBlockLongDIV longText">'+item.reportMemName+'</div><div class="inlineBlockLongDIV">'+item.artRepRptReson+'</div><div class="inlineBlockDIV">'+item.artRepRptStatus+'</div><div class="inlineBlockLongDIV"><button class="checkedReplyButton" data-value="'+item.artRepNo+'" style="background-color: #bb9d52;">'+item.artRepRptStatusButton+'</button></div></div>');					
+								$('#listAllReport').append('<div class="bgGray"><div class="artRepRptNo inlineBlockDIV" data-value='+item.artRepRptNo+'>'+item.artRepRptNo+'</div><div class="inlineBlockDIV longText">'+item.memName+'</div><div class="inlineBlockLongDIV">'+item.artRepContent+'</div><div class="inlineBlockLongDIV">'+moment(item.artRepRptTime).locale('zh_TW').format('LL')+'</div><div class="inlineBlockLongDIV longText">'+item.reportMemName+'</div><div class="inlineBlockLongDIV">'+item.artRepRptReson+'</div><div class="inlineBlockDIV">'+item.artRepRptStatus+'</div><div class="inlineBlockLongDIV"><button class="checkedReplyButton" data-value="'+item.artRepNo+'" style="background-color: #bb9d52;">'+item.artRepRptStatusButton+'</button></div></div>');					
 							});						
 						},
 		                error: function () {
