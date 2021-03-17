@@ -234,7 +234,6 @@ public class FooServlet extends HttpServlet {
 				fooVO.setFooName(fooName);
 				fooVO.setFooCatNo(fooCatNo);
 				fooVO.setFooIntro(fooIntro);
-				fooVO.setFooImg(fooImg);
 				fooVO.setFooPrice(fooPrice);
 				fooVO.setFooNo(fooNo);
 				fooVO.setFooStatus(fooStatus);

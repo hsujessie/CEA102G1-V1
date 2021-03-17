@@ -9,13 +9,13 @@
 <body class="sb-nav-fixed">
 		<%@ include file="/back-end/files/sb_navbar.file"%> <!-- 引入navbar (上方) -->
         <div id="layoutSidenav">
-            <div id="layoutSidenav_nav">       
+            <div id="layoutSidenav_nav">
 				<%@ include file="/back-end/files/sb_sidebar.file"%> <!-- 引入sidebar (左方) -->
             </div>
             <div id="layoutSidenav_content">
                 <main>
                     <div class="container-fluid">
-                    
+
                     <!-- Login successful Start -->
 			        <div class="loginSucs">
 			            <div class="container">
@@ -28,10 +28,10 @@
 			                    <div class="col-lg-4 col-md-4">
 			                        <div class="loginSucs-item">
 			                            <div class="loginSucs-img">
-			                                <img src="<%=request.getContextPath()%>/resource/images/film.jpg" alt="loginSucs Image">
+			                                <img src="<%=request.getContextPath()%>/util/imgReader${admVO.admImgParam}" alt="loginSucs Image">
 			                            </div>
 			                            <div class="loginSucs-text">
-			                                <h2>Film</h2>
+			                                <h2>${admVO.admName}</h2>
 			                            </div>
 			                        </div>
 			                    </div>
@@ -41,7 +41,7 @@
 			            </div>
 			        </div>
 			        <!-- Login successful End -->
-                    
+
                     </div>
                 </main>
                 <%@ include file="/back-end/files/sb_footer.file"%>

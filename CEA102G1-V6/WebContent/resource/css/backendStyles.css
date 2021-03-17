@@ -30,7 +30,7 @@ body a:hover,a:focus{
 	font-size: 14px;
 }
 
-#a-color:hover{ 
+#a-color:hover{
 	color: rgba(8, 8, 8, 0.9);
 	text-shadow: 2px 2px 2px #999999;
 }
@@ -45,16 +45,16 @@ body a:hover,a:focus{
     position: relative;
 }
 
-.input-pos{	
+.input-pos{
     position: absolute;
     top: 0%;
     right: 0;
     left: 8%;
     bottom: 0;
     font-size: 14px;
-    text-decoration: none; 
-    background-color: transparent; 
-    border:0px; 
+    text-decoration: none;
+    background-color: transparent;
+    border:0px;
     color:#fff;
 }
 
@@ -83,7 +83,7 @@ body.barber_version .effect-1:after {
 .btn-light {
     background-color: #000;
     border: 2px solid transparent !important;
-} 
+}
 
 .btn-light:hover,
 .btn-light:focus {

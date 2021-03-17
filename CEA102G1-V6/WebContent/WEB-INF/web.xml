@@ -10,6 +10,22 @@
     <welcome-file>default.jsp</welcome-file>
   </welcome-file-list>
   
+<!--   後臺登入濾器 -->
+<!--   <filter> -->
+<!--   	<filter-name>LoginFilter</filter-name> -->
+<!--   	<filter-class>com.admin.controller.LoginFilter</filter-class> -->
+<!--   </filter> -->
+<!--   <filter-mapping> -->
+<!--   	<filter-name>LoginFilter</filter-name> -->
+<!--   	<url-pattern>/back-end/admin/*</url-pattern> -->
+<!--   	<dispatcher>REQUEST</dispatcher> -->
+<!--     <dispatcher>FORWARD</dispatcher> -->
+<!--     <dispatcher>INCLUDE</dispatcher> -->
+<!--     <dispatcher>ERROR</dispatcher> -->
+<!--     <dispatcher>ASYNC</dispatcher> -->
+<!--   </filter-mapping> -->
+  
+  
 <!--   11  -->
   <servlet>
   	<servlet-name>FooCatServlet</servlet-name>
@@ -31,11 +47,11 @@
   
   <servlet>
   	<servlet-name>ImgReader</servlet-name>
-  	<servlet-class>com.food.controller.fooReadImg</servlet-class>
+  	<servlet-class>jdbc.util.read_img.ImgReader</servlet-class>
   </servlet>
   <servlet-mapping>
   	<servlet-name>ImgReader</servlet-name>
-  	<url-pattern>/foo/reader.do</url-pattern>
+  	<url-pattern>/util/imgReader</url-pattern>
   </servlet-mapping>
   
   <servlet>
@@ -45,6 +61,15 @@
   <servlet-mapping>
   	<servlet-name>OrdMasServlet</servlet-name>
   	<url-pattern>/ordMas/ordMas.do</url-pattern>
+  </servlet-mapping>  
+  
+  <servlet>
+  	<servlet-name>AdmServlet</servlet-name>
+  	<servlet-class>com.admin.controller.AdmServlet</servlet-class>
+  </servlet>
+  <servlet-mapping>
+  	<servlet-name>AdmServlet</servlet-name>
+  	<url-pattern>/adm/adm.do</url-pattern>
   </servlet-mapping>  
   
 <!--  05 -->

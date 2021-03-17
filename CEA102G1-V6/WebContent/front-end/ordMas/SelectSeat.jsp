@@ -1,36 +1,15 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8"
-	pageEncoding="UTF-8"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 
 <!DOCTYPE html>
 <html>
 <head>
 <meta charset="UTF-8">
-<title>選位</title>
-
-<link href='https://fonts.googleapis.com/css?family=Lato:400,700'
-	rel='stylesheet' type='text/css'>
-<link rel="stylesheet" type="text/css"
-	href="<%=request.getContextPath()%>/resource/css/selectSeat/style.css">
-<link rel="stylesheet" type="text/css"
-	href="<%=request.getContextPath()%>/resource/css/selectSeat/jquery.seat-charts.css">
-
-<link
-	href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"
-	rel="stylesheet">
-<link rel="stylesheet"
-	href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
-<script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
-<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
-<script
-	src="<%=request.getContextPath()%>/resource/js/selectSeat/jquery.seat-charts.min.js"></script>
-<script
-	src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
-<script>
-	$(function() {
-		$("#tabs").tabs();
-	});
-</script>
+<title>Front-End</title>
+<%@ include file="/front-end/files/frontend_importCss.file"%>
+<link href='https://fonts.googleapis.com/css?family=Lato:400,700' rel='stylesheet' type='text/css'>
+<link rel="stylesheet" type="text/css" href="<%=request.getContextPath()%>/resource/css/selectSeat/jquery.seat-charts.css">
+<link rel="stylesheet" type="text/css" href="<%=request.getContextPath()%>/resource/css/selectSeat/style.css">
 
 <style type="text/css">
 /* 修改座位的顏色 */
@@ -58,36 +37,88 @@ div.seatCharts-seat.unavailable {
 /* div.front-indicator {
             width: 100%;
         } */
-#a, #b {
-	border: 1px solid red;
-}
+
 
 div.seatCharts-legend {
 	position: static;
 }
+
+#nextStep {
+	position: absolute;
+	bottom: 1%;
+	right: 5%;
+}
 </style>
 </head>
 <body>
+        <div class="wrapper">
+            <!-- Nav Bar Start -->
+			<c:set value="${pageContext.request.requestURI}" var="urlRecog"></c:set>
+            <%@ include file="/front-end/files/frontend_navbar.file"%>
+            <!-- Nav Bar End -->
 
-	<div class="container">
+
+            <!-- Page Header Start --> <!-- 看自己需不需要標題 -->
+            
+            <!-- Page Header End -->
+
+
+            <!-- PUT HERE Start -->
+            <div class="container">
 		<div class="row">
-			<div id="a" class="col-9">
-				<form method="post" action="<%=request.getContextPath()%>/ordMas/ordMas.do" id="form">
-					<div class="row">
-						<div class="col">
-							<div id="seat-map">
-								<div id="legend"></div>
-								<div class="front-indicator">螢幕</div>
+			<div class="col-9">
+				<div class="list-group">
+					<div class="list-group-item">
+						<div class="row">
+							<jsp:useBean id="sesSvc" scope="page" class="com.session.model.SesService" />
+							<jsp:useBean id="movSvc" scope="page" class="com.movie.model.MovService" />
+
+							<div class="col-2">
+								<div id="grade" class="text-center">
+									<div id="grade-number"></div>
+									<div id="grade-word">${movSvc.getOneMov(sesSvc.getOneSes(1).movNo).movrating}</div>
+								</div>
+							</div>
+							<div class="col-7">
+								<h3>(${movSvc.getOneMov(sesSvc.getOneSes(1).movNo).movver}${movSvc.getOneMov(sesSvc.getOneSes(1).movNo).movlan})${movSvc.getOneMov(sesSvc.getOneSes(1).movNo).movname}</h3>
+							</div>
+							<div class="col-3">
+								<p>
+									<img src="<%=request.getContextPath()%>/resource/images/ordMasIcons/sesTime.png"><span></span>${sesSvc.getOneSes(1).sesDate} ${sesSvc.getOneSes(1).sesTime}
+								</p>
+								<p>
+									<img src="<%=request.getContextPath()%>/resource/images/ordMasIcons/theater.png"><span></span>第${sesSvc.getOneSes(1).theNo}廳
+								</p>
 							</div>
 						</div>
 					</div>
-					<input type="hidden" name="sesNo" value="${param.sesNo}">
-					<input type="hidden" name="chooseSeatNo" value="" id="chooseSeatNo">
-					<input type="hidden" name="action" value="confirm_order">
-				</form>
+					<div class="list-group-item">
+						<div class="row">
+							<div class="col text-center">
+								<h2 class="title">選擇座位</h2>
+								<p>選擇您希望的購買的座位, 每筆交易最多可購買10張電影票</p>
+							</div>
+						</div>
+					</div>
+					<div class="list-group-item">
+						<form method="post" action="<%=request.getContextPath()%>/ordMas/ordMas.do" id="form">
+							<div class="row">
+								<div class="col">
+									<div id="seat-map">
+										<div id="legend"></div>
+										<div class="front-indicator">螢幕</div>
+									</div>
+								</div>
+							</div>
+							<input type="hidden" name="sesNo" value="${param.sesNo}">
+							<input type="hidden" name="chooseSeatNo" value="" id="chooseSeatNo">
+							<input type="hidden" name="action" value="confirm_order">
+						</form>
+					</div>
+				</div>
 			</div>
 
-			<div id="b" class="col-3">
+			<div class="col-3">
 				<div class="card border-primary mb-3">
 					<div class="card-header">會員專區</div>
 					<div class="card-body">XXX 你好</div>
@@ -105,7 +136,7 @@ div.seatCharts-legend {
 											<p>${ideSvc.getOneDept(ticTypCartVO.ideNo).ide_name}</p>
 											<p class="text-right">
 												X
-												<span>${ticTypCartVO.ticLisPrice}</span>
+												<span>${ticTypCartVO.ticTypCount}</span>
 											</p>
 										</td>
 									</tr>
@@ -137,8 +168,17 @@ div.seatCharts-legend {
 			</div>
 		</div>
 	</div>
+            <!-- PUT HERE End -->
+            
+            <!-- Book Tickets Start -->
+<%--             <%@ include file="/front-end/files/frontend_bookTicketsTamplate.file"%> --%>
+            <!-- Book Tickets End -->
 
-	<script>
+            <!-- Footer Start -->
+            <%@ include file="/front-end/files/frontend_footer.file"%>
+            <!-- Footer End -->
+        </div>
+        <script>
 		var ticTypTotal = ${ticTypTotal};
 		var sesSeatStatus = "${sesSeatStatus}";
 		var seatMap = [];
@@ -205,7 +245,10 @@ div.seatCharts-legend {
 		}
 
 	</script>
+        
+<%@ include file="/front-end/files/frontend_importJs.file"%>
+<script src="<%=request.getContextPath()%>/resource/js/selectSeat/jquery.seat-charts.min.js"></script>
+	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
 	<script src="<%=request.getContextPath()%>/resource/js/selectSeat/SelectSeatJS.js"></script>
-	
 </body>
 </html>
