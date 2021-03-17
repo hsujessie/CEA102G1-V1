@@ -18,7 +18,7 @@ import com.art.model.ArtService;
 import com.art_rep.model.ArtRepService;
 import com.art_rep.model.ArtRepVO;
 import com.art_rep_rpt.model.ArtRepRptService;
-import com.mem.model.MemDAO;
+import com.member.model.MemberServic;
 
 public class ArtRepServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
@@ -83,7 +83,7 @@ public class ArtRepServlet extends HttpServlet {
 			HttpSession session = request.getSession();
 			
 			ArtRepService artRepSvc = new ArtRepService();
-			MemDAO memDAO = new MemDAO();
+			MemberServic memSvc = new MemberServic();
 			List<ArtRepVO> list = artRepSvc.findByArtNo(Integer.parseInt(request.getParameter("artNo")));
 			
 			/*==============放入JSONObject==============*/
@@ -93,7 +93,7 @@ public class ArtRepServlet extends HttpServlet {
 				if(artRepVO.getArtRepStatus() == 0) {
 					try {
 						obj.put("artNo", artRepVO.getArtNo());
-						obj.put("memName", memDAO.findByPrimaryKey(artRepVO.getMemNo()).getMemName());
+						obj.put("memName", memSvc.getOneMember(artRepVO.getMemNo()).getMemName());
 						obj.put("artRepNo", artRepVO.getArtRepNo());
 						obj.put("artRepContent", artRepVO.getArtRepContent());
 						obj.put("artRepTime", artRepVO.getArtRepTime());

@@ -460,7 +460,6 @@
 	                                        <!-- 新增文章 -->
 	                                        <form method="post" action="<%=request.getContextPath()%>/art/art.do">
 	                                            <input type="hidden" name="action" value="newArt">
-<%-- 	                                            <input type="hidden" name="requestURL" value="<%=request.getServletPath()%>"><!--送出本網頁的路徑給Controller--> --%>
 	                                            <label>
 	                                                <div id="newArtDiv">
 	                                                    <input type="image" id="newArt"

@@ -18,7 +18,7 @@ import com.art.model.ArtDAO;
 import com.art.model.ArtService;
 import com.art_rpt.model.ArtRptService;
 import com.art_rpt.model.ArtRptVO;
-import com.mem.model.MemDAO;
+import com.member.model.MemberServic;
 
 
 public class ArtRptServlet extends HttpServlet {
@@ -66,7 +66,7 @@ public class ArtRptServlet extends HttpServlet {
 			
 			ArtDAO artDAO = new ArtDAO();
 			ArtRptService artRptSvc = new ArtRptService();
-			MemDAO memDAO = new MemDAO();
+			MemberServic memSvc = new MemberServic();
 			List<ArtRptVO> list = artRptSvc.getAll();
 			
 			/*==============放入JSONObject==============*/
@@ -75,7 +75,7 @@ public class ArtRptServlet extends HttpServlet {
 				JSONObject obj = new JSONObject();
 				try { 
 					obj.put("artNo", artRptVO.getArtNo());
-					obj.put("memName", memDAO.findByPrimaryKey(artDAO.findByPrimaryKey(artRptVO.getArtNo()).getMemNo()).getMemName());
+					obj.put("memName", memSvc.getOneMember(artDAO.findByPrimaryKey(artRptVO.getArtNo()).getMemNo()).getMemName());
 					obj.put("artRptNo", artRptVO.getArtRptNo());
 					obj.put("artRptContent", artRptVO.getArtRptReson());
 					obj.put("artRptTime", artRptVO.getArtRptTime());
@@ -86,7 +86,7 @@ public class ArtRptServlet extends HttpServlet {
 						obj.put("artRptStatusButton", "已檢舉");
 					}
 					obj.put("artRptStatus", artRptVO.getArtRptStatus());
-					obj.put("reportMemName", memDAO.findByPrimaryKey(artRptVO.getMemNo()).getMemName());
+					obj.put("reportMemName", memSvc.getOneMember(artRptVO.getMemNo()).getMemName());
 					obj.put("artTitle", artDAO.findByPrimaryKey(artRptVO.getArtNo()).getArtTitle());
 				} catch (JSONException e) {
 					e.printStackTrace();
