@@ -191,7 +191,8 @@ public class SesServlet extends HttpServlet {
 					  req.setAttribute("theNo", theNo);
 					  req.setAttribute("sesDateBegin", sesDateBegin);
 					  req.setAttribute("sesDateEnd", sesDateEnd);
-						
+					  req.setAttribute("sesTimeList", sesTimeList);
+					  
 					  String url = "/back-end/session/addSession.jsp";
 					  RequestDispatcher failureView = req.getRequestDispatcher(url);
 					  failureView.forward(req, res);

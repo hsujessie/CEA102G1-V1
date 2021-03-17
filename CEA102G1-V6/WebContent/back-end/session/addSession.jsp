@@ -166,6 +166,18 @@
 									</c:if>	
 								</th>								
 							</tr>
+							<c:if test="${not empty sesTimeList}">
+								<c:forEach var="sesTimelist" items="${sesTimeList}" varStatus="no">
+									<tr><th>${no.index+1}</th>
+										<td>
+											<input type="text" name="sesTime" value="${sesTimelist}">
+										</td>
+					   					<td>
+					   						<input type=button value="刪除" id="delete" class="delete-btn-sty" onclick='removeTr(this)'>
+					   					</td>
+					   				</tr>								
+								</c:forEach>
+							</c:if>
 						</table>
 						<br>
 						<input type="hidden" name="action" value="insert">
@@ -245,9 +257,10 @@
 	 
 	/* =========================================================================================== */
 									/* 新增時間 */
-	/* =========================================================================================== */
+	/* =========================================================================================== */	
+	<c:if test="${empty sesTimeList}">
 	let addtime = document.getElementById("addtime");
-	let count = 0;
+		let count = 0;
 	let timeCount = 10;   // 預設 10'o clock
 	addtime.addEventListener("click",function(){
 		$('#sesTime-errmsg').css('display','none');
@@ -265,7 +278,7 @@
 		/* =========================================================================================== */
 		$('input[name="sesTime"]').timepicker({
 		    timeFormat: 'HH:mm',
-		    interval: 120,     //時間間隔 120 min
+		    interval: 120,	//時間間隔 120 min
 		    dynamic: true,
 		    dropdown: true,
 		    scrollbar: false
@@ -282,7 +295,7 @@
 		i--;
 		e.closest('tr').remove();
 	}
-	
+	</c:if>
 	/* =========================================================================================== */
 									/* Varify Inputs */
 	/* =========================================================================================== */
@@ -298,6 +311,18 @@
 	addtime.addEventListener("click", isEmpty, false);
 	$('#sesdate_begin').change(isEmpty);
 	$('#sesdate_end').change(isEmpty);
+
+	<c:if test="${not empty sesTimeList}">
+		$('input[name="sesTime"]').keyup(isEmpty);
+		$('input[name="sesTime"]').focus(isEmpty);
+		$('input[name="sesTime"]').timepicker({
+		    timeFormat: 'HH:mm',
+		    interval: 120,	//時間間隔 120 min
+		    dynamic: true,
+		    dropdown: true,
+		    scrollbar: false
+		 });
+	</c:if>
 	
 	function isEmpty(e){
 		if(!theNoFir.checked && !theNoSec.checked && !theNoThi.checked){
