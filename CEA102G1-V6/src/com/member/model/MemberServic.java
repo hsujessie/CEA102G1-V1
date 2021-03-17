@@ -9,7 +9,7 @@ public class MemberServic {
 	private MemberDAO_infterface dao;
 
 	public MemberServic() {
-		dao = new MemberJDBCDAO();
+		dao = new MemberDAO();
 	}
 	
 	public MemberVO addMember(String memName, String memAccount,String memPassword,String memMail) {
