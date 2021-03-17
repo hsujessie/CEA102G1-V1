@@ -7,6 +7,13 @@
 <meta charset="UTF-8">
 <title>Front-End</title>
 <%@ include file="/front-end/files/frontend_importCss.file"%>
+<style>
+	#nextStep {
+		position: absolute;
+		bottom: 1%;
+		right: 5%;
+	}
+</style>
 </head>
 <body>
         <div class="wrapper">
@@ -41,10 +48,13 @@
 							</div>
 							<div class="col-3">
 								<p>
-									<img src="<%=request.getContextPath()%>/resource/images/ordMasIcons/sesTime.png"><span></span>${sesSvc.getOneSes(1).sesDate} ${sesSvc.getOneSes(1).sesTime}
+									<img src="<%=request.getContextPath()%>/resource/images/ordMasIcons/sesTime.png"><span> </span>${sesSvc.getOneSes(1).sesDate} ${sesSvc.getOneSes(1).sesTime}
 								</p>
 								<p>
-									<img src="<%=request.getContextPath()%>/resource/images/ordMasIcons/theater.png"><span></span>第${sesSvc.getOneSes(1).theNo}廳
+									<img src="<%=request.getContextPath()%>/resource/images/ordMasIcons/theater.png"><span> </span>第${sesSvc.getOneSes(1).theNo}廳
+								</p>
+								<p>
+									<img src="<%=request.getContextPath()%>/resource/images/ordMasIcons/seatNo.png"><span> </span><span id="chooseSeatNo"></span>
 								</p>
 							</div>
 						</div>
@@ -57,7 +67,7 @@
 										<th>商品</th>
 										<th>價格</th>
 										<th>數量</th>
-										<th>小計</th>
+										<th>合計</th>
 									</tr>
 								</thead>
 								<tbody>
@@ -86,12 +96,20 @@
 											<td>123</td>
 										</tr>
 									</c:forEach>
+									
+									<tr>
+										<th>總額</th>
+										<td></td>
+										<td></td>
+										<td>110</td>
+									</tr>
 								</tbody>
 							</table>
 
 					
 							<input type="hidden" name="memNo" value="1"> 
 							<input type="hidden" name="sesNo" value="${param.sesNo}"> 
+							<input type="hidden" name="chooseSeatNo" value="${param.chooseSeatNo}"> 
 							<input type="hidden" name="action" value="check_out">
 						</form>
 					</div>
@@ -158,6 +176,23 @@
 <%@ include file="/front-end/files/frontend_importJs.file"%>   
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 	<script>
+	
+		var chooseSeatNo = "${param.chooseSeatNo}";
+		console.log(addComma(chooseSeatNo));
+		$("#chooseSeatNo").text(addComma(chooseSeatNo));
+	
+		function addComma(chooseSeatNo) {
+			let result = "";
+			for (let i = 0; i < chooseSeatNo.length; i += 3) {
+				let subStr = chooseSeatNo.substring(i, i + 3);
+				if (i + 3 !== chooseSeatNo.length) {
+					result = result + subStr + " ,";
+				} else {
+					result = result + subStr;
+				}
+			}
+			return result;
+		}
 
 		$("#nextStep").click(function() {
 			$("#form").submit();

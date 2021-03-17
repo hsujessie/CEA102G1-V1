@@ -36,4 +36,12 @@ public class OrdMasService {
 	public List<OrdMasVO> getAll() {
 		return dao.getAll();
 	}
+	
+	public List<OrdMasVO> getByMemNo(Integer memNo) {
+		return dao.findByMemVO(memNo);
+	}
+	
+	public OrdMasVO getOneOrdMas(Integer ordMasNo) {
+		return dao.findByprimarykey(ordMasNo);
+	}
 }

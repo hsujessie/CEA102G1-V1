@@ -136,7 +136,7 @@ div.seatCharts-legend {
 											<p>${ideSvc.getOneDept(ticTypCartVO.ideNo).ide_name}</p>
 											<p class="text-right">
 												X
-												<span>${ticTypCartVO.ticLisPrice}</span>
+												<span>${ticTypCartVO.ticTypCount}</span>
 											</p>
 										</td>
 									</tr>

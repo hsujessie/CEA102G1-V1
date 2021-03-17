@@ -70,10 +70,10 @@ div>p>img {
 								</div>
 								<div class="col-3">
 									<p>
-										<img src="<%=request.getContextPath()%>/resource/images/ordMasIcons/sesTime.png"><span></span>${sesSvc.getOneSes(1).sesDate} ${sesSvc.getOneSes(1).sesTime}
+										<img src="<%=request.getContextPath()%>/resource/images/ordMasIcons/sesTime.png"><span> </span>${sesSvc.getOneSes(1).sesDate} ${sesSvc.getOneSes(1).sesTime}
 									</p>
 									<p>
-										<img src="<%=request.getContextPath()%>/resource/images/ordMasIcons/theater.png"><span></span>第${sesSvc.getOneSes(1).theNo}廳
+										<img src="<%=request.getContextPath()%>/resource/images/ordMasIcons/theater.png"><span> </span>第${sesSvc.getOneSes(1).theNo}廳
 									</p>
 								</div>
 							</div>
@@ -253,6 +253,9 @@ div>p>img {
 				return "18+";
 			}
 		}
+		
+		
+		
 	</script>
 </body>
 </html>

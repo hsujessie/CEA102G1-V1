@@ -10,5 +10,6 @@ public interface OrdMasDAO_interface {
 	public void insertWithDetail(OrdMasVO ordMasVO, Set<TicTypCartVO> ticTypCartSet, Set<FooCartVO> fooCartSet);
 	
 	public List<OrdMasVO> getAll();
+	public List<OrdMasVO> findByMemVO(Integer memNo);
 	public OrdMasVO findByprimarykey(Integer ordMasNo);
 }

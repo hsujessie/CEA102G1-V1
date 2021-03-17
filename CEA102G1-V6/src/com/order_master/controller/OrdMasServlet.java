@@ -140,9 +140,9 @@ public class OrdMasServlet extends HttpServlet {
 			ordMasSvc.insertWithDetail(memNo, sesNo, fooCartSet, ticTypCartSet);
 			
 			/***************************3.修改完成,準備轉交(Send the Success view)***********/
-//			String url = "/front-end/ordMas/OrderConfirm.jsp";
-//			RequestDispatcher successView = req.getRequestDispatcher(url);
-//			successView.forward(req, res);
+			String url = "/front-end/ordMas/OrderComplete.jsp";
+			RequestDispatcher successView = req.getRequestDispatcher(url);
+			successView.forward(req, res);
 			
 			
 			} catch (Exception e) {

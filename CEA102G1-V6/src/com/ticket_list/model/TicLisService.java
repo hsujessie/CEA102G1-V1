@@ -1,6 +1,7 @@
 package com.ticket_list.model;
 
 import java.sql.Connection;
+import java.util.List;
 
 public class TicLisService {
 	private TicLisDAO_interface dao;
@@ -17,5 +18,9 @@ public class TicLisService {
 		ticLisVO.setSesSeatNo(sesSeatNo);
 		ticLisVO.setTicTypPrice(ticTypPrice);
 		dao.insert(ticLisVO, con);
+	}
+	
+	public List<TicLisVO> getByOrdMasNo(Integer ordMasNo) {
+		return dao.findByOrdMasNo(ordMasNo);
 	}
 }
