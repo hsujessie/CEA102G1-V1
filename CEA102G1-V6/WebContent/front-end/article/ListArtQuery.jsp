@@ -298,7 +298,13 @@ function addArtRpt(){
 //新增回文
 function addArtRep(){
 	$('#artRepButton').click(function(){
-// 		debugger;
+		debugger;
+	if('${MemberVO}' == null){
+		<%
+		session.setAttribute("location", request.getRequestURI());
+		%>
+		window.location.href = "<%=request.getContextPath()%>/front-end/Member_Login/login.jsp"
+	}else{
 		$.ajax({
 			type: 'POST',
 			url: '<%=request.getContextPath()%>/art/artRep.do',
@@ -315,7 +321,9 @@ function addArtRep(){
 
 			},
 			error: function(){console.log("AJAX-addArtRpe發生錯誤囉!")}
-		});
+		});		
+	}
+
 	});
 };
 
