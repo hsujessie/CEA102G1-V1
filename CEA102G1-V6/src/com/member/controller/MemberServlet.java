@@ -45,8 +45,8 @@ public class MemberServlet extends HttpServlet {
 														List<MemberVO> list = dao.getAll();
 
 ///****************查詢完成,準備轉交(Send the Success view)***************/
-//														HttpSession session = req.getSession();
-														req.setAttribute("list", list);    // 資料庫取出的list物件,存入session
+//														
+														req.setAttribute("list", list);    
 														String url = "/back-end/Member/listAllMember.jsp";
 														RequestDispatcher successView = req.getRequestDispatcher(url);
 														successView.forward(req, res);
@@ -64,17 +64,12 @@ public class MemberServlet extends HttpServlet {
 														Integer memNo = new Integer(req.getParameter("memNo"));
 
 ///***************************2.開始查詢資料***************************/
-														MemberServic memberServic = new MemberServic();
-														MemberVO memberVO = memberServic.getOneMember(memNo);
+														MemberService memberService = new MemberService();
+														MemberVO memberVO = memberService.getOneMember(memNo);
 
-							//							BoardTypeService boardTypeService = new BoardTypeService();
-							//							List<BoardTypeVO> boardTypeVOList = boardTypeService.getAll();
-//										
 ///***************************3.查詢完成,準備轉交(Send the Success view)****/
 //
-														req.setAttribute("MemberVO", memberVO);         
-							//							req.setAttribute("boardTypeVOList", boardTypeVOList);
-							
+														req.setAttribute("MemberVO", memberVO); 
 														String url = "/back-end/Member/uptate_member_input.jsp";
 														RequestDispatcher successView = req.getRequestDispatcher(url);
 														successView.forward(req, res);
@@ -116,7 +111,7 @@ public class MemberServlet extends HttpServlet {
 																memstatus = 0;
 																errorMsgs.add("請填數字");
 															}
-													MemberServic memberSvc = new MemberServic();
+													MemberService memberSvc = new MemberService();
 														byte[] memImg = null;
 														Part part = req.getPart("memImg");
 																if (part.getSize() != 0) {
@@ -149,14 +144,13 @@ public class MemberServlet extends HttpServlet {
 													}
 ///***************************2.開始修改資料******************************/
 //							
-						//							MemberServic memberSvc = new MemberServic();
 													memberSvc.updateMember(memNo,memName,memAccount,memPassword,memMail,memWallet,memstatus,memImg);
 						
 													memberVO = memberSvc.getOneMember(memNo);
 						
 ///***************************3.修改完成,準備轉交(Send the Success view)*******/
+													
 													req.setAttribute("MemberVO", memberVO);
-						
 													String url = "/back-end/Member/listOneMember.jsp";
 													RequestDispatcher successView = req.getRequestDispatcher(url); // 修改成功後,轉交listOneEmp.jsp
 													successView.forward(req, res);
@@ -178,7 +172,7 @@ public class MemberServlet extends HttpServlet {
 											
 												try {
 ///***************************1.接收請求參數 - 輸入格式的錯誤處理************/
-//													<還需要加判斷>
+//												
 												Integer memNo = new Integer(req.getParameter("memNo").trim());
 												String memName = req.getParameter("memName").trim();              
 												String memAccount = req.getParameter("memAccount").trim();
@@ -186,7 +180,7 @@ public class MemberServlet extends HttpServlet {
 												String memMail = req.getParameter("memMail").trim();
 												Integer memWallet = new Integer(req.getParameter("memWallet").trim());
 												Integer memstatus = new Integer(req.getParameter("memstatus").trim());
-												MemberServic memberSvc = new MemberServic();                           
+												MemberService memberSvc = new MemberService();                           
 													byte[] memImg = null;
 													Part part = req.getPart("memImg");
 															if (part.getSize() != 0) {
@@ -316,24 +310,6 @@ public class MemberServlet extends HttpServlet {
 											else if (!memPassword.trim().matches(memPasswordReg)) { 
 											    errorMsgs.add("會員信箱: 只能是英文字母、數字和@_ , 且長度必需在2到10之間");
 											}	
-				//							<錢包>
-				//							Integer memWallet = null;
-				//							try {
-				//								memWallet = new Integer(req.getParameter("memWallet").trim());
-				//								memWallet= 0;
-				//							} catch (NumberFormatException e) {
-				//								errorMsgs.add("請填數字,");
-				//							}
-				
-				//							<狀態>
-				//							Integer memstatus = null;
-				//							try {
-				//								memstatus = new Integer(req.getParameter("memStatus").trim());
-				//							} catch (NumberFormatException e) {
-				//								memstatus = 0;
-				//								errorMsgs.add("memstatus請填數字");
-				//							}
-											
 				//							<頭像>
 											byte[] memImg = null;
 											Part part = req.getPart("memImg");
@@ -347,13 +323,12 @@ public class MemberServlet extends HttpServlet {
 											memberVO.setMemAccount(memAccount);
 											memberVO.setMemPassword(memPassword);
 											memberVO.setMemMail(memMail);
-				//							memberVO.setMemWallet(memWallet);
-				//							memberVO.setMemstatus(memstatus);
 											memberVO.setMemImg(memImg);
 										
-											MemberServic memberSvc = new MemberServic();
+											MemberService memberSvc = new MemberService();
 											List<MemberVO> list = memberSvc.getAll();
-											if (list.contains(memberVO)) {     							//contains集合的方法，比較VO裡面的值有沒有重複
+											
+											if (list.contains(memberVO)) {     						
 												errorMsgs.add("帳號請勿重複");
 											}
 											
@@ -387,6 +362,8 @@ public class MemberServlet extends HttpServlet {
 												failureView.forward(req, res);
 											}
 											}
+					
+										
 				
 /***************************完成一個流程***************************/		
 					if ("get_Login".equals(action)) { 																					// 來自login.登入的請求
@@ -446,7 +423,7 @@ public class MemberServlet extends HttpServlet {
 							
 				
 /*************************** 2.開始查詢資料 *****************************************/
-										MemberServic memSvc = new MemberServic();
+										MemberService memSvc = new MemberService();
 										MemberVO memberVO = memSvc.getOneAccount(memAccount,memPassword);
 										if (memberVO == null) {
 											errorMsgs.add("帳號密碼錯誤,請重新登錄");
@@ -557,7 +534,7 @@ public class MemberServlet extends HttpServlet {
 									memberVO.setMemImg(memImg);
 									
 //									<查詢有無重複帳號>				
-									MemberServic memSvc = new MemberServic();
+									MemberService memSvc = new MemberService();
 									List<MemberVO> list = memSvc.getAll();
 									if (list.contains(memberVO)) {
 										errorMsgs.add("帳號請勿重複");
@@ -587,8 +564,6 @@ public class MemberServlet extends HttpServlet {
 									
 /*************************** 3.新增完成,準備轉交(Send the Success view) ***********/
 									String url = "/front-end/Member_Login/login_success_page.jsp";  
-									
-//									req.setAttribute("list", list);
 									RequestDispatcher successView = req.getRequestDispatcher(url); // 新增成功後轉交login_success_page.jsp.jsp
 									successView.forward(req, res);
 									
@@ -602,7 +577,7 @@ public class MemberServlet extends HttpServlet {
 				
 							}		
 /***************************完成一個流程****************************/				
-					if ("updateStatus".equals(action)) { //更新狀態,還無法用
+					if ("updateStatus".equals(action)) { 
 
 									List<String> errorMsgs = new LinkedList<String>();
 									req.setAttribute("errorMsgs", errorMsgs);
@@ -617,7 +592,7 @@ public class MemberServlet extends HttpServlet {
 					
 /*************************** 2.開始修改資料 *****************************************/
 										
-										MemberServic memberSvc = new MemberServic();	
+										MemberService memberSvc = new MemberService();	
 										memberSvc.updateStatus(memberVO);
 					
 /*************************** 3.新增完成,準備轉交(Send the Success view) ***********/
@@ -689,7 +664,7 @@ public class MemberServlet extends HttpServlet {
 											return;// 程式中斷
 										}
 /*************************** 2.開始查詢資料 *****************************************/
-										MemberServic memberSvc = new MemberServic();
+										MemberService memberSvc = new MemberService();
 										MemberVO memberVO = memberSvc.getOneAccountMail(memAccount, memMail);
 										
 										if (memberVO == null) {
@@ -712,7 +687,7 @@ public class MemberServlet extends HttpServlet {
 									        String link = "http://localhost:8081/Seenema/Member/member.do?action=forgot_update&memuuid="+memberVO.getMemuuid();
 									        mailSvc.sendMail(memberVO.getMemMail(), subject, mailSvc.getMessageText2(memberVO.getMemName(),link));
 											
-/*************************** 3.查詢完成,準備轉交(Send the Success view) *************/
+/*************************** 3.查詢完成,準備轉交(Send the Success view) ****************/
 										String success = "修改連結已成功寄出!!!";
 										req.setAttribute("success", success);
 										String url = "/front-end/Member_Login/front_uptate_letter.jsp";  //回到首頁才對!!
@@ -726,23 +701,23 @@ public class MemberServlet extends HttpServlet {
 											failureView.forward(req, res);
 										}
 										}		
-/***************************完成一個流程****************************/		
+/***************************完成一個流程******************************************/		
 					if ("forgot_update".equals(action)) { 
 													List<String> errorMsgs = new LinkedList<String>();
 													req.setAttribute("errorMsgs", errorMsgs);
 									
 													try {
-/*************************** 1.接收請求參數 - 輸入格式的錯誤處理 **********************/
+/*************************** 1.接收請求參數 - 輸入格式的錯誤處理 ***********************/
 														String memuuid = new String(req.getParameter("memuuid"));
 									
-/*************************** 2.開始修改資料 *****************************************/
+/*************************** 2.開始修改資料 ****************************************/
 														
-														MemberServic memberSvc = new MemberServic();
+														MemberService memberSvc = new MemberService();
 														MemberVO memberVO = new MemberVO();	
 														memberVO = memberSvc.getAllForUuid(memuuid);
 														req.setAttribute("MemberVO", memberVO);
 														
-/*************************** 3.新增完成,準備轉交(Send the Success view) ***********/
+/*************************** 3.新增完成,準備轉交(Send the Success view) ****************/
 														
 														String url = "/front-end/Member_Login/front_forgot_Memuptate.jsp";
 														RequestDispatcher successView = req.getRequestDispatcher(url); // login_success.jsp
@@ -758,37 +733,9 @@ public class MemberServlet extends HttpServlet {
 									
 													}
 			
-/***************************完成一個流程****************************/			
+/***************************完成一個流程***************************************/			
 			
-//			if ("listMembers_ByCompositeQuery".equals(action)) { 											// 來自select_page.jsp的複合查詢請求
-//				List<String> errorMsgs = new LinkedList<String>();
-//				req.setAttribute("errorMsgs", errorMsgs);
-//
-//				try {
-//					
-///***************************1.將輸入資料轉為Map**********************************/ 
-//					//採用Map<String,String[]> getParameterMap()的方法 
-//					//注意:an immutable java.util.Map 
-//					Map<String, String[]> map = req.getParameterMap();
-//					
-///***************************2.開始複合查詢***************************************/
-//					MemberServic memberSvc = new MemberServic();
-//					List<MemberServic> list  = memberSvc.getAll(map);
-//					
-///***************************3.查詢完成,準備轉交(Send the Success view)************/
-//					req.setAttribute("listEmps_ByCompositeQuery", list); // 資料庫取出的list物件,存入request
-//					RequestDispatcher successView = req.getRequestDispatcher("/emp/listEmps_ByCompositeQuery.jsp"); // 成功轉交listEmps_ByCompositeQuery.jsp
-//					successView.forward(req, res);
-//					
-///***************************其他可能的錯誤處理**********************************/
-//				} catch (Exception e) {
-//					errorMsgs.add(e.getMessage());
-//					RequestDispatcher failureView = req
-//							.getRequestDispatcher("/select_page.jsp");
-//					failureView.forward(req, res);
-//				}
-//			}				
-			
+
 			
 			
 			

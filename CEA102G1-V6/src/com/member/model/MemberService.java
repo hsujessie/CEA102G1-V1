@@ -4,16 +4,16 @@ import java.util.List;
 
 import com.member.model.*;
 
-public class MemberServic {
+public class MemberService {
 
 	private MemberDAO_infterface dao;
 
-	public MemberServic() {
+	public MemberService() {
 		dao = new MemberJDBCDAO();
 	}
 	
 	public MemberVO addMember(String memName, String memAccount,String memPassword,String memMail,byte[] memImg) {
-//		,Integer memWallet,Integer memstatus,byte[] memImg
+
 		MemberVO memberVO = new MemberVO();
 
 		
@@ -21,8 +21,6 @@ public class MemberServic {
 		memberVO.setMemAccount(memAccount);
 		memberVO.setMemPassword(memPassword);
 		memberVO.setMemMail(memMail);
-//		memberVO.setMemWallet(memWallet);
-//		memberVO.setMemstatus(memstatus);
 		memberVO.setMemImg(memImg);
 	
 		dao.insert(memberVO);
