@@ -10,7 +10,7 @@
 <c:set var="client" value="${pageContext.request.contextPath}/back-end/client_service/Client_Service.jsp"/>  
 <c:set var="movieComreport" value="${pageContext.request.contextPath}/back-end/comment_report/listAllComReport.jsp"/>
 <c:set var="articleComreport" value="${pageContext.request.contextPath}/back-end/article/articleReport.jsp"/>                                  
-<c:set var="theater" value="${pageContext.request.contextPath}/back-end/theater/listAllTheater.jsp""/> 
+<c:set var="theater" value="${pageContext.request.contextPath}/back-end/theater/listAllTheater.jsp"/> 
 <c:set var="food" value="${pageContext.request.contextPath}/back-end/foo/fooSelectPage.jsp"/>
 
 <c:set var="board" value=""/> 

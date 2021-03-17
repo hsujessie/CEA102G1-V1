@@ -19,7 +19,7 @@ public class MemberJDBCDAO implements MemberDAO_infterface{
 	String driver = "com.mysql.cj.jdbc.Driver";
 	String url = "jdbc:mysql://localhost:3306/seenema?serverTimezone=Asia/Taipei";
 	String userid = "root";
-	String passwd = "12qwaszx";
+	String passwd = "123456";
 	
 	private static final String INSERT_STMT = 
 			"INSERT INTO member (mem_Name,mem_Account,mem_Password,mem_Mail,mem_Img) VALUES (?, ?, ?, ?, ?)";

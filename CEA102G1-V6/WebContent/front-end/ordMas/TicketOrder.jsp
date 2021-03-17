@@ -105,9 +105,9 @@ div>p>img {
 													</tr>
 												</thead>
 												<tbody>
-													<jsp:useBean id="ticTypSvc" scope="page" class="com.ticket_type.model.Ticket_typeService" />
-													<jsp:useBean id="ideSvc" scope="page" class="com.identity.model.IdentityService" />
-													<jsp:useBean id="theSvc" scope="page" class="com.theater.model.TheaterService" />
+													<jsp:useBean id="ticTypSvc" scope="page" class="com.ticket_type.model.TicTypService" />
+													<jsp:useBean id="ideSvc" scope="page" class="com.identity.model.IdeService" />
+													<jsp:useBean id="theSvc" scope="page" class="com.theater.model.TheService" />
 													<c:forEach var="ticTypVO" items="${ticTypSvc.getTicTypsByMovVerNo(theSvc.getOneTheater(sesSvc.getOneSes(1).theNo).movver_no)}">
 														<tr>
 															<td>${ideSvc.getOneDept(ticTypVO.ide_no).ide_name}</td>

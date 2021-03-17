@@ -5,6 +5,7 @@ import java.util.*;
 import javax.websocket.*;
 import javax.websocket.server.*;
 
+import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.concurrent.ConcurrentHashMap;
@@ -41,11 +42,15 @@ public class ServiceWS {
 							if(sessionsMapForAdm.get(admNo).equals(session)) {
 								JSONObject jsonObj = new JSONObject();
 								AdmService admSvc = new AdmService();
-								String admName = admSvc.getOneAdm(admNo).getAdmName();
-								jsonObj.put("admID", admNo);
-								jsonObj.put("admName", admName);
-								jsonObj.put("type", "open");
-								jsonObj.put("message", "您好，我是"+admName+"，很高興為您服務，請問有什麼我能幫您的呢？");
+								String admName = admSvc.getOneAdm(new Integer(admNo)).getAdmName();
+								try {
+									jsonObj.put("admID", admNo);
+									jsonObj.put("admName", admName);
+									jsonObj.put("type", "open");
+									jsonObj.put("message", "您好，我是"+admName+"，很高興為您服務，請問有什麼我能幫您的呢？");
+								} catch (JSONException e) {
+									e.printStackTrace();
+								}
 								userSession.getAsyncRemote().sendText(jsonObj.toString());
 							}
 						}
@@ -54,7 +59,11 @@ public class ServiceWS {
 			} else {
 				sessionsMapForWaitingMem.put(memNo,userSession);
 				JSONObject jsonObj = new JSONObject();
-				jsonObj.put("type", "noAdminOnline");
+				try {
+					jsonObj.put("type", "noAdminOnline");
+				} catch (JSONException e) {
+					e.printStackTrace();
+				}
 				userSession.getAsyncRemote().sendText(jsonObj.toString());
 			}
 			
@@ -69,11 +78,15 @@ public class ServiceWS {
 					Session session = sessionsMapForWaitingMem.get(memNo);
 					JSONObject jsonObj = new JSONObject();
 					AdmService admSvc = new AdmService();
-					String admName = admSvc.getOneAdm(admNo).getAdmName();
-					jsonObj.put("admID", admNo);
-					jsonObj.put("admName", admName);
-					jsonObj.put("type", "open");
-					jsonObj.put("message", "您好讓您久等了，我是"+admName+"，很高興為您服務，請問有什麼我能幫您的呢？");
+					String admName = admSvc.getOneAdm(new Integer(admNo)).getAdmName();
+					try {
+						jsonObj.put("admID", admNo);
+						jsonObj.put("admName", admName);
+						jsonObj.put("type", "open");
+						jsonObj.put("message", "您好讓您久等了，我是"+admName+"，很高興為您服務，請問有什麼我能幫您的呢？");
+					} catch (JSONException e) {
+						e.printStackTrace();
+					}
 					session.getAsyncRemote().sendText(jsonObj.toString());
 					sessionsMapForMem.put(memNo,session);
 					sessionsMapForWaitingMem.remove(memNo);

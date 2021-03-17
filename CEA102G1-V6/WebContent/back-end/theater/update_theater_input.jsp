@@ -74,7 +74,7 @@
                     <div class="container-fluid">
                     
                     <!-- PUT HERE Start-->
-                    <FORM METHOD="post" ACTION="theater.do" id="form">
+                    <FORM METHOD="post" ACTION="<%=request.getContextPath()%>/theater/theater.do" id="form">
                     <h3 class="h3-style listOne-h3-pos">電影修改</h3>
                     <table id="table1">
                     	<tr>

@@ -125,8 +125,8 @@
 										<td>${sesVO.getSesDate()}</td>
 										<td><fmt:formatDate value="${sesVO.getSesTime()}" pattern="HH:mm" type="DATE"/></td>
 										
-										<jsp:useBean id="theSvc" scope="page" class="com.theater.model.TheaterService"/>
-										<jsp:useBean id="movVerSvc" scope="page" class="com.movie_version.model.Movie_versionService"/>	
+										<jsp:useBean id="theSvc" scope="page" class="com.theater.model.TheService"/>
+										<jsp:useBean id="movVerSvc" scope="page" class="com.movie_version.model.MovVerService"/>	
 										<c:set value="${theSvc.getOneTheater(sesVO.theNo)}" var="theObj"></c:set>
 										<c:set value="${movVerSvc.getOneMovie_version(theObj.movver_no)}" var="movVerObj"></c:set>
 										<td>${sesVO.theNo}廳 【${movVerObj.movver_name}】</td>

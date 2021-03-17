@@ -74,9 +74,9 @@
 								<tbody>
 
 
-								<jsp:useBean id="theSvc" scope="page" class="com.theater.model.TheaterService" />
-								<jsp:useBean id="ticTypSvc" scope="page" class="com.ticket_type.model.Ticket_typeService" />
-								<jsp:useBean id="ideSvc" scope="page" class="com.identity.model.IdentityService" />
+								<jsp:useBean id="theSvc" scope="page" class="com.theater.model.TheService" />
+								<jsp:useBean id="ticTypSvc" scope="page" class="com.ticket_type.model.TicTypService" />
+								<jsp:useBean id="ideSvc" scope="page" class="com.identity.model.IdeService" />
 
 									<c:forEach var="ticTypCartVO" items="${ticTypCartSet}">
 										<tr>

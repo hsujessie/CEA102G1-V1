@@ -255,7 +255,7 @@
 		    $(".chat-box").toggle(500);
 		  })
 		 //WebSocket
-        var MyPoint = "/serviceWS/member/${memberVO.memNo}";
+        var MyPoint = "/serviceWS/member/${MemberVO.memNo}";
 		var host = window.location.host;
 		var path = window.location.pathname;
 		var webCtx = path.substring(0, path.indexOf('/', 1));
@@ -315,8 +315,8 @@
 		
 		function sendMessage() {
 			var inputMessage = document.getElementById("chat-input");
-			var memberID = "${memberVO.memNo}";
-			var memberName = "${memberVO.memNo}";
+			var memberID = "${MemberVO.memNo}";
+			var memberName = "${MemberVO.memName}";
 			var message = inputMessage.value.trim();
 			if (message === "") {
 				inputMessage.focus();

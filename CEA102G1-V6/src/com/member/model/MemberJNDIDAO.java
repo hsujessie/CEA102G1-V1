@@ -17,7 +17,7 @@ public class MemberJNDIDAO implements MemberDAO_infterface{
 	static {
 		try {
 			Context ctx = new InitialContext();
-			ds = (DataSource) ctx.lookup("java:comp/env/jdbc/Seenem");
+			ds = (DataSource) ctx.lookup("java:comp/env/jdbc/Seenema");
 		} catch (NamingException e) {
 			e.printStackTrace();
 		}

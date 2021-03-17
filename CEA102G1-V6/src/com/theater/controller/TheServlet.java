@@ -151,7 +151,7 @@ public class TheServlet extends HttpServlet {
 				if(requestURL.equals("/back-end/movie_version/listTheaters_ByMovie_version.jsp") || requestURL.equals("/back-end/movie_version/listAllMovie_version.jsp"))
 					req.setAttribute("listTheaters_Bymovie_version",movie_versionSvc.getTheatersByMovver_no(movver_no)); 
 					
-				String url = requestURL+"&the_no="+the_no;
+				String url = requestURL+"?the_no="+the_no;
 				RequestDispatcher successView = req.getRequestDispatcher(url); 
 				successView.forward(req, res);
 

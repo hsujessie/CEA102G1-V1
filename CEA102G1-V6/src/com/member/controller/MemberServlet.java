@@ -794,7 +794,7 @@ public class MemberServlet extends HttpServlet {
 						res.setContentType("text; charset=utf-8");
 						PrintWriter out = res.getWriter();
 						Integer memNo = new Integer(req.getParameter("memNo").trim());
-						MemberServic memSvc = new MemberServic();
+						MemberService memSvc = new MemberService();
 						String memName = memSvc.getOneMember(memNo).getMemName();
 						out.print(memName);
 						return;
