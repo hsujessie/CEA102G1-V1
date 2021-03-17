@@ -138,14 +138,17 @@
         $(document).ready(function () {
             //列出側邊欄電影類型
             showArtMoveType();
-
-            debugger;
+            
+          	//列出Top3點擊文章列表
+          	debugger;
+          	ListArtTopThreeQuery();
+            
             //列出全部文章列表
             ListArtQuery();
 
             //單篇文章燈箱
             debugger;
-            $('#artListCenter').on('click', '.artContent', function (event) {
+            $('#artListCenter ,#Top3Article').on('click', '.artContent', function (event) {
                 console.log("artContent clicked:" + $(event.currentTarget).html());
                 console.log("artNo:" + $(event.currentTarget).attr('data-value'));
                 // 		debugger;
@@ -215,7 +218,7 @@
                         //         	debugger;
                         findArtByCompositeQuery(e);
                     }
-                });
+            });
 
             //依電影類型查詢
             $('#artMovTypeList').on('click', 'li', function (e) {
@@ -227,8 +230,11 @@
                 clearArtCompositeQuery();
                 $(this).addClass('selectedMovType');
                 findArtByCompositeQuery(e);
+                
+              	//呼叫電影類型熱門文章
+                movTypeHotArticle($(this).data('value'));
             });
-
+            
             //時間月曆
             $.datetimepicker.setLocale('zh');
             $('#artTimeForByCompositeQuery').datetimepicker({
@@ -361,6 +367,36 @@
             console.log("addCompositeQueryData:" + addArtDataAttr);
             return addArtDataAttr;
         };
+        
+        //複合查詢後熱門文章列表
+        function movTypeHotArticle(data){
+        	debugger;
+        	$.ajax({
+        		type: 'POST',
+        		url: '<%=request.getContextPath()%>/art/art.do',
+        		data: {'action':'movTypeHotArticle', 'movType':data},
+        		dataType: 'json',
+        		success: function (artVO){
+        			debugger;
+        			//清空熱門文章列表
+        			clearListArtTopThreeQuery();
+        			
+        			//加入文章內容
+        			$(artVO).each(function(i, item){
+        				$('#Top3Article').append(
+        						'<div id="artAuthor" style="display: inline-block"><div style="display: inline-block">作者：</div> <div style="display: inline-block">'+item.memName+'</div></div>'
+        						+'<div id="movType" style="display: inline-block"><div style="display: inline-block">電影類型：</div> <div style="display: inline-block">'+item.artMovType+'</div></div>'
+        						+'<div id="topThreeArticle" style="display: inline-block; color: #FF7575;"><i class="fas fa-crown" style="color: #bb9d52; margin: 0px 5px;"></i><b>HOT</b></div>'
+        						+'<div id="artTitle"><div style="font-size: 1.2rem;"><b>'+item.artTitle+'</b></div></div>'
+        						+'<div id="artTime"><div style="display: inline-block">修改時間：</div> <div style="display: inline-block">'+moment(item.artTime).locale('zh_TW').format('llll')+'</div></div>'
+        						+'<div><div class="artContent" data-value="'+item.artNo+'">'+item.artContent+'</div></div><hr>')			
+        						;
+        				$('#Top3Article').addClass('HotArticleDiv');
+        				});
+        		},
+        		error: function(){console.log("AJAX-ListArtTopThreeQuery發生錯誤囉!")}
+        	});
+        };
 
         //清空文章列表
         function clearArtList() {
@@ -378,6 +414,12 @@
             $('#artTimeForByCompositeQuery').val("");
             $('#artTitleByCompositeQuery').val("");
         };
+        
+        //清空熱門文章列表
+        function clearListArtTopThreeQuery(){
+        	$('#Top3Article').empty();
+        	$('#Top3Article').removeClass('HotArticleDiv');
+        }
     </script>
     <title>--SEENEMA ARTICLE--</title>
 </head>
@@ -418,7 +460,7 @@
 	                                        <!-- 新增文章 -->
 	                                        <form method="post" action="<%=request.getContextPath()%>/art/art.do">
 	                                            <input type="hidden" name="action" value="newArt">
-	                                            <input type="hidden" name="requestURL" value="<%=request.getServletPath()%>"><!--送出本網頁的路徑給Controller-->
+<%-- 	                                            <input type="hidden" name="requestURL" value="<%=request.getServletPath()%>"><!--送出本網頁的路徑給Controller--> --%>
 	                                            <label>
 	                                                <div id="newArtDiv">
 	                                                    <input type="image" id="newArt"

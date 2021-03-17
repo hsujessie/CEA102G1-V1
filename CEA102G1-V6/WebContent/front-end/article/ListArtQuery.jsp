@@ -44,6 +44,9 @@
 	#artAuthor{
 		width: 40vh;
 	}
+	#movType{
+		width: 40vh;
+	}
     #art_modal-header_like{
     	margin-top: 6px;
     	margin-left: 25px;    	
@@ -103,6 +106,11 @@
     #artReplyno{
     	color: #808080;
     	text-align: right;
+    	padding: 5%;
+    }
+    .HotArticleDiv{
+    	background-color: rgba(170,145,102,0.2);
+    	border-radius: 20px;
     	padding: 5%;
     }
 </style>
@@ -184,6 +192,37 @@ function ListArtQuery(){
 
 	console.log("目前登入會員====="+'${memNo}');
 };
+
+
+//列出Top3點擊文章列表	
+function ListArtTopThreeQuery(){
+	debugger;
+	$.ajax({
+		type: 'POST',
+		url: '<%=request.getContextPath()%>/art/art.do',
+		data: {'action':'artTopThree_Show_By_AJAX'},
+		dataType: 'json',
+		success: function (artVO){
+			debugger;
+			//清空熱門文章列表
+			clearListArtTopThreeQuery();
+			
+			//加入文章內容
+			$(artVO).each(function(i, item){
+				$('#Top3Article').append(
+						'<div id="artAuthor" style="display: inline-block"><div style="display: inline-block">作者：</div> <div style="display: inline-block">'+item.memName+'</div></div>'
+						+'<div id="movType" style="display: inline-block"><div style="display: inline-block">電影類型：</div> <div style="display: inline-block">'+item.artMovType+'</div></div>'
+						+'<div id="topThreeArticle" style="display: inline-block; color: #FF7575;"><i class="fas fa-crown" style="color: #bb9d52; margin: 0px 5px;"></i><b>HOT</b></div>'
+						+'<div id="artTitle"><div style="font-size: 1.2rem;"><b>'+item.artTitle+'</b></div></div>'
+						+'<div id="artTime"><div style="display: inline-block">修改時間：</div> <div style="display: inline-block">'+moment(item.artTime).locale('zh_TW').format('llll')+'</div></div>'
+						+'<div><div class="artContent" data-value="'+item.artNo+'">'+item.artContent+'</div></div><hr>')			
+						;
+				$('#Top3Article').addClass('HotArticleDiv');
+				});
+		},
+		error: function(){console.log("AJAX-ListArtTopThreeQuery發生錯誤囉!")}
+	});
+}
 
 //查詢收藏此文章的情況
 function isArtFav(){
@@ -347,7 +386,7 @@ function clearArtRepContent(){
 	$('#artRepContent').val("");
 };
 
-//清空檢舉原因
+//清空留言檢舉原因
 function clearRepRptReson(){
 	$('.artRepRptReson').val("");
 };
@@ -356,6 +395,9 @@ function clearRepRptReson(){
 </head>
 <body>
 <!-- 中間區塊開始 -->
+<div id="Top3Article">
+	
+</div>
 <!--使用AJAX查詢文章列表 -->
 <div id="artListCenter">
 

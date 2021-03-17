@@ -20,14 +20,15 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import com.art.model.ArtDAO;
 import com.art.model.ArtService;
 import com.art.model.ArtVO;
-import com.mem.model.MemDAO;
+//import com.mem.model.MemDAO;
+import com.member.model.MemberServic;
 
 import redis.JedisUtil;
 import redis.clients.jedis.Jedis;
 import redis.clients.jedis.JedisPool;
+import redis.clients.jedis.SortingParams;
 
 
 public class ArtServlet extends HttpServlet {
@@ -55,7 +56,9 @@ public class ArtServlet extends HttpServlet {
 		if("newArt".equals(action)) {
 			ArtVO artVO = new ArtVO();
 			request.setAttribute("artVO", artVO);
-			String requestURL = request.getParameter("requestURL"); // 送出修改的來源網頁路徑
+			HttpSession session = request.getSession();
+//			String requestURL = request.getParameter("requestURL"); // 送出修改的來源網頁路徑
+			
 			
 			if(request.getSession().getAttribute("memNo") != null) {
 				
@@ -64,6 +67,7 @@ public class ArtServlet extends HttpServlet {
 				RequestDispatcher newArticle = request.getRequestDispatcher(url);			
 				newArticle.forward(request, response);				
 			}else {
+				session.setAttribute("location", request.getRequestURI());
 				String url = "/front-end/Member_Login/login.jsp";
 				RequestDispatcher newArticleLogin = request.getRequestDispatcher(url);			
 				newArticleLogin.forward(request, response);
@@ -262,14 +266,14 @@ public class ArtServlet extends HttpServlet {
 			if(request.getParameter("artNo") == null) {
 				System.out.println("artNo == null");
 				ArtService artSvc = new ArtService();
-				MemDAO memDAO = new MemDAO();
+				MemberServic memSvc = new MemberServic();
 				List<ArtVO> list = artSvc.getAll();	
 				/*==============放入JSONObject==============*/
 				for (ArtVO artVO : list) {
 					JSONObject obj = new JSONObject();
 					try {
 						obj.put("artNo", artVO.getArtNo());
-						obj.put("memName", memDAO.findByPrimaryKey(artVO.getMemNo()).getMemName());
+						obj.put("memName", memSvc.getOneMember((artVO.getMemNo())).getMemName());
 						obj.put("artTitle", artVO.getArtTitle());
 						obj.put("artContent", artVO.getArtContent());
 						obj.put("artTime", artVO.getArtTime());
@@ -290,7 +294,7 @@ public class ArtServlet extends HttpServlet {
 				
 				JSONObject obj = new JSONObject();
 				ArtService artSvc = new ArtService();
-				MemDAO memDAO = new MemDAO();
+				MemberServic memSvc = new MemberServic();
 				
 				try {
 					System.out.println("artNo:"+request.getParameter("artNo"));
@@ -299,6 +303,7 @@ public class ArtServlet extends HttpServlet {
 					ArtVO artVO = artSvc.getOneArt(artNo);
 					
 					System.out.println(jedis.hget("artNo:"+artVO.getArtNo(), "clickTimes"));
+					
 					//新增點擊次數熱門度
 					if(jedis.hexists("artNo:"+artVO.getArtNo(), "clickTimes") == false) {
 						//第一次新增
@@ -316,11 +321,15 @@ public class ArtServlet extends HttpServlet {
 						jedis.hset("artNo:"+artVO.getArtNo(), "clickTimes", clickTimes);
 
 					}
+					//把該movType的artNo新增至redis，判斷個別分類文章Top3時使用
+					jedis.sadd("movType:"+artVO.getMovType(), String.valueOf(artVO.getArtNo()));
+					//新增artNo至redis，判斷全部文章Top3時使用
+					jedis.sadd("all:artNo", String.valueOf(artVO.getArtNo()));
 					
 					System.out.println("artNo:"+artVO.getArtNo());
 					/*==============放入JSONObject==============*/
 					obj.put("artNo", artVO.getArtNo());
-					obj.put("memName", memDAO.findByPrimaryKey(artVO.getMemNo()).getMemName());
+					obj.put("memName", memSvc.getOneMember((artVO.getMemNo())).getMemName());
 					obj.put("memNo", artVO.getMemNo());
 					obj.put("artTitle", artVO.getArtTitle());
 					obj.put("artContent", artVO.getArtContent());
@@ -345,6 +354,99 @@ public class ArtServlet extends HttpServlet {
 			out.close();
 		}
 		
+		//列出熱門文章
+		if("artTopThree_Show_By_AJAX".equals(action)) {
+			JSONArray array = new JSONArray();
+			ArtService artSvc = new ArtService();
+			MemberServic memSvc = new MemberServic();
+			
+			/*====================從redis取前三筆點擊率===================*/
+			//建立redis連線
+			Jedis jedis = pool.getResource();
+			jedis.auth("123456");
+
+			//查Top3
+			List<String> resultArt = jedis.sort("all:artNo", new SortingParams().by("artNo:*->clickTimes").desc().limit(0, 3));
+			System.out.println("查Top3:"+resultArt);
+			
+			for(String artNo : resultArt) {
+				JSONObject obj = new JSONObject();
+				ArtVO artVO = artSvc.getOneArt(Integer.parseInt(artNo));
+				
+				try {
+					obj.put("artNo", artVO.getArtNo());
+					obj.put("memName", memSvc.getOneMember((artVO.getMemNo())).getMemName());
+					obj.put("memNo", artVO.getMemNo());
+					obj.put("artTitle", artVO.getArtTitle());
+					obj.put("artContent", artVO.getArtContent());
+					obj.put("artTime", artVO.getArtTime());
+					obj.put("artMovType", artVO.getMovType());
+					obj.put("artReplyno", artVO.getArtReplyno());
+					
+				} catch (JSONException e) {
+					e.printStackTrace();
+				}
+				array.put(obj);
+				
+			}
+			jedis.close();
+			
+			/*==============傳回=============*/
+			response.setContentType("text/plain");
+			response.setCharacterEncoding("UTF-8");
+			PrintWriter out = response.getWriter();
+			out.write(array.toString());
+			out.flush();
+			out.close();
+		}
+		
+		//依電影分類列出熱門文章
+		if("movTypeHotArticle".equals(action)) {
+			JSONArray array = new JSONArray();
+			ArtService artSvc = new ArtService();
+			MemberServic memSvc = new MemberServic();
+			
+			String movType = request.getParameter("movType");
+			
+			/*====================從redis取前三筆點擊率===================*/
+			//建立redis連線
+			Jedis jedis = pool.getResource();
+			jedis.auth("123456");
+
+			//查Top3
+			List<String> resultArt = jedis.sort("movType:"+movType, new SortingParams().by("artNo:*->clickTimes").desc().limit(0, 3));
+			System.out.println("查Top3:"+resultArt);
+			
+			for(String artNo : resultArt) {
+				JSONObject obj = new JSONObject();
+				ArtVO artVO = artSvc.getOneArt(Integer.parseInt(artNo));
+				
+				try {
+					obj.put("artNo", artVO.getArtNo());
+					obj.put("memName", memSvc.getOneMember((artVO.getMemNo())).getMemName());
+					obj.put("memNo", artVO.getMemNo());
+					obj.put("artTitle", artVO.getArtTitle());
+					obj.put("artContent", artVO.getArtContent());
+					obj.put("artTime", artVO.getArtTime());
+					obj.put("artMovType", artVO.getMovType());
+					obj.put("artReplyno", artVO.getArtReplyno());
+					
+				} catch (JSONException e) {
+					e.printStackTrace();
+				}
+				array.put(obj);
+				
+			}
+			jedis.close();
+			
+			/*==============傳回=============*/
+			response.setContentType("text/plain");
+			response.setCharacterEncoding("UTF-8");
+			PrintWriter out = response.getWriter();
+			out.write(array.toString());
+			out.flush();
+			out.close();
+		}
 		//article.jsp呼叫，複合查詢
 		if("find_By_CompositeQuery_Use_AJAX".equals(action)) {
 			JSONArray array = new JSONArray();
@@ -371,11 +473,11 @@ public class ArtServlet extends HttpServlet {
 			/*==============放入JSONObject==================*/
 			for (ArtVO artVO : list) {
 				JSONObject obj = new JSONObject();
-				MemDAO memDAO = new MemDAO();
+				MemberServic memSvc = new MemberServic();
 				try {
 					obj.put("artNo", artVO.getArtNo());
-					obj.put("memName", memDAO.findByPrimaryKey(artVO.getMemNo()).getMemName());
 					obj.put("memNo", artVO.getMemNo());
+					obj.put("memName", memSvc.getOneMember((artVO.getMemNo())).getMemName());
 					obj.put("artTitle", artVO.getArtTitle());
 					obj.put("artContent", artVO.getArtContent());
 					obj.put("artTime", artVO.getArtTime());
@@ -401,7 +503,6 @@ public class ArtServlet extends HttpServlet {
 		if("find_MoveType_By_AJAX".equals(action)) {
 			JSONArray array = new JSONArray();
 			ArtService artSvc = new ArtService();
-			ArtVO artVO = new ArtVO();
 			
 			List<String> movTypeList = artSvc.getAllMoveType();
 			System.out.println("movTypeList:"+movTypeList);
