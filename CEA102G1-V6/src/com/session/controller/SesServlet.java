@@ -146,11 +146,10 @@ public class SesServlet extends HttpServlet {
 	             String[] sesDateArr = new String[sesDateList.size()];
 	             sesDateArr = sesDateList.toArray(sesDateArr);
 	             
-	             
+                 
 	             Time sesTime = null;   
-	             String[] sesTimeArr = req.getParameterValues("sesTime");	             
-	             List<LocalTime> sesTimeListEven = new ArrayList<LocalTime>();
-	             List<LocalTime> sesTimeListOdd = new ArrayList<LocalTime>();
+	             String[] sesTimeArr = req.getParameterValues("sesTime");	  
+	             List<LocalTime> sesTimeList = new ArrayList<LocalTime>();
 	             Duration diff = null;
 	             if (sesTimeArr == null || sesTimeArr.length == 0) {
 					   errorMsgs.put("sesTime"," 請選擇電影時間");
@@ -162,22 +161,17 @@ public class SesServlet extends HttpServlet {
 	            	   =====================================================================*/
 	            	 if(sesTimeArr.length > 1) {
 						System.out.println("if= " + sesTimeArr.length);
-						for(int j = 0; j < sesTimeArr.length; j++) {	
-							if(j%2 == 0) {                                                                   //取到的時間格式為"10:00AM"，需轉為24小時制格式，才能取時間的difference
-								sesTimeListEven.add(java.time.LocalTime.parse(sesTimeArr[j])); //將偶數索引值的時間轉換後，存進list
-							}
-							if(j%2 != 0) {
-								sesTimeListOdd.add(java.time.LocalTime.parse(sesTimeArr[j]));  //將奇數索引值的時間轉換後，存進list
-							}
+						for(int j = 0; j < sesTimeArr.length; j++) {
+							sesTimeList.add(java.time.LocalTime.parse(sesTimeArr[j]));	// 將時間陣列存進list
 						}
 						
-						for(int i = 0; i < sesTimeListEven.size(); i++) {
-							System.out.println("Even List: " + sesTimeListEven.get(i));
-							System.out.println("Odd  List: " + sesTimeListOdd.get(i));
-							diff = Duration.between(sesTimeListEven.get(i),sesTimeListOdd.get(i));  //將兩個list裡面的時間相減
+						for(int i = 1; i < sesTimeList.size(); i++) {	
+							System.out.println("i List: " + sesTimeList.get(i));
+							System.out.println("i-1  List: " + sesTimeList.get(i - 1));
+							diff = Duration.between(sesTimeList.get(i - 1),sesTimeList.get(i));  // 「get(i)」 minus 「get(i - 1)」的 difference 不能少於2
 							System.out.println("diff= " + diff.toHours()); 
-							if(diff.toHours() < 2 && diff.toHours() > 0) {   // 判斷 > 0 為了避免 10:00AM - 12:00AM 的相差等於 -10 負數
-								errorMsgs.put("sesTime"," 間距不可少於2小時");  							
+							if(diff.toHours() < 2) {
+				                errorMsgs.put("sesTime"," 間距不可少於2小時");  							
 							}
 						}
 						
@@ -189,15 +183,19 @@ public class SesServlet extends HttpServlet {
 	             }
 
 	             // Here're parameters for sending back to the front page, if there were errors   
-             	 SesVO sesVO = new SesVO();
-                 sesVO.setSesNo(movNo);
-                 sesVO.setTheNo(theNo);
-                 sesVO.setSesDate(sesDate);
-                 sesVO.setSesTime(sesTime);
-
+             	  SesVO sesVO = new SesVO();
+                  sesVO.setSesNo(movNo);
+                  sesVO.setTheNo(theNo);
+                  sesVO.setSesDate(sesDate); 
+                  sesVO.setSesTime(sesTime);
+                  
 	             // Send the use back to the form, if there were errors   
 	             if (!errorMsgs.isEmpty()) {
 					  req.setAttribute("sesVO", sesVO);
+					  
+//					  HttpSession session = req.getSession();
+//					  session.setAttribute("sesVOfromSession", sesVO);
+						
 					  String url = "/back-end/session/addSession.jsp";
 					  RequestDispatcher failureView = req.getRequestDispatcher(url);
 					  failureView.forward(req, res);
