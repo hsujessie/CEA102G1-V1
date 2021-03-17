@@ -376,30 +376,30 @@ public class SesServlet extends HttpServlet {
         Calendar calEnd = Calendar.getInstance();
         calEnd.setTime(format.parse(dateEnd));
         
-        List<String> Datelist = new ArrayList<String>();
-        Datelist.add(format.format(calBegin.getTime()));
+        List<String> dateList = new ArrayList<String>();
+        dateList.add(format.format(calBegin.getTime()));
         
         
         /* ====================================================================================
      		* whether dateEnd is after calBegin
-     		* if it's true -> calBegin will be plus a day via using「 Calendar.DAY_OF_MONTH 」 
+     		* if it's true -> calBegin will be plused a day via using「 Calendar.DAY_OF_MONTH 」 
      	======================================================================================= */
         while (format.parse(dateEnd).after(calBegin.getTime()))  {
             calBegin.add(Calendar.DAY_OF_MONTH, 1);   // DAY_OF_MONTH 取出當前月的第幾天
-            Datelist.add(format.format(calBegin.getTime()));
+            dateList.add(format.format(calBegin.getTime()));
         }
-        return Datelist;
+        return dateList;
     }
 	
 	public List<String> getTimes(String times) {
-        List<String> TimeList = new ArrayList<String>();
-        TimeList.add(times);
-		return TimeList;
+        List<String> timeList = new ArrayList<String>();
+        timeList.add(times);
+		return timeList;
 	}
 	
 	
     /* ====================================================================================
- 		* 需把 update_session_input.jsp 來的時間格式改為24小時制，才可寫入db。
+ 		* 需把 update_session_input.jsp 來的時間格式改為24小時制，才可寫進資料庫。
  	======================================================================================= */
 	public static String convertTimes(String twelveHourTime) throws ParseException {
 		DateFormat twenty_tf = new SimpleDateFormat("hh:mm a", Locale.ENGLISH);
