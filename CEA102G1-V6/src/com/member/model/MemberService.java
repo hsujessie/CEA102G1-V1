@@ -4,12 +4,12 @@ import java.util.List;
 
 import com.member.model.*;
 
-public class MemberServic {
+public class MemberService {
 
 	private MemberDAO_infterface dao;
 
-	public MemberServic() {
-		dao = new MemberJDBCDAO();
+	public MemberService() {
+		dao = new MemberDAO();
 	}
 	
 	public MemberVO addMember(String memName, String memAccount,String memPassword,String memMail) {

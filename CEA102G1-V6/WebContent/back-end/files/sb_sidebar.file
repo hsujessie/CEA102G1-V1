@@ -75,7 +75,7 @@
                     <a class="nav-link" href="${order}">訂單列表</a>
                 </nav>
             </div>
-            <a class="nav-link collapsed <c:if test="${urlRecog == sessionSub}">active</c:if>" href="#" data-toggle="collapse" data-target="#session" aria-expanded="false" aria-controls="session">                        
+            <a class="nav-link collapsed <c:if test="${urlRecog == sessionSub}">active</c:if>" href="${session}" data-toggle="collapse" data-target="#session" aria-expanded="false" aria-controls="session">                        
                 <div class="sb-nav-link-icon"><i class="far fa-clock"></i></div>
                 場次排程管理
                 <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
@@ -87,7 +87,7 @@
                 </nav>
             </div>
             
-            <a class="nav-link collapsed <c:if test="${urlRecog == movieSub}">active</c:if>" href="#" data-toggle="collapse" data-target="#movie" aria-expanded="false" aria-controls="movie">
+            <a class="nav-link collapsed <c:if test="${urlRecog == movieSub}">active</c:if>" href="${movie}" data-toggle="collapse" data-target="#movie" aria-expanded="false" aria-controls="movie">
                 <div class="sb-nav-link-icon"><i class="fas fa-film iconPos"></i></div>
                 電影資訊管理
                 <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
