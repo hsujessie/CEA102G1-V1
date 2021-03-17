@@ -30,6 +30,7 @@
 	.time-input-sty{
 		font-size: 14px;
 	    vertical-align: middle;
+	    width: 150px;
 	}
 </style>
 <body class="sb-nav-fixed">
