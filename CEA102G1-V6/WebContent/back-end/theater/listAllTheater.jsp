@@ -27,6 +27,7 @@
                     <div class="container-fluid">
                     
                     <!-- PUT HERE Start-->
+                   	<h3 class="h3-style" style="display: inline-block;">廳院列表</h3>
                     <table id="table-1">
 </table>
 <c:if test="${not empty errorMsgs}">
@@ -45,7 +46,7 @@
 		<th>影廳種類</th>
 	</tr>
 	<c:forEach var="theaterVO" items="${list}" >
-		<tr ${(theaterVO.the_no==param.the_no) ? 'bgcolor=#CCCCFF':''}><!--將修改的那一筆加入對比色而已-->
+		<tr ${(theaterVO.the_no==param.the_no) ? 'bgcolor=#bb9d52':''}><!--將修改的那一筆加入對比色而已-->
 			<td>${theaterVO.the_no}</td>
 			<td><c:forEach var="movie_versionVO" items="${movie_versionSvc.all}">
                     <c:if test="${theaterVO.movver_no==movie_versionVO.movver_no}">
@@ -54,13 +55,15 @@
                 </c:forEach>
 			</td>
 			<td>
-				<a class="btn btn-light btn-brd grd1 effect-1"  >
+			    <a class="btn btn-light btn-brd grd1 effect-1 btn-pos" style="margin: 1% 0 1% 50%;" >
 				<input type="submit" value="查看" class="input-pos">
-				</a>
+				</a>	
 				</td>		
 			<td>
 			  <FORM METHOD="post" ACTION="<%=request.getContextPath()%>/theater/theater.do" style="margin-bottom: 0px;">
-			     <input type="submit" value="修改"> 
+			    <a class="btn btn-light btn-brd grd1 effect-1 btn-pos" style="margin: 1% 0 1% 50%;" >
+				<input type="submit" value="修改" class="input-pos">
+				</a>
 			     <input type="hidden" name="the_no"     value="${theaterVO.the_no}">
 			     <input type="hidden" name="requestURL"	value="<%=request.getServletPath()%>"><!--送出本網頁的路徑給Controller-->
 			     <input type="hidden" name="action"	    value="getOne_For_Update"></FORM>

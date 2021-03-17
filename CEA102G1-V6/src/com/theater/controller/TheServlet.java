@@ -8,7 +8,6 @@ import javax.servlet.http.*;
 
 import com.movie_version.model.MovVerService;
 import com.theater.model.*;
-import theaterSeat.seatNoTransform;
 
 public class TheServlet extends HttpServlet {
 	
@@ -86,8 +85,7 @@ public class TheServlet extends HttpServlet {
 			String requestURL = req.getParameter("requestURL"); 
 			req.setAttribute("requestURL", requestURL);
 			
-			String whichPage = req.getParameter("whichPage");
-			req.setAttribute("whichPage", whichPage);   
+ 
 			
 			try {
 				/***************************1.�����ШD�Ѽ�****************************************/
@@ -126,12 +124,10 @@ public class TheServlet extends HttpServlet {
 				/***************************1.�����ШD�Ѽ� - ��J�榡�����~�B�z**********************/
 				Integer the_no = new Integer(req.getParameter("the_no").trim());
 				String the_seat = req.getParameter("the_seat");
-
+				Integer movver_no = new Integer(req.getParameter("movver_no").trim());								
 				
-				String the_seatno = req.getParameter("the_seatno");
+				String the_seatno = theaterSeat.seatNoTransform.seatNoTran(the_seat);
 				
-				
-				Integer movver_no = new Integer(req.getParameter("movver_no").trim());
 				
 				TheVO theaterVO = new TheVO();
 				theaterVO.setThe_seat(the_seat);
@@ -150,18 +146,18 @@ public class TheServlet extends HttpServlet {
 				/***************************2.�}�l�ק���*****************************************/
 				TheService theSvc = new TheService();
 				theaterVO = theSvc.updateTheater(the_no, movver_no, the_seat, the_seatno);
-				
 				/***************************3.�ק粒��,�ǳ����(Send the Success view)*************/
 				MovVerService movie_versionSvc = new MovVerService();
 				if(requestURL.equals("/back-end/movie_version/listTheaters_ByMovie_version.jsp") || requestURL.equals("/back-end/movie_version/listAllMovie_version.jsp"))
 					req.setAttribute("listTheaters_Bymovie_version",movie_versionSvc.getTheatersByMovver_no(movver_no)); 
 					
-				String url = requestURL+"?whichPage="+whichPage+"&the_no="+the_no;
+				String url = requestURL+"&the_no="+the_no;
 				RequestDispatcher successView = req.getRequestDispatcher(url); 
 				successView.forward(req, res);
 
 				/***************************��L�i�઺���~�B�z*************************************/
 			} catch (Exception e) {
+				e.printStackTrace();
 				errorMsgs.add("�ק��ƥ���:"+e.getMessage());
 				RequestDispatcher failureView = req
 						.getRequestDispatcher("/back-end/theater/update_theater_input.jsp");

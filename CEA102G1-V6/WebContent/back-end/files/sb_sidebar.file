@@ -9,7 +9,7 @@
 <c:set var="client" value="/CEA102G1/back-end/client_service/Client_Service.jsp"/>  
 <c:set var="movieComreport" value="/CEA102G1/back-end/comment_report/listAllComReport.jsp"/>
 <c:set var="articleComreport" value="/CEA102G1/back-end/articleReport.jsp"/>                                  
-<c:set var="theater" value=""/> 
+<c:set var="theater" value="/CEA102G1/back-end/theater/listAllTheater.jsp"/> 
 <c:set var="food" value=""/>
 <c:set var="board" value=""/> 
 <c:set var="faq" value=""/>
