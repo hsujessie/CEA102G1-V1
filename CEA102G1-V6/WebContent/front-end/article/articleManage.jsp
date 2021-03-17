@@ -11,7 +11,7 @@
     <link href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/2.1.4/toastr.min.css" rel="stylesheet" />
 <style>	
 	.topDiv{
-		margin: 0 auto;
+		margin: 0 auto 5vh auto;
     	width: 23vw;
     	height: 10vh;
   	}
@@ -43,6 +43,18 @@
 	     	max-height: 100vh;
 		}    
     }
+    .nav-pills .nav-link.active,.nav-pills .show>.nav-link {
+    	 background-color: #aa9166;
+         color: #000;
+    }
+
+    a {
+         color: #000;
+    }
+
+    a:hover {
+         color: #000;
+    }
 </style>
 <title>Article Manage</title>
 
@@ -68,39 +80,94 @@
 
             <!-- PUT HERE Start -->
             <div class="container">
-            	<div class="row">
-            		<div class="col-6">
-	                  <div class="topDiv">
-	                    <div class="input-group mb-3">
-	                      <input type="text" id="artTitleByCompositeQuery" class="form-control"
-	                          placeholder="搜尋標題" aria-label="Recipient's username"
-	                          aria-describedby="findArtByTitleButton">
-	                      <div class="input-group-append">
-	                          <button class="btn btn-outline-secondary" type="button"
-	                              id="findArtByTitleButton">查詢</button>
-	                      </div>
-	                    </div>
-	                  </div>
-	                </div> 
-	                <div class="col-6">
-	                  <div class="topDiv">
-	                    <div class="input-group mb-3">
-	                      <input type="date" id="artTimeForByCompositeQuery" class="form-control"
-	                          placeholder="依日期搜尋" aria-label="Recipient's username"
-	                          aria-describedby="findArtByTimeButton">
-	                      <div class="input-group-append">
-	                          <button class="btn btn-outline-secondary" type="button"
-	                              id="findArtByTimeButton">查詢</button>
-	                      </div>
-	                    </div>
-	                  </div>
-            		</div>
-            	</div>
-            	<div class="row">
-            		<div class="col-12">
-            			<div id="artListCenter"></div>
-            		</div>
-            	</div>
+        <div class="row">
+            <div class="col-3">
+                <div class="nav flex-column nav-pills" id="v-pills-tab" role="tablist" aria-orientation="vertical">
+                    <a class="nav-link active" id="v-pills-home-tab" data-toggle="pill" href="#v-pills-home" role="tab"
+                        aria-controls="v-pills-home" aria-selected="true">管理文章</a>
+                    <a class="nav-link" id="v-pills-profile-tab" data-toggle="pill" href="#v-pills-profile" role="tab"
+                        aria-controls="v-pills-profile" aria-selected="false">管理收藏</a>
+                </div>
+            </div>
+            <div class="col-9">
+                <div class="tab-content" id="v-pills-tabContent">
+                    <div class="tab-pane fade show active" id="v-pills-home" role="tabpanel"
+                        aria-labelledby="v-pills-home-tab">
+                        <!-- 管理文章 -->
+                        <div class="row">
+                            <div class="col-6">
+                                <div class="topDiv">
+                                    <div class="input-group mb-3">
+                                        <input type="text" id="artTitleByCompositeQuery" class="form-control"
+                                            placeholder="搜尋標題" aria-label="Recipient's username"
+                                            aria-describedby="findArtByTitleButton">
+                                        <div class="input-group-append">
+                                            <button class="btn btn-outline-secondary" type="button"
+                                                id="findArtByTitleButton">查詢</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-6">
+                                <div class="topDiv">
+                                    <div class="input-group mb-3">
+                                        <input type="date" id="artTimeForByCompositeQuery" class="form-control"
+                                            placeholder="依日期搜尋" aria-label="Recipient's username"
+                                            aria-describedby="findArtByTimeButton">
+                                        <div class="input-group-append">
+                                            <button class="btn btn-outline-secondary" type="button"
+                                                id="findArtByTimeButton">查詢</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-12">
+                                <div id="artListCenter"></div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="tab-pane fade" id="v-pills-profile" role="tabpanel"
+                        aria-labelledby="v-pills-profile-tab">
+                        <!-- 管理收藏 -->
+                        <div class="row">
+                            <div class="col-6">
+                                <div class="topDiv">
+                                    <div class="input-group mb-3">
+                                        <input type="text" id="artFavByCompositeQuery" class="form-control"
+                                            placeholder="搜尋標題" aria-label="Recipient's username"
+                                            aria-describedby="findArtFavByTitleButton">
+                                        <div class="input-group-append">
+                                            <button class="btn btn-outline-secondary" type="button"
+                                                id="findArtFavByTitleButton">查詢</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-6">
+                                <div class="topDiv">
+                                    <div class="input-group mb-3">
+                                        <input type="date" id="artFavTimeForByCompositeQuery" class="form-control"
+                                            placeholder="依日期搜尋" aria-label="Recipient's username"
+                                            aria-describedby="findArtFavByTimeButton">
+                                        <div class="input-group-append">
+                                            <button class="btn btn-outline-secondary" type="button"
+                                                id="findArtFavByTimeButton">查詢</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-12">
+                                <div id="artFavListCenter"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
             </div>
             <!-- PUT HERE End -->
             
