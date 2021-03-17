@@ -160,14 +160,14 @@ public class SesServlet extends HttpServlet {
 	            	/* =====================================================================
 	            	                          場次時間間距，錯誤驗證
 	            	   =====================================================================*/
-	            	 if(sesTimeArr.length > 0) {
+	            	 if(sesTimeArr.length > 1) {
 						System.out.println("if= " + sesTimeArr.length);
 						for(int j = 0; j < sesTimeArr.length; j++) {	
 							if(j%2 == 0) {                                                                   //取到的時間格式為"10:00AM"，需轉為24小時制格式，才能取時間的difference
-								sesTimeListEven.add(java.time.LocalTime.parse(convertTimes(sesTimeArr[j]))); //將偶數索引值的時間轉換後，存進list
+								sesTimeListEven.add(java.time.LocalTime.parse(sesTimeArr[j])); //將偶數索引值的時間轉換後，存進list
 							}
 							if(j%2 != 0) {
-								sesTimeListOdd.add(java.time.LocalTime.parse(convertTimes(sesTimeArr[j])));  //將奇數索引值的時間轉換後，存進list
+								sesTimeListOdd.add(java.time.LocalTime.parse(sesTimeArr[j]));  //將奇數索引值的時間轉換後，存進list
 							}
 						}
 						
@@ -184,7 +184,7 @@ public class SesServlet extends HttpServlet {
 						
 					}else {
 						System.out.println("else= " +  + sesTimeArr.length);
-						sesTime = Time.valueOf(java.time.LocalTime.parse(convertTimes(sesTimeArr[0])));
+						sesTime = Time.valueOf(java.time.LocalTime.parse(sesTimeArr[0]));
 					}
 	             }
 
@@ -209,7 +209,7 @@ public class SesServlet extends HttpServlet {
                for(int i = 0; i < sesDateArr.length; i++) {
 	                 sesDate = Date.valueOf(sesDateArr[i]);  
                    for(int j = 0; j < sesTimeArr.length; j++) {
-						sesTime = Time.valueOf(java.time.LocalTime.parse(convertTimes(sesTimeArr[j])));
+						sesTime = Time.valueOf(java.time.LocalTime.parse(sesTimeArr[j]));
                        for(int k = 0; k < theNoArr.length; k++) {                       
                            theNo = new Integer(theNoArr[k]);
                            /***************************2.開始新增資料***************************************/   
@@ -297,7 +297,7 @@ public class SesServlet extends HttpServlet {
           
 	            Time sesTime = null;
                 String sesTimeStr = req.getParameter("sesTime").trim();  
-                sesTime = Time.valueOf(java.time.LocalTime.parse(convertTimes(sesTimeStr)));  
+                sesTime = Time.valueOf(java.time.LocalTime.parse(convertTimes(sesTimeStr))); //取到的時間格式為"10:00AM"，需轉為24小時制格式 
                        
 	    	    /***************************2.開始修改資料*****************************************/ 
  	            SesService sesSvc = new SesService();
@@ -404,8 +404,7 @@ public class SesServlet extends HttpServlet {
 	
 	
     /* ====================================================================================
-     	* 新增場次，場次時間間距，錯誤驗證。
- 		* 需把前台來的時間格式改為24小時制，才可判斷，場次時間之間是否少於2hr。
+ 		* 需把 update_session_input.jsp 來的時間格式改為24小時制，才可寫入db。
  	======================================================================================= */
 	public static String convertTimes(String twelveHourTime) throws ParseException {
 		DateFormat twenty_tf = new SimpleDateFormat("hh:mm a", Locale.ENGLISH);

@@ -249,19 +249,13 @@
 	let addtime = document.getElementById("addtime");
 	let count = 0;
 	let timeCount = 10;   // 預設 10'o clock
-	let timeAMPM = "AM";
 	addtime.addEventListener("click",function(){
 		$('#sesTime-errmsg').css('display','none');
 		count+=1;
 		let timetb = document.getElementById("timetb");
 		timetb.style.display="block";
-		if(timeCount >= 12 && timeCount != 0){
-			timeAMPM = "PM";
-		}else{
-			timeAMPM = "AM";
-		}
 		
-		let tag = `<tr><th>${'${count}'}</th><td><input type="text" name="sesTime" value="${'${timeCount}'}:00 ${'${timeAMPM}'}"></td>
+		let tag = `<tr><th>${'${count}'}</th><td><input type="text" name="sesTime" value="${'${timeCount}'}:00"></td>
 				   <td><input type=button value="刪除" id="delete" class="delete-btn-sty" onclick='removeTr(this)'></td></tr>`;
 		timetb.innerHTML += tag;
 		
@@ -270,7 +264,7 @@
 		  						/* timepicker */
 		/* =========================================================================================== */
 		$('input[name="sesTime"]').timepicker({
-		    timeFormat: 'h:mm p',
+		    timeFormat: 'HH:mm',
 		    interval: 120,     //時間間隔 120 min
 		    dynamic: true,
 		    dropdown: true,
