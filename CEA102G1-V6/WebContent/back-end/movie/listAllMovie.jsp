@@ -18,8 +18,8 @@
 	.success-span{
 	    color: #bb9d52;
 		position: absolute;
-	    top: 8%;
-	    left: 17%;
+	    top: 10%;
+	    left: 19%;
 	    font-size: 16px;
 	}
 	.th-adjust{
@@ -86,7 +86,7 @@
 			                        <b>選擇年份</b>
 			                        <select name="mov_ondate_year">
 			                            <option value=""></option>
-			                            <c:forEach var="year" begin="1970" end="<%= (int) (java.util.Calendar.getInstance().get(java.util.Calendar.YEAR))+1%>">
+			                            <c:forEach var="year" begin="2018" end="<%= (int) (java.util.Calendar.getInstance().get(java.util.Calendar.YEAR))+1%>">
 			                                <option value="${year}">${year}年</option>
 			                            </c:forEach>
 			                        </select>

@@ -25,12 +25,11 @@
 	 
 	 function isEmpty(e){
 		 let movname = document.querySelector('input[name="movname"]').value.trim();
-		 let movdurat = document.querySelector('input[name="movdurat"]').value;
 		 let movditor = document.querySelector('input[name="movditor"]').value.trim();
 		 let movcast = document.querySelector('input[name="movcast"]').value.trim();
 		 let movdes = document.querySelector('textarea[name="movdes"]').value.trim();
 		 
-		 if(movname.length == 0 || movdurat.length == 0 || movditor.length == 0 || movcast.length == 0 || movdes.length == 0){
+		 if(movname.length == 0 || movditor.length == 0 || movcast.length == 0 || movdes.length == 0){
 			 $("#disabled-btn").css('display','block'); 
 			 $("#abled-btn").css('display','none');
 		 }
@@ -40,13 +39,6 @@
 			 $("#movname-errmsg-txt").text("請勿空白!");
 		 }else{
 			 $("#movname-errmsg").css('display','none');  
-		 }
-		 
-		 if(movdurat.length == 0 ){
-			 $("#movdurat-errmsg").css('display','inline-block'); 
-			 $("#movdurat-errmsg-txt").text("請勿空白，請填數字!");
-		 }else{
-			 $("#movdurat-errmsg").css('display','none'); 
 		 }
 		 
 		 if(movditor.length == 0 ){
@@ -70,7 +62,7 @@
 			 $("#movdes-errmsg").css('display','none'); 
 		 }
 		 
-		 if(movdurat.length != 0 && movdurat.match(/^[0-9]*$/) && movname.length != 0 && movditor.length != 0 && movcast.length != 0 && movdes.length != 0){
+		 if(movname.length != 0 && movditor.length != 0 && movcast.length != 0 && movdes.length != 0){
 			 $("#disabled-btn").css('display','none'); 
 			 $("#abled-btn").css('display','block');
 		 }
