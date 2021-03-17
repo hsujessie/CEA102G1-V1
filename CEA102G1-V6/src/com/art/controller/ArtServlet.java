@@ -22,7 +22,6 @@ import org.json.JSONObject;
 
 import com.art.model.ArtService;
 import com.art.model.ArtVO;
-//import com.mem.model.MemDAO;
 import com.member.model.MemberServic;
 
 import redis.JedisUtil;
@@ -57,8 +56,6 @@ public class ArtServlet extends HttpServlet {
 			ArtVO artVO = new ArtVO();
 			request.setAttribute("artVO", artVO);
 			HttpSession session = request.getSession();
-//			String requestURL = request.getParameter("requestURL"); // 送出修改的來源網頁路徑
-			
 			
 			if(request.getSession().getAttribute("memNo") != null) {
 				
