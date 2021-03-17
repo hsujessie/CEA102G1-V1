@@ -109,8 +109,8 @@
 											<jsp:useBean id="now" class="java.util.Date"/>
 											<c:if test="${movVO.movondate gt now}">
 												<c:set value="${movVO.movondate.time - now.time}" var="dateDiff"/>  <!-- the difference of 上映日期 minus 當天日期 has to greater than 7days --> 												
-												<c:if test="${dateDiff gt 604800000}">                              <!-- 7日 = 604800000毫秒 -->
-													<option value="${movVO.movno}" data-movver="${movVO.movver}" data-movondate="${movVO.movondate}">${movVO.movname}
+												<c:if test="${dateDiff gt 604800000}">                              <!-- 7日 = 604800000毫秒 -->  <!-- ${not empty movNo && movNo == movVO.movno ? selected: ""} -->
+													<option value="${movVO.movno}" data-movver="${movVO.movver}" data-movondate="${movVO.movondate}" <c:if test="${not empty movNo and movNo eq movVO.movno}">selected</c:if> >${movVO.movname}
 												</c:if>
 											</c:if>
 							             </c:forEach>
@@ -125,9 +125,9 @@
 								<th>廳院</th>
 								<td>
 									<!-- 多選checkbox -->
-									<input class="mr-left mr-btm-sm" type="checkbox" name="theNo" value="1"><span class="ml-ten">A廳 【2D】</span><br>
-									<input class="mr-left mr-btm-sm" type="checkbox" name="theNo" value="2"><span class="ml-ten">B廳 【3D】</span><br>
-									<input class="mr-left mr-btm-sm" type="checkbox" name="theNo" value="3"><span class="ml-ten">C廳 【IMAX】</span><br>
+									<input class="mr-left mr-btm-sm" type="checkbox" name="theNo" value="1" <c:if test="${not empty theNo and theNo eq 1}">checked</c:if> ><span class="ml-ten">A廳 【2D】</span><br>
+									<input class="mr-left mr-btm-sm" type="checkbox" name="theNo" value="2" <c:if test="${not empty theNo and theNo eq 2}">checked</c:if> ><span class="ml-ten">B廳 【3D】</span><br>
+									<input class="mr-left mr-btm-sm" type="checkbox" name="theNo" value="3" <c:if test="${not empty theNo and theNo eq 3}">checked</c:if> ><span class="ml-ten">C廳 【IMAX】</span><br>
 									<span id="theNo-errmsg" style="display:none;">			
 										<i class="far fa-hand-point-up" style="color:#bb9d52;"></i>
 										<label id="theNo-errmsg-txt" class="err-color"></label>
@@ -137,8 +137,8 @@
 							<tr>
 								<th>日期</th>
 								<td>
-									<input class="sty-input" name="sesDateBegin" id="sesdate_begin" type="text" value="" style="width: 150px;"> 
-							        ~ <input class="sty-input" name="sesDateEnd" id="sesdate_end" type="text" value="" style="width: 150px;">
+									<input class="sty-input" name="sesDateBegin" id="sesdate_begin" type="text" value="${not empty sesDateBegin ? sesDateBegin : ''}" style="width: 150px;"> 
+							        ~ <input class="sty-input" name="sesDateEnd" id="sesdate_end" type="text" value="${not empty sesDateEnd ? sesDateEnd : ''}" style="width: 150px;">
 							        <span id="sesDate-errmsg" style="display:none;">			
 										<i class="far fa-hand-point-left" style="color:#bb9d52;"></i>
 										<label id="sesDate-errmsg-txt" class="err-color"></label>
@@ -154,7 +154,7 @@
 									</span>	
 								</th>
 							</tr>
-						</table>   									<!-- ${(movVO.movno==param.movno) ? 'style="background-color:#bb9d52; color:#fff;"':''} -->
+						</table>
 						<table id="timetb" ${not empty errorMsgs.sesTime? 'style="display:block;"' : 'style="display:none;"'}>
 							<tr>
 								<th>編號</th>
@@ -254,7 +254,7 @@
 		count+=1;
 		let timetb = document.getElementById("timetb");
 		timetb.style.display="block";
-		
+
 		let tag = `<tr><th>${'${count}'}</th><td><input type="text" name="sesTime" value="${'${timeCount}'}:00"></td>
 				   <td><input type=button value="刪除" id="delete" class="delete-btn-sty" onclick='removeTr(this)'></td></tr>`;
 		timetb.innerHTML += tag;

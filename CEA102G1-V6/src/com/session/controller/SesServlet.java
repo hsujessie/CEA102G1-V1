@@ -181,20 +181,16 @@ public class SesServlet extends HttpServlet {
 						sesTime = Time.valueOf(java.time.LocalTime.parse(sesTimeArr[0]));
 					}
 	             }
-
-	             // Here're parameters for sending back to the front page, if there were errors   
-             	  SesVO sesVO = new SesVO();
-                  sesVO.setSesNo(movNo);
-                  sesVO.setTheNo(theNo);
-                  sesVO.setSesDate(sesDate); 
-                  sesVO.setSesTime(sesTime);
                   
 	             // Send the use back to the form, if there were errors   
 	             if (!errorMsgs.isEmpty()) {
-					  req.setAttribute("sesVO", sesVO);
-					  
-//					  HttpSession session = req.getSession();
-//					  session.setAttribute("sesVOfromSession", sesVO);
+	            	 for(int k = 0; k < theNoArr.length; k++) {                       
+                         theNo = new Integer(theNoArr[k]);
+                      }
+					  req.setAttribute("movNo", movNo);
+					  req.setAttribute("theNo", theNo);
+					  req.setAttribute("sesDateBegin", sesDateBegin);
+					  req.setAttribute("sesDateEnd", sesDateEnd);
 						
 					  String url = "/back-end/session/addSession.jsp";
 					  RequestDispatcher failureView = req.getRequestDispatcher(url);
