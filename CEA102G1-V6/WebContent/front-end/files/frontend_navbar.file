@@ -10,7 +10,7 @@
 <c:set var="forum" value="${pageContext.request.contextPath}/front-end/article/article.jsp"/>
 <c:set var="notices" value="/CEA102G1-V6/front-end/notices.jsp"/>
 <c:set var="faqs" value="/CEA102G1-V6/front-end/faqs.jsp"/>
-<c:set var="members" value="/CEA102G1-V6/front-end/members.jsp"/>
+<c:set var="members" value="/CEA102G1-V6/front-end/Member_Login/login.jsp"/>
 
 
 <!-- SubPage -->
@@ -51,6 +51,7 @@
                     <a href="${notices}" class="nav-item nav-link <c:if test="${urlRecog == notices}">active</c:if>"><i class="fa fa-bullhorn iconPos"></i>公告</a>
                     <a href="${faqs}"    class="nav-item nav-link <c:if test="${urlRecog == faqs}">active</c:if>"><i class="fas fa-question-circle iconPos"></i></i>FAQs</a>
                     <a href="${members}" class="nav-item nav-link <c:if test="${urlRecog == members}">active</c:if>"><i class="fa fa-user iconPos"></i>會員</a>
+                    
                     <a href="${members}" class="nav-item nav-link loginPos <c:if test="${urlRecog == members}">active</c:if>">登入<i class="fas fa-user-circle"></i></a>
                 </div>
             </div>
