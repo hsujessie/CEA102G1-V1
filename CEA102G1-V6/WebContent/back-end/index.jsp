@@ -28,10 +28,10 @@
 			                    <div class="col-lg-4 col-md-4">
 			                        <div class="loginSucs-item">
 			                            <div class="loginSucs-img">
-			                                <img src="<%=request.getContextPath()%>/resource/images/tomcat.png" alt="loginSucs Image">
+			                                <img src="<%=request.getContextPath()%>/resource/images/film.jpg" alt="loginSucs Image">
 			                            </div>
 			                            <div class="loginSucs-text">
-			                                <h2>Tomcat</h2>
+			                                <h2>Film</h2>
 			                            </div>
 			                        </div>
 			                    </div>
