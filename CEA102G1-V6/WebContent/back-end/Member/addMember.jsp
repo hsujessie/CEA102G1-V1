@@ -60,7 +60,7 @@
 	<tr>
 	<td>
 		 <h3>公告資料新增 - addMember.jsp</h3>
-		 <h4><a href="<%=request.getContextPath()%>/back_end/Member/select_member_page.jsp">
+		 <h4><a href="<%=request.getContextPath()%>/back-end/Member/select_member_page.jsp">
 		 <img src="<%=request.getContextPath()%>/resource/images/back1.gif" width="100" height="32" border="0">回首頁</a></h4>
 	</td>
 	</tr>
@@ -78,7 +78,7 @@
 		</ul>
 	</c:if>
 
-<FORM METHOD="post" ACTION="<%=request.getContextPath() %>/Member/member.do" name="form1">
+<FORM METHOD="post" ACTION="<%=request.getContextPath() %>/Member/member.do" name="form1" enctype="multipart/form-data">
 <table>
 <!-- 				<tr> -->
 <!-- 						<td>會員編號:<font color=red><b>*</b></font></td> -->
@@ -104,27 +104,21 @@
 						<td><input type="TEXT" name="memMail" size="45" value=" ${(empty MmberVO) ? ' 請輸入會員信箱' : '${MmberVO.memMail}'  }" /></td>
 						
 				</tr> 
-<!-- 				<tr> -->
-<!-- 						<td>會員信箱:</td> -->
-<%-- 							<td><input type="TEXT" name="memName" size="45" value=" ${(empty boardVO) ? ' 請輸入公告' : '${boardVO.boaContent}'  }" /></td> --%>
-<!-- 						<td><input type="TEXT" name="memMail" size="45" -->
-<%-- 							 value="<%= (boardVOError==null)? "請輸入公告內容" : ( (boardVOError.getBoaContent()==null)? "再輸入一次公告內容" : boardVOError.getBoaContent() ) %>" /></td> --%>
-<!-- 							兩次三元運算式最後將對的內容儲存到boardVOError，使後端可以拿到回傳值，就可以將對的輸入訊息不需要再重複寫一次 -->
-<!-- 				</tr>      -->
-<!-- 				<tr> -->
-<!-- 						<td>會員信箱:</td> -->
-<%-- 					<td><input type="TEXT" name="memName" size="45" value=" ${(empty boardVO) ? ' 請輸入公告' : '${boardVO.boaContent}'  }" /></td> --%>
-<!-- 						<td><input type="TEXT" name="memMail" size="45" -->
-<%-- 							 value="<%= (boardVOError==null)? "請輸入公告內容" : ( (boardVOError.getBoaContent()==null)? "再輸入一次公告內容" : boardVOError.getBoaContent() ) %>" /></td> --%>
-<!-- 							兩次三元運算式最後將對的內容儲存到boardVOError，使後端可以拿到回傳值，就可以將對的輸入訊息不需要再重複寫一次 -->
-<!-- 				</tr>          -->
-<!-- 				<tr> --> 
-<!-- 						<td>會員信箱:</td> -->
-<%-- 					<td><input type="TEXT" name="memName" size="45" value=" ${(empty boardVO) ? ' 請輸入公告' : '${boardVO.boaContent}'  }" /></td> --%>
-<!-- 						<td><input type="TEXT" name="memMail" size="45" -->
-<%-- 							 value="<%= (boardVOError==null)? "請輸入公告內容" : ( (boardVOError.getBoaContent()==null)? "再輸入一次公告內容" : boardVOError.getBoaContent() ) %>" /></td> --%>
-<!-- 							兩次三元運算式最後將對的內容儲存到boardVOError，使後端可以拿到回傳值，就可以將對的輸入訊息不需要再重複寫一次 -->
-<!-- 				</tr>          -->
+				<tr>
+						<td>會員錢包:</td>
+						<td><input type="TEXT" name="memWallet" size="45" value=" ${(empty MmberVO) ? ' 最少輸入為0' : '${MmberVO.memWallet}'  }" /></td>
+						
+				</tr>     
+				<tr>
+						<td>會員狀態:</td>
+					<td><input type="TEXT" name="memStatus" size="45" value=" ${(empty MmberVO) ? ' 請輸入狀態' : '${MmberVO.memstatus}'  }" /></td>
+						
+				</tr>         
+				<tr> 
+						<td>會員頭像:</td>
+					<td><input type="file" name="memImg" size="45"  /></td>
+						
+				</tr>         
 </table>
 	<br>
 	<input type="hidden" name="action" value="insert">

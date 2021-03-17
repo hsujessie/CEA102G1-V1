@@ -10,10 +10,9 @@ public class MemberVO {
 	private String memPassword;
 	private String memMail;
 	private Integer memWallet;
-	private Integer memststus;
+	private Integer memstatus;
 	private byte[] memImg;
-	
-	
+	private String memuuid;
 	public Integer getMemNo() {
 		return memNo;
 	}
@@ -50,11 +49,11 @@ public class MemberVO {
 	public void setMemWallet(Integer memWallet) {
 		this.memWallet = memWallet;
 	}
-	public Integer getMemststus() {
-		return memststus;
+	public Integer getMemstatus() {
+		return memstatus;
 	}
-	public void setMemststus(Integer memststus) {
-		this.memststus = memststus;
+	public void setMemstatus(Integer memstatus) {
+		this.memstatus = memstatus;
 	}
 	public byte[] getMemImg() {
 		return memImg;
@@ -62,6 +61,17 @@ public class MemberVO {
 	public void setMemImg(byte[] memImg) {
 		this.memImg = memImg;
 	}
+	public String getMemuuid() {
+		return memuuid;
+	}
+	public void setMemuuid(String memuuid) {
+		this.memuuid = memuuid;
+	}
+	
+	
+	
+	
+	
 	
 	
 	

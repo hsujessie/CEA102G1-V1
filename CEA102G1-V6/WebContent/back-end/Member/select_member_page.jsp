@@ -44,24 +44,38 @@
 					    </FORM>
 				  </li>
 				  
-<h2></h2>
-
-				
-				  
-
+<!-- 				 	<li>    -->
+<%-- 					    <FORM METHOD="post" ACTION="<%=request.getContextPath()%>/Member/member.do" name="form1"> --%>
+<!-- 					        <b><font color=blue>萬用複合查詢:</font></b> <br> -->
+<!-- 					        <b>輸入會員名稱:</b> -->
+<!-- 					        <input type="text" name="memName" value=""><br> -->
+					           
+<!-- 					       <b>輸入會員帳號:</b> -->
+<!-- 					       <input type="text" name="memAccount" value=""><br> -->
+					       
+<!-- 					       <b>輸入會員信箱:</b> -->
+<!-- 					       <input type="text" name="memMail" value=""><br> -->
+					    
+<!-- 					       <b>選擇會員圖片:</b> -->
+<!-- 					       <input type="text" name="memImg" value=""><br> -->
+					        
+<!-- 					        <input type="submit" value="送出"> -->
+<!-- 					        <input type="hidden" name="action" value="listMembers_ByCompositeQuery"> -->
+<!-- 					     </FORM> -->
+<!-- 					 </li> -->
 			</ul>
 			
-<h2></h2>
-<h3>新增會員資料:</h3> 
-		<ul>
-			<li>
-					    <FORM METHOD="post" ACTION="<%=request.getContextPath() %>/back_end/Member/addMember.jsp">
-						    <input type="hidden" name="action" value="insert">
-				       		<input type="submit" value="Add">
-					    </FORM>
-			 </li>
+<!-- <h2></h2> -->
+<!-- <h3>新增會員資料:</h3>  -->
+<!-- 		<ul> -->
+<!-- 			<li> -->
+<%-- 					    <FORM METHOD="post" ACTION="<%=request.getContextPath() %>/back-end/Member/addMember.jsp"> --%>
+<!-- 						    <input type="hidden" name="action" value="insert"> -->
+<!-- 				       		<input type="submit" value="Add"> -->
+<!-- 					    </FORM> -->
+<!-- 			 </li> -->
   
-		</ul>
+<!-- 		</ul> -->
 
 
 

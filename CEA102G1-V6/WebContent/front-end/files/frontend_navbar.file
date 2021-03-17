@@ -9,7 +9,7 @@
 <c:set var="forum" value="/CEA102G1/front-end/forum.jsp"/>
 <c:set var="notices" value="/CEA102G1/front-end/notices.jsp"/>
 <c:set var="faqs" value="/CEA102G1/front-end/faqs.jsp"/>
-<c:set var="members" value="/CEA102G1/front-end/members.jsp"/>
+<c:set var="members" value="/CEA102G1-V6/front-end/Member_Login/login.jsp"/>
 
 <!-- SubPage -->
 <c:set var="moviesSub" value="moviesSub"/>        <!-- Sub - movies_subpage.jsp -->  

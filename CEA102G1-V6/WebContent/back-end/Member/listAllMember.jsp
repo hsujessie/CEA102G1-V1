@@ -6,13 +6,13 @@
 
 <%	
 List<MemberVO> memberVO = (List<MemberVO>)request.getAttribute("list");//從controller傳回View,jsp不能簡寫唷!!
-System.out.println(memberVO);
+// System.out.println(memberVO);
 %>
 
 
 <html>
 <head>
-<title>所有公告資料 - listAllMember.jsp</title>
+<title>所有會員資料 - listAllMember.jsp</title>
 <style>
   table#table-1 {
 	background-color: #CCCCFF;
@@ -50,7 +50,7 @@ System.out.println(memberVO);
 	<tr>
 	<td>
 		 <h3>所有會員資料 - listAllMember.jsp</h3>
-		 <h4><a href="<%=request.getContextPath()%>/back_end/Member/select_member_page.jsp">
+		 <h4><a href="<%=request.getContextPath()%>/back-end/Member/select_member_page.jsp">
 		 <img src="<%=request.getContextPath()%>/resource/images/back1.gif" width="100" height="32" border="0">回首頁</a></h4>
 	</td>
 	</tr>
@@ -74,9 +74,12 @@ System.out.println(memberVO);
 		<th>會員帳號</th>
 		<th>會員密碼</th>
 		<th>會員mail</th>
+		<th>會員錢包</th>
+		<th>會員狀態</th>
+		<th>會員照片</th>
 		
 		<th>修改</th>
-		<th>刪除</th>
+<!-- 		<th>刪除</th> -->
 	</tr>
  
 	<c:forEach var="memberVO" items="${list}" >
@@ -87,6 +90,11 @@ System.out.println(memberVO);
 				<td>${memberVO.memAccount}</td>
 				<td>${memberVO.memPassword}</td>
 				<td>${memberVO.memMail}</td>
+				<td>${memberVO.memWallet}</td>
+				<td>${memberVO.memstatus}</td>
+<%-- 				<td>${memberVO.memImg}</td> --%>
+				<td><img src="<%=request.getContextPath()%>/Member/reader.do?memNo=${memberVO.memNo}" width="40" height="40"></td>
+				
 				
 				<td>
 						   <FORM METHOD="post" ACTION="<%=request.getContextPath() %>/Member/member.do"  style="margin-bottom: 0px;">
@@ -96,16 +104,13 @@ System.out.println(memberVO);
 						   </FORM>
 				</td>
 				
-				<td>
-						    <FORM METHOD="post" ACTION="<%=request.getContextPath() %>/Member/member.do" style="margin-bottom: 0px;">
-									<input type="submit" value="刪除">
-									<input type="hidden" name="memNo"  value="${memberVO.memNo}">
-									<input type="hidden" name="action" value="delete">
-							</FORM>
-				</td>
-				
-				
-				
+<!-- 				<td> -->
+<%-- 						    <FORM METHOD="post" ACTION="<%=request.getContextPath() %>/Member/member.do" style="margin-bottom: 0px;"> --%>
+<!-- 									<input type="submit" value="刪除"> -->
+<%-- 									<input type="hidden" name="memNo"  value="${memberVO.memNo}"> --%>
+<!-- 									<input type="hidden" name="action" value="delete"> -->
+<!-- 							</FORM> -->
+<!-- 				</td> -->
 			</tr>
 			
 		</c:forEach>

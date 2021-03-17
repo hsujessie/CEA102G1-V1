@@ -6,6 +6,7 @@
 
 <%
 	MemberVO memberVO = (MemberVO) request.getAttribute("MemberVO");
+// MemberVO memberVO = (MemberVO) session.getAttribute("MemberVO");
 
 
 	//List<BoardTypeVO> boardTypeVOList = (List<BoardTypeVO>)request.getAttribute("boardTypeVOList");
@@ -16,7 +17,7 @@
 <html>
 <head>
 <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1"/>
-<title>會員資料修改 - back_update_member.jsp</title>
+<title>會員資料修改 - update_member_input.jsp</title>
 
 <style>
   table#table-1 {
@@ -55,7 +56,7 @@
 
 <table id="table-1">
 	<tr><td>
-		 <h3>會員資料修改 - update_member_input.jsp</h3>
+		 <h3>會員資料修改 - Front_update_member.jsp</h3>
 		 <h4><a href="<%=request.getContextPath()%>/back-end/Member/select_member_page.jsp">
 		 <img src="<%=request.getContextPath()%>/resource/images/back1.gif" width="100" height="32" border="0">回首頁</a></h4>
 	</td></tr>
@@ -74,61 +75,40 @@
 
 <FORM METHOD="post" ACTION="<%=request.getContextPath()%>/Member/member.do" name="form1" enctype="multipart/form-data">
 <table>
-	<tr>
-		<td>會員編號:<font color=red><b>*</b></font></td>
-		<td><%=memberVO.getMemNo()%></td>
-<%-- 		<td><input type="TEXT" name="MemNo" size="45"	value="<%=memberVO.getMemNo()%>" /></td> --%>
-	</tr>
 	
-	<tr>
-		<td>會員姓名:<font color=red><b>*</b></font></td>
-		<td><%=memberVO.getMemName()%></td>
-<%-- 		<td><input type="TEXT" name="memName" size="45"	value="<%=memberVO.getMemName()%>" /></td> --%>
-	</tr>
-	<tr>
-		<td>會員帳號:<font color=red><b>*</b></font></td>
-		<td><%=memberVO.getMemAccount()%></td>
-<%-- 		<td><input type="TEXT" name="memAccount" size="45"	value="<%=memberVO.getMemAccount()%>" /></td> --%>
-	</tr>
-	<tr>
-		<td>會員密碼:<font color=red><b>*</b></font></td>
-		<td><%=memberVO.getMemPassword()%></td>
-<%-- 		<td><input type="TEXT" name="memPassword" size="45"	value="<%=memberVO.getMemPassword()%>" /></td> --%>
-	</tr>
-	<tr>
-		<td>會員mail:<font color=red><b>*</b></font></td>
-		<td><%=memberVO.getMemMail()%></td>
-<%-- 		<td><input type="TEXT" name="memMail" size="45"	value="<%=memberVO.getMemMail()%>" /></td> --%>
-	</tr>
-	<tr>
-		<td>會員錢包金額:</td>
-		<td><input type="TEXT" name="memWallet" size="45"	value="<%=memberVO.getMemWallet()%>" /></td>
-	</tr>
-	
-	<tr>
-		<td>會員狀態:</td>
-		<td><input type="TEXT" name="memstatus" size="45"	value="<%=memberVO.getMemstatus()%>" /></td>
-	</tr>
-<!-- 	<tr> -->
-<!-- 		<td>會員大頭照:<font color=red><b>*</b></font></td> -->
-<%-- 		<td><img src="<%=request.getContextPath()%>/Member/reader.do?memNo=${memberVO.memNo}" width="100" height="100"> --%>
-<!-- 	</tr> -->
-	<tr>
-		<td>會員大頭照:</td>
-		<td><img src="<%=request.getContextPath()%>/Member/reader.do?memNo=${memberVO.memNo}" width="100" height="100">
-<!-- 		<input type="file" name="memImg" size="45"	value="" /></td> -->
+			<input type="hidden" name="memNo" value="<%=memberVO.getMemNo()%>" />
 			
-	</tr>
+			<tr>
+				<td>會員姓名:</td>
+				<td><input type="TEXT" name="memName" size="45"	value="<%=memberVO.getMemName()%>" /></td>
+			</tr>
+			<tr>
+				<td>會員帳號:<font color=red><b>*</b></font></td>
+				<td><%=memberVO.getMemAccount()%></td>
+			</tr>
+			<tr>
+				<td>會員密碼:</td>
+				<td><input type="TEXT" name="memPassword" size="45"	value="<%=memberVO.getMemPassword()%>" /></td>
+			</tr>
+			<tr>
+				<td>會員mail:<font color=red><b>*</b></font></td>
+				<td><%=memberVO.getMemMail()%></td>
+			</tr>
+			<input type="hidden" name="memWallet" value="<%=memberVO.getMemWallet()%>" />
+			<input type="hidden" name="memstatus" value="<%=memberVO.getMemstatus()%>" />
+			<tr>
+				<td>會員大頭照:</td>
+				<td><img src="<%=request.getContextPath()%>/Member/reader.do?memNo=${memberVO.memNo}" width="100" height="100">
+				<input type="file" name="memImg" size="45"	value="" /></td>
+					
+			</tr>
 
 </table>
 <br>
-<input type="hidden" name="action" value="update">
+<input type="hidden" name="action" value="updateFront">
 <input type="hidden" name="memNo" value="<%=memberVO.getMemNo()%>">
-<input type="hidden" name="memName" value="<%=memberVO.getMemName()%>">
 <input type="hidden" name="memAccount" value="<%=memberVO.getMemAccount()%>">
-<input type="hidden" name="memPassword" value="<%=memberVO.getMemPassword()%>">
 <input type="hidden" name="memMail" value="<%=memberVO.getMemMail()%>">
-<input type="hidden" name="memImg" value="<%=memberVO.getMemImg()%>">
 <input type="submit" value="送出修改"></FORM>
 </body>
 

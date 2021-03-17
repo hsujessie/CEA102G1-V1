@@ -5,14 +5,14 @@
 <%@ page import = "javax.servlet.http.* " %>
 
 <%
-MemberVO memberVO = (MemberVO) request.getAttribute("MemberVO"); //EmpServlet.java(Concroller), 存入req的empVO物件
-System.out.println(memberVO.getMemNo()+"listone");
-System.out.println(memberVO.getMemImg()+"listone");
+MemberVO memberVO = (MemberVO) request.getAttribute("MemberVO"); 
+List<MemberVO> memberVOList = (List<MemberVO>)request.getAttribute("list");
+
 %>
 
 <html>
 <head>
-<title>公告資料 - listOneMember.jsp</title>
+<title>您修改的會員資料 - listOneMember2.jsp</title>
 
 <style>
   table#table-1 {
@@ -50,10 +50,10 @@ System.out.println(memberVO.getMemImg()+"listone");
 </head>
 <body bgcolor='white'>
 
-<h4>此頁暫練習採用 Script 的寫法取值:</h4>
+<h4>5秒後將轉跳登入頁面</h4>
 <table id="table-1">
 	<tr><td>
-		 <h3>會員資料 - ListOneMember.jsp</h3>
+		 <h3>更新會員資料 - ListOneMember2.jsp</h3>
 		 <h4><a href="<%=request.getContextPath()%>/back-end/Member/select_member_page.jsp">
 		 <img src="<%=request.getContextPath()%>/resource/images/back1.gif" width="100" height="32" border="0">回首頁</a></h4>
 	</td></tr>
@@ -71,13 +71,12 @@ System.out.println(memberVO.getMemImg()+"listone");
 
 <table>
 	<tr>
-		<th>會員編號</th>
+<!-- 		<th>會員編號</th> -->
 		<th>會員名稱</th>
 		<th>會員帳號</th>
 		<th>會員密碼</th>
 		<th>會員mail</th>
 		<th>會員錢包</th>
-		<th>會員狀態</th>
 		<th>會員圖像</th>
 
 	</tr>
@@ -91,17 +90,22 @@ System.out.println(memberVO.getMemImg()+"listone");
 <!-- 	</tr> -->
 	<!-- java取值 -->
 	<tr>
-		<td><%= memberVO.getMemNo()%></td>
+<%-- 		<td><%= memberVO.getMemNo()%></td>  --%>
 		<td><%= memberVO.getMemName()%></td>
 		<td><%= memberVO.getMemAccount()%></td>
 		<td><%= memberVO.getMemPassword()%></td>
 		<td><%= memberVO.getMemMail()%></td>
 		<td><%= memberVO.getMemWallet()%></td>
-		<td><%= memberVO.getMemstatus()%></td>
-<%-- 		<td><%= memberVO.getMemImg()%></td> --%>
+<%-- 		<td><%= memberVO.getMemstatus()%></td> --%>
 		<td><img src="<%=request.getContextPath()%>/Member/reader.do?memNo=${memberVO.memNo}" width="100" height="100"></td>
 		
 	</tr>
+	
+	
+	
+	<script language=javascript>
+		setTimeout('window.location="<%=request.getContextPath()%>/front-end/Member_Login/login.jsp"', 5000)  <%-- 三秒後轉登入畫面--%>
+	</script>
 </table>
 
 </body>
