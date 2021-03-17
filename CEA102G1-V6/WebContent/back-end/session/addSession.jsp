@@ -137,10 +137,10 @@
 							<tr>
 								<th>日期</th>
 								<td>
-									<input class="sty-input" name="sesDateBegin" id="sesdate_begin" type="text" value=""> 
-							        ~ <input class="sty-input" name="sesDateEnd" id="sesdate_end" type="text" value="">
+									<input class="sty-input" name="sesDateBegin" id="sesdate_begin" type="text" value="" style="width: 150px;"> 
+							        ~ <input class="sty-input" name="sesDateEnd" id="sesdate_end" type="text" value="" style="width: 150px;">
 							        <span id="sesDate-errmsg" style="display:none;">			
-										<i class="far fa-hand-point-up" style="color:#bb9d52;"></i>
+										<i class="far fa-hand-point-left" style="color:#bb9d52;"></i>
 										<label id="sesDate-errmsg-txt" class="err-color"></label>
 									</span>
 								</td>
@@ -247,33 +247,28 @@
 									/* 新增時間 */
 	/* =========================================================================================== */
 	let addtime = document.getElementById("addtime");
-	let i = 0;
-	let timeCount = 0;
 	let count = 0;
+	let timeCount = 10;   // 預設 10'o clock
+	let timeAMPM = "AM";
 	addtime.addEventListener("click",function(){
 		$('#sesTime-errmsg').css('display','none');
-		i+=1;
+		count+=1;
 		let timetb = document.getElementById("timetb");
 		timetb.style.display="block";
-		let tag = "<tr><th>"+i+"</th><td><input type="+"\""+"text"+"\""+"name="+"\""+"sesTime"+"\""+"class"+"="+"\""+"sesTimeInput"+"\""+"></td><td><input type="+"\""+"button"+"\""+"value="+"\""+"刪除"+"\""+"id="+"\""+"delete"+"\""+"class=\"delete-btn-sty\""+"onclick='removeTr(this)'></td></tr>";
+		if(timeCount >= 12 && timeCount != 0){
+			timeAMPM = "PM";
+		}else{
+			timeAMPM = "AM";
+		}
+		
+		let tag = `<tr><th>${'${count}'}</th><td><input type="text" name="sesTime" value="${'${timeCount}'}:00 ${'${timeAMPM}'}"></td>
+				   <td><input type=button value="刪除" id="delete" class="delete-btn-sty" onclick='removeTr(this)'></td></tr>`;
 		timetb.innerHTML += tag;
 		
 		
 		/* =========================================================================================== */
-		  						  /* timepicker */
+		  						/* timepicker */
 		/* =========================================================================================== */
-		let timeGap = 10 + ":" + "00 AM";
-		let timeVal = $('input[name="sesTime"]').val(timeGap);
-		let timeSlice = timeVal.val().slice(0, 2);
-		let timeInt = parseInt(timeSlice);
-		timeGap = timeInt + timeCount;
-		console.log("timeGap= " + timeGap);
-		
-		for(count; count < $('input[name="sesTime"]').length; count++){
-			console.log(count);
-			document.getElementsByClassName("sesTimeInput")[count].value = timeGap + ":" + "00 AM";
-		} 
-		
 		$('input[name="sesTime"]').timepicker({
 		    timeFormat: 'h:mm p',
 		    interval: 120,     //時間間隔 120 min
@@ -281,7 +276,12 @@
 		    dropdown: true,
 		    scrollbar: false
 		 });
-		timeCount+=2;
+		
+		timeCount += 2;  // 每個input的時間間隔 2hr
+		if(timeCount == 24){
+			timeCount = 0;
+		}
+		
 	},false);
 	
 	function removeTr(e){
