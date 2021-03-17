@@ -13,7 +13,7 @@
 		width: 120px;
 	}
 	.form-sty{
-		margin: 20px 0 0 10px;
+		margin: 20px 0 0 30px;
 	}
 </style>
 </head>
@@ -56,7 +56,7 @@
 			                        <b>選擇年份</b>
 			                        <select name="mov_ondate_year">
 			                            <option value=""></option>
-			                            <c:forEach var="year" begin="1970" end="<%= (int) (java.util.Calendar.getInstance().get(java.util.Calendar.YEAR))+1%>">
+			                            <c:forEach var="year" begin="2018" end="<%= (int) (java.util.Calendar.getInstance().get(java.util.Calendar.YEAR))+1%>">
 			                                <option value="${year}">${year}年</option>
 			                            </c:forEach>
 			                        </select>
@@ -68,7 +68,7 @@
 			                            </c:forEach>
 			                        </select>
 			                        <input type="hidden" name="action" value="listMovies_ByCompositeQuery">
-				        			<a class="btn btn-light btn-brd grd1 effect-1">
+				        			<a class="btn btn-light btn-brd grd1 effect-1 mr-botm">
 										<input type="submit" value="搜尋" class="input-pos">
 				        			</a>
 		                    	</FORM>                    
@@ -85,7 +85,7 @@
 									<th>上映日期</th>
 									<th>下檔日期</th>
 									<th>片長</th>
-									<th>級數</th>
+									<th>類型</th>
 									<th>查看</th>
 									<th>修改</th>
 								</tr>				
@@ -100,7 +100,7 @@
 									<td>${movVO.getMovondate()}</td>
 									<td>${movVO.getMovoffdate()}</td>
 									<td>${movVO.getMovdurat()}小時</td>
-									<td>${movVO.getMovrating()}</td>
+									<td>${movVO.getMovtype()}</td>
 									<td>
 					        			 <a id="listOne" onclick="getData(this,${movVO.movno})" class="btn btn-light btn-brd grd1 effect-1">
 											<input type="button" value="查看" class="input-pos">

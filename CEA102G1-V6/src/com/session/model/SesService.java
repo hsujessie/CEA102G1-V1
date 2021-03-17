@@ -2,9 +2,13 @@ package com.session.model;
 
 import java.sql.Date;
 import java.sql.Time;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 public class SesService {
 	private SesDAO_interface dao;
@@ -55,7 +59,20 @@ public class SesService {
 	}
 
 	public List<SesVO> getDistinctSesDate() {
-		return dao.findDistinctSesDate();
+		List<SesVO> list = dao.findDistinctSesDate();
+		List<SesVO> seslist = new ArrayList<SesVO>();
+		SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");		
+		java.util.Date now = new java.util.Date();
+		java.sql.Date today = new java.sql.Date(now.getTime());		
+		String strToday = dateFormat.format(today);      
+		
+		for (SesVO sesDate: list){
+    		String strSesDate = dateFormat.format(sesDate.getSesDate());     
+    		if(strSesDate.equals(strToday)) {
+    			seslist.add(sesDate);
+    		}
+        }
+		return seslist;
 	}
 	
 	public List<String> updateSeatStatus(String chooseSeatNo, Integer sesNo) {

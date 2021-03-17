@@ -7,8 +7,8 @@
 <html>
 <head>
 	<title>電影新增</title>	
-	<%@ include file="/back-end/files/sb_head.file"%>
-
+	<%@ include file="/back-end/files/sb_head.file"%>	
+	<link rel="stylesheet" type="text/css" href="<%=request.getContextPath()%>/resource/datetimepicker/jquery.datetimepicker.css" />
 <style>
   table {
 	width: 750px;
@@ -39,6 +39,13 @@
   .ml-ten{
   	margin-left: 10px;
   }
+  .err-color{
+    text-shadow: 0 0 0.1em #f87, 0 0 0.1em #f87;
+    font-size: 14px;
+  }
+  .xdsoft_datetimepicker.xdsoft_dark .xdsoft_calendar td, .xdsoft_datetimepicker.xdsoft_dark .xdsoft_calendar th {
+    border-radius: 0px;
+  }
 </style>
 </head>
 <body class="sb-nav-fixed">
@@ -58,28 +65,25 @@
 						<table>
 							<tr>
 								<th>名稱</th>
-								<td><input class="sty-input mr-left mr-btm-normal" type="text" name="movname" value="<%= (movVO==null)? "金牌特務" : movVO.getMovname()%>" /></td>		
-								<c:if test="${not empty errorMsgs.movname}">
-									<td class="errmsg-pos">		
-										<i class="fa fa-hand-o-left" style="color:#bb9d52"></i>
-										<label class="err-color">${errorMsgs.movname}</label>
-									</td>
-								</c:if>
+								<td><input class="sty-input mr-left mr-btm-normal" type="text" name="movname" value="" />
+									<span id="movname-errmsg" style="display:none;">			
+										<i class="far fa-hand-point-left" style="color:#bb9d52;"></i>
+										<label id="movname-errmsg-txt" class="err-color"></label>
+									</span>
+								</td>
 							</tr>
 							<tr>
 								<th>種類</th>
 								<td>
 									<!-- 多選checkbox -->
-									<input class="mr-left mr-btm-sm" type="checkbox" name="movver" value="2D" ${movver == null? "checked":""} ><span class="ml-ten">2D</span><br>
+									<input class="mr-left mr-btm-sm" type="checkbox" name="movver" value="2D"><span class="ml-ten">2D</span><br>
 									<input class="mr-left mr-btm-sm" type="checkbox" name="movver" value="3D"><span class="ml-ten">3D</span><br>
 									<input class="mr-left mr-btm-sm" type="checkbox" name="movver" value="IMAX"><span class="ml-ten">IMAX</span><br>
+									<span id="movver-errmsg" style="display:none;">			
+										<i class="far fa-hand-point-up" style="color:#bb9d52;"></i>
+										<label id="movver-errmsg-txt" class="err-color"></label>
+									</span>
 								</td>
-								<c:if test="${not empty errorMsgs.movver}">
-									<td class="errmsg-pos">		
-										<i class="fa fa-hand-o-left" style="color:#bb9d52"></i>
-										<label class="err-color">${errorMsgs.movver}</label>
-									</td>
-								</c:if>
 							</tr>
 							<tr>
 								<th>類型</th>
@@ -94,27 +98,19 @@
 										<option value="恐怖片">恐怖片</option>
 									</select>
 								</td>
-								<c:if test="${not empty errorMsgs.movtype}">
-									<td class="errmsg-pos">		
-										<i class="fa fa-hand-o-left" style="color:#bb9d52"></i>
-										<label class="err-color">${errorMsgs.movtype}</label>
-									</td>
-								</c:if>
 							</tr>
 							<tr>
 								<th>語言</th>
 								<td>
 									<!-- 多選checkbox -->
-									<input class="mr-left mr-btm-sm" type="checkbox" name="movlan" value="英文" ${movlan == null? "checked":""} ><span class="ml-ten">英文</span><br>
+									<input class="mr-left mr-btm-sm" type="checkbox" name="movlan" value="英文"><span class="ml-ten">英文</span><br>
 									<input class="mr-left mr-btm-sm" type="checkbox" name="movlan" value="中文"><span class="ml-ten">中文</span><br>
 									<input class="mr-left mr-btm-sm" type="checkbox" name="movlan" value="日文"><span class="ml-ten">日文</span><br>
+									<span id="movlan-errmsg" style="display:none;">			
+										<i class="far fa-hand-point-up" style="color:#bb9d52;"></i>
+										<label id="movlan-errmsg-txt" class="err-color"></label>
+									</span>
 								</td>
-								<c:if test="${not empty errorMsgs.movlan}">
-									<td class="errmsg-pos">		
-										<i class="fa fa-hand-o-left" style="color:#bb9d52"></i>
-										<label class="err-color">${errorMsgs.movlan}</label>
-									</td>
-								</c:if>
 							</tr>
 							<%
 							  java.sql.Date movondate = null;
@@ -126,36 +122,24 @@
 							%>
 							<tr>
 								<th>上映日期</th>
-								<td><input class="sty-input mr-left mr-btm-normal" name="movondate" id="mov_ondate" type="date" value="<%=movondate%>"></td>
-								<c:if test="${not empty errorMsgs.movondate}">
-									<td class="errmsg-pos">		
-										<i class="fa fa-hand-o-left" style="color:#bb9d52"></i>
-										<label class="err-color">${errorMsgs.movondate}</label>
-									</td>
-								</c:if>
+								<td><input class="sty-input mr-left mr-btm-normal" name="movondate" id="mov_ondate" type="text" value="<%=movondate%>"></td>
 							</tr>
 							<tr>
 								<th>下檔日期</th>
-								<td><input class="sty-input mr-left mr-btm-normal" name="movoffdate" id="mov_offdate" type="date" value=""></td>
-								<c:if test="${not empty errorMsgs.movoffdate}">
-									<td class="errmsg-pos">		
-										<i class="fa fa-hand-o-left" style="color:#bb9d52"></i>
-										<label class="err-color">${errorMsgs.movoffdate}</label>
-									</td>
-								</c:if>
+								<td><input class="sty-input mr-left mr-btm-normal" name="movoffdate" id="mov_offdate" type="text" value=""></td>
 							</tr>
 							<tr>
 								<th>片長</th>
-								<td class="fake-txt"><input class="sty-input mr-left mr-btm-normal" type="text" name="movdurat" value="<%= (movVO==null)? "2" : movVO.getMovdurat()%>"/></td>
-								<c:if test="${not empty errorMsgs.movdurat}">
-									<td class="errmsg-pos" style="padding-left: 25%;">		
-										<i class="fa fa-hand-o-left" style="color:#bb9d52"></i>
-										<label class="err-color">${errorMsgs.movdurat}</label>
-									</td>
-								</c:if>
+								<td class="fake-txt">
+									<select class="mr-left mr-btm-normal" name="movdurat">
+										<option value="1">1小時</option>
+										<option value="2">2小時</option>
+										<option value="3">3小時</option>
+									</select>
+								</td>
 							</tr>
 							<tr>
-								<th>片長</th>
+								<th>級數</th>
 								<td>
 									<select class="mr-left mr-btm-normal" name="movrating">
 										<option value="普遍級">普遍級</option>
@@ -167,40 +151,37 @@
 							</tr>
 							<tr>
 								<th>導演</th>
-								<td><input class="sty-input mr-left mr-btm-normal" type="text" name="movditor" value="<%= (movVO==null)? "dicrector" : movVO.getMovditor()%>" /></td>
-								<c:if test="${not empty errorMsgs.movditor}">
-									<td class="errmsg-pos">		
-										<i class="fa fa-hand-o-left" style="color:#bb9d52"></i>
-										<label class="err-color">${errorMsgs.movditor}</label>
-									</td>
-								</c:if>
+								<td><input id="movDitor" class="sty-input mr-left mr-btm-normal" type="text" name="movditor" value="" />
+									<span id="movditor-errmsg" style="display:none;">			
+								        <i class="far fa-hand-point-left" style="color:#bb9d52;"></i>
+								        <label id="movditor-errmsg-txt" class="err-color"></label>
+								    </span>
+								</td>
 							</tr>
 							<tr>
 								<th>演員</th>
-								<td><input class="sty-input mr-left mr-btm-normal" type="text" name="movcast" value="<%= (movVO==null)? "actors" : movVO.getMovcast()%>" /></td>
-								<c:if test="${not empty errorMsgs.movcast}">
-									<td class="errmsg-pos">		
-										<i class="fa fa-hand-o-left" style="color:#bb9d52"></i>
-										<label class="err-color">${errorMsgs.movcast}</label>
-									</td>
-								</c:if>
+								<td><input id="movCast" class="sty-input mr-left mr-btm-normal" type="text" name="movcast" value="" />
+									<span id="movcast-errmsg" style="display:none;">			
+								        <i class="far fa-hand-point-left" style="color:#bb9d52;"></i>
+								        <label id="movcast-errmsg-txt" class="err-color"></label>
+								    </span>								
+								</td>
 							</tr>
 							<tr>
 								<th>簡介</th>
-								<td><textarea name="movdes" class="sty-input mr-left"><%= (movVO==null)? "description" : movVO.getMovdes()%></textarea></td>
-								<c:if test="${not empty errorMsgs.movdes}">
-									<td class="errmsg-pos">		
-										<i class="fa fa-hand-o-left" style="color:#bb9d52"></i>
-										<label class="err-color">${errorMsgs.movdes}</label>
-									</td>
-								</c:if>
+								<td><textarea id="movDes" name="movdes" class="sty-input mr-left"></textarea>
+									<span id="movdes-errmsg" style="display:none;">			
+								        <i class="far fa-hand-point-left" style="color:#bb9d52;"></i>
+								        <label id="movdes-errmsg-txt" class="err-color"></label>
+								    </span>
+								</td>
 							</tr>
 							<tr>
 								<th>海報</th>
 								<td>	
 									<label class="btn" style="margin-left: 35%;">
 										<i class="far fa-image"></i>
-									<input id="uploadFile" style="display:none;" type="file" name="movpos" value="<%= (movVO==null)? "poster" : movVO.getMovpos()%>"/>			
+										<input id="uploadFile" style="display:none;" type="file" name="movpos" value=""/>			
 									</label>
 								</td>
 							</tr>
@@ -215,7 +196,7 @@
 								<td>
 									<label class="btn" style="margin-left: 35%;">
 										<i class="far fa-file-video"></i>
-									<input id="uploadTrailer" style="display:none;" type="file" name="movtra" value="<%=(movVO==null)? "trailer" : movVO.getMovtra()%>"/>	
+										<input id="uploadTrailer" style="display:none;" type="file" name="movtra" value=""/>	
 									</label>
 								</td>
 							</tr>
@@ -228,8 +209,11 @@
 						</table>
 						<br>
 						<input type="hidden" name="action" value="insert">
-						<a class="btn btn-light btn-brd grd1 effect-1 btn-pos" style="margin: 1% 0 1% 50%;" >
+						<a id="abled-btn" class="btn btn-light btn-brd grd1 effect-1 btn-pos" style="margin: 1% 0 1% 50%; display:none;" >
 							<input type="submit" value="送出" class="input-pos">
+						</a>
+						<a id="disabled-btn" class="btn btn-light btn-brd grd1 btn-pos" style="display:block; margin: 1% 0 1% 50%; background-color: #808080; border: 2px solid #808080!important; cursor: default;" >
+							<input type="submit" value="送出" class="input-pos" style="background-color: #808080;" disabled>
 						</a>
 						</FORM>
                        <!-- addMovie End -->
@@ -240,13 +224,45 @@
             </div>
         </div>
 		<%@ include file="/back-end/files/sb_importJs.file"%> <!-- 引入template要用的js -->
-</body>
+		<script src="<%=request.getContextPath()%>/resource/datetimepicker/jquery.js"></script>
+		<script src="<%=request.getContextPath()%>/resource/datetimepicker/jquery.datetimepicker.full.js"></script>
 
-<!-- =========================================================================================== 
-    								以下 CALCULATE mov_ondate & mov_offdate
-	 ===========================================================================================  -->
-	<script>
-	<%@ include file="files/changeMovOffDate.file"%>
+<script>
+	$.datetimepicker.setLocale('zh');
+	$(function(){
+		 $('#mov_ondate').datetimepicker({
+		  theme:'dark',
+		  format:'Y-m-d',
+		  onShow:function(){
+		   this.setOptions({
+		    maxDate:$('#mov_offdate').val()?$('#mov_offdate').val():false
+		   })
+		  },
+		  timepicker:false
+		 });
+
+		 $('#mov_offdate').datetimepicker({
+		  theme:'dark',
+		  format:'Y-m-d',
+		  onShow:function(){
+		   this.setOptions({
+		    minDate:$('#mov_ondate').val()?$('#mov_ondate').val():false
+		   })
+		  },
+		  timepicker:false
+		 });
+	});
+	
+/* =========================================================================================== */
+								/* Varify Inputs */
+/* =========================================================================================== */	
+	<%@ include file="/back-end/movie/files/varifyInputs.file"%>
+	
+	
+/* =========================================================================================== */
+	    						/* CALCULATE mov_ondate & mov_offdate */
+/* =========================================================================================== */
+	<%@ include file="/back-end/movie/files/changeMovOffDate.file"%>
 		let mov_ondate = document.getElementById('mov_ondate');
 		let mov_offdate_val = document.getElementById('mov_offdate').value;
 		if(mov_offdate_val.length == 0){
@@ -257,10 +273,9 @@
 		});
 		
 		
-
-	/* =========================================================================================== */
-    								/* 以下 SHOW a UPLOADED IMAGE & VIDEO */
-	/* =========================================================================================== */
+/* =========================================================================================== */
+   							/* SHOW a UPLOADED IMAGE & VIDEO */
+/* =========================================================================================== */
 function init(){
     let uploadFile = document.getElementById('uploadFile');
     let fileImg = document.getElementById('fileImg');
@@ -277,6 +292,7 @@ function init(){
                     reader.addEventListener('load',function(e){
                         let result = e.target.result;
                         let img = document.createElement('img');
+                 		img.style.width='150px';  //這邊要動態增加css寬度，不然會跑版
                         img.classList.add('img');
                         img.src = result;
                         fileImg.append(img);
@@ -299,6 +315,7 @@ function init(){
                     reader.addEventListener('load',function(e){
                         let result = e.target.result;
                         let video = document.createElement('video');
+                        video.style.width='300px';  //這邊要動態增加css寬度，不然會跑版
                         video.classList.add('vdo');
                         video.src = result;
                         trailerVdo.append(video);
@@ -312,4 +329,5 @@ function init(){
 }
 window.onload = init;
 </script>
+</body>
 </html>

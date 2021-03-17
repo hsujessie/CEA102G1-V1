@@ -19,13 +19,17 @@
 	    color: #bb9d52;
 		position: absolute;
 	    top: 10%;
-	    left: 17%;
+	    left: 19%;
+	    font-size: 16px;
 	}
 	.th-adjust{
 		width: 120px;
 	}
 	.form-sty{
-		margin: 20px 0 0 10px;
+		margin: 20px 0 0 30px;
+	}
+	.mr-botm{
+		margin-bottom: 5px;
 	}
 </style>
 <body class="sb-nav-fixed">
@@ -39,21 +43,21 @@
                 <main>
                     <div class="container-fluid">
                     	
-                    	<!-- error message Start -->
                     	<h3 class="h3-style" style="display: inline-block;">電影列表</h3>
+						<!-- success message Start -->
 						<c:if test="${addSuccess != null}">
 							<span class="success-span"> 
 								${addSuccess}
-								<i class="fa fa-hand-peace-o"></i>
+								<i class="far fa-smile-wink"></i>
 							</span>
 						</c:if>
 						<c:if test="${updateSuccess != null }">
 							<span class="success-span"> 
 								${updateSuccess}
-								<i class="far fa-laugh-wink"></i>
+								<i class="far fa-smile-wink"></i>
 							</span>
 						</c:if>
-                    	<!-- error message End -->
+                    	<!-- success message End -->
 						
                     	<!-- search Start -->
                     	<div class="row " style="margin: -60px 0 20px 0;">         
@@ -82,7 +86,7 @@
 			                        <b>選擇年份</b>
 			                        <select name="mov_ondate_year">
 			                            <option value=""></option>
-			                            <c:forEach var="year" begin="1970" end="<%= (int) (java.util.Calendar.getInstance().get(java.util.Calendar.YEAR))+1%>">
+			                            <c:forEach var="year" begin="2018" end="<%= (int) (java.util.Calendar.getInstance().get(java.util.Calendar.YEAR))+1%>">
 			                                <option value="${year}">${year}年</option>
 			                            </c:forEach>
 			                        </select>
@@ -94,7 +98,7 @@
 			                            </c:forEach>
 			                        </select>
 			                        <input type="hidden" name="action" value="listMovies_ByCompositeQuery">
-				        			<a class="btn btn-light btn-brd grd1 effect-1">
+				        			<a class="btn btn-light btn-brd grd1 effect-1 mr-botm">
 										<input type="submit" value="搜尋" class="input-pos">
 				        			</a>
 		                    	</FORM>                    
@@ -111,7 +115,7 @@
 									<th>上映日期</th>
 									<th>下檔日期</th>
 									<th>片長</th>
-									<th>級數</th>
+									<th>類型</th>
 									<th>查看</th>
 									<th>修改</th>
 								</tr>				
@@ -126,7 +130,7 @@
 									<td>${movVO.getMovondate()}</td>
 									<td>${movVO.getMovoffdate()}</td>
 									<td>${movVO.getMovdurat()}小時</td>
-									<td>${movVO.getMovrating()}</td>
+									<td>${movVO.getMovtype()}</td>
 									<td>
 					        			 <a id="listOne" onclick="getData(this,${movVO.movno})" class="btn btn-light btn-brd grd1 effect-1">
 											<input type="button" value="查看" class="input-pos">

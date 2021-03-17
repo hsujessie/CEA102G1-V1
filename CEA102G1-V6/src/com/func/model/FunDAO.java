@@ -4,8 +4,8 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.LinkedHashSet;
-import java.util.Set;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.naming.Context;
 import javax.naming.InitialContext;
@@ -27,8 +27,8 @@ public class FunDAO implements FunDAO_interface {
 	private static final String GET_ALL_STMT = "SELECT FUN_NO, FUN_NAME FROM FUNC ORDER BY FUN_NO";
 	
 	@Override
-	public Set<FunVO> getAll() {
-		Set<FunVO> set = new LinkedHashSet<FunVO>();
+	public List<FunVO> getAll() {
+		List<FunVO> list = new ArrayList<FunVO>();
 		FunVO funVO = null;
 		
 		Connection con = null;
@@ -45,7 +45,7 @@ public class FunDAO implements FunDAO_interface {
 				
 				funVO.setFunNo(rs.getInt("FUN_NO"));
 				funVO.setFunName(rs.getString("FUN_NAME"));
-				set.add(funVO);
+				list.add(funVO);
 			}
 			
 		} catch (SQLException se) {
@@ -75,7 +75,7 @@ public class FunDAO implements FunDAO_interface {
 			}
 		}
 		
-		return set;
+		return list;
 	}
 
 }

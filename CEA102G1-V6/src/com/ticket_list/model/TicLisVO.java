@@ -7,7 +7,7 @@ public class TicLisVO implements Serializable {
 	private Integer ordMasNo;
 	private Integer ticTypNo;
 	private String sesSeatNo;
-	private Integer ticLisPrice;
+	private Integer ticTypPrice;
 	
 	public TicLisVO() {}
 
@@ -43,12 +43,14 @@ public class TicLisVO implements Serializable {
 		this.sesSeatNo = sesSeatNo;
 	}
 
-	public Integer getTicLisPrice() {
-		return ticLisPrice;
+	public Integer getTicTypPrice() {
+		return ticTypPrice;
 	}
 
-	public void setTicLisPrice(Integer ticLisPrice) {
-		this.ticLisPrice = ticLisPrice;
+	public void setTicTypPrice(Integer ticTypPrice) {
+		this.ticTypPrice = ticTypPrice;
 	}
+
+	
 	
 }

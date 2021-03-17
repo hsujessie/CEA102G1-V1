@@ -1,4 +1,4 @@
-package com.food.controller;
+package jdbc.util.read_img;
 
 import java.io.BufferedInputStream;
 import java.io.IOException;
@@ -18,7 +18,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.sql.DataSource;
 
-public class fooReadImg extends HttpServlet {
+public class ImgReader extends HttpServlet {
 	private Connection con;
 	
 
@@ -104,6 +104,4 @@ public class fooReadImg extends HttpServlet {
 			}
 		}
 	}
-	
-	
 }

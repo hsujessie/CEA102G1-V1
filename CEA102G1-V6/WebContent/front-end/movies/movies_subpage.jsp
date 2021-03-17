@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 
 <!DOCTYPE html>
 <html>
@@ -30,7 +31,7 @@
 		width: 40%;
     	height: 50%;
 		box-sizing: border-box;
-		padding: 3% 0 0 5%;
+		padding: 3% 0 0 3%;
 		position: fixed;
 		top: 20%;
 		left:50%;
@@ -97,7 +98,7 @@
 	
 	/* -- 檢舉btn -- */
 	#comrep a {
-	    color: #454545;
+	    color: #888888;
 	    transition: .3s;
 	    cursor: pointer;
 	}
@@ -108,6 +109,18 @@
 	    color: #aa9166;
 	    outline: none;
 	    text-decoration: none;
+	}
+	
+	/* -- 點我寫短評 -- */
+	.writeComment{
+		border: 3px solid #aa9166;
+    	box-sizing: border-box;
+    	padding: 1% 0 1% 4%;
+    	font-size: 16px;
+	}
+	.writeComment:hover{
+		box-shadow: 5px 5px 5px #121518;
+		transition: 1s ease-in-out;
 	}
 </style>
 </head>
@@ -151,28 +164,33 @@
                     
 					<!-- 電影--未上映：顯示，已上映：不顯示 -->
                     <div class="row">
-                        <div class="col-lg-1 col-md-1">
+                        <div class="col-lg-1 col-md-3">
                             <p style="color:#aa9166;">期待度</p>
                         </div>
-                        <div class="col-lg-11 col-md-11">                     
+                        <div class="col-lg-11 col-md-9">                     
                             <form method="post" action="<%=request.getContextPath()%>/expectation/exp.do">                                                       
 	                            <label><input type="radio" name="expRating" value="1"><span class="ml">想看</span><i class="far fa-smile ml" style="color:#aa9166;"></i></label>&emsp;&emsp;
 	                            <label><input type="radio" name="expRating" value="0"><span class="ml">不想看</span><i class="far fa-meh ml" style="color:#aa9166;"></i></label>
 
   								<input type="hidden" name="movNo" value="${movVO.movno}" />
-  								<input type="hidden" name="memNo" value="1" /> <!-- 會員編號 外來鍵要配合db -->
-  								<%-- <input type="hidden" name="memNo" value="${memVO.memno}" />  --%>
+  								<input type="hidden" name="memNo" value="${MemberVO.memNo}" />
 								<input type="hidden" name="action" value="insert">
-                            	<input class="combtn" type="submit" value="送出" style="margin-left: 5%; padding: 2px 10px;">
+								
+	                    		<c:if test="${not empty MemberVO.memAccount}">
+                            		<input class="combtn" type="submit" value="送出" style="margin-left: 5%; padding: 2px 10px;">
+	                            </c:if>
+	                    		<c:if test="${empty MemberVO.memAccount}">
+	                    			<a class="combtn" style="margin-left: 5%; padding: 5px 10px;" href="<%=request.getContextPath()%>/front-end/Login.jsp">送出</a>
+	                            </c:if>
                             </form>
                         </div>
                     </div>
                     
                      <div class="row" style="margin-top: 5px;">
-                        <div class="col-lg-1 col-md-1">
+                        <div class="col-lg-1 col-md-3">
                             <p style="color:#aa9166;">滿意度</p>
                         </div>
-                        <div class="col-lg-11 col-md-11">                   
+                        <div class="col-lg-11 col-md-9">                   
                             <form method="post" action="<%=request.getContextPath()%>/satisfaction/sat.do">        	
                             	<label><input type="checkbox" name="satRating" value="1" style="display:none;" /><i class="fa fa-star" aria-hidden="true"></i></label>
                             	<label><input type="checkbox" name="satRating" value="1" style="display:none;" /><i class="fa fa-star" aria-hidden="true"></i></label>
@@ -181,10 +199,15 @@
                             	<label><input type="checkbox" name="satRating" value="1" style="display:none;" /><i class="fa fa-star" aria-hidden="true"></i></label>
                   
   								<input type="hidden" name="movNo" value="${movVO.movno}" />
-  								<input type="hidden" name="memNo" value="1" /> <!-- 會員編號 外來鍵要配合db -->
-  								<%-- <input type="hidden" name="memNo" value="${memVO.memno}" />  --%>
+  								<input type="hidden" name="memNo" value="${MemberVO.memNo}" />
 								<input type="hidden" name="action" value="insert">
-                            	<input class="combtn" type="submit" value="送出" style="margin-left: 13.4%; padding: 2px 10px;">
+								
+	                    		<c:if test="${not empty MemberVO.memAccount}">
+	                            	<input class="combtn" type="submit" value="送出" style="margin-left: 13.4%; padding: 2px 10px;">
+	                            </c:if>
+	                    		<c:if test="${empty MemberVO.memAccount}">
+	                    			<a class="combtn" style="margin-left: 13.4%; padding: 5px 10px;" href="<%=request.getContextPath()%>/front-end/Login.jsp">送出</a>
+	                            </c:if>
                             </form>
                         </div>
                     </div>
@@ -226,8 +249,12 @@
 		                                <c:set var="satObj" value="${satSvc.getOneSat(comVO.movNo,comVO.memNo)}"></c:set>                            
 		                                <h2><span>Ratings</span><c:forEach var="i" begin="1" end="${satObj.satRating}"><i class="fa fa-star" aria-hidden="true"></i></c:forEach></h2>	                                
 		                                <p>${comVO.comContent}</p>
-		                                <span>發表人&emsp;${comVO.memNo}</span>
-		                                <span>發表時間&emsp;${comVO.comTime}</span>
+		                                																														
+										<jsp:useBean id="memSvc" scope="page" class="com.member.model.MemberService"/>
+										<c:set value="${memSvc.getOneMember(comVO.memNo)}" var="memObj"></c:set>
+		                                <span>發表人 <label style="color:#aa9166;">${memObj.memName}</label>&emsp;|&emsp;</span>
+		                                
+		                                <span>發表時間 <label style="color:#aa9166;"><fmt:formatDate value="${comVO.comTime}" pattern="yyy-MM-dd HH:mm" type="DATE"/></label>&emsp;|&emsp;</span>
                    						<span id="comrep" onclick='openComRepLightbox(this,${comVO.comNo},${comVO.memNo},${comVO.movNo})'><a>檢舉</a></span>   
 		                            </div>
 		                        </div>
@@ -237,8 +264,8 @@
                 </div>
             </div>
             <!-- Reviews End -->
-
-
+            
+	
             <!-- Comment Start -->
             <div class="movinfo">
                 <div class="container">
@@ -250,19 +277,26 @@
                         </div>
                     </div>
 
-                    <div class="row align-items-center">
+                    <div class="row align-items-center" ${not empty MemberVO.memAccount ? '':'style="display:none;"'}>
                         <div class="col-lg-12 col-md-12">
                             <form method="post" action="<%=request.getContextPath()%>/comment/com.do">
                                 <textarea name="comContent" cols="30" rows="5" style="width: 100%; margin: 20px 0 5px 0;" placeholder="Write something here..."></textarea>                          
                                 
   								<input type="hidden" name="movNo" value="${movVO.movno}" />
-  								<input type="hidden" name="memNo" value="1" /> <!-- 會員編號 外來鍵要配合db -->
-  								<%-- <input type="hidden" name="memNo" value="${memVO.memno}" />  --%>
+  								<input type="hidden" name="memNo" value="${MemberVO.memNo}" />
   								
 								<input type="hidden" name="action" value="insert">
                             	<input class="combtn" type="submit" value="送出">
                             </form>
                         </div>
+                    </div>
+
+                    <div class="row align-items-center" ${not empty MemberVO.memAccount ? 'style="display:none;"':''}>
+                        <div class="col-lg-45 col-md-5"></div>
+                        <div class="col-lg-2 col-md-2 writeComment">
+                            <a href="<%=request.getContextPath()%>/front-end/Login.jsp">點我寫短評 <i class="fas fa-pencil-alt" style="color:#aa9166;"></i></a>
+                        </div>
+                        <div class="col-lg-5 col-md-5"></div>
                     </div>
                 </div>
             </div>
@@ -281,39 +315,129 @@
 <div class="movies-lightbox" id="movies-comrep" style="display: none;">
   	<div class="movies-comrep-content">
 	  	<div class="close"></div>
-		<div class="movies-lightbox-inside"></div>
-		<div>
-			<form id="comrepForm" method="post" action="">
-				<ul>
-				<li><input type="radio" name="comRepReason" value="1"><label>與本電影無關、捏造假冒、不實敘述</label></li>
-				<li><input type="radio" name="comRepReason" value="2"><label>具有廣告性質或大量重複散布</label></li>
-				<li><input type="radio" name="comRepReason" value="3"><label>相互惡意攻訐、猥褻騷擾、人身攻擊</label></li>
-				<li><input type="radio" name="comRepReason" value="4"><label>侵犯隱私權、違反智慧財產權、涉及違法情事</label></li>
-				<li><input type="radio" name="comRepReason" value="5"><label>違背善良風俗</label></li>
-				</ul>
-                <input class="combtn lightbox-btn" type="submit" value="確認送出">
-			</form>
+		<div class="movies-lightbox-inside">
+			<div>
+				<form id="comrepForm" method="post" action="">
+					<ul>
+					<li><input type="radio" name="comRepReason" value="1"><label>與本電影無關、捏造假冒、不實敘述</label></li>
+					<li><input type="radio" name="comRepReason" value="2"><label>具有廣告性質或大量重複散布</label></li>
+					<li><input type="radio" name="comRepReason" value="3"><label>相互惡意攻訐、猥褻騷擾、人身攻擊</label></li>
+					<li><input type="radio" name="comRepReason" value="4"><label>侵犯隱私權、違反智慧財產權、涉及違法情事</label></li>
+					<li><input type="radio" name="comRepReason" value="5"><label>違背善良風俗</label></li>
+					</ul>
+	                <input class="combtn lightbox-btn" type="submit" value="確認送出">
+				</form>
+			</div>
 		</div>
  	</div>
 </div>
 
 <%@ include file="/front-end/files/frontend_importJs.file"%>
 <script>
-	  $(document).ready(function () {
-	      $('input[name="satRating"]').click(function () {
+	let satRatingZer = $("input[name='satRating']")[0];
+	let satRatingOne = $("input[name='satRating']")[1];
+	let satRatingTwo = $("input[name='satRating']")[2];
+	let satRatingThr = $("input[name='satRating']")[3];
+	let satRatingFou = $("input[name='satRating']")[4];
+	let faStars = document.getElementsByClassName("fa-star");
+	
+	satRatingZer.onclick = function(){
+		console.log("0");
+		if ($(this).prop('checked')) { 
+			$(this).next().addClass('str-color');
+		}
+		else{
+			$(this).next().removeClass('str-color'); 
+			
+			if(!faStars[0].classList.contains('str-color')){
+				faStars[1].classList.remove('str-color');
+				faStars[2].classList.remove('str-color');
+				faStars[3].classList.remove('str-color');
+				faStars[4].classList.remove('str-color');
+			}
+		}
+	}	
+	
+	satRatingOne.onclick = function(){
+		console.log("1");
+		if ($(this).prop('checked')) { 
+			$(this).next().addClass('str-color');
 
-	        if ($(this).prop('checked')) { 
-	           console.log("Checked");
-	           $(this).next().addClass('str-color');
-	        }
-	        else {     
-	           console.log("Unchecked");
-	           $(this).next().removeClass('str-color');
-	        }
-	      });
-	  });
-	  
-      /* -- Light box -- */
+			if(faStars[1].classList.contains('str-color')){
+				faStars[0].classList.add('str-color');
+			}
+		}
+		else{
+			$(this).next().removeClass('str-color'); 
+
+			if(!faStars[1].classList.contains('str-color')){
+				faStars[2].classList.remove('str-color');
+				faStars[3].classList.remove('str-color');
+				faStars[4].classList.remove('str-color');
+			}
+		}
+	}
+	
+	satRatingTwo.onclick = function(){
+		console.log("2");
+		if ($(this).prop('checked')) { 
+			$(this).next().addClass('str-color');
+			
+			if(faStars[2].classList.contains('str-color')){
+				faStars[0].classList.add('str-color');
+				faStars[1].classList.add('str-color');
+			}
+		}
+		else{
+			$(this).next().removeClass('str-color'); 
+			
+			if(!faStars[2].classList.contains('str-color')){
+				faStars[3].classList.remove('str-color');
+				faStars[4].classList.remove('str-color');
+			}
+		}
+	}
+
+	satRatingThr.onclick = function(){
+		console.log("3");
+		if ($(this).prop('checked')) { 
+			$(this).next().addClass('str-color');
+			
+			if(faStars[3].classList.contains('str-color')){
+				faStars[0].classList.add('str-color');
+				faStars[1].classList.add('str-color');
+				faStars[2].classList.add('str-color');
+			}
+		}
+		else{
+			$(this).next().removeClass('str-color'); 
+			if(!faStars[3].classList.contains('str-color')){
+				faStars[4].classList.remove('str-color');
+			}
+		}	
+	}
+	satRatingFou.onclick = function(){
+		console.log("4");
+		$(this).next().addClass('str-color');
+		if ($(this).prop('checked')) { 
+
+			if(faStars[4].classList.contains('str-color')){
+				faStars[0].classList.add('str-color');
+				faStars[1].classList.add('str-color');
+				faStars[2].classList.add('str-color');
+				faStars[3].classList.add('str-color');
+			}
+		}
+		else{
+			$(this).next().removeClass('str-color'); 
+		}	
+	}
+
+	
+	
+/* =========================================================================================== */
+   							/* Light box */
+/* =========================================================================================== */
 	  let lightbox = document.getElementsByClassName("movies-lightbox")[0];
 	  let closeLightbox = document.getElementsByClassName("close")[0];
       closeLightbox.onclick=function(){

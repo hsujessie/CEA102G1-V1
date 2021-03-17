@@ -1,5 +1,6 @@
 <%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%@ page import="com.session.model.*"%>
 
 <jsp:useBean id="listSessions_ByCompositeQuery" scope="request" type="java.util.List<SesVO>"/>
@@ -8,7 +9,7 @@
 <head>
 	<title>場次查詢</title>
 	<%@ include file="/back-end/files/sb_head.file"%>
-	
+	<link rel="stylesheet" type="text/css" href="<%=request.getContextPath()%>/resource/datetimepicker/jquery.datetimepicker.css" />	
 <style>
 	.form-sty{
 		margin: 20px 0 0 0;
@@ -16,6 +17,21 @@
 	.time-input-sty{
 		font-size: 14px;
 	    vertical-align: middle;
+	    width: 150px;
+	}
+	.success-span{
+	    color: #bb9d52;
+		position: absolute;
+	    top: 10%;
+	    left: 20%;
+	    font-size: 16px;
+	}
+	.fail-span{
+	    color: #A50203;
+		position: absolute;
+	    top: 10%;
+	    left: 20%;
+	    font-size: 16px;
 	}
 </style>
 </head>
@@ -31,6 +47,29 @@
                     <div class="container-fluid">
                     
                     	<h3 class="h3-style" style="display: inline-block;">場次查詢</h3>
+						<!-- success message Start -->
+						<c:if test="${addSuccess != null}">
+							<span class="success-span"> 
+								${addSuccess}
+								<i class="far fa-smile-wink"></i>
+							</span>
+						</c:if>
+						<c:if test="${updateSuccess != null }">
+							<span class="success-span"> 
+								${updateSuccess}
+								<i class="far fa-smile-wink"></i>
+							</span>
+						</c:if>
+                    	<!-- success message End -->
+                    	<!-- failure message Start -->
+						<c:if test="${errMsg != null}">
+							<span class="fail-span"> 
+								<i class="far fa-frown"></i>
+								${errMsg}
+							</span>
+						</c:if>
+                    	<!-- failure message End -->
+                    	
                     	<!-- search Start -->
                     	<div class="row " style="margin: -60px 0 20px 50px;">        
 			                <div class="col-2"></div>
@@ -38,15 +77,15 @@
 		            			<jsp:useBean id="movSvcAll" scope="page" class="com.movie.model.MovService"/>                        
 	                           	<FORM class="form-sty" METHOD="post" ACTION="<%=request.getContextPath()%>/session/ses.do">				                        
 			                        <b>電影名稱</b>
-			                            <select name="movNo" style="width: 80px;">
+			                            <select name="movNo" style="width: 185px;">
 			                                <option value=""></option>
 			                                <c:forEach var="movVO" items="${movSvcAll.all}" >
 			                                    <option value="${movVO.movno}">${movVO.movname}
 			                                </c:forEach>
 			                            </select>&ensp;&ensp;
 			                        <b>場次日期</b>
-			                        <input class="sty-input time-input-sty" name="sesDateBegin" id="" type="date" value=""> 
-			                        ~ <input class="sty-input time-input-sty" name="sesDateEnd" id="" type="date" value="">
+			                        <input class="sty-input time-input-sty" name="sesDateBegin" id="sesdate_Begin" type="text" value=""> 
+			                        ~ <input class="sty-input time-input-sty" name="sesDateEnd" id="sesdate_End" type="text" value="">
 			                        
 			                        <input type="hidden" name="action" value="listSessions_ByCompositeQuery">
 				        			<a class="btn btn-light btn-brd grd1 effect-1">
@@ -78,8 +117,14 @@
 									<td>${no.index+1}</td>
 									<td>${movObj.movname}</td>
 									<td>${sesVO.getSesDate()}</td>
-									<td>${sesVO.getSesTime()}</td>
-									<td>${sesVO.getTheNo()}</td>
+									<td><fmt:formatDate value="${sesVO.getSesTime()}" pattern="HH:mm" type="DATE"/></td>
+										
+									<jsp:useBean id="theSvc" scope="page" class="com.theater.model.TheaterService"/>
+									<jsp:useBean id="movVerSvc" scope="page" class="com.movie_version.model.Movie_versionService"/>	
+									<c:set value="${theSvc.getOneTheater(sesVO.theNo)}" var="theObj"></c:set>
+									<c:set value="${movVerSvc.getOneMovie_version(theObj.movver_no)}" var="movVerObj"></c:set>
+									<td>${sesVO.theNo}廳 【${movVerObj.movver_name}】</td>
+									
 									<td>
 									   <a class="btn btn-light btn-brd grd1 effect-1" onclick="updateData(this,${sesVO.sesNo})" >
 										 <input type="button" value="修改" class="input-pos update-btn">
@@ -98,8 +143,34 @@
             </div>
         </div>
 		<%@ include file="/back-end/files/sb_importJs.file"%> <!-- 引入template要用的js -->
-		
-<script>				
+		<script src="<%=request.getContextPath()%>/resource/datetimepicker/jquery.js"></script>
+		<script src="<%=request.getContextPath()%>/resource/datetimepicker/jquery.datetimepicker.full.js"></script>		
+<script>
+	$.datetimepicker.setLocale('zh');
+	$(function(){
+		 $('#sesdate_Begin').datetimepicker({
+		  theme:'dark',
+		  format:'Y-m-d',
+		  onShow:function(){
+		   this.setOptions({
+		    maxDate:$('#sesdate_End').val()?$('#sesdate_End').val():false
+		   })
+		  },
+		  timepicker:false
+		 });
+	
+		 $('#sesdate_End').datetimepicker({
+		  theme:'dark',
+		  format:'Y-m-d',
+		  onShow:function(){
+		   this.setOptions({
+		    minDate:$('#sesdate_Begin').val()?$('#sesdate_Begin').val():false
+		   })
+		  },
+		  timepicker:false
+		 });
+	});
+	
 	function updateData(e,sesNo){
 		let href = "<%=request.getContextPath()%>/session/ses.do?action=getOne_For_Update&requestURL=<%=request.getServletPath()%>&sesNo="+sesNo;
 		e.setAttribute("href", href);
