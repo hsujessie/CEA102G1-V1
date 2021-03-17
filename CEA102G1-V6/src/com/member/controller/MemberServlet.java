@@ -599,6 +599,7 @@ public class MemberServlet extends HttpServlet {
 									failureView.forward(req, res);
 								}
 				
+
 							}		
 /***************************完成一個流程****************************/				
 					if ("updateStatus".equals(action)) { //更新狀態,還無法用
@@ -788,13 +789,23 @@ public class MemberServlet extends HttpServlet {
 //				}
 //			}				
 			
+						if("ajaxGetMemberName".equals(action)) {
+						res.setCharacterEncoding("UTF-8");
+						res.setContentType("text; charset=utf-8");
+						PrintWriter out = res.getWriter();
+						Integer memNo = new Integer(req.getParameter("memNo").trim());
+						MemberServic memSvc = new MemberServic();
+						String memName = memSvc.getOneMember(memNo).getMemName();
+						out.print(memName);
+						return;
+					}
 			
 			
 			
 			
 			
 			
-			
+
 		
 		
 //==================================結束==============================		

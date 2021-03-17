@@ -3,8 +3,8 @@
 <%@ page import="com.ticket_type.model.*"%>
 
 
-<jsp:useBean id="identitySvc" scope="page" class="com.identity.model.IdentityService" />
-<jsp:useBean id="movie_versionSvc" scope="page" class="com.movie_version.model.Movie_versionService" />
+<jsp:useBean id="identitySvc" scope="page" class="com.identity.model.IdeService" />
+<jsp:useBean id="movie_versionSvc" scope="page" class="com.movie_version.model.MovVerService" />
 
 
 <html>

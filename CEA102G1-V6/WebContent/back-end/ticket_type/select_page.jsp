@@ -51,9 +51,9 @@
   
 
 
-  <jsp:useBean id="ticket_typeSvc" scope="page" class="com.ticket_type.model.Ticket_typeService" />    
-  <jsp:useBean id="identitySvc" scope="page" class="com.identity.model.IdentityService" />
-  <jsp:useBean id="movie_versionSvc" scope="page" class="com.movie_version.model.Movie_versionService" />  
+  <jsp:useBean id="ticket_typeSvc" scope="page" class="com.ticket_type.model.TicTypService" />    
+  <jsp:useBean id="identitySvc" scope="page" class="com.identity.model.IdeService" />
+  <jsp:useBean id="movie_versionSvc" scope="page" class="com.movie_version.model.MovVerService" />  
   <li>
      <FORM METHOD="post" ACTION="<%=request.getContextPath()%>/movie_version/movie_version.do" >
        <b><font color=orange>選擇放映種類:</font></b>

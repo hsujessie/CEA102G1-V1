@@ -4,7 +4,7 @@
 <%@ page import="com.theater.model.*"%>
 <%@ page import="com.ticket_type.model.*"%>
 
-<jsp:useBean id="movie_versionSvc" scope="page" class="com.movie_version.model.Movie_versionService" />
+<jsp:useBean id="movie_versionSvc" scope="page" class="com.movie_version.model.MovVerService" />
 
 <html>
 <head><title>所有放映種類</title>

@@ -37,6 +37,7 @@
 							<jsp:useBean id="sesSvc" scope="page" class="com.session.model.SesService" />
 							<jsp:useBean id="movSvc" scope="page" class="com.movie.model.MovService" />
 
+
 							<div class="col-2">
 								<div id="grade" class="text-center">
 									<div id="grade-number"></div>
@@ -71,6 +72,7 @@
 									</tr>
 								</thead>
 								<tbody>
+
 
 								<jsp:useBean id="theSvc" scope="page" class="com.theater.model.TheaterService" />
 								<jsp:useBean id="ticTypSvc" scope="page" class="com.ticket_type.model.Ticket_typeService" />

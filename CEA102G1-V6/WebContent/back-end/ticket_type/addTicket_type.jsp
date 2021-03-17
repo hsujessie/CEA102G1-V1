@@ -3,7 +3,7 @@
 <%@ page import="com.ticket_type.model.*"%>
 
 <%
-  Ticket_typeVO ticket_typeVO = (Ticket_typeVO) request.getAttribute("ticket_typeVO");
+	TicTypVO ticket_typeVO = (TicTypVO) request.getAttribute("ticket_typeVO");
 %>
 
 <html>
@@ -68,7 +68,7 @@
 <FORM METHOD="post" ACTION="<%=request.getContextPath()%>/ticket_type/ticket_type.do" name="form1">
 <table>
 	<tr>
-	<jsp:useBean id="movie_versionSvc" scope="page" class="com.movie_version.model.Movie_versionService" />
+	<jsp:useBean id="movie_versionSvc" scope="page" class="com.movie_version.model.MovVerService" />
 		<td>放映種類:<font color=red><b>*</b></font></td>
 		<td><select size="1" name="movver_no">
 			<c:forEach var="movie_versionVO" items="${movie_versionSvc.all}">
@@ -77,7 +77,7 @@
 		</select></td>
 	</tr>
 	<tr>
-	<jsp:useBean id="identitySvc" scope="page" class="com.identity.model.IdentityService" />
+	<jsp:useBean id="identitySvc" scope="page" class="com.identity.model.IdeService" />
 		<td>身分種類:<font color=red><b>*</b></font></td>
 		<td><select size="1" name="ide_no">
 			<c:forEach var="identityVO" items="${identitySvc.all}">

@@ -37,6 +37,7 @@ div>p>img {
 </style>
 </head>
 <body>
+
 	<div class="wrapper">
 		<!-- Nav Bar Start -->
 		<c:set value="${pageContext.request.requestURI}" var="urlRecog"></c:set>
@@ -47,6 +48,7 @@ div>p>img {
 		<!-- Page Header Start -->
 		<!-- 看自己需不需要標題 -->
 		<!-- Page Header End -->
+
 
 
 		<!-- PUT HERE Start -->

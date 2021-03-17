@@ -149,7 +149,7 @@
 <!-- 28 -->
   <servlet>
     <servlet-name>TheaterServlet</servlet-name>
-    <servlet-class>com.theater.controller.TheaterServlet</servlet-class>
+    <servlet-class>com.theater.controller.TheServlet</servlet-class>
   </servlet>
   <servlet-mapping>
     <servlet-name>TheaterServlet</servlet-name>
@@ -157,7 +157,7 @@
   </servlet-mapping>
   <servlet>
     <servlet-name>Movie_versionServlet</servlet-name>
-    <servlet-class>com.movie_version.controller.Movie_verionServlet</servlet-class>
+    <servlet-class>com.movie_version.controller.MovVerServlet</servlet-class>
   </servlet>
   <servlet-mapping>
     <servlet-name>Movie_versionServlet</servlet-name>
@@ -165,7 +165,7 @@
   </servlet-mapping>
   <servlet>
     <servlet-name>IdentityServlet</servlet-name>
-    <servlet-class>com.identity.controller.IdentityServlet</servlet-class>
+    <servlet-class>com.identity.controller.IdeServlet</servlet-class>
   </servlet>
   <servlet-mapping>
     <servlet-name>IdentityServlet</servlet-name>
@@ -173,7 +173,7 @@
   </servlet-mapping>
   <servlet>
     <servlet-name>Ticket_typeServlet</servlet-name>
-    <servlet-class>com.ticket_type.controller.Ticket_typeServlet</servlet-class>
+    <servlet-class>com.ticket_type.controller.TicTypServlet</servlet-class>
   </servlet>
   <servlet-mapping>
     <servlet-name>Ticket_typeServlet</servlet-name>
