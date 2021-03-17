@@ -7,7 +7,6 @@
 
 <%-- <jsp:useBean id="ListArt_ByCompositeQuery" scope="request" type="java.util.List<ArtVO>"/> --%>
 <jsp:useBean id="artSvc" scope="page" class="com.art.model.ArtService"/>
-<jsp:useBean id="memSvc" class="com.mem.model.MemDAO"/>
 
 <!DOCTYPE html>
 
