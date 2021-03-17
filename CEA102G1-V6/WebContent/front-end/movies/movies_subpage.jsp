@@ -110,6 +110,18 @@
 	    outline: none;
 	    text-decoration: none;
 	}
+	
+	/* -- 點我寫短評 -- */
+	.writeComment{
+		border: 3px solid #aa9166;
+    	box-sizing: border-box;
+    	padding: 1% 0 1% 4%;
+    	font-size: 16px;
+	}
+	.writeComment:hover{
+		box-shadow: 5px 5px 5px #121518;
+		transition: 1s ease-in-out;
+	}
 </style>
 </head>
 <body>
@@ -152,28 +164,33 @@
                     
 					<!-- 電影--未上映：顯示，已上映：不顯示 -->
                     <div class="row">
-                        <div class="col-lg-1 col-md-1">
+                        <div class="col-lg-1 col-md-3">
                             <p style="color:#aa9166;">期待度</p>
                         </div>
-                        <div class="col-lg-11 col-md-11">                     
+                        <div class="col-lg-11 col-md-9">                     
                             <form method="post" action="<%=request.getContextPath()%>/expectation/exp.do">                                                       
 	                            <label><input type="radio" name="expRating" value="1"><span class="ml">想看</span><i class="far fa-smile ml" style="color:#aa9166;"></i></label>&emsp;&emsp;
 	                            <label><input type="radio" name="expRating" value="0"><span class="ml">不想看</span><i class="far fa-meh ml" style="color:#aa9166;"></i></label>
 
   								<input type="hidden" name="movNo" value="${movVO.movno}" />
-  								<input type="hidden" name="memNo" value="1" /> <!-- 會員編號 外來鍵要配合db -->
-  								<%-- <input type="hidden" name="memNo" value="${memVO.memno}" />  --%>
+  								<input type="hidden" name="memNo" value="${MemberVO.memNo}" />
 								<input type="hidden" name="action" value="insert">
-                            	<input class="combtn" type="submit" value="送出" style="margin-left: 5%; padding: 2px 10px;">
+								
+	                    		<c:if test="${not empty MemberVO.memAccount}">
+                            		<input class="combtn" type="submit" value="送出" style="margin-left: 5%; padding: 2px 10px;">
+	                            </c:if>
+	                    		<c:if test="${empty MemberVO.memAccount}">
+	                    			<a class="combtn" style="margin-left: 5%; padding: 5px 10px;" href="<%=request.getContextPath()%>/front-end/Login.jsp">送出</a>
+	                            </c:if>
                             </form>
                         </div>
                     </div>
                     
                      <div class="row" style="margin-top: 5px;">
-                        <div class="col-lg-1 col-md-1">
+                        <div class="col-lg-1 col-md-3">
                             <p style="color:#aa9166;">滿意度</p>
                         </div>
-                        <div class="col-lg-11 col-md-11">                   
+                        <div class="col-lg-11 col-md-9">                   
                             <form method="post" action="<%=request.getContextPath()%>/satisfaction/sat.do">        	
                             	<label><input type="checkbox" name="satRating" value="1" style="display:none;" /><i class="fa fa-star" aria-hidden="true"></i></label>
                             	<label><input type="checkbox" name="satRating" value="1" style="display:none;" /><i class="fa fa-star" aria-hidden="true"></i></label>
@@ -182,10 +199,15 @@
                             	<label><input type="checkbox" name="satRating" value="1" style="display:none;" /><i class="fa fa-star" aria-hidden="true"></i></label>
                   
   								<input type="hidden" name="movNo" value="${movVO.movno}" />
-  								<input type="hidden" name="memNo" value="1" /> <!-- 會員編號 外來鍵要配合db -->
-  								<%-- <input type="hidden" name="memNo" value="${memVO.memno}" />  --%>
+  								<input type="hidden" name="memNo" value="${MemberVO.memNo}" />
 								<input type="hidden" name="action" value="insert">
-                            	<input class="combtn" type="submit" value="送出" style="margin-left: 13.4%; padding: 2px 10px;">
+								
+	                    		<c:if test="${not empty MemberVO.memAccount}">
+	                            	<input class="combtn" type="submit" value="送出" style="margin-left: 13.4%; padding: 2px 10px;">
+	                            </c:if>
+	                    		<c:if test="${empty MemberVO.memAccount}">
+	                    			<a class="combtn" style="margin-left: 13.4%; padding: 5px 10px;" href="<%=request.getContextPath()%>/front-end/Login.jsp">送出</a>
+	                            </c:if>
                             </form>
                         </div>
                     </div>
@@ -242,8 +264,8 @@
                 </div>
             </div>
             <!-- Reviews End -->
-
-
+            
+	
             <!-- Comment Start -->
             <div class="movinfo">
                 <div class="container">
@@ -255,19 +277,26 @@
                         </div>
                     </div>
 
-                    <div class="row align-items-center">
+                    <div class="row align-items-center" ${not empty MemberVO.memAccount ? '':'style="display:none;"'}>
                         <div class="col-lg-12 col-md-12">
                             <form method="post" action="<%=request.getContextPath()%>/comment/com.do">
                                 <textarea name="comContent" cols="30" rows="5" style="width: 100%; margin: 20px 0 5px 0;" placeholder="Write something here..."></textarea>                          
                                 
   								<input type="hidden" name="movNo" value="${movVO.movno}" />
-  								<input type="hidden" name="memNo" value="1" /> <!-- 會員編號 外來鍵要配合db -->
-  								<%-- <input type="hidden" name="memNo" value="${memVO.memno}" />  --%>
+  								<input type="hidden" name="memNo" value="${MemberVO.memNo}" />
   								
 								<input type="hidden" name="action" value="insert">
                             	<input class="combtn" type="submit" value="送出">
                             </form>
                         </div>
+                    </div>
+
+                    <div class="row align-items-center" ${not empty MemberVO.memAccount ? 'style="display:none;"':''}>
+                        <div class="col-lg-45 col-md-5"></div>
+                        <div class="col-lg-2 col-md-2 writeComment">
+                            <a href="<%=request.getContextPath()%>/front-end/Login.jsp">點我寫短評 <i class="fas fa-pencil-alt" style="color:#aa9166;"></i></a>
+                        </div>
+                        <div class="col-lg-5 col-md-5"></div>
                     </div>
                 </div>
             </div>
