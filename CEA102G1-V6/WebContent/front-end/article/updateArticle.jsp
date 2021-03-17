@@ -6,6 +6,12 @@
 <%
 	ArtVO artVO = (ArtVO)request.getAttribute("artVO");
 	System.out.println("getAttribute(artVO):"+artVO);
+
+	if(request.getAttribute("artManageUpdate") != null){
+		String artManageUpdate = (String)request.getAttribute("artManageUpdate");
+		session.setAttribute("artManageUpdate", artManageUpdate);
+		System.out.println("set artManageUpdate ok");
+	}
 %>    
 <!DOCTYPE html>
 <html>
@@ -165,13 +171,7 @@
 		    		},
 		    		error: function(){alert("AJAX-newArt-select發生錯誤囉!")}
 		    	});
-		    
-
 		});
-// 		function clearArtMovTypeSelect(){
-// 			$('#artMovTypeSelect').empty();
-// 			$('#artMovTypeSelect').append("<option value=''>請選擇</option>");
-// 		};
 	</script>
 
     <script>

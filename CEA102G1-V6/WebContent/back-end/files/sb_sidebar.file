@@ -7,8 +7,9 @@
 <c:set var="session" value="${pageContext.request.contextPath}/back-end/session/listAllSession.jsp"/>
 <c:set var="movie" value="${pageContext.request.contextPath}/back-end/movie/listAllMovie.jsp"/>       
 <c:set var="client" value=""/>  
+
 <c:set var="movieComreport" value="${pageContext.request.contextPath}/back-end/comment_report/listAllComReport.jsp"/>
-<c:set var="articleComreport" value="${pageContext.request.contextPath}/back-end/articleReport.jsp"/>                                  
+<c:set var="articleComreport" value="${pageContext.request.contextPath}/back-end/article/articleReport.jsp"/>                                  
 <c:set var="theater" value=""/> 
 <c:set var="food" value="${pageContext.request.contextPath}/back-end/foo/fooSelectPage.jsp"/>
 <c:set var="board" value=""/> 
@@ -111,7 +112,7 @@
             <div class="collapse" id="report" aria-labelledby="headingOne" data-parent="#sidenavAccordion">
                 <nav class="sb-sidenav-menu-nested nav">
                     <a class="nav-link <c:if test="${urlRecog == movieComreport}">active</c:if>" href="${movieComreport}">電影短評檢舉</a>
-                    <a class="nav-link" href="">文章回覆檢舉</a>
+                    <a class="nav-link <c:if test="${urlRecog == articleComreport}">active</c:if>" href="${articleComreport}">文章回覆檢舉</a>
                 </nav>
             </div>
             <a class="nav-link collapsed" href="#">

@@ -19,6 +19,8 @@ public class jdbcUtil_CompositeQuery_Art {
 			aCondition = "MEM_NAME like "+"'%"+ value +"%'";
 		}else if ("artMovType".equals(columnName)) {
 			aCondition = "MOV_TYPE = "+"'"+ value +"'";
+		}else if ("memNo".equals(columnName)) {
+			aCondition = "MEMBER.MEM_NO = "+"'"+ value +"'";
 		}
 		
 		return aCondition + " ";

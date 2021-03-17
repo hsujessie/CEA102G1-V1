@@ -32,8 +32,10 @@ package com.member.model;
 				"UPDATE member set mem_Name=?, mem_Account=? mem_Password=? mem_Mail=? mem_Wallet=? mem_Ststus=? mem_Img=? where mem_No = ?";
 		private static final String GET_ALL_STMT = 
 				"SELECT  mem_No, mem_Name, mem_Account, mem_Password, mem_Mail, mem_Wallet, mem_Ststus, mem_Img, FROM member";
+
 		private static final String GET_ONE_STMT = 
 				"SELECT  mem_No, mem_Name, mem_Account, mem_Password, mem_Mail, mem_Wallet, mem_Status, mem_Img FROM member where mem_No = ?";
+
 		private static final String GET_ONE_LOGIN = 
 				"SELECT mem_no,mem_name,mem_account,mem_password,mem_mail,mem_wallet,mem_status,mem_img FROM member where mem_Account = ? and mem_Password = ?";
 		

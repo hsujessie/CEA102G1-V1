@@ -328,10 +328,13 @@ public class MemberServlet extends HttpServlet {
 								req.setAttribute("MemberVO", memberVO); // 資料庫取出的memVO物件,存入req
 								HttpSession session = req.getSession();
 								session.setAttribute("MemberVO", memberVO); // 資料庫取出的memVO物件,存入session
+								
+
 								String url = "/front-end/Member_Login/login_success.jsp";
 								RequestDispatcher successView = req.getRequestDispatcher(url);// 成功轉交 login_success.jsp
-								successView.forward(req, res);
-				
+								successView.forward(req, res);									
+								
+								
 							/*************************** 其他可能的錯誤處理 *************************************/
 							} catch (Exception e) {
 								errorMsgs.add("無法取得資料:" + e.getMessage());

@@ -114,7 +114,7 @@ public class ArtRptDAO implements ArtRptDAO_interface{
 				con = ds.getConnection();
 				pstmt = con.prepareStatement(FINDBYPK_STMT);
 				pstmt.setInt(1, artRptNo);
-				pstmt.executeQuery();
+				rs = pstmt.executeQuery();
 				
 				while (rs.next()) {
 					artRptVO = new ArtRptVO();

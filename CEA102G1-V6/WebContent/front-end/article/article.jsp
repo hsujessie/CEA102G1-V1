@@ -1,25 +1,28 @@
+<%@page import="com.member.model.MemberVO"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt"%>
 <%@ page import="java.util.*" %>
 <%@ page import="com.art.model.*" %>
 <jsp:useBean id="artSvc" scope="page" class="com.art.model.ArtService" />
-<jsp:useBean id="memSvc" class="com.mem.model.MemDAO" />
 
 <!DOCTYPE html>
 <%		
-// 		session.getAttribute("memVO");
 
-		String memNo = "1"; //假設會員1登入
-		session.setAttribute("memNo", memNo);
-		session.getAttribute("memNo");
+		if(session.getAttribute("MemberVO") != null){
+			MemberVO memberVO = (MemberVO)session.getAttribute("MemberVO");
+			session.setAttribute("memNo", memberVO.getMemNo());
+			session.getAttribute("memNo");			
+		}
 
 %>
 <html>
 
 <head>
     <meta charset="UTF-8">
+    <%@ include file="/front-end/files/frontend_importCss.file"%>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+<!--     datetimepicker -->
     <link rel="stylesheet" type="text/css"
         href="<%=request.getContextPath()%>/resource/datetimepicker/jquery.datetimepicker.css" />
     <script src="<%=request.getContextPath()%>/resource/datetimepicker/jquery.js"></script>
@@ -33,6 +36,10 @@
     <!-- toastr v2.1.4 -->
     <link href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/2.1.4/toastr.min.css" rel="stylesheet" />
     <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/2.1.4/toastr.min.js"></script>
+<!--     fronend_importJs -->
+	<script src="<%=request.getContextPath()%>/resource/easing/easing.min.js"></script>
+	<script src="<%=request.getContextPath()%>/resource/owlcarousel/owl.carousel.min.js"></script>
+	<script src="<%=request.getContextPath()%>/resource/js/frontend.js"></script>
 
     <script>
         toastr.options = {
@@ -79,17 +86,20 @@
         /*      #artListCenter{   */
         /*        	border: 1px solid green;   */
         /*       }   */
+
         #artListLeft {
             vertical-align: top;
             position: sticky;
-            top: 0;
-            border: 1px solid blud;
+            top: 90px;
             overflow-y: auto;
             height: 100vh;
 
         }
 
         @media (max-width: 767px) {
+        	#articleTop{
+ 				position: sticky;      	
+        	}
             #artListLeft {
                 height: auto;
             }
@@ -126,17 +136,19 @@
 
     <script>
         $(document).ready(function () {
-            debugger;
             //列出側邊欄電影類型
             showArtMoveType();
-
-            debugger;
+            
+          	//列出Top3點擊文章列表
+          	debugger;
+          	ListArtTopThreeQuery();
+            
             //列出全部文章列表
             ListArtQuery();
 
             //單篇文章燈箱
             debugger;
-            $('#artListCenter').on('click', '.artContent', function (event) {
+            $('#artListCenter ,#Top3Article').on('click', '.artContent', function (event) {
                 console.log("artContent clicked:" + $(event.currentTarget).html());
                 console.log("artNo:" + $(event.currentTarget).attr('data-value'));
                 // 		debugger;
@@ -159,12 +171,13 @@
                             //取include ArticleContent.jsp後的id
                             console.log(item.artTitle);
                             clearOneArticle();
+                            clearArtReplyno();
                             $('#myModalLabel').attr('data-value', item.artNo);
                             $('#myModalLabel').append(item.artTitle);
-                            $('#oneArtContent').append('<p>' + item.artContent +
-                                '</p>');
+                            $('#oneArtContent').append('<p>' + item.artContent +'</p>');
                             $('#artFav_header_like').attr('data-value', item.artNo);
                             $('#artRptButton').attr('data-value', item.artNo);
+                            $('#artReplyno').append('回應數量 '+item.artReplyno);
                             console.log("item.memNo:" + item.memNo);
 
                             //判斷是否為會員本人發表的文章
@@ -176,8 +189,11 @@
                                 $('#memUpdateArt').hide();
                             }
 
-                            //判斷是否已收藏
-                            isArtFav();
+        					//判斷是否已收藏
+        					debugger;
+        					if('${memNo}' != ""){
+        						isArtFav();
+        					}
 
                             //呼叫列全部回文
                             debugger;
@@ -202,7 +218,7 @@
                         //         	debugger;
                         findArtByCompositeQuery(e);
                     }
-                });
+            });
 
             //依電影類型查詢
             $('#artMovTypeList').on('click', 'li', function (e) {
@@ -214,8 +230,11 @@
                 clearArtCompositeQuery();
                 $(this).addClass('selectedMovType');
                 findArtByCompositeQuery(e);
+                
+              	//呼叫電影類型熱門文章
+                movTypeHotArticle($(this).data('value'));
             });
-
+            
             //時間月曆
             $.datetimepicker.setLocale('zh');
             $('#artTimeForByCompositeQuery').datetimepicker({
@@ -224,9 +243,6 @@
                 format: 'Y-m-d', //format:'Y-m-d H:i:s',
                 value: '', // value:   new Date(),
             });
-
-            //增加button class
-            $('button').addClass('btn btn-outline-secondary');
 
             //修改成功訊息
             if ('${updateSuccess}' == 'updateSuccess') {
@@ -300,7 +316,7 @@
                         $('#artListCenter').append(
                             '<div id="artAuthor" style="display: inline-block"><div style="display: inline-block">作者：</div> <div style="display: inline-block">' +
                             item.memName + '</div></div>' +
-                            '<div id="artAuthor" style="display: inline-block"><div style="display: inline-block">電影類型：</div> <div style="display: inline-block">' +
+                            '<div id="movType" style="display: inline-block"><div style="display: inline-block">電影類型：</div> <div style="display: inline-block">' +
                             item.artMovType + '</div></div>' +
                             '<div id="artTitle"><div style="font-size: 1.2rem;"><b>' + item
                             .artTitle + '</b></div></div>' +
@@ -351,6 +367,36 @@
             console.log("addCompositeQueryData:" + addArtDataAttr);
             return addArtDataAttr;
         };
+        
+        //複合查詢後熱門文章列表
+        function movTypeHotArticle(data){
+        	debugger;
+        	$.ajax({
+        		type: 'POST',
+        		url: '<%=request.getContextPath()%>/art/art.do',
+        		data: {'action':'movTypeHotArticle', 'movType':data},
+        		dataType: 'json',
+        		success: function (artVO){
+        			debugger;
+        			//清空熱門文章列表
+        			clearListArtTopThreeQuery();
+        			
+        			//加入文章內容
+        			$(artVO).each(function(i, item){
+        				$('#Top3Article').append(
+        						'<div id="artAuthor" style="display: inline-block"><div style="display: inline-block">作者：</div> <div style="display: inline-block">'+item.memName+'</div></div>'
+        						+'<div id="movType" style="display: inline-block"><div style="display: inline-block">電影類型：</div> <div style="display: inline-block">'+item.artMovType+'</div></div>'
+        						+'<div id="topThreeArticle" style="display: inline-block; color: #FF7575;"><i class="fas fa-crown" style="color: #bb9d52; margin: 0px 5px;"></i><b>HOT</b></div>'
+        						+'<div id="artTitle"><div style="font-size: 1.2rem;"><b>'+item.artTitle+'</b></div></div>'
+        						+'<div id="artTime"><div style="display: inline-block">修改時間：</div> <div style="display: inline-block">'+moment(item.artTime).locale('zh_TW').format('llll')+'</div></div>'
+        						+'<div><div class="artContent" data-value="'+item.artNo+'">'+item.artContent+'</div></div><hr>')			
+        						;
+        				$('#Top3Article').addClass('HotArticleDiv');
+        				});
+        		},
+        		error: function(){console.log("AJAX-ListArtTopThreeQuery發生錯誤囉!")}
+        	});
+        };
 
         //清空文章列表
         function clearArtList() {
@@ -368,129 +414,152 @@
             $('#artTimeForByCompositeQuery').val("");
             $('#artTitleByCompositeQuery').val("");
         };
+        
+        //清空熱門文章列表
+        function clearListArtTopThreeQuery(){
+        	$('#Top3Article').empty();
+        	$('#Top3Article').removeClass('HotArticleDiv');
+        }
     </script>
     <title>--SEENEMA ARTICLE--</title>
 </head>
 
 <body>
-    <div class="container">
-    
-        <div class="row">
-            <div class="col-12 col-md-3">
-                <!-- 左區塊開始 -->
-                <div id="artListLeft">
-                    <!-- 錯誤列表 -->
-                    <c:if test="${not empty errorMsgs}">
-                        <font style="color:red"></font>
-                        <ul>
-                            <c:forEach var="message" items="${errorMsgs}">
-                                <li style="color:red">${message}</li>
-                            </c:forEach>
-                        </ul>
-                    </c:if>
-                    <nav class="navbar navbar-expand-lg navbar-light" style="padding: 5px;">
-                        <button class="navbar-toggler" type="button" data-toggle="collapse"
-                            data-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false"
-                            aria-label="Toggle navigation">
-                            <span class="navbar-toggler-icon"></span>
-                        </button>
-                        <div class="collapse navbar-collapse" id="navbarNavDropdown">
-                            <ul class="nav flex-column">
-                                <div id="artListLeftTop">
-                                    <li>
-                                        <!-- 新增文章 -->
-                                        <form method="post" action="<%=request.getContextPath()%>/art/art.do">
-                                            <input type="hidden" name="action" value="newArt">
-                                            <label>
-                                                <div id="newArtDiv">
-                                                    <input type="image" id="newArt"
-                                                        src="<%=request.getContextPath()%>/resource/images/newArtIcon.png"
-                                                        alt="發文" title="發文">
-                                                </div>
-                                            </label>
-                                        </form>
-                                    </li>
-                                    <li>
-                                        <div class="input-group mb-3">
-                                            <input type="text" id="artTitleByCompositeQuery" class="form-control"
-                                                placeholder="搜尋標題" aria-label="Recipient's username"
-                                                aria-describedby="findArtByTitleButton">
-                                            <div class="input-group-append">
-                                                <button class="btn btn-outline-secondary" type="button"
-                                                    id="findArtByTitleButton">查詢</button>
-                                                <!--                                               <input type="hidden" name="action" value="find_ByTitle"> -->
-                                            </div>
-                                        </div>
-                                    </li>
-                                    <li>
-                                        <hr>
-                                    </li>
-                                    <li class="nav-item active ">
-                                        <a class="nav-link"
-                                            href="<%=request.getContextPath()%>/front-end/article/article.jsp">討論區首頁<span
-                                                class="sr-only">(current)</span></a>
-                                    </li>
-                                    <li>
-                                        <hr>
-                                    </li>                                    
-                                </div>
-                                <div id="artListLeftDown">
-                                    <li class="nav-item" style="font-size: 0.8em;">
-                                        	電影類型
-                                    </li>
-                                    <div id="artMovTypeList">
-                                        <li class="nav-item">
-                                            <a class="nav-link" href="#">尚無分類</a>
-                                        </li>
-                                    </div>
-                                    <li>
-                                        <hr>
-                                    </li>
-                                    <li>
-                                        <div id="accordion">
-                                            <div class="card">
-                                                <div class="card-header">
-                                                    <a class="card-link" data-toggle="collapse" href="#collapseOne">
-                                                        	進階查詢
-                                                    </a>
-                                                </div>
-                                                <div id="collapseOne" class="collapse" data-parent="#accordion">
-                                                    <div class="card-body">
-                                                        <table>
-                                                            <tr>
-                                                                <td><input type="text" id="artAuthorForByCompositeQuery"
-                                                                        name="artAuthor" placeholder="搜尋作者"></td>
-                                                            </tr>
-                                                            <tr>
-                                                                <td><input type="text" id="artTimeForByCompositeQuery"
-                                                                        name="artTime" placeholder="搜尋發表日期"></td>
-                                                            </tr>
-                                                            <tr>
-                                                                <td><input id="findArtByCompositeQueryButton"
-                                                                        class="btn btn-outline-secondary" type="button"
-                                                                        value="查詢"></td>
-                                                            </tr>
-                                                        </table>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </li>
-                                </div>
-                            </ul>
-                        </div>
-                    </nav>
-                </div>
-                <!-- 左區塊結束 -->
-            </div>
-            <div class="col-12 col-md-9">
-                <!-- 中間區塊開始 -->
-                    <!-- ====================include ListArtQuery.jsp==================== -->
-                    <jsp:include page="/front-end/article/ListArtQuery.jsp"></jsp:include>
-                    <!-- ====================include ListArtQuery.jsp==================== -->
-                <!-- 中間區塊結束 -->
-            </div>
-        </div>
-    </div>
+	<div class="wrapper">
+		<!-- Nav Bar Start -->
+		<c:set value="${pageContext.request.requestURI}" var="urlRecog"></c:set>
+	    <%@ include file="/front-end/files/frontend_navbar.file"%>
+	    <!-- Nav Bar End -->
 
+
+	    <div id="articleTop" class="container">
+	    
+	        <div class="row">
+	            <div class="col-12 col-md-3">
+	                <!-- 左區塊開始 -->
+	                <div id="artListLeft">
+	                    <!-- 錯誤列表 -->
+	                    <c:if test="${not empty errorMsgs}">
+	                        <font style="color:red"></font>
+	                        <ul>
+	                            <c:forEach var="message" items="${errorMsgs}">
+	                                <li style="color:red">${message}</li>
+	                            </c:forEach>
+	                        </ul>
+	                    </c:if>
+	                    <nav class="navbar navbar-expand-lg navbar-light" style="padding: 5px;">
+	                        <button class="navbar-toggler" type="button" data-toggle="collapse"
+	                            data-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false"
+	                            aria-label="Toggle navigation">
+	                            <span class="navbar-toggler-icon"></span>
+	                        </button>
+	                        <div class="collapse navbar-collapse" id="navbarNavDropdown">
+	                            <ul class="nav flex-column">
+	                                <div id="artListLeftTop">
+	                                    <li>
+	                                        <!-- 新增文章 -->
+	                                        <form method="post" action="<%=request.getContextPath()%>/art/art.do">
+	                                            <input type="hidden" name="action" value="newArt">
+	                                            <label>
+	                                                <div id="newArtDiv">
+	                                                    <input type="image" id="newArt"
+	                                                        src="<%=request.getContextPath()%>/resource/images/newArtIcon.png"
+	                                                        alt="發文" title="發文">
+	                                                </div>
+	                                            </label>
+	                                        </form>
+	                                    </li>
+	                                    <li>
+	                                        <div class="input-group mb-3">
+	                                            <input type="text" id="artTitleByCompositeQuery" class="form-control"
+	                                                placeholder="搜尋標題" aria-label="Recipient's username"
+	                                                aria-describedby="findArtByTitleButton">
+	                                            <div class="input-group-append">
+	                                                <button class="btn btn-outline-secondary" type="button"
+	                                                    id="findArtByTitleButton">查詢</button>
+	                                            </div>
+	                                        </div>
+	                                    </li>
+	                                    <li>
+	                                        <hr>
+	                                    </li>
+	                                    <li class="nav-item active ">
+	                                        <a class="nav-link"
+	                                            href="<%=request.getContextPath()%>/front-end/article/article.jsp">討論區首頁<span
+	                                                class="sr-only">(current)</span></a>
+	                                    </li>
+	                                    <li>
+	                                        <hr>
+	                                    </li>                                    
+	                                </div>
+	                                <div id="artListLeftDown">
+	                                    <li class="nav-item" style="font-size: 0.8em;">
+	                                        	電影類型
+	                                    </li>
+	                                    <div id="artMovTypeList">
+	                                        <li class="nav-item">
+	                                            <a class="nav-link" href="#">尚無分類</a>
+	                                        </li>
+	                                    </div>
+	                                    <li>
+	                                        <hr>
+	                                    </li>
+	                                    <li>
+	                                        <div id="accordion">
+	                                            <div class="card">
+	                                                <div class="card-header">
+	                                                    <a class="card-link" data-toggle="collapse" href="#collapseOne">
+	                                                        	進階查詢
+	                                                    </a>
+	                                                </div>
+	                                                <div id="collapseOne" class="collapse" data-parent="#accordion">
+	                                                    <div class="card-body">
+	                                                        <table>
+	                                                            <tr>
+	                                                                <td><input type="text" id="artAuthorForByCompositeQuery"
+	                                                                        name="artAuthor" placeholder="搜尋作者"></td>
+	                                                            </tr>
+	                                                            <tr>
+	                                                                <td><input type="text" id="artTimeForByCompositeQuery"
+	                                                                        name="artTime" placeholder="搜尋發表日期"></td>
+	                                                            </tr>
+	                                                            <tr>
+	                                                                <td><input id="findArtByCompositeQueryButton"
+	                                                                        class="btn btn-outline-secondary" type="button"
+	                                                                        value="查詢"></td>
+	                                                            </tr>
+	                                                        </table>
+	                                                    </div>
+	                                                </div>
+	                                            </div>
+	                                        </div>
+	                                    </li>
+	                                </div>
+	                            </ul>
+	                        </div>
+	                    </nav>
+	                </div>
+	                <!-- 左區塊結束 -->
+	            </div>
+	            <div class="col-12 col-md-9">
+	                <!-- 中間區塊開始 -->
+	                    <!-- ====================include ListArtQuery.jsp==================== -->
+	                    <jsp:include page="/front-end/article/ListArtQuery.jsp"></jsp:include>
+	                    <!-- ====================include ListArtQuery.jsp==================== -->
+	                <!-- 中間區塊結束 -->
+	            </div>
+	        </div>
+	    </div>
+	    
+	    <!-- Book Tickets Start -->
+	    <%@ include file="/front-end/files/frontend_bookTicketsTamplate.file"%>
+	    <!-- Book Tickets End -->
+	
+	    <!-- Footer Start -->
+	    <%@ include file="/front-end/files/frontend_footer.file"%>
+	    <!-- Footer End -->
+	</div>
+	<script src="<%=request.getContextPath()%>/resource/easing/easing.min.js"></script>
+	<script src="<%=request.getContextPath()%>/resource/owlcarousel/owl.carousel.min.js"></script>
+	<script src="<%=request.getContextPath()%>/resource/js/frontend.js"></script>
 </html>

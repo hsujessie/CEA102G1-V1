@@ -3,6 +3,7 @@ package com.art_rep.model;
 import java.util.List;
 import java.util.Map;
 
+
 public class ArtRepService {
 	
 	private ArtRepDAO_interface dao;
@@ -29,6 +30,16 @@ public class ArtRepService {
 		artRepVO.setArtRepStatus(artRepStatus);
 		artRepVO.setArtRepNo(artRepNo);
 		dao.update(artRepVO);
+		
+		return artRepVO;
+	}
+	
+	public ArtRepVO updateStatus(Integer artRepNo, Integer artRepStatus) {
+		ArtRepVO artRepVO = new ArtRepVO();
+		artRepVO.setArtRepNo(artRepNo);
+		artRepVO.setArtRepStatus(artRepStatus);
+		dao.updateStatus(artRepVO);
+		artRepVO = dao.findByPrimaryKey(artRepNo);
 		
 		return artRepVO;
 	}

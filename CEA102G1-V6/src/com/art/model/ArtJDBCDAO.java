@@ -396,4 +396,10 @@ public class ArtJDBCDAO implements ArtDAO_interface{
 		return null;
 	}
 
+	@Override
+	public Integer updateArtReplyno(ArtVO artVO) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
 }
