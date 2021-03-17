@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.List;
 
+import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -14,9 +15,11 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import com.art.model.ArtService;
 import com.art_rep.model.ArtRepService;
 import com.art_rep.model.ArtRepVO;
-import com.mem.model.MemDAO;
+import com.art_rep_rpt.model.ArtRepRptService;
+import com.member.model.MemberService;
 
 public class ArtRepServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
@@ -34,10 +37,26 @@ public class ArtRepServlet extends HttpServlet {
 		String action = request.getParameter("action");
 		System.out.println("action---"+action);
 		
+		
+
+		
 		//新增回覆文章
 		if("addArtRep".equals(action)) {
+			//若會員尚未登入
+			if(request.getSession().getAttribute("memNo") == null) {
+				
+				/*====================轉送至登入===================*/
+				HttpSession session = request.getSession();
+				session.setAttribute("location", request.getRequestURI());
+				String url = "/front-end/Member_Login/login.jsp";
+				RequestDispatcher newArticleLogin = request.getRequestDispatcher(url);			
+				newArticleLogin.forward(request, response);
+				return;
+			}
+			
 			JSONArray array = new JSONArray();
 			HttpSession session = request.getSession();
+			ArtService artSvc = new ArtService();
 			
 			/*====================請求參數===================*/
 			Integer artNo = Integer.parseInt(request.getParameter("artNo"));
@@ -49,6 +68,20 @@ public class ArtRepServlet extends HttpServlet {
 			ArtRepService artRepSvc = new ArtRepService();
 			artRepSvc.insertArtRep(artNo, memNo, artRepContent);
 			System.out.println("addArtRep成功！");
+			Integer artReplyno = artSvc.getOneArt(artNo).getArtReplyno();
+			artReplyno++;
+			System.out.println("artReplyno:"+artReplyno);
+			artSvc.updateArtReplyno(artNo, artReplyno);
+			System.out.println("artReplyno更新成功");
+			
+			/*==============放入JSONObject==============*/
+			JSONObject obj = new JSONObject();
+			try {
+				obj.put("artReplyno", artReplyno);
+			} catch (JSONException e) {
+				e.printStackTrace();
+			}
+			array.put(obj);
 			
 			/*==============傳回=============*/
 			response.setContentType("text/plain");
@@ -60,25 +93,39 @@ public class ArtRepServlet extends HttpServlet {
 			
 		}
 		
+		//article.jsp呼叫，印出每篇文章的所有留言
 		if("listAllArtRepByArtNo".equals(action)){
 			JSONArray array = new JSONArray();
 			HttpSession session = request.getSession();
 			
 			ArtRepService artRepSvc = new ArtRepService();
-			MemDAO memDAO = new MemDAO();
+			MemberService memSvc = new MemberService();
 			List<ArtRepVO> list = artRepSvc.findByArtNo(Integer.parseInt(request.getParameter("artNo")));
 			
 			/*==============放入JSONObject==============*/
 			for(ArtRepVO artRepVO : list) {
 				JSONObject obj = new JSONObject();
-				try {
-					obj.put("artNo", artRepVO.getArtNo());
-					obj.put("memName", memDAO.findByPrimaryKey(artRepVO.getMemNo()).getMemName());
-					obj.put("artRepNo", artRepVO.getArtRepNo());
-					obj.put("artRepContent", artRepVO.getArtRepContent());
-					obj.put("artRepTime", artRepVO.getArtRepTime());
-				} catch (JSONException e) {
-					e.printStackTrace();
+				
+				if(artRepVO.getArtRepStatus() == 0) {
+					try {
+						obj.put("artNo", artRepVO.getArtNo());
+						obj.put("memName", memSvc.getOneMember(artRepVO.getMemNo()).getMemName());
+						obj.put("artRepNo", artRepVO.getArtRepNo());
+						obj.put("artRepContent", artRepVO.getArtRepContent());
+						obj.put("artRepTime", artRepVO.getArtRepTime());
+					} catch (JSONException e) {
+						e.printStackTrace();
+					}					
+				}else if (artRepVO.getArtRepStatus() == 1) {
+					try {
+						obj.put("artNo", artRepVO.getArtNo());
+						obj.put("memName", "回應已刪除");
+						obj.put("artRepNo", artRepVO.getArtRepNo());
+						obj.put("artRepContent", "已經刪除的內容就像下架的電影一樣，錯過是無法再相見的！");
+						obj.put("artRepTime", artRepVO.getArtRepTime());
+					} catch (JSONException e) {
+						e.printStackTrace();
+					}					
 				}
 				array.put(obj);
 			}

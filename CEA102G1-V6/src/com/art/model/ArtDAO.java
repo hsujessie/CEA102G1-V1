@@ -1,11 +1,9 @@
 package com.art.model;
 
-import java.io.*;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -38,9 +36,11 @@ public class ArtDAO implements ArtDAO_interface{
 			"UPDATE ARTICLE SET ART_TITLE=?, ART_CONTENT=?, MOV_TYPE=? WHERE ART_NO=?";
 	private static final String UPDATE_STATUS_STMT=
 			"UPDATE ARTICLE SET ART_STATUS=? WHERE ART_NO=?";
+	private static final String UPDATE_ARTREPLYNO_STMT=
+			"UPDATE ARTICLE SET ART_REPLYNO=? WHERE ART_NO=?";
 	private static final String DELETE_STMT="DELETE FROM ARTICLE WHERE ART_NO=?";
 	private static final String FINDBYPK_STMT="SELECT ART_NO, MEM_NO, ART_TITLE, ART_CONTENT, ART_REPLYNO, ART_TIME, ART_STATUS, MOV_TYPE FROM ARTICLE WHERE ART_NO=?";	
-	private static final String GETALL_STMT="SELECT ART_NO, MEM_NO, ART_TITLE, ART_CONTENT, ART_REPLYNO, ART_TIME, ART_STATUS, MOV_TYPE FROM ARTICLE ORDER BY ART_NO";
+	private static final String GETALL_STMT="SELECT ART_NO, MEM_NO, ART_TITLE, ART_CONTENT, ART_REPLYNO, ART_TIME, ART_STATUS, MOV_TYPE FROM ARTICLE WHERE ART_STATUS=0 ORDER BY ART_NO DESC";
 	private static final String GETALL_MOVETYPE_STMT=
 			"select CONCAT('MOV_TYPE', @s:=@s+1) movTypeIndex , aa.* from (select MOV_TYPE,min(ART_TIME) FROM Seenema.ARTICLE group by MOV_TYPE) aa, (SELECT @s:= 0) AS s";
 	
@@ -357,9 +357,9 @@ public class ArtDAO implements ArtDAO_interface{
 		
 		try {
 			con = ds.getConnection();
-			String compositeQuerySQL = "select * from article, MEMBER where ARTICLE.MEM_NO = MEMBER.MEM_NO " + 
+			String compositeQuerySQL = "select * from article, MEMBER where ARTICLE.MEM_NO = MEMBER.MEM_NO and ART_STATUS=0 " + 
 										jdbcUtil_CompositeQuery_Art.get_WhereCondition(map) +
-										"order by ART_NO ";
+										"order by ART_NO DESC";
 			pstmt = con.prepareStatement(compositeQuerySQL);
 			System.out.println("ArtDAO_compositeQuerySQL:" + compositeQuerySQL ); //印出最後的SQL
 			rs = pstmt.executeQuery();
@@ -493,6 +493,43 @@ public class ArtDAO implements ArtDAO_interface{
 		}		
 		return moveTypeList;		
 		
+	}
+
+	@Override
+	public Integer updateArtReplyno(ArtVO artVO) {
+		Connection con = null;
+		PreparedStatement pstmt = null;
+		
+		try {
+			con = ds.getConnection();
+			pstmt = con.prepareStatement(UPDATE_ARTREPLYNO_STMT);
+			
+			
+			pstmt.setInt(1, artVO.getArtReplyno());
+			pstmt.setInt(2, artVO.getArtNo());			
+			
+			pstmt.executeUpdate();	
+		} catch (SQLException se) {
+			throw new RuntimeException("A database error occured. "
+					+ se.getMessage());
+		} finally {
+			if(pstmt != null) {
+				try {
+					pstmt.close();
+				} catch (SQLException e) {
+					e.printStackTrace();
+				}				
+			}
+			
+			if(con != null) {
+				try {
+					con.close();
+				} catch (SQLException e) {
+					e.printStackTrace();
+				}
+			}
+		}
+		return artVO.getArtReplyno();
 	}
 
 }

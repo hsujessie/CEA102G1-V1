@@ -75,7 +75,7 @@
 		<td><%=fooVO.getFooName()%></td>
 		<td><%=fooCatVO.getFooCatName()%></td>
 		<td><%=fooVO.getFooIntro()%></td>
-		<td><img src="<%=request.getContextPath()%>/foo/reader.do?columnName=foo_img&tableName=food&fieldName=foo_no&fieldValue=${fooVO.fooNo}"></td>
+		<td><img src="<%=request.getContextPath()%>/util/imgReader${fooVO.fooImgParam}"></td>
 		<td><%=fooVO.getFooPrice()%></td>
 		<td><%=fooVO.getFooStatus()%></td>
 	</tr>

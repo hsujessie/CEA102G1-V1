@@ -35,6 +35,10 @@ public class ArtRepRptService {
 		return dao.findByPrimaryKey(artRepRptNo);
 	}
 	
+	public List<ArtRepRptVO> findByArtRepNo(Integer artRepNo) {
+		return dao.findByArtRepNo(artRepNo);
+	}
+	
 	public List<ArtRepRptVO> getAll(){
 		return dao.getAll();
 	}

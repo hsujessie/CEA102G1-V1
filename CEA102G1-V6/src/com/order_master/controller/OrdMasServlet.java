@@ -19,6 +19,7 @@ import javax.servlet.http.HttpSession;
 import com.food.model.FooCartVO;
 import com.food.model.FooService;
 import com.food.model.FooVO;
+import com.order_master.model.OrdMasService;
 import com.session.model.SesService;
 import com.ticket_list.model.TicLisVO;
 import com.ticket_type.model.TicTypCartVO;
@@ -118,6 +119,38 @@ public class OrdMasServlet extends HttpServlet {
 				RequestDispatcher failureView = req.getRequestDispatcher("/front-end/ordMas/SelectSeat.jsp");
 				failureView.forward(req, res);
 			}
+		}
+		
+		if ("check_out".equals(action)) {
+			
+			LinkedList<String> errorMsgs = new LinkedList<String>();
+			req.setAttribute("errorMsgs", errorMsgs);
+			
+			try {
+			/***********************1.接收請求參數 - 輸入格式的錯誤處理*************************/
+			Integer memNo = new Integer(req.getParameter("memNo"));
+			Integer sesNo = new Integer(req.getParameter("sesNo"));
+			
+			HttpSession session = req.getSession();
+			Set<TicTypCartVO> ticTypCartSet = (Set<TicTypCartVO>)session.getAttribute("ticTypCartSet");
+			Set<FooCartVO> fooCartSet = (Set<FooCartVO>)session.getAttribute("fooCartSet");
+			
+			/***************************2.開始新增資料***************************************/
+			OrdMasService ordMasSvc = new OrdMasService();
+			ordMasSvc.insertWithDetail(memNo, sesNo, fooCartSet, ticTypCartSet);
+			
+			/***************************3.修改完成,準備轉交(Send the Success view)***********/
+			String url = "/front-end/ordMas/OrderComplete.jsp";
+			RequestDispatcher successView = req.getRequestDispatcher(url);
+			successView.forward(req, res);
+			
+			
+			} catch (Exception e) {
+				errorMsgs.add(e.getMessage());
+				RequestDispatcher failureView = req.getRequestDispatcher("/front-end/ordMas/SelectSeat.jsp");
+				failureView.forward(req, res);
+			} 
+			
 		}
 		
 	}

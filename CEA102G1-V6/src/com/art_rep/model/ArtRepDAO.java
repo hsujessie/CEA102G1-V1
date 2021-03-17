@@ -28,8 +28,9 @@ public class ArtRepDAO implements ArtRepDAO_interface{
 	//SQL指令
 	private static final String INSERT_STMT="INSERT INTO ARTICLE_REPLY (ART_NO, MEM_NO, ARTREP_CONTENT) VALUES (?, ?, ?)";
 	private static final String UPDATE_STMT="UPDATE ARTICLE_REPLY SET ARTREP_CONTENT=?, ARTREP_STATUS=? WHERE ARTREP_NO=?";
+	private static final String UPDATE_STATUS_STMT="UPDATE ARTICLE_REPLY SET ARTREP_STATUS=? WHERE ARTREP_NO=?";
 	private static final String FINDBYPK_STMT="SELECT * FROM ARTICLE_REPLY WHERE ARTREP_NO=?";
-	private static final String GETALL_STMT="SELECT * FROM ARTICLE_REPLY ORDER BY ARTREP_NO DESC";
+	private static final String GETALL_STMT="SELECT * FROM ARTICLE_REPLY ORDER BY ARTREP_NO";
 	private static final String FINDBYARTNO_STMT="SELECT * FROM ARTICLE_REPLY WHERE ART_NO=?";
 	
 	@Override
@@ -323,6 +324,42 @@ public class ArtRepDAO implements ArtRepDAO_interface{
 			}
 		}
 		return list;		
+	}
+
+	@Override
+	public void updateStatus(ArtRepVO artRepVO) {
+		Connection con = null;
+		PreparedStatement pstmt = null;
+		
+		try {
+			con = ds.getConnection();
+			pstmt = con.prepareStatement(UPDATE_STATUS_STMT);
+			
+			
+			pstmt.setInt(1, artRepVO.getArtRepStatus());
+			pstmt.setInt(2, artRepVO.getArtRepNo());			
+			
+			pstmt.executeUpdate();	
+		} catch (SQLException se) {
+			throw new RuntimeException("A database error occured. "
+					+ se.getMessage());
+		} finally {
+			if(pstmt != null) {
+				try {
+					pstmt.close();
+				} catch (SQLException e) {
+					e.printStackTrace();
+				}				
+			}
+			
+			if(con != null) {
+				try {
+					con.close();
+				} catch (SQLException e) {
+					e.printStackTrace();
+				}
+			}
+		}		
 	}
 
 }

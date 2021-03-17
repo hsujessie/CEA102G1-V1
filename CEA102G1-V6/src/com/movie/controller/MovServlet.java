@@ -238,10 +238,7 @@ public class MovServlet extends HttpServlet{
 
 				// Send the use back to the form, if there were errors
 				if (!errorMsgs.isEmpty()) {
-					req.setAttribute("movVO", movVO);
-					String url = "/back-end/movie/select_page.jsp";
-					RequestDispatcher failureView = req.getRequestDispatcher(url);
-					failureView.forward(req, res);
+					System.out.println("There's something wrong when " + action + ".");
 					return;
 				}
 				
@@ -259,10 +256,8 @@ public class MovServlet extends HttpServlet{
 				
 				/***************************其他可能的錯誤處理**********************************/
 			}catch (Exception e) {
-				errorMsgs.put("Exception",e.getMessage());
-				String url = "/back-end/movie/select_page.jsp";
-				RequestDispatcher failureView = req.getRequestDispatcher(url);
-				failureView.forward(req, res);
+				System.out.println("Exception: " + e.getMessage());
+				return;
 			}
 		} 
 		
@@ -552,10 +547,9 @@ public class MovServlet extends HttpServlet{
 				
 				// Send the use back to the form, if there were errors
 				if (!errorMsgs.isEmpty()) {
-					req.setAttribute("movVO", movVO);        
-					Boolean openUpdateLightbox = true;
-					req.setAttribute("openUpdateLightbox", openUpdateLightbox);
+					System.out.println("There's something wrong when " + action + ".");
 					
+					req.setAttribute("movVO", movVO);        
 					RequestDispatcher failureView = req.getRequestDispatcher(requestURL);
 					failureView.forward(req, res);
 					return;
@@ -635,10 +629,13 @@ public class MovServlet extends HttpServlet{
 			List<MovVO> nowShowingList = new ArrayList<MovVO>();
 			for(int i = 0; i < list.size(); i++) {
 				movObj = (MovVO)list.get(i);
-				if (movObj.getMovondate().before(date)) {
-				    System.out.println("now_Showing======" + movObj.getMovondate());
-				    nowShowingList.add(movObj);
-				    req.setAttribute("nowShowing", nowShowingList);
+				if (movObj.getMovondate().before(date) || movObj.getMovondate().equals(date)) {
+					if(date.before(movObj.getMovoffdate())) {
+					    System.out.println("now_Showing ondate======" + movObj.getMovondate());
+					    System.out.println("now_Showing offdate======" + movObj.getMovoffdate());
+					    nowShowingList.add(movObj);
+					    req.setAttribute("nowShowing", nowShowingList);
+					}
 				}
 			}
 			RequestDispatcher successView = req.getRequestDispatcher("/front-end/movies/movies.jsp");

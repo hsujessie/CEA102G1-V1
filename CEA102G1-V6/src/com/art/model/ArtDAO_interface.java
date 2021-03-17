@@ -6,6 +6,7 @@ public interface ArtDAO_interface {
 	public String insert(ArtVO artVO);
 	public void update(ArtVO artVO);
 	public void updateStatus(ArtVO artVO);
+	public Integer updateArtReplyno(ArtVO artVO);
 	public void delete(Integer artNo);
 	public ArtVO findByPrimaryKey(Integer artNo);
 	public List<ArtVO> findByTitle(String artTitle);

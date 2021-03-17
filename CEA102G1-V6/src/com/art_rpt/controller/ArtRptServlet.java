@@ -15,9 +15,10 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import com.art.model.ArtDAO;
+import com.art.model.ArtService;
 import com.art_rpt.model.ArtRptService;
 import com.art_rpt.model.ArtRptVO;
-import com.mem.model.MemDAO;
+import com.member.model.MemberService;
 
 
 public class ArtRptServlet extends HttpServlet {
@@ -59,13 +60,13 @@ public class ArtRptServlet extends HttpServlet {
 			out.close();
 		}
 		
-		//articlereport.jsp呼叫
+		//articlereport.jsp呼叫，列出全部文章檢舉
 		if("listAllArticleReport".equals(action)) {
 			JSONArray array = new JSONArray();
 			
 			ArtDAO artDAO = new ArtDAO();
 			ArtRptService artRptSvc = new ArtRptService();
-			MemDAO memDAO = new MemDAO();
+			MemberService memSvc = new MemberService();
 			List<ArtRptVO> list = artRptSvc.getAll();
 			
 			/*==============放入JSONObject==============*/
@@ -74,7 +75,7 @@ public class ArtRptServlet extends HttpServlet {
 				JSONObject obj = new JSONObject();
 				try { 
 					obj.put("artNo", artRptVO.getArtNo());
-					obj.put("memName", memDAO.findByPrimaryKey(artDAO.findByPrimaryKey(artRptVO.getArtNo()).getMemNo()).getMemName());
+					obj.put("memName", memSvc.getOneMember(artDAO.findByPrimaryKey(artRptVO.getArtNo()).getMemNo()).getMemName());
 					obj.put("artRptNo", artRptVO.getArtRptNo());
 					obj.put("artRptContent", artRptVO.getArtRptReson());
 					obj.put("artRptTime", artRptVO.getArtRptTime());
@@ -85,7 +86,7 @@ public class ArtRptServlet extends HttpServlet {
 						obj.put("artRptStatusButton", "已檢舉");
 					}
 					obj.put("artRptStatus", artRptVO.getArtRptStatus());
-					obj.put("reportMemName", memDAO.findByPrimaryKey(artRptVO.getMemNo()).getMemName());
+					obj.put("reportMemName", memSvc.getOneMember(artRptVO.getMemNo()).getMemName());
 					obj.put("artTitle", artDAO.findByPrimaryKey(artRptVO.getArtNo()).getArtTitle());
 				} catch (JSONException e) {
 					e.printStackTrace();
@@ -102,17 +103,57 @@ public class ArtRptServlet extends HttpServlet {
 			out.close();			
 		}
 		
-		//
+		////articlereport.jsp呼叫，更新文章檢舉資料
 		if("changeArticleReport".equals(action)) {
 			JSONArray array = new JSONArray();
 			
 			/*====================請求參數===================*/
 			Integer artNo = Integer.parseInt(request.getParameter("artNo"));
+			Integer artRptNo = Integer.parseInt(request.getParameter("artRptNo"));
+			System.out.println("artNo:"+artNo);
+			System.out.println("artRptNo:"+artRptNo);
 			
 			/*====================修改資料===================*/
-			ArtRptService artRpeSvc = new ArtRptService();
+			ArtService artSvc = new ArtService();
+			Integer artStatus = artSvc.getOneArt(artNo).getArtStatus();
+			if(artStatus == 0) {
+				artSvc.updateStatus(artNo, 1);
+			}else {
+				artSvc.updateStatus(artNo, 0);
+			}
+			System.out.println("新的ArtStatus:"+artSvc.getOneArt(artNo).getArtStatus());
 			
+			ArtRptService artRptSvc = new ArtRptService();
+			Integer artRptStatus = artRptSvc.getOneArtRpt(artRptNo).getArtRptStatus();
+			if(artRptStatus == 0) {
+				artRptSvc.updateArtRpt(1, artRptNo);
+			}else {
+				artRptSvc.updateArtRpt(0, artRptNo);
+			}
+			System.out.println("新的ArtRptStatus"+artRptSvc.getOneArtRpt(artRptNo).getArtRptStatus());
 			
+			/*==============放入JSONObject==============*/
+				JSONObject obj = new JSONObject();
+				try { 
+					if(artRptSvc.getOneArtRpt(artRptNo).getArtRptStatus() == 0) {
+						obj.put("artRptStatusButton", "確認檢舉");
+						System.out.println("artRptStatusButton: 確認檢舉");
+					}else {
+						obj.put("artRptStatusButton", "已檢舉");
+						System.out.println("artRptStatusButton: 已檢舉");
+					}
+				} catch (JSONException e) {
+					e.printStackTrace();
+				}
+				array.put(obj);		
+			
+			/*==============傳回=============*/
+			response.setContentType("text/plain");
+			response.setCharacterEncoding("UTF-8");
+			PrintWriter out = response.getWriter();
+			out.write(array.toString());
+			out.flush();
+			out.close();
 		}
 	}
 
