@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.List;
 
+import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -36,8 +37,23 @@ public class ArtRepServlet extends HttpServlet {
 		String action = request.getParameter("action");
 		System.out.println("action---"+action);
 		
+		
+
+		
 		//新增回覆文章
 		if("addArtRep".equals(action)) {
+			//若會員尚未登入
+			if(request.getSession().getAttribute("memNo") == null) {
+				
+				/*====================轉送至登入===================*/
+				HttpSession session = request.getSession();
+				session.setAttribute("location", request.getRequestURI());
+				String url = "/front-end/Member_Login/login.jsp";
+				RequestDispatcher newArticleLogin = request.getRequestDispatcher(url);			
+				newArticleLogin.forward(request, response);
+				return;
+			}
+			
 			JSONArray array = new JSONArray();
 			HttpSession session = request.getSession();
 			ArtService artSvc = new ArtService();
