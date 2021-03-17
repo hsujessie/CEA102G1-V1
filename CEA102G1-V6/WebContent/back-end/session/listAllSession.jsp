@@ -20,8 +20,8 @@
 	.success-span{
 	    color: #bb9d52;
 		position: absolute;
-	    top: 8%;
-	    left: 17%;
+	    top: 10%;
+	    left: 20%;
 	    font-size: 16px;
 	}
 	.form-sty{
@@ -31,6 +31,13 @@
 		font-size: 14px;
 	    vertical-align: middle;
 	    width: 150px;
+	}
+	.fail-span{
+	    color: #A50203;
+		position: absolute;
+	    top: 10%;
+	    left: 20%;
+	    font-size: 16px;
 	}
 </style>
 <body class="sb-nav-fixed">
@@ -59,6 +66,14 @@
 							</span>
 						</c:if>
                     	<!-- success message End -->
+                    	<!-- failure message Start -->
+						<c:if test="${errMsg != null}">
+							<span class="fail-span"> 
+								<i class="far fa-frown"></i>
+								${errMsg}
+							</span>
+						</c:if>
+                    	<!-- failure message End -->
 						
                     	<!-- search Start -->
                     	<div class="row " style="margin: -60px 0 20px 50px;">          

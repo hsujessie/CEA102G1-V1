@@ -19,6 +19,20 @@
 	    vertical-align: middle;
 	    width: 150px;
 	}
+	.success-span{
+	    color: #bb9d52;
+		position: absolute;
+	    top: 10%;
+	    left: 20%;
+	    font-size: 16px;
+	}
+	.fail-span{
+	    color: #A50203;
+		position: absolute;
+	    top: 10%;
+	    left: 20%;
+	    font-size: 16px;
+	}
 </style>
 </head>
 <body class="sb-nav-fixed">
@@ -33,6 +47,29 @@
                     <div class="container-fluid">
                     
                     	<h3 class="h3-style" style="display: inline-block;">場次查詢</h3>
+						<!-- success message Start -->
+						<c:if test="${addSuccess != null}">
+							<span class="success-span"> 
+								${addSuccess}
+								<i class="far fa-smile-wink"></i>
+							</span>
+						</c:if>
+						<c:if test="${updateSuccess != null }">
+							<span class="success-span"> 
+								${updateSuccess}
+								<i class="far fa-smile-wink"></i>
+							</span>
+						</c:if>
+                    	<!-- success message End -->
+                    	<!-- failure message Start -->
+						<c:if test="${errMsg != null}">
+							<span class="fail-span"> 
+								<i class="far fa-frown"></i>
+								${errMsg}
+							</span>
+						</c:if>
+                    	<!-- failure message End -->
+                    	
                     	<!-- search Start -->
                     	<div class="row " style="margin: -60px 0 20px 50px;">        
 			                <div class="col-2"></div>

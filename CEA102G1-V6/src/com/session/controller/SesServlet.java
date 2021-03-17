@@ -297,7 +297,7 @@ public class SesServlet extends HttpServlet {
           
 	            Time sesTime = null;
                 String sesTimeStr = req.getParameter("sesTime").trim();  
-                sesTime = Time.valueOf(java.time.LocalTime.parse(sesTimeStr));  
+                sesTime = Time.valueOf(java.time.LocalTime.parse(convertTimes(sesTimeStr)));  
                        
 	    	    /***************************2.開始修改資料*****************************************/ 
  	            SesService sesSvc = new SesService();
@@ -315,18 +315,19 @@ public class SesServlet extends HttpServlet {
 				req.setAttribute("updateSuccess", updateSuccess);
 				
 				String url = requestURL;
-				System.out.println("url= " + url);
 				if(requestURL.equals("/back-end/session/update_session_input.jsp")){
 					url = "/back-end/session/listAllSession.jsp";
 				}
-				
+
+				System.out.println("url= " + url);
 				RequestDispatcher successView = req.getRequestDispatcher(url);
 				successView.forward(req, res);
 
 				/***************************其他可能的錯誤處理*************************************/
 			}catch (Exception e) {
-				System.out.println("修改資料失敗 " + e.getMessage());
-				
+				String errMsg = "修改資料失敗 " + e.getMessage();
+				System.out.println(errMsg);
+				req.setAttribute("errMsg", errMsg);
 				RequestDispatcher failureView = req.getRequestDispatcher(requestURL);
 				failureView.forward(req, res);
 			}			
