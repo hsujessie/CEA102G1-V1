@@ -313,7 +313,6 @@
 	$('#sesdate_end').change(isEmpty);
 
 	<c:if test="${not empty sesTimeList}">
-		$('input[name="sesTime"]').keyup(isEmpty);
 		$('input[name="sesTime"]').focus(isEmpty);
 		$('input[name="sesTime"]').timepicker({
 		    timeFormat: 'HH:mm',
