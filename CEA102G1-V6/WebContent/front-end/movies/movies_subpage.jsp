@@ -172,8 +172,8 @@
                         <div class="col-lg-1 col-md-3">
                             <p style="color:#aa9166;">期待度</p>
                         </div>
-                        <div class="col-lg-11 col-md-9">                    
-                            <form method="post" action="<%=request.getContextPath()%>/expectation/exp.do" <c:if test="${today ge movOndate and today lt movOffdate}">style="display:none;"</c:if>>                                                       
+                        <div class="col-lg-11 col-md-9">                    								          <!-- 已上映 - 上映日大於等於當日 and 下檔日小於當日-->          													   <!-- 已下檔 - 下檔日大於當日 -->
+                            <form method="post" action="<%=request.getContextPath()%>/expectation/exp.do" <c:if test="${today ge movOndate and today lt movOffdate}">style="display:none;"</c:if> <c:if test="${today ge movOffdate}">style="display:none;"</c:if> >                                                       
 	                            <label><input type="radio" name="expRating" value="1"><span class="ml">想看</span><i class="far fa-smile ml" style="color:#aa9166;"></i></label>&emsp;&emsp;
 	                            <label><input type="radio" name="expRating" value="0"><span class="ml">不想看</span><i class="far fa-meh ml" style="color:#aa9166;"></i></label>
 
@@ -192,6 +192,9 @@
                         	<c:if test="${today ge movOndate and today lt movOffdate}"> <!-- 已上映 --> 
 	                        	<label style="font-size: 14px;">【電影已上映,投票結束】</label>
 	                        </c:if>
+	                        <c:if test="${today ge movOffdate}"> <!-- 已下檔 --> 
+	                        	<label style="font-size: 14px;">【電影已下檔,投票結束】</label>
+	                        </c:if>
                         </div>
                     </div>
                     
@@ -199,8 +202,8 @@
                         <div class="col-lg-1 col-md-3">
                             <p style="color:#aa9166;">滿意度</p>
                         </div>
-                        <div class="col-lg-11 col-md-9">                   
-                            <form method="post" action="<%=request.getContextPath()%>/satisfaction/sat.do" <c:if test="${today le movOndate}">style="display:none;"</c:if>>        	
+                        <div class="col-lg-11 col-md-9">                    							    <!-- 已上映 - 上映日小於等於當日-->          					    <!-- 已下檔 - 下檔日大於當日 -->                   
+                            <form method="post" action="<%=request.getContextPath()%>/satisfaction/sat.do" <c:if test="${today le movOndate}">style="display:none;"</c:if> <c:if test="${today ge movOffdate}">style="display:none;"</c:if> >        	
                             	<label><input type="checkbox" name="satRating" value="1" style="display:none;" /><i class="fa fa-star" aria-hidden="true"></i></label>
                             	<label><input type="checkbox" name="satRating" value="1" style="display:none;" /><i class="fa fa-star" aria-hidden="true"></i></label>
                             	<label><input type="checkbox" name="satRating" value="1" style="display:none;" /><i class="fa fa-star" aria-hidden="true"></i></label>
@@ -221,6 +224,9 @@
                             
                         	<c:if test="${today le movOndate}"> <!-- 已上映 --> 
 	                        	<label style="font-size: 14px;">【電影未上映,投票尚未開始】</label>
+	                        </c:if>
+	                        <c:if test="${today ge movOffdate}"> <!-- 已下檔 --> 
+	                        	<label style="font-size: 14px;">【電影已下檔,投票結束】</label>
 	                        </c:if>
                         </div>
                     </div>
