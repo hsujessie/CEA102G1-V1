@@ -208,7 +208,7 @@ public class SesServlet extends HttpServlet {
                        for(int k = 0; k < theNoArr.length; k++) {                       
                            theNo = new Integer(theNoArr[k]);
                            /***************************2.開始新增資料***************************************/   
-                           sesSvc.addSes(movNo, theNo, sesDate, sesTime, null, null);      //暫時寫死
+                           sesSvc.addSes(movNo, theNo, sesDate, sesTime, null, null);
                        }
                    }
                }
