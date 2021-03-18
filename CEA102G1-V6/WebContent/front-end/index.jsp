@@ -2,7 +2,7 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%@ page import="com.member.model.*" %>
-
+<c:set var="location" value="${pageContext.request.requestURI}" scope="session"/>
 <!DOCTYPE html>
 <html>
 <head>
