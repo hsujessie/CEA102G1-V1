@@ -304,7 +304,8 @@
                                 <textarea name="comContent" cols="30" rows="5" style="width: 100%; margin: 20px 0 5px 0;" placeholder="Write something here..."></textarea>                          
                                 
   								<input type="hidden" name="movNo" value="${movVO.movno}" />
-  								<input type="hidden" name="memNo" value="${MemberVO.memNo}" />
+  								<%-- <input type="hidden" name="memNo" value="${MemberVO.memNo}" /> --%>
+  								<input type="hidden" name="memNo" value="1" /> <!-- 測試用 -->
   								
 								<input type="hidden" name="action" value="insert">
                             	<input class="combtn" type="submit" value="送出">
