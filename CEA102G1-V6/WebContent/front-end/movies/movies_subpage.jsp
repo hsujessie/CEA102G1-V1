@@ -82,9 +82,6 @@
 	ol, ul {
     	list-style: none;
 	}
-	#comrepForm ul {
-    	line-height: 2;
-	}
 	#comrepForm ul li input{
     	margin-right: 10px;
 	}
@@ -340,7 +337,7 @@
 		<div class="movies-lightbox-inside">
 			<div>
 				<form id="comrepForm" method="post" action="">
-					<ul>
+					<ul style="margin-left: -30px;">
 					<li><input type="radio" name="comRepReason" value="1"><label>與本電影無關、捏造假冒、不實敘述</label></li>
 					<li><input type="radio" name="comRepReason" value="2"><label>具有廣告性質或大量重複散布</label></li>
 					<li><input type="radio" name="comRepReason" value="3"><label>相互惡意攻訐、猥褻騷擾、人身攻擊</label></li>
