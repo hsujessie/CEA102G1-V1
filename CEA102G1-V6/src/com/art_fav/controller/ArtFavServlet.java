@@ -123,6 +123,13 @@ public class ArtFavServlet extends HttpServlet {
 			out.flush();
 			out.close();
 		}
+		
+		//收藏列表
+		if("find_By_CompositeQuery_Use_AJAX".equals(action)) {
+			JSONArray array = new JSONArray();
+			
+			
+		}
 	}
 
 }

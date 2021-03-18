@@ -6,11 +6,15 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 import javax.naming.Context;
 import javax.naming.InitialContext;
 import javax.naming.NamingException;
 import javax.sql.DataSource;
+
+
+import jdbc.util.CompositeQuery.jdbcUtil_CompositeQuery_ArtFav;
 
 
 public class ArtFavDAO implements ArtFavDAO_interface{
@@ -202,6 +206,63 @@ public class ArtFavDAO implements ArtFavDAO_interface{
 			}
 		}
 		
+		return list;
+	}
+
+	@Override
+	public List<ArtFavVO> getAll(Map<String, String[]> map) {
+		List<ArtFavVO> list = new ArrayList<ArtFavVO>();
+		ArtFavVO artFavVO = null;
+		Connection con = null;
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+		
+		try {
+			con = ds.getConnection();
+			String compositeQuerySQL = "select * from article, MEMBER, article_favorite where article.MEM_NO = member.MEM_NO and ARTICLE.ART_NO = article_favorite.ART_NO and ART_STATUS=0 " + 
+										jdbcUtil_CompositeQuery_ArtFav.get_WhereCondition(map) +
+										"order by ART_NO DESC";
+			pstmt = con.prepareStatement(compositeQuerySQL);
+			System.out.println("ArtFavDAO_compositeQuerySQL:" + compositeQuerySQL ); //印出最後的SQL
+			rs = pstmt.executeQuery();
+			System.out.println("map size:"+ map.size());
+			while (rs.next()) {
+				artFavVO = new ArtFavVO();
+				artFavVO.setArtNo(rs.getInt("ART_NO"));
+				artFavVO.setMemNo(rs.getInt("MEM_NO"));
+				artFavVO.setArtFavTime(rs.getTimestamp("ARTFAV_TIME"));
+				list.add(artFavVO);
+			}
+			System.out.println("ArtFavDAO_List:" + list);
+			System.out.println("ArtFavDAO_List_size:" + list.size());
+		} catch (SQLException se) {
+			throw new RuntimeException("A database error occured. "
+					+ se.getMessage());
+		} finally {
+			if(rs != null) {
+				try {
+					rs.close();
+				} catch (SQLException e) {
+					e.printStackTrace();
+				}
+			}
+			
+			if(pstmt != null) {
+				try {
+					pstmt.close();
+				} catch (SQLException e) {
+					e.printStackTrace();
+				}
+			}
+			
+			if(con != null) {
+				try {
+					con.close();
+				} catch (SQLException e) {
+					e.printStackTrace();
+				}
+			}
+		}
 		return list;
 	}
 

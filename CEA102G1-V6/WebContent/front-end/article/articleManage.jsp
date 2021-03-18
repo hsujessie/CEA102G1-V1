@@ -241,7 +241,7 @@ function clearOneArticle(){
 	$('#myModalLabel').empty();
 };
 
-//複合查詢data
+//文章複合查詢data
 function addCompositeQueryData(e) {
   var addArtDataAttr = {
       'action': 'find_By_CompositeQuery_Use_AJAX', 'memNo':'${MemberVO.memNo}'
@@ -261,7 +261,7 @@ function addCompositeQueryData(e) {
   return addArtDataAttr;
 };
 
-//複合查詢
+//文章複合查詢
 function findArtByCompositeQuery(e) {
     	debugger;
     $.ajax({
@@ -298,6 +298,64 @@ function findArtByCompositeQuery(e) {
     });
 };
 
+
+//收藏複合查詢data
+function addFavCompositeQueryData(e) {
+var addArtDataAttr = {
+    'action': 'find_By_CompositeQuery_Use_AJAX', 'memNo':'${MemberVO.memNo}'
+};
+	debugger;
+if ($('#artTitleByCompositeQuery').val() != null) {
+    addArtDataAttr['artTitle'] = $('#artTitleByCompositeQuery').val();
+    console.log("artTitle add ");
+}
+// 	debugger;
+if ($('#artTimeForByCompositeQuery').val() != null || $('#artTimeForByCompositeQuery').val() != 'null') {
+    addArtDataAttr['artTime'] = $('#artTimeForByCompositeQuery').val();
+    console.log("artTime add " + addArtDataAttr);
+}
+
+console.log("addCompositeQueryData:" + addArtDataAttr);
+return addArtDataAttr;
+};
+
+//收藏複合查詢
+function findArtFavByCompositeQuery(e) {
+  	debugger;
+  $.ajax({
+      type: 'post',
+      url: '<%=request.getContextPath()%>/art/artFav.do',
+      data: addFavCompositeQueryData(e),
+      dataType: 'json',
+      success: function (artFavVO) {
+          clearArtList();
+          $(artFavVO).each(function (i, item) {
+               debugger;
+              $('#artFavListCenter').append(
+                  '<div id="movType" class="divWidth divHeight" style="display: inline-block"><div style="display: inline-block">電影類型：</div> <div style="display: inline-block">' +
+                  item.artMovType + '</div></div>' +
+                 	'<div id="updateArticleDiv" style="display: inline-block"><form method="POST" action="<%= request.getContextPath()%>/art/art.do"><input type="hidden" class="artUpdateMemNo" name="memNo" value="${MemberVO.memNo}"><input type="hidden" class="artUpdateArtNo" name="artNo" value="'+item.artNo+'"><input type="hidden" name="action" value="select_Upadte_One_Art"><input type="hidden" class="artManageUpdate" name="artManageUpdate" value="true"><input type="submit" class="updateArticleButton combtn" value="收藏"></form></div>' +
+                  '<div id="artTitle"><div class="divHeight" style="font-size: 1.2rem;"><b>' + item.artTitle + '</b></div></div>' +
+                  '<div id="artFavTime"><div class="divHeight" style="display: inline-block">加入收藏時間：</div> <div class="divHeight" style="display: inline-block">' +
+                  moment(item.artTime).locale('zh_TW').format('llll') +
+                  '</div></div>' +
+                  '<div><div class="artContent" data-value="' + item.artNo + '">' +
+                  item.artContent + '</div></div><hr>');
+              $('#artListCenter .artContent').css({
+                  'height': '10vh',
+                  'white-space': 'nowrap',
+                  'overflow': 'hidden',
+                  'text-overflow': 'ellipsis',
+                  'cursor': 'pointer'
+              });
+          });
+      },
+      error: function () {
+          console.log('AJAX-findArtByCompositeQuery發生錯誤囉!')
+      }
+  });
+};
+
 //觸發複合查詢
 $('#findArtByTitleButton, #artTitleByCompositeQuery ,#findArtByTimeButton, #artTimeForByCompositeQuery').on('click keypress', function (e) {
         // debugger;
@@ -310,6 +368,10 @@ $('#findArtByTitleButton, #artTitleByCompositeQuery ,#findArtByTimeButton, #artT
 //進入查該會員全部文章
 debugger;
 findArtByCompositeQuery(this);
+
+//進入查該會員全部收藏
+debugger;
+findArtFavByCompositeQuery(this);
 
 //修改成功訊息
 if ('${updateSuccess}' == 'updateSuccess') {
