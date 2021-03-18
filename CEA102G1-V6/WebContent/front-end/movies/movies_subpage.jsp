@@ -162,13 +162,18 @@
                         </div>
                     </div>
                     
-					<!-- 電影--未上映：顯示，已上映：不顯示 -->
+					<!-- 判斷 電影是否上映 Start -->
+					<fmt:formatDate value="<%=new java.util.Date()%>" pattern="yyyy-MM-dd" var="today" />
+        			<fmt:formatDate value="${movVO.movondate}" pattern="yyyy-MM-dd" var="movOndate" />
+        			<fmt:formatDate value="${movVO.movoffdate}" pattern="yyyy-MM-dd" var="movOffdate" />
+                    <!-- 判斷 電影是否上映 End -->
+                    
                     <div class="row">
                         <div class="col-lg-1 col-md-3">
                             <p style="color:#aa9166;">期待度</p>
                         </div>
-                        <div class="col-lg-11 col-md-9">                     
-                            <form method="post" action="<%=request.getContextPath()%>/expectation/exp.do">                                                       
+                        <div class="col-lg-11 col-md-9">                    
+                            <form method="post" action="<%=request.getContextPath()%>/expectation/exp.do" <c:if test="${today ge movOndate and today lt movOffdate}">style="display:none;"</c:if>>                                                       
 	                            <label><input type="radio" name="expRating" value="1"><span class="ml">想看</span><i class="far fa-smile ml" style="color:#aa9166;"></i></label>&emsp;&emsp;
 	                            <label><input type="radio" name="expRating" value="0"><span class="ml">不想看</span><i class="far fa-meh ml" style="color:#aa9166;"></i></label>
 
@@ -183,6 +188,10 @@
 	                    			<a class="combtn" style="margin-left: 5%; padding: 5px 10px;" href="<%=request.getContextPath()%>/front-end/Login.jsp">送出</a>
 	                            </c:if>
                             </form>
+                            
+                        	<c:if test="${today ge movOndate and today lt movOffdate}"> <!-- 已上映 --> 
+	                        	<label style="font-size: 14px;">【電影已上映,投票結束】</label>
+	                        </c:if>
                         </div>
                     </div>
                     
@@ -191,7 +200,7 @@
                             <p style="color:#aa9166;">滿意度</p>
                         </div>
                         <div class="col-lg-11 col-md-9">                   
-                            <form method="post" action="<%=request.getContextPath()%>/satisfaction/sat.do">        	
+                            <form method="post" action="<%=request.getContextPath()%>/satisfaction/sat.do" <c:if test="${today le movOndate}">style="display:none;"</c:if>>        	
                             	<label><input type="checkbox" name="satRating" value="1" style="display:none;" /><i class="fa fa-star" aria-hidden="true"></i></label>
                             	<label><input type="checkbox" name="satRating" value="1" style="display:none;" /><i class="fa fa-star" aria-hidden="true"></i></label>
                             	<label><input type="checkbox" name="satRating" value="1" style="display:none;" /><i class="fa fa-star" aria-hidden="true"></i></label>
@@ -209,13 +218,17 @@
 	                    			<a class="combtn" style="margin-left: 13.4%; padding: 5px 10px;" href="<%=request.getContextPath()%>/front-end/Login.jsp">送出</a>
 	                            </c:if>
                             </form>
+                            
+                        	<c:if test="${today le movOndate}"> <!-- 已上映 --> 
+	                        	<label style="font-size: 14px;">【電影未上映,投票尚未開始】</label>
+	                        </c:if>
                         </div>
                     </div>
                 </div>
             </div>
             <!-- Information End -->
 
-<!-- ================================= 以下 電影--未上映：不顯示，已上映：顯示 ====================================== -->
+
             <!-- Synopsis Start -->
             <jsp:useBean id="comSvc" scope="page" class="com.comment.model.ComService"/>
             <div class="movinfo">
