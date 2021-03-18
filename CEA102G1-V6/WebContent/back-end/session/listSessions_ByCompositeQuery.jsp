@@ -126,9 +126,20 @@
 									<td>${sesVO.theNo}廳 【${movVerObj.movver_name}】</td>
 									
 									<td>
-									   <a class="btn btn-light btn-brd grd1 effect-1" onclick="updateData(this,${sesVO.sesNo})" >
-										 <input type="button" value="修改" class="input-pos update-btn">
-					        		   </a>
+					        			 <fmt:formatDate value="<%=new java.util.Date()%>" pattern="yyyy-MM-dd" var="today" />
+					        			 <fmt:formatDate value="${movObj.movondate}" pattern="yyyy-MM-dd" var="movOndate" />
+					        			 <fmt:formatDate value="${movObj.movoffdate}" pattern="yyyy-MM-dd" var="movOffdate" />
+									     <c:if test="${today le movOndate}">
+											   <a class="btn btn-light btn-brd grd1 effect-1" onclick="updateData(this,${sesVO.sesNo})" >
+												 <input type="button" value="修改" class="input-pos update-btn">
+							        		   </a>
+									     </c:if>
+										 <c:if test="${today ge movOndate and today lt movOffdate}">
+											    已上映
+										 </c:if>
+										 <c:if test="${movOffdate le today}">
+												已下檔
+										 </c:if>
 									</td>
 								</tr>
 								</c:forEach>
