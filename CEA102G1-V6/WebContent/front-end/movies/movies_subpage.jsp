@@ -297,7 +297,8 @@
                         </div>
                     </div>
 
-                    <div class="row align-items-center" ${not empty MemberVO.memAccount ? '':'style="display:none;"'}>
+                    <%-- <div class="row align-items-center" ${not empty MemberVO.memAccount ? '':'style="display:none;"'}> --%>
+                    <div class="row align-items-center">
                         <div class="col-lg-12 col-md-12">
                             <form method="post" action="<%=request.getContextPath()%>/comment/com.do">
                                 <textarea name="comContent" cols="30" rows="5" style="width: 100%; margin: 20px 0 5px 0;" placeholder="Write something here..."></textarea>                          
@@ -311,13 +312,13 @@
                         </div>
                     </div>
 
-                    <div class="row align-items-center" ${not empty MemberVO.memAccount ? 'style="display:none;"':''}>
+<%--                     <div class="row align-items-center" ${not empty MemberVO.memAccount ? 'style="display:none;"':''}>
                         <div class="col-lg-45 col-md-5"></div>
                         <div class="col-lg-2 col-md-2 writeComment">
                             <a href="${loginUrl}">點我寫短評 <i class="fas fa-pencil-alt" style="color:#aa9166;"></i></a>
                         </div>
                         <div class="col-lg-5 col-md-5"></div>
-                    </div>
+                    </div> --%>
                 </div>
             </div>
             <!-- Comment End -->
