@@ -1,6 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+<c:set var="loginUrl" value="${pageContext.request.contextPath}/front-end/Member_Login/login.jsp"/>
 
 <!DOCTYPE html>
 <html>
@@ -181,11 +182,11 @@
   								<input type="hidden" name="memNo" value="${MemberVO.memNo}" />
 								<input type="hidden" name="action" value="insert">
 								
-	                    		<c:if test="${not empty MemberVO.memAccount}">
+	                    		<c:if test="${not empty MemberVO.memAccount}"> <!-- 已登入 --> 
                             		<input class="combtn" type="submit" value="送出" style="margin-left: 5%; padding: 2px 10px;">
 	                            </c:if>
-	                    		<c:if test="${empty MemberVO.memAccount}">
-	                    			<a class="combtn" style="margin-left: 5%; padding: 5px 10px;" href="<%=request.getContextPath()%>/front-end/Login.jsp">送出</a>
+	                    		<c:if test="${empty MemberVO.memAccount}"> <!-- 未登入 --> 
+	                    			<a class="combtn" style="margin-left: 5%; padding: 5px 10px;" href="${loginUrl}">送出</a>
 	                            </c:if>
                             </form>
                             
@@ -214,11 +215,11 @@
   								<input type="hidden" name="memNo" value="${MemberVO.memNo}" />
 								<input type="hidden" name="action" value="insert">
 								
-	                    		<c:if test="${not empty MemberVO.memAccount}">
+	                    		<c:if test="${not empty MemberVO.memAccount}"> <!-- 已登入 --> 
 	                            	<input class="combtn" type="submit" value="送出" style="margin-left: 13.4%; padding: 2px 10px;">
 	                            </c:if>
-	                    		<c:if test="${empty MemberVO.memAccount}">
-	                    			<a class="combtn" style="margin-left: 13.4%; padding: 5px 10px;" href="<%=request.getContextPath()%>/front-end/Login.jsp">送出</a>
+	                    		<c:if test="${empty MemberVO.memAccount}"> <!-- 未登入 --> 
+	                    			<a class="combtn" style="margin-left: 13.4%; padding: 5px 10px;" href="${loginUrl}">送出</a>
 	                            </c:if>
                             </form>
                             
@@ -313,7 +314,7 @@
                     <div class="row align-items-center" ${not empty MemberVO.memAccount ? 'style="display:none;"':''}>
                         <div class="col-lg-45 col-md-5"></div>
                         <div class="col-lg-2 col-md-2 writeComment">
-                            <a href="<%=request.getContextPath()%>/front-end/Login.jsp">點我寫短評 <i class="fas fa-pencil-alt" style="color:#aa9166;"></i></a>
+                            <a href="${loginUrl}">點我寫短評 <i class="fas fa-pencil-alt" style="color:#aa9166;"></i></a>
                         </div>
                         <div class="col-lg-5 col-md-5"></div>
                     </div>
