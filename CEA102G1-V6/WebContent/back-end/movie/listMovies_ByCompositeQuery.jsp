@@ -1,5 +1,6 @@
 <%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%@ page import="com.movie.model.*"%>
 
 <jsp:useBean id="listMovies_ByCompositeQuery" scope="request" type="java.util.List<MovVO>"/>
@@ -55,8 +56,9 @@
 			                            </select>
 			                        <b>選擇年份</b>
 			                        <select name="mov_ondate_year">
+										<fmt:formatDate value="<%=new java.util.Date()%>" pattern="yyyy" var="thisYear" />
 			                            <option value=""></option>
-			                            <c:forEach var="year" begin="2018" end="<%= (int) (java.util.Calendar.getInstance().get(java.util.Calendar.YEAR))+1%>">
+			                            <c:forEach var="year" begin="${thisYear-4}" end="${thisYear}">
 			                                <option value="${year}">${year}年</option>
 			                            </c:forEach>
 			                        </select>
