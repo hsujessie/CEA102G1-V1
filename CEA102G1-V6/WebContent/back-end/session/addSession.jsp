@@ -125,9 +125,12 @@
 								<th>廳院</th>
 								<td>
 									<!-- 多選checkbox -->
-									<input class="mr-left mr-btm-sm" type="checkbox" name="theNo" value="1" <c:if test="${not empty theNo and theNo eq 1}">checked</c:if> ><span class="ml-ten">A廳 【2D】</span><br>
-									<input class="mr-left mr-btm-sm" type="checkbox" name="theNo" value="2" <c:if test="${not empty theNo and theNo eq 2}">checked</c:if> ><span class="ml-ten">B廳 【3D】</span><br>
-									<input class="mr-left mr-btm-sm" type="checkbox" name="theNo" value="3" <c:if test="${not empty theNo and theNo eq 3}">checked</c:if> ><span class="ml-ten">C廳 【IMAX】</span><br>
+									<jsp:useBean id="theSvc" scope="page" class="com.theater.model.TheService"/>
+									<jsp:useBean id="movVerSvc" scope="page" class="com.movie_version.model.MovVerService"/>
+									<c:forEach var="theVO" items="${theSvc.all}" >	
+										<c:set var="movVerVO" value="${movVerSvc.getOneMovie_version(theVO.the_no)}"></c:set>
+										<input class="mr-left mr-btm-sm" type="radio" name="theNo" value="${theVO.the_no}" <c:if test="${not empty theNo and theNo eq theVO.the_no}">checked</c:if> ><span class="ml-ten">${theVO.movver_no}廳 【<c:if test="${theVO.movver_no == movVerVO.movver_no}">${movVerVO.movver_name}</c:if>】</span><br>
+									</c:forEach>
 									<span id="theNo-errmsg" style="display:none;">			
 										<i class="far fa-hand-point-up" style="color:#bb9d52;"></i>
 										<label id="theNo-errmsg-txt" class="err-color"></label>

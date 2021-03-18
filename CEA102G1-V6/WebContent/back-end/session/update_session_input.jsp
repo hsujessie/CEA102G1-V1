@@ -77,12 +77,12 @@
 							</tr>
 							<tr>
 								<th>廳院</th>
-								<td>
-									<!-- 多選checkbox -->			
-									<input class="mr-left mr-btm-sm" type="radio" name="theNo" value="1" <c:if test="${sesVO.theNo == 1}">checked</c:if> ><span class="ml-ten">A廳 【2D】</span><br>
-									<input class="mr-left mr-btm-sm" type="radio" name="theNo" value="2" <c:if test="${sesVO.theNo == 2}">checked</c:if> ><span class="ml-ten">B廳 【3D】</span><br>
-									<input class="mr-left mr-btm-sm" type="radio" name="theNo" value="3" <c:if test="${sesVO.theNo == 3}">checked</c:if> ><span class="ml-ten">C廳 【IMAX】</span><br>
-								</td>
+								<!-- 多選checkbox -->
+								<jsp:useBean id="theSvc" scope="page" class="com.theater.model.TheService"/>
+								<jsp:useBean id="movVerSvc" scope="page" class="com.movie_version.model.MovVerService"/>	
+								<c:set value="${theSvc.getOneTheater(sesVO.theNo)}" var="theObj"></c:set>
+								<c:set value="${movVerSvc.getOneMovie_version(theObj.movver_no)}" var="movVerObj"></c:set>
+								<td>${sesVO.theNo}廳 【${movVerObj.movver_name}】</td>		
 							</tr>
 							<tr>
 								<th>日期</th>
