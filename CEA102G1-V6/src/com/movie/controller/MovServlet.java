@@ -177,14 +177,9 @@ public class MovServlet extends HttpServlet{
 					movoffdate = new java.sql.Date(System.currentTimeMillis());
 					errorMsgs.put("movoffdate"," 請輸入下檔日期!");
 				}	
-				
-				Integer movdurat = null;
-				try {
-					movdurat = new Integer(req.getParameter("movdurat").trim());
-				}catch(NumberFormatException e) {
-					movdurat = 0;
-					errorMsgs.put("movdurat"," 片長請填數字!");
-				}
+
+				//單選下拉選單
+				Integer movdurat = new Integer(req.getParameter("movdurat").trim());
 				
 				//單選下拉選單
 				String movrating = req.getParameter("movrating").trim();
@@ -421,24 +416,9 @@ public class MovServlet extends HttpServlet{
 						req.setAttribute("movlanToken", movlanToken); 	
 					}
 				}
-
-				Integer movdurat = null;
-				try {
-					movdurat = new Integer(req.getParameter("movdurat").trim());
-				}catch(NumberFormatException e) {
-					movdurat = 0;
-					errorMsgs.put("movdurat"," 片長請填數字!");
-					
-					//先split字串，再把值送到update_movie_input.jsp
-			        if (movverStr != null) {  
-						movverToken = token(movverStrs, movverToken);
-						req.setAttribute("movverToken", movverToken);	
-					}
-					if (movlanStr != null ) {
-						movlanToken = token(movlanStrs, movlanToken);	  
-						req.setAttribute("movlanToken", movlanToken); 	
-					}
-				}
+				
+				//單選下拉選單
+				Integer movdurat = new Integer(req.getParameter("movdurat").trim());
 				
 				//單選下拉選單
 				String movrating = req.getParameter("movrating").trim();

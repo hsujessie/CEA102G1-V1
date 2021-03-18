@@ -221,8 +221,7 @@ public class SatDAO implements SatDAO_interface{
 		Double satRatingAvg = null;
 		try {
 			con = ds.getConnection();
-
-			System.out.println("movNo= " + movNo);
+			
 			String getSatRatingAvg = "SELECT AVG(sat_rating) FROM SATISFACTION WHERE mov_no=" + movNo;
 			System.out.println("getSatRatingAvg= " + getSatRatingAvg);
 			pstmt = con.prepareStatement(getSatRatingAvg);

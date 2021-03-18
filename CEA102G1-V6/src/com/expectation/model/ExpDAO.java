@@ -221,8 +221,7 @@ public class ExpDAO implements ExpDAO_interface{
 		Double expRatingAvg = null;
 		try {
 			con = ds.getConnection();
-
-			System.out.println("movNo= " + movNo);
+			
 			String getExpRatingAvg = "SELECT AVG(exp_rating) FROM EXPECTATION WHERE mov_no=" + movNo;
 			System.out.println("getExpRatingAvg= " + getExpRatingAvg);
 			pstmt = con.prepareStatement(getExpRatingAvg);
