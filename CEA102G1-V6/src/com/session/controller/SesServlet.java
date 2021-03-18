@@ -29,6 +29,8 @@ import com.movie.model.MovService;
 import com.movie.model.MovVO;
 import com.session.model.SesService;
 import com.session.model.SesVO;
+import com.theater.model.TheService;
+import com.theater.model.TheVO;
 
 
 @MultipartConfig()
@@ -199,16 +201,18 @@ public class SesServlet extends HttpServlet {
 					  return;
 	             }
               
-            
+           
 	           SesService sesSvc = new SesService();
+	           TheService theSvc = new TheService();
                for(int i = 0; i < sesDateArr.length; i++) {
 	                 sesDate = Date.valueOf(sesDateArr[i]);  
                    for(int j = 0; j < sesTimeArr.length; j++) {
 						sesTime = Time.valueOf(java.time.LocalTime.parse(sesTimeArr[j]));
                        for(int k = 0; k < theNoArr.length; k++) {                       
                            theNo = new Integer(theNoArr[k]);
+                           TheVO theVO = theSvc.getOneTheater(theNo);
                            /***************************2.開始新增資料***************************************/   
-                           sesSvc.addSes(movNo, theNo, sesDate, sesTime, null, null);
+                           sesSvc.addSes(movNo, theNo, sesDate, sesTime, theVO.getThe_seat(), theVO.getThe_seatno());
                        }
                    }
                }
