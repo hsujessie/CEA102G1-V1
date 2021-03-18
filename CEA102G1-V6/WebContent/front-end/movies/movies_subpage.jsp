@@ -128,7 +128,7 @@
 <body>
         <div class="wrapper">
             <!-- Nav Bar Start -->
-			<c:set value="moviesSub" var="urlRecog"></c:set>        <!-- 給navbar_frontend.file的參數-Sub -->
+			<c:set value="moviesSub" var="urlRecog"></c:set> <!-- 給navbar_frontend.file的參數-Sub -->
             <%@ include file="/front-end/files/frontend_navbar.file"%>
             <!-- Nav Bar End -->
 
@@ -163,11 +163,11 @@
                         </div>
                     </div>
                     
-					<!-- 判斷 電影是否上映 Start -->
+					<!-- for 判斷 電影是否上映 Start -->
 					<fmt:formatDate value="<%=new java.util.Date()%>" pattern="yyyy-MM-dd" var="today" />
         			<fmt:formatDate value="${movVO.movondate}" pattern="yyyy-MM-dd" var="movOndate" />
         			<fmt:formatDate value="${movVO.movoffdate}" pattern="yyyy-MM-dd" var="movOffdate" />
-                    <!-- 判斷 電影是否上映 End -->
+                    <!-- for 判斷 電影是否上映 End -->
                     
                     <div class="row">
                         <div class="col-lg-1 col-md-3">
@@ -264,7 +264,7 @@
                     <div class="reviews-start">
                     	<c:forEach var="comVO" items="${comSvc.all}" varStatus="no">
                     		<c:if test="${(comVO.movNo == movVO.movno) and (comVO.comStatus == 0)}">
-		                         <div class="reviews-container ${(no.index mod 2 == 0) ? 'right' : 'left'}">
+		                         <div class="reviews-container ${(no.index mod 2 == 0) ? 'left' : 'right'}"><!-- 這邊怪怪的ㄋㄟ -->
 		                            <div class="reviews-content">
 		                                <c:set var="satObj" value="${satSvc.getOneSat(comVO.movNo,comVO.memNo)}"></c:set>                            
 		                                <h2><span>Ratings</span><c:forEach var="i" begin="1" end="${satObj.satRating}"><i class="fa fa-star" aria-hidden="true"></i></c:forEach></h2>	                                
