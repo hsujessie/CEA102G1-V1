@@ -186,19 +186,21 @@ public class SesServlet extends HttpServlet {
                   
 	             // Send the use back to the form, if there were errors   
 	             if (!errorMsgs.isEmpty()) {
-	            	 for(int k = 0; k < theNoArr.length; k++) {                       
-                         theNo = new Integer(theNoArr[k]);
-                      }
-					  req.setAttribute("movNo", movNo);
-					  req.setAttribute("theNo", theNo);
-					  req.setAttribute("sesDateBegin", sesDateBegin);
-					  req.setAttribute("sesDateEnd", sesDateEnd);
-					  req.setAttribute("sesTimeList", sesTimeList);
+		             List<Integer> theNoList = new ArrayList<Integer>();
+					 for(int k = 0; k < theNoArr.length; k++) {
+						theNoList.add(new Integer(theNoArr[k]));
+					 }
+					 
+					 req.setAttribute("movNo", movNo);
+					 req.setAttribute("sesDateBegin", sesDateBegin);
+					 req.setAttribute("sesDateEnd", sesDateEnd);
+					 req.setAttribute("sesTimeList", sesTimeList);
+					 req.setAttribute("theNoList", theNoList);
 					  
-					  String url = "/back-end/session/addSession.jsp";
-					  RequestDispatcher failureView = req.getRequestDispatcher(url);
-					  failureView.forward(req, res);
-					  return;
+					 String url = "/back-end/session/addSession.jsp";
+					 RequestDispatcher failureView = req.getRequestDispatcher(url);
+					 failureView.forward(req, res);
+					 return;
 	             }
               
            

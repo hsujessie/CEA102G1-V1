@@ -109,8 +109,8 @@
 											<jsp:useBean id="now" class="java.util.Date"/>
 											<c:if test="${movVO.movondate gt now}">
 												<c:set value="${movVO.movondate.time - now.time}" var="dateDiff"/>  <!-- the difference of 上映日期 minus 當天日期 has to greater than 7days --> 												
-												<c:if test="${dateDiff gt 604800000}">                              <!-- 7日 = 604800000毫秒 -->
-													<option value="${movVO.movno}" data-movver="${movVO.movver}" data-movondate="${movVO.movondate}" <c:if test="${not empty movNo and movNo eq movVO.movno}">selected</c:if> >${movVO.movname}
+												<c:if test="${dateDiff gt 604800000}">                              <!-- 7日 = 604800000毫秒 -->       <!-- 在SesServlet.java 驗證，若有不符驗證，會丟 a movNo attribute 到 jsp，為了留住原本已選的電影。 -->
+													<option value="${movVO.movno}" data-movver="${movVO.movver}" data-movondate="${movVO.movondate}" <c:if test="${not empty movNo and movNo == movVO.movno}">selected</c:if>>${movVO.movname}
 												</c:if>
 											</c:if>
 							             </c:forEach>
@@ -129,7 +129,8 @@
 									<jsp:useBean id="movVerSvc" scope="page" class="com.movie_version.model.MovVerService"/>
 									<c:forEach var="theVO" items="${theSvc.all}" >	
 										<c:set var="movVerVO" value="${movVerSvc.getOneMovie_version(theVO.the_no)}"></c:set>
-										<input class="mr-left mr-btm-sm" type="checkbox" name="theNo" value="${theVO.the_no}" ><span class="ml-ten">${theVO.movver_no}廳 【<c:if test="${theVO.movver_no == movVerVO.movver_no}">${movVerVO.movver_name}</c:if>】</span><br>
+										<input class="mr-left mr-btm-sm" type="checkbox" name="theNo" value="${theVO.the_no}" <c:if test="${not empty theNo and theNo eq theVO.the_no}">checked</c:if> >											 
+											<span class="ml-ten">${theVO.movver_no}廳 【<c:if test="${theVO.movver_no == movVerVO.movver_no}">${movVerVO.movver_name}</c:if>】</span><br>
 									</c:forEach>
 									<span id="theNo-errmsg" style="display:none;">			
 										<i class="far fa-hand-point-up" style="color:#bb9d52;"></i>
@@ -227,12 +228,33 @@
 		  timepicker:false
 		 });
 	});
-
 	
 	
 	let theNoZero = $("input[name='theNo']")[0];
 	let theNoFirst = $("input[name='theNo']")[1];
 	let theNoSecond = $("input[name='theNo']")[2];
+	
+	/* =====================================================================================================
+		    * 在SesServlet.java 驗證，若有不符驗證，會丟 a theNoList attribute 到 jsp，為了留住原本已勾選的廳院。
+	======================================================================================================== */
+	<c:if test="${not empty theNoList}">
+		let theNoArr = new Array();
+		<c:forEach items="${theNoList}" var="theNoList"> 
+			theNoArr.push(${theNoList});
+	 	</c:forEach>
+		for(let i = 0; i < theNoArr.length; i++){
+	 		if(theNoArr[i] == "1"){	// 2D
+				theNoZero.checked = true;
+			}
+			if(theNoArr[i] == "2"){	// 3D
+				theNoFirst.checked = true;
+			}
+			if(theNoArr[i] == "3"){	// IMAX
+				theNoSecond.checked = true;
+			} 
+		}
+ 	</c:if> 
+ 
 	$('select[name="movNo"]').change(function(){
 		/* =========================================================================================== */
 										/* 選擇電影後，自動勾選相對應的廳院 */

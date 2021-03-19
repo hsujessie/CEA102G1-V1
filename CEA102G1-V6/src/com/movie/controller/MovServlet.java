@@ -166,7 +166,7 @@ public class MovServlet extends HttpServlet{
 					movondate = java.sql.Date.valueOf(req.getParameter("movondate").trim());
 				} catch (IllegalArgumentException e) {
 					movondate = new java.sql.Date(System.currentTimeMillis());				
-					errorMsgs.put("movondate"," 請輸入上映日期!");
+					errorMsgs.put("movondate"," 請輸入上映日期");
 				}
 
 				java.sql.Date movoffdate = null;
@@ -175,7 +175,7 @@ public class MovServlet extends HttpServlet{
 					
 				} catch (IllegalArgumentException e) {
 					movoffdate = new java.sql.Date(System.currentTimeMillis());
-					errorMsgs.put("movoffdate"," 請輸入下檔日期!");
+					errorMsgs.put("movoffdate"," 請輸入下檔日期");
 				}	
 
 				//單選下拉選單
