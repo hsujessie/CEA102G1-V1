@@ -82,7 +82,8 @@
 								<jsp:useBean id="movVerSvc" scope="page" class="com.movie_version.model.MovVerService"/>	
 								<c:set value="${theSvc.getOneTheater(sesVO.theNo)}" var="theObj"></c:set>
 								<c:set value="${movVerSvc.getOneMovie_version(theObj.movver_no)}" var="movVerObj"></c:set>
-								<td>${sesVO.theNo}廳 【${movVerObj.movver_name}】</td>		
+								<td>${sesVO.theNo}廳 【${movVerObj.movver_name}】</td>	
+									
 							</tr>
 							<tr>
 								<th>日期</th>

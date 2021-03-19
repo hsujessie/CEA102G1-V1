@@ -67,7 +67,7 @@
 						</c:if>
                     	<!-- success message End -->
                     	<!-- failure message Start -->
-						<c:if test="${errorMsgs != null}">
+						<c:if test="${!empty errorMsgs}">
 							<span class="fail-span"> 
 								<i class="far fa-frown"></i>
 								${errorMsgs}

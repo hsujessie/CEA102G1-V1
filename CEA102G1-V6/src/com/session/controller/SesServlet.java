@@ -46,7 +46,7 @@ public class SesServlet extends HttpServlet {
 
 		
 		if("getOne_For_Display".equals(action)) { 
-            Map<String,String> errorMsgs = new LinkedHashMap<String,String>();
+			List<String> errorMsgs = new LinkedList<String>();
 			req.setAttribute("errorMsgs",errorMsgs);
 
 			try {
@@ -58,7 +58,7 @@ public class SesServlet extends HttpServlet {
 				SesService sesSvc = new SesService();
 				SesVO sesVO = sesSvc.getOneSes(sesNo);
 				if (sesVO == null) {
-					errorMsgs.put("sesVO ","查無資料");
+					errorMsgs.add("查無資料");
 				}
 				
 				if (!errorMsgs.isEmpty()) {
@@ -80,14 +80,14 @@ public class SesServlet extends HttpServlet {
 				successView.forward(req, res);
 				
 			}catch (Exception e) {
-				errorMsgs.put("無法取得資料 ",e.getMessage());
+				errorMsgs.add("無法取得資料 " + e.getMessage());
 				RequestDispatcher failureVoew = req.getRequestDispatcher("/back-end/session/listAllSession.jsp");
 				failureVoew.forward(req,res);
 			}
 		}
 
 		if("listSessions_ByCompositeQuery".equals(action)) {
-            Map<String,String> errorMsgs = new LinkedHashMap<String,String>();
+			List<String> errorMsgs = new LinkedList<String>();
 			req.setAttribute("errorMsgs",errorMsgs);
 			
 			try {
@@ -113,7 +113,7 @@ public class SesServlet extends HttpServlet {
 			
 			/***************************其他可能的錯誤處理**********************************/
 			}catch(Exception e) {
-				errorMsgs.put("查無資料 ",e.getMessage());
+				errorMsgs.add("查無資料 " + e.getMessage());
 				RequestDispatcher failureView = req.getRequestDispatcher("/back-end/session/listAllSession.jsp");
 				failureView.forward(req, res);
 			}
@@ -236,7 +236,7 @@ public class SesServlet extends HttpServlet {
 		
 		// 來自listAllSession.jsp的請求
 		if ("getOne_For_Update".equals(action)) {
-			Map<String,String> errorMsgs = new LinkedHashMap<String,String>();
+			List<String> errorMsgs = new LinkedList<String>();
 			req.setAttribute("errorMsgs", errorMsgs);
 			
 			String requestURL = req.getParameter("requestURL");
@@ -265,7 +265,7 @@ public class SesServlet extends HttpServlet {
 	
 				/***************************其他可能的錯誤處理**********************************/
 			} catch (Exception e) {
-				errorMsgs.put("無法取得要修改的資料 ",e.getMessage());
+				errorMsgs.add("無法取得要修改的資料 " + e.getMessage());
 				RequestDispatcher failureView = req.getRequestDispatcher("/back-end/session/listAllSession.jsp");
 				failureView.forward(req, res);
 			}
@@ -273,7 +273,7 @@ public class SesServlet extends HttpServlet {
 		
 		// 來自update_session_input.jsp的請求
 		if ("update".equals(action)) {
-			Map<String,String> errorMsgs = new LinkedHashMap<String,String>();
+			List<String> errorMsgs = new LinkedList<String>();
 			req.setAttribute("errorMsgs", errorMsgs);
 			
 			String requestURL = req.getParameter("requestURL");
@@ -282,9 +282,6 @@ public class SesServlet extends HttpServlet {
 				/***************************1.接收請求參數 - 輸入格式的錯誤處理**********************/
 				Integer sesNo = new Integer(req.getParameter("sesNo").trim());
 	            System.out.println("sesNo= " + sesNo);
-
-                Integer theNo = new Integer(req.getParameter("theNo").trim());
-	            System.out.println("theNo= " + theNo);
                 
                 String sesDateStr = req.getParameter("sesDate").trim();
 	            java.sql.Date sesDate = null;
@@ -296,7 +293,7 @@ public class SesServlet extends HttpServlet {
                        
 	    	    /***************************2.開始修改資料*****************************************/ 
  	            SesService sesSvc = new SesService();
-	            sesSvc.updateSes(theNo, sesDate, sesTime, sesNo);
+	            sesSvc.updateSes(sesDate, sesTime, sesNo);
 	            
 				/***************************3.修改完成,準備轉交(Send the Success view)*************/	
 				if(requestURL.equals("/back-end/session/listSessions_ByCompositeQuery.jsp")){
@@ -314,7 +311,7 @@ public class SesServlet extends HttpServlet {
 
 				/***************************其他可能的錯誤處理*************************************/
 			}catch (Exception e) {
-				errorMsgs.put("修改資料失敗 ", e.getMessage());
+				errorMsgs.add("修改資料失敗 " + e.getMessage());
 				RequestDispatcher failureView = req.getRequestDispatcher("/back-end/session/listAllSession.jsp");
 				failureView.forward(req, res);
 			}			

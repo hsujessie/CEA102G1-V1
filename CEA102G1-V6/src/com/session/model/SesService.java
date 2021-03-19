@@ -31,9 +31,8 @@ public class SesService {
 	}
 	
 	
-	public SesVO updateSes(Integer theNo, Date sesDate, Time sesTime, Integer sesNo) {
+	public SesVO updateSes(Date sesDate, Time sesTime, Integer sesNo) {
 		SesVO sesVO = new SesVO();
-		sesVO.setTheNo(theNo);
 		sesVO.setSesDate(sesDate);
 		sesVO.setSesTime(sesTime);
 		sesVO.setSesNo(sesNo);
