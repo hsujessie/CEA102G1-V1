@@ -82,6 +82,10 @@
   #abled-btn{
     z-index: 0;
   }
+  .fail-span{
+    color: #A50203;
+    font-size: 16px;
+  }
 </style>
 </head>
 <body class="sb-nav-fixed">
@@ -98,6 +102,16 @@
                        <!-- addSession Start -->  
 						<FORM method="post" action="<%=request.getContextPath()%>/session/ses.do" name="form_addSession"  enctype="multipart/form-data">
 						<h3 class="h3-style listOne-h3-pos">場次新增</h3>
+						
+                    	<!-- exception failure message Start -->
+						<c:if test="${errorMsgs != null}">
+							<span class="fail-span"> 
+								<i class="far fa-frown"></i>
+								${errorMsgs}
+							</span>
+						</c:if>
+                    	<!-- exception failure message End -->
+                    	
 						<table>
 							<tr>
 							<jsp:useBean id="movSvc" scope="page" class="com.movie.model.MovService"/>

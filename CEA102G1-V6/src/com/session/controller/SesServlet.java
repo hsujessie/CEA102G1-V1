@@ -46,8 +46,8 @@ public class SesServlet extends HttpServlet {
 
 		
 		if("getOne_For_Display".equals(action)) { 
-			List<String> errorMsgs = new LinkedList<String>();
-			req.setAttribute("errorMsgs", errorMsgs);
+            Map<String,String> errorMsgs = new LinkedHashMap<String,String>();
+			req.setAttribute("errorMsgs",errorMsgs);
 
 			try {
 				/***************************1.接收請求參數*****************************************/
@@ -58,7 +58,7 @@ public class SesServlet extends HttpServlet {
 				SesService sesSvc = new SesService();
 				SesVO sesVO = sesSvc.getOneSes(sesNo);
 				if (sesVO == null) {
-					errorMsgs.add("查無資料");
+					errorMsgs.put("sesVO ","查無資料");
 				}
 				
 				if (!errorMsgs.isEmpty()) {
@@ -80,15 +80,15 @@ public class SesServlet extends HttpServlet {
 				successView.forward(req, res);
 				
 			}catch (Exception e) {
-				errorMsgs.add("無法取得資料:" + e.getMessage());
+				errorMsgs.put("無法取得資料 ",e.getMessage());
 				RequestDispatcher failureVoew = req.getRequestDispatcher("/back-end/session/listAllSession.jsp");
 				failureVoew.forward(req,res);
 			}
 		}
 
 		if("listSessions_ByCompositeQuery".equals(action)) {
-			List<String> errorMsgs = new LinkedList<String>();
-			req.setAttribute("errorMsgs", errorMsgs);
+            Map<String,String> errorMsgs = new LinkedHashMap<String,String>();
+			req.setAttribute("errorMsgs",errorMsgs);
 			
 			try {
 				HttpSession session = req.getSession();
@@ -113,7 +113,7 @@ public class SesServlet extends HttpServlet {
 			
 			/***************************其他可能的錯誤處理**********************************/
 			}catch(Exception e) {
-				errorMsgs.add(e.getMessage());
+				errorMsgs.put("查無資料 ",e.getMessage());
 				RequestDispatcher failureView = req.getRequestDispatcher("/back-end/session/listAllSession.jsp");
 				failureView.forward(req, res);
 			}
@@ -132,7 +132,7 @@ public class SesServlet extends HttpServlet {
                  String[] theNoArr = req.getParameterValues("theNo");
                  Integer theNo = null;
                  if (theNoArr == null || theNoArr.length == 0) {
-                	 errorMsgs.put("theNo"," 請選擇廳院");
+                	 errorMsgs.put("theNo ","請選擇廳院");
                      System.out.println("theNo is empty!");
                  }
                  
@@ -154,7 +154,7 @@ public class SesServlet extends HttpServlet {
 	             List<LocalTime> sesTimeList = new ArrayList<LocalTime>();
 	             Duration diff = null;
 	             if (sesTimeArr == null || sesTimeArr.length == 0) {
-					   errorMsgs.put("sesTime"," 請選擇電影時間");
+					   errorMsgs.put("sesTime ","請選擇電影時間");
 	                   System.out.println("sesTime is empty!");
 	             }else {
 	            	 
@@ -173,7 +173,7 @@ public class SesServlet extends HttpServlet {
 							diff = Duration.between(sesTimeList.get(i - 1),sesTimeList.get(i));  // 「get(i)」 minus 「get(i - 1)」的 difference 不能少於2
 							System.out.println("diff= " + diff.toHours()); 
 							if(diff.toHours() < 2) {
-				                errorMsgs.put("sesTime"," 間距不可少於2小時");  							
+				                errorMsgs.put("sesTime ","間距不可少於2小時");  							
 							}
 						}
 						
@@ -196,9 +196,8 @@ public class SesServlet extends HttpServlet {
 					 req.setAttribute("sesDateEnd", sesDateEnd);
 					 req.setAttribute("sesTimeList", sesTimeList);
 					 req.setAttribute("theNoList", theNoList);
-					  
-					 String url = "/back-end/session/addSession.jsp";
-					 RequestDispatcher failureView = req.getRequestDispatcher(url);
+					 
+					 RequestDispatcher failureView = req.getRequestDispatcher("/back-end/session/addSession.jsp");
 					 failureView.forward(req, res);
 					 return;
 	             }
@@ -224,17 +223,13 @@ public class SesServlet extends HttpServlet {
               String addSuccess = "【 場次 】" + "新增成功";
               req.setAttribute("addSuccess", addSuccess);    
               
-              String url = "/back-end/session/listAllSession.jsp";
-              RequestDispatcher successView = req.getRequestDispatcher(url);
+              RequestDispatcher successView = req.getRequestDispatcher("/back-end/session/listAllSession.jsp");
               successView.forward(req, res);    
                
                /***************************其他可能的錯誤處理**********************************/
 			}catch (Exception e) {
-				System.out.println("Exception= " + e.getMessage());
-				
-	            errorMsgs.put("Exception",e.getMessage());
-	            String url = "/back-end/session/addSession.jsp";
-	            RequestDispatcher failureView = req.getRequestDispatcher(url);
+	            errorMsgs.put("Exception ",e.getMessage());
+	            RequestDispatcher failureView = req.getRequestDispatcher("/back-end/session/addSession.jsp");
 	            failureView.forward(req, res);
 	        }		
 		}
@@ -270,7 +265,7 @@ public class SesServlet extends HttpServlet {
 	
 				/***************************其他可能的錯誤處理**********************************/
 			} catch (Exception e) {
-				errorMsgs.put("Exception"," 無法取得要修改的資料:" + e.getMessage());
+				errorMsgs.put("無法取得要修改的資料 ",e.getMessage());
 				RequestDispatcher failureView = req.getRequestDispatcher("/back-end/session/listAllSession.jsp");
 				failureView.forward(req, res);
 			}
@@ -319,7 +314,7 @@ public class SesServlet extends HttpServlet {
 
 				/***************************其他可能的錯誤處理*************************************/
 			}catch (Exception e) {
-				errorMsgs.put("Exception"," 修改資料失敗:" + e.getMessage());
+				errorMsgs.put("修改資料失敗 ", e.getMessage());
 				RequestDispatcher failureView = req.getRequestDispatcher("/back-end/session/listAllSession.jsp");
 				failureView.forward(req, res);
 			}			
