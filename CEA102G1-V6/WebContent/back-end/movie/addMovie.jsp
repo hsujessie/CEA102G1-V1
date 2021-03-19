@@ -76,9 +76,10 @@
 								<th>種類</th>
 								<td>
 									<!-- 多選checkbox -->
-									<input class="mr-left mr-btm-sm" type="checkbox" name="movver" value="2D"><span class="ml-ten">2D</span><br>
-									<input class="mr-left mr-btm-sm" type="checkbox" name="movver" value="3D"><span class="ml-ten">3D</span><br>
-									<input class="mr-left mr-btm-sm" type="checkbox" name="movver" value="IMAX"><span class="ml-ten">IMAX</span><br>
+									<jsp:useBean id="movVerSvc" scope="page" class="com.movie_version.model.MovVerService"/>
+									<c:forEach var="movVerVO" items="${movVerSvc.all}" >	
+										<input class="mr-left mr-btm-sm" type="checkbox" name="movver" value="${movVerVO.movver_name}"><span class="ml-ten">【${movVerVO.movver_name}】</span><br>
+									</c:forEach>
 									<span id="movver-errmsg" style="display:none;">			
 										<i class="far fa-hand-point-up" style="color:#bb9d52;"></i>
 										<label id="movver-errmsg-txt" class="err-color"></label>
@@ -132,9 +133,9 @@
 								<th>片長</th>
 								<td class="fake-txt">
 									<select class="mr-left mr-btm-normal" name="movdurat">
-										<option value="1">1小時</option>
-										<option value="2">2小時</option>
-										<option value="3">3小時</option>
+										<c:forEach var="hours" begin="1" end="3">
+											<option value="${hours}">${hours}小時</option>
+										</c:forEach>
 									</select>
 								</td>
 							</tr>
