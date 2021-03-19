@@ -20,8 +20,8 @@
 	.success-span{
 	    color: #bb9d52;
 		position: absolute;
-	    top: 10%;
-	    left: 20%;
+	    top: 8%;
+	    left: 17%;
 	    font-size: 16px;
 	}
 	.form-sty{
@@ -35,8 +35,8 @@
 	.fail-span{
 	    color: #A50203;
 		position: absolute;
-	    top: 10%;
-	    left: 20%;
+	    top: 8%;
+	    left: 17%;
 	    font-size: 16px;
 	}
 </style>
