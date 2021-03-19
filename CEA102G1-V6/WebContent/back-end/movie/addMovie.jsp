@@ -132,9 +132,9 @@
 							<tr>
 								<th>片長</th>
 								<td class="fake-txt">
-									<select class="mr-left mr-btm-normal" name="movdurat">
-										<c:forEach var="hours" begin="1" end="3">
-											<option value="${hours}">${hours}小時</option>
+									<select class="mr-left mr-btm-normal" name="movdurat">										
+										<c:forEach var="mins" begin="60" end="240">
+											<option value="${mins}" >${mins}分鐘</option>
 										</c:forEach>
 									</select>
 								</td>

@@ -125,7 +125,9 @@
 								<th>片長</th>
 								<td class="fake-txt">
 									<select class="mr-left mr-btm-normal" name="movdurat">
-										<option value="${movVO.movdurat}" >${movVO.movdurat}</option>
+										<c:forEach var="mins" begin="60" end="240">
+											<option value="${movVO.movdurat}" <c:if test="${movVO.movdurat eq mins}"></c:if> >${movVO.movdurat}</option>
+										</c:forEach>
 									</select>
 								</td>
 							</tr>
