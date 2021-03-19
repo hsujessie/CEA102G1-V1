@@ -135,15 +135,15 @@
 						        			 <fmt:formatDate value="<%=new java.util.Date()%>" pattern="yyyy-MM-dd" var="today" />
 						        			 <fmt:formatDate value="${movObj.movondate}" pattern="yyyy-MM-dd" var="movOndate" />
 						        			 <fmt:formatDate value="${movObj.movoffdate}" pattern="yyyy-MM-dd" var="movOffdate" />
-										     <c:if test="${today le movOndate}">
+										     <c:if test="${movOndate ge today}">
 												 <a class="btn btn-light btn-brd grd1 effect-1" onclick="updateData(this,${sesVO.sesNo})" >
 													<input type="submit" value="修改" class="input-pos"> 
 							        			 </a>
 										     </c:if>
-											 <c:if test="${today ge movOndate and today lt movOffdate}">
+											 <c:if test="${movOndate le today and movOffdate lt today}">
 												    已上映
 											  </c:if>
-											  <c:if test="${movOffdate le today}">
+											  <c:if test="${movOffdate ge today and movOndate lt today}">
 													 已下檔
 											  </c:if>
 										</td>
