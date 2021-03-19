@@ -78,7 +78,6 @@
 		<th>餐點編號</th>
 		<th>餐點名稱</th>
 		<th>餐點類別</th>
-		<th>餐點簡介</th>
 		<th>餐點圖片</th>
 		<th>餐點售價</th>
 		<th>餐點狀態</th>
@@ -91,7 +90,6 @@
 			<td>${fooVO.fooNo}</td>
 			<td>${fooVO.fooName}</td>
 			<td>${fooVO.fooCatNo}-${fooCatSvc.getOneFooCat(fooVO.fooCatNo).fooCatName}</td>
-			<td>${fooVO.fooIntro}</td>
 			<td><img src="<%=request.getContextPath()%>/util/imgReader${fooVO.fooImgParam}"></td>
 			<td>${fooVO.fooPrice}</td>			
 			<td>${fooVO.fooStatus}--${(fooVO.fooStatus==0)?"上架":"下架"}</td>			

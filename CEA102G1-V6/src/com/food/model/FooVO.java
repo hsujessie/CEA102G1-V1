@@ -7,7 +7,6 @@ public class FooVO implements Serializable {
 	private Integer fooNo; 
 	private String fooName;
 	private Integer fooCatNo;
-	private String fooIntro;
 	private byte[] fooImg;
 	private Integer fooPrice;
 	private Integer fooStatus;
@@ -31,12 +30,6 @@ public class FooVO implements Serializable {
 	}
 	public void setFooCatNo(Integer fooCatNo) {
 		this.fooCatNo = fooCatNo;
-	}
-	public String getFooIntro() {
-		return fooIntro;
-	}
-	public void setFooIntro(String fooIntro) {
-		this.fooIntro = fooIntro;
 	}
 	public byte[] getFooImg() {
 		return fooImg;

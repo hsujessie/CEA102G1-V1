@@ -33,14 +33,20 @@ public class seatNoTransform {
 	public static String seatNoTran(String str) {
 	String seat = str.replaceAll("\\s+", "");
 	System.out.println(seat);
+	int aisleIndex = 0; 
 	String seatNo = "";
 	int seatIndex =1;
 	char seatHeader = '\u0040';
 	for( int i=0;i<seat.length();i++) {
 		String thisSeat = "";
-		if (i%20 ==0) {
+
+		if(aisleIndex==20) {
+			seatIndex = 1;
+			aisleIndex=0;
+		} else if(i%20 ==0) {
 			seatHeader++;
 			seatIndex = 1;
+			aisleIndex=0;
 		}
 		
 		switch(seat.charAt(i)) {
@@ -56,6 +62,7 @@ public class seatNoTransform {
 			break;
 		case '3':
 			thisSeat+="333";
+			aisleIndex++;
 			break;
 		case '9':
 			thisSeat+="999";
