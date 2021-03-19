@@ -1,8 +1,8 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
-<c:set var="loginUrl" value="${pageContext.request.contextPath}/front-end/Member_Login/login.jsp"/>
-
+<c:set var="loginUrl" value="${pageContext.request.contextPath}/front-end/Member_Login/login.jsp" scope="page"/>
+<c:set var="location" value="${pageContext.request.requestURI}" scope="session"/> <!-- 若沒登入，無法對該電影評分+短評，here have tp set a session attribute for the login page to get the origin url -->
 <!DOCTYPE html>
 <html>
 <head>
@@ -18,7 +18,7 @@
 		color: #bb9d52
 	}
 	
-/* -- Light box -- */
+	/* -- Light box -- */
 	#movies-comrep{
 		position: fixed;
 		top: 0;
@@ -176,10 +176,10 @@
 	                            <label><input type="radio" name="expRating" value="0"><span class="ml">不想看</span><i class="far fa-meh ml" style="color:#aa9166;"></i></label>
 
   								<input type="hidden" name="movNo" value="${movVO.movno}" />
-  								<input type="hidden" name="memNo" value="${MemberVO.memNo}" />
 								<input type="hidden" name="action" value="insert">
 								
 	                    		<c:if test="${not empty MemberVO.memAccount}"> <!-- 已登入 --> 
+  									<input type="hidden" name="memNo" value="${MemberVO.memNo}" />
                             		<input class="combtn" type="submit" value="送出" style="margin-left: 5%; padding: 2px 10px;">
 	                            </c:if>
 	                    		<c:if test="${empty MemberVO.memAccount}"> <!-- 未登入 --> 
@@ -209,10 +209,10 @@
                             	<label><input type="checkbox" name="satRating" value="1" style="display:none;" /><i class="fa fa-star" aria-hidden="true"></i></label>
                   
   								<input type="hidden" name="movNo" value="${movVO.movno}" />
-  								<input type="hidden" name="memNo" value="${MemberVO.memNo}" />
 								<input type="hidden" name="action" value="insert">
 								
 	                    		<c:if test="${not empty MemberVO.memAccount}"> <!-- 已登入 --> 
+  									<input type="hidden" name="memNo" value="${MemberVO.memNo}" />
 	                            	<input class="combtn" type="submit" value="送出" style="margin-left: 13.4%; padding: 2px 10px;">
 	                            </c:if>
 	                    		<c:if test="${empty MemberVO.memAccount}"> <!-- 未登入 --> 
