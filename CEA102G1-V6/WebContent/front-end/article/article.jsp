@@ -225,19 +225,19 @@
             //修改成功訊息
             if ('${updateSuccess}' == 'updateSuccess') {
                 //      	debugger;
-                toastr['success']('修改成功！！', '成功'); 
                 <%
                 session.removeAttribute("updateSuccess"); 
                 %>
+                toastr['success']('修改成功！！', '成功'); 
             }
 
             //新增成功訊息
             if ('${addSuccess}' == 'addSuccess') {
                 //      	debugger;
-                toastr['success']('發文成功！！', '成功'); 
                 <%
                 session.removeAttribute("addSuccess"); 
                 %>
+                toastr['success']('發文成功！！', '成功'); 
             }
 
             //呼叫收藏
