@@ -36,7 +36,7 @@
 	    color: #A50203;
 		position: absolute;
 	    top: 8%;
-	    left: 17%;
+	    left: 18%;
 	    font-size: 16px;
 	}
 </style>
@@ -67,10 +67,10 @@
 						</c:if>
                     	<!-- success message End -->
                     	<!-- failure message Start -->
-						<c:if test="${errMsg != null}">
+						<c:if test="${errorMsgs != null}">
 							<span class="fail-span"> 
 								<i class="far fa-frown"></i>
-								${errMsg}
+								${errorMsgs}
 							</span>
 						</c:if>
                     	<!-- failure message End -->

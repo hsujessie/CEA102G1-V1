@@ -261,8 +261,6 @@ public class SesServlet extends HttpServlet {
 					Map<String, String[]> map = (Map<String, String[]>)session.getAttribute("map");
 					List<SesVO> list  = sesSvc.getAll(map);
 					req.setAttribute("listSessions_ByCompositeQuery",list); // 複合查詢, 資料庫取出的list物件,存入
-					Boolean cssForListSessionsByCompositeQuery = true;
-					req.setAttribute("cssForListSessionsByCompositeQuery",cssForListSessionsByCompositeQuery);
 				}
 	            
 	            req.setAttribute("sesVO", sesVO);
@@ -273,7 +271,7 @@ public class SesServlet extends HttpServlet {
 				/***************************其他可能的錯誤處理**********************************/
 			} catch (Exception e) {
 				errorMsgs.put("Exception"," 無法取得要修改的資料:" + e.getMessage());
-				RequestDispatcher failureView = req.getRequestDispatcher(requestURL);
+				RequestDispatcher failureView = req.getRequestDispatcher("/back-end/session/listAllSession.jsp");
 				failureView.forward(req, res);
 			}
 		}
@@ -281,6 +279,7 @@ public class SesServlet extends HttpServlet {
 		// 來自update_session_input.jsp的請求
 		if ("update".equals(action)) {
 			Map<String,String> errorMsgs = new LinkedHashMap<String,String>();
+			req.setAttribute("errorMsgs", errorMsgs);
 			
 			String requestURL = req.getParameter("requestURL");
 			
@@ -315,21 +314,13 @@ public class SesServlet extends HttpServlet {
 				String updateSuccess = "【 場次 】" + "修改成功";
 				req.setAttribute("updateSuccess", updateSuccess);
 				
-				String url = requestURL;
-				if(requestURL.equals("/back-end/session/update_session_input.jsp")){
-					url = "/back-end/session/listAllSession.jsp";
-				}
-
-				System.out.println("url= " + url);
-				RequestDispatcher successView = req.getRequestDispatcher(url);
+				RequestDispatcher successView = req.getRequestDispatcher("/back-end/session/listAllSession.jsp");
 				successView.forward(req, res);
 
 				/***************************其他可能的錯誤處理*************************************/
 			}catch (Exception e) {
-				String errMsg = "修改資料失敗 " + e.getMessage();
-				System.out.println(errMsg);
-				req.setAttribute("errMsg", errMsg);
-				RequestDispatcher failureView = req.getRequestDispatcher(requestURL);
+				errorMsgs.put("Exception"," 修改資料失敗:" + e.getMessage());
+				RequestDispatcher failureView = req.getRequestDispatcher("/back-end/session/listAllSession.jsp");
 				failureView.forward(req, res);
 			}			
 		}
