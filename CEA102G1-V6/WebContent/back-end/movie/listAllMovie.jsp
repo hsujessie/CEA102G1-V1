@@ -19,8 +19,8 @@
 	.success-span{
 	    color: #bb9d52;
 		position: absolute;
-	    top: 10%;
-	    left: 19%;
+	    top: 8%;
+	    left: 17%;
 	    font-size: 16px;
 	}
 	.th-adjust{
@@ -131,7 +131,7 @@
 									<td>${movVO.getMovname()}</td>
 									<td>${movVO.getMovondate()}</td>
 									<td>${movVO.getMovoffdate()}</td>
-									<td>${movVO.getMovdurat()}小時</td>
+									<td>${movVO.getMovdurat()}分鐘</td>
 									<td>${movVO.getMovtype()}</td>
 									<td>
 					        			 <a id="listOne" onclick="getData(this,${movVO.movno})" class="btn btn-light btn-brd grd1 effect-1">
