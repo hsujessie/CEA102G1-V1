@@ -336,8 +336,8 @@ public class ArtServlet extends HttpServlet {
 				} catch (JSONException e) {
 					e.printStackTrace();
 				}
-				jedis.close();
 			}
+			jedis.close();
 			
 			/*==============傳回=============*/
 			response.setContentType("text/plain");

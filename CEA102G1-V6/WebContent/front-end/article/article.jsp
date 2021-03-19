@@ -20,7 +20,7 @@
 
 <head>
     <meta charset="UTF-8">
-    <%@ include file="/front-end/files/frontend_importCss.file"%>
+
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
 <!--     datetimepicker -->
     <link rel="stylesheet" type="text/css"
@@ -33,6 +33,7 @@
     </script>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <%@ include file="/front-end/files/frontend_importCss.file"%>
     <!-- toastr v2.1.4 -->
     <link href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/2.1.4/toastr.min.css" rel="stylesheet" />
     <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/2.1.4/toastr.min.js"></script>
@@ -250,6 +251,22 @@
 
             //呼叫檢舉留言
             addRepRpt();
+            
+            //返回討論區首頁
+            $('#returnArticle').click(function(){
+            	
+            	//清空熱門文章列表
+    			clearListArtTopThreeQuery();
+            	
+                //清空文章列表
+                clearArtList();
+            	
+              	//列出Top3點擊文章列表
+              	ListArtTopThreeQuery();
+                
+                //列出全部文章列表
+                ListArtQuery();            	
+            });
         });
 
         //側邊欄電影類型
@@ -461,9 +478,7 @@
 	                                        <hr>
 	                                    </li>
 	                                    <li class="nav-item active ">
-	                                        <a class="nav-link"
-	                                            href="<%=request.getContextPath()%>/front-end/article/article.jsp">討論區首頁<span
-	                                                class="sr-only">(current)</span></a>
+	                                        <a id="returnArticle" class="nav-link">討論區首頁<span class="sr-only">(current)</span></a>
 	                                    </li>
 	                                    <li>
 	                                        <hr>
