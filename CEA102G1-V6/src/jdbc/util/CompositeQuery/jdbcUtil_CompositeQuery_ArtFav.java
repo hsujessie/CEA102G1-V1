@@ -20,7 +20,7 @@ public class jdbcUtil_CompositeQuery_ArtFav {
 		}else if ("artMovType".equals(columnName)) {
 			aCondition = "MOV_TYPE = "+"'"+ value +"'";
 		}else if ("memNo".equals(columnName)) {
-			aCondition = "MEMBER.MEM_NO = "+"'"+ value +"'";
+			aCondition = "article_favorite.MEM_NO = "+"'"+ value +"'";
 		}
 		
 		return aCondition + " ";

@@ -221,7 +221,7 @@ public class ArtFavDAO implements ArtFavDAO_interface{
 			con = ds.getConnection();
 			String compositeQuerySQL = "select * from article, MEMBER, article_favorite where article.MEM_NO = member.MEM_NO and ARTICLE.ART_NO = article_favorite.ART_NO and ART_STATUS=0 " + 
 										jdbcUtil_CompositeQuery_ArtFav.get_WhereCondition(map) +
-										"order by ART_NO DESC";
+										"order by article_favorite.ART_NO DESC";
 			pstmt = con.prepareStatement(compositeQuerySQL);
 			System.out.println("ArtFavDAO_compositeQuerySQL:" + compositeQuerySQL ); //印出最後的SQL
 			rs = pstmt.executeQuery();

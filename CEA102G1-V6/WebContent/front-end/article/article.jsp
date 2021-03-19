@@ -415,7 +415,7 @@
         	$('#Top3Article').removeClass('HotArticleDiv');
         }
     </script>
-    <title>--SEENEMA ARTICLE--</title>
+    <title>SEENEMA ARTICLE</title>
 </head>
 
 <body>

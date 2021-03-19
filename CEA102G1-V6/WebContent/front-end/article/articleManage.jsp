@@ -1,12 +1,22 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@page import="com.member.model.MemberVO"%>
 
+<%		
+	if(session.getAttribute("MemberVO") != null){
+		MemberVO memberVO = (MemberVO)session.getAttribute("MemberVO");
+		session.setAttribute("memNo", memberVO.getMemNo());
+		session.getAttribute("memNo");			
+	}
+%>
 <!DOCTYPE html>
 <html>
 <head>
 
 <meta charset="UTF-8">
 	<%@ include file="/front-end/files/frontend_importCss.file"%>
+<!-- 	fontawesome -->
+	<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.15.2/css/all.css" integrity="sha384-vSIIfh2YWi9wW0r9iZe7RJPrKwp6bG+s9QZMoITbCckVJqGCCRhc+ccxNcdpHuYu" crossorigin="anonymous">
     <!-- toastr v2.1.4 -->
     <link href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/2.1.4/toastr.min.css" rel="stylesheet" />
 <style>	
@@ -14,6 +24,7 @@
 		margin: 0 auto 5vh auto;
     	width: 23vw;
     	height: 10vh;
+    	display: inline-block;
   	}
   	.divWidth{
 		width: 40vh;
@@ -80,94 +91,70 @@
 
             <!-- PUT HERE Start -->
             <div class="container">
-        <div class="row">
-            <div class="col-3">
-                <div class="nav flex-column nav-pills" id="v-pills-tab" role="tablist" aria-orientation="vertical">
-                    <a class="nav-link active" id="v-pills-home-tab" data-toggle="pill" href="#v-pills-home" role="tab"
-                        aria-controls="v-pills-home" aria-selected="true">管理文章</a>
-                    <a class="nav-link" id="v-pills-profile-tab" data-toggle="pill" href="#v-pills-profile" role="tab"
-                        aria-controls="v-pills-profile" aria-selected="false">管理收藏</a>
-                </div>
-            </div>
-            <div class="col-9">
-                <div class="tab-content" id="v-pills-tabContent">
-                    <div class="tab-pane fade show active" id="v-pills-home" role="tabpanel"
-                        aria-labelledby="v-pills-home-tab">
-                        <!-- 管理文章 -->
-                        <div class="row">
-                            <div class="col-6">
-                                <div class="topDiv">
-                                    <div class="input-group mb-3">
-                                        <input type="text" id="artTitleByCompositeQuery" class="form-control"
-                                            placeholder="搜尋標題" aria-label="Recipient's username"
-                                            aria-describedby="findArtByTitleButton">
-                                        <div class="input-group-append">
-                                            <button class="btn btn-outline-secondary" type="button"
-                                                id="findArtByTitleButton">查詢</button>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-6">
-                                <div class="topDiv">
-                                    <div class="input-group mb-3">
-                                        <input type="date" id="artTimeForByCompositeQuery" class="form-control"
-                                            placeholder="依日期搜尋" aria-label="Recipient's username"
-                                            aria-describedby="findArtByTimeButton">
-                                        <div class="input-group-append">
-                                            <button class="btn btn-outline-secondary" type="button"
-                                                id="findArtByTimeButton">查詢</button>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div class="col-12">
-                                <div id="artListCenter"></div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="tab-pane fade" id="v-pills-profile" role="tabpanel"
-                        aria-labelledby="v-pills-profile-tab">
-                        <!-- 管理收藏 -->
-                        <div class="row">
-                            <div class="col-6">
-                                <div class="topDiv">
-                                    <div class="input-group mb-3">
-                                        <input type="text" id="artFavByCompositeQuery" class="form-control"
-                                            placeholder="搜尋標題" aria-label="Recipient's username"
-                                            aria-describedby="findArtFavByTitleButton">
-                                        <div class="input-group-append">
-                                            <button class="btn btn-outline-secondary" type="button"
-                                                id="findArtFavByTitleButton">查詢</button>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-6">
-                                <div class="topDiv">
-                                    <div class="input-group mb-3">
-                                        <input type="date" id="artFavTimeForByCompositeQuery" class="form-control"
-                                            placeholder="依日期搜尋" aria-label="Recipient's username"
-                                            aria-describedby="findArtFavByTimeButton">
-                                        <div class="input-group-append">
-                                            <button class="btn btn-outline-secondary" type="button"
-                                                id="findArtFavByTimeButton">查詢</button>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div class="col-12">
-                                <div id="artFavListCenter"></div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
+			    <div class="row">
+			        <div class="col-3">
+			            <div class="nav flex-column nav-pills" id="v-pills-tab" role="tablist" aria-orientation="vertical">
+			                <a class="nav-link active" id="v-pills-article-tab" data-toggle="pill" href="#v-pills-article"
+			                    role="tab" aria-controls="v-pills-article" aria-selected="true">文章管理</a>
+			                <a class="nav-link" id="v-pills-artFav-tab" data-toggle="pill" href="#v-pills-artFav" role="tab"
+			                    aria-controls="v-pills-artFav" aria-selected="false">收藏管理</a>
+			            </div>
+			        </div>
+			        <div class="col-9">
+			            <div class="tab-content" id="v-pills-tabContent">
+			                <div class="tab-pane fade show active" id="v-pills-article" role="tabpanel"
+			                    aria-labelledby="v-pills-article-tab">
+			                    <!-- 管理文章 -->
+			                    <div class="topDiv">
+			                        <div class="input-group mb-3">
+			                            <input type="text" id="artTitleByCompositeQuery" class="form-control" placeholder="搜尋文章標題"
+			                                aria-label="Recipient's username" aria-describedby="findArtByTitleButton">
+			                            <div class="input-group-append">
+			                                <button class="btn btn-outline-secondary" type="button"
+			                                    id="findArtByTitleButton">查詢</button>
+			                            </div>
+			                        </div>
+			                    </div>
+			                    <div class="topDiv">
+			                        <div class="input-group mb-3">
+			                            <input type="date" id="artTimeForByCompositeQuery" class="form-control" placeholder="依日期搜尋"
+			                                aria-label="Recipient's username" aria-describedby="findArtByTimeButton">
+			                            <div class="input-group-append">
+			                                <button class="btn btn-outline-secondary" type="button"
+			                                    id="findArtByTimeButton">查詢</button>
+			                            </div>
+			                        </div>
+			                    </div>
+			                    <div id="artListCenter"></div>
+			                </div>
+			                <div class="tab-pane fade" id="v-pills-artFav" role="tabpanel" aria-labelledby="v-pills-artFav-tab">
+			                    <!-- 管理收藏 -->
+			                    <div class="topDiv">
+			                        <div class="input-group mb-3">
+			                            <input type="text" id="artFavTitleByCompositeQuery" class="form-control"
+			                                placeholder="搜尋收藏文章標題" aria-label="Recipient's username"
+			                                aria-describedby="findArtFavTitleByButton">
+			                            <div class="input-group-append">
+			                                <button class="btn btn-outline-secondary" type="button"
+			                                    id="findArtFavTitleByButton">查詢</button>
+			                            </div>
+			                        </div>
+			                    </div>
+			                    <div class="topDiv">
+			                        <div class="input-group mb-3">
+			                            <input type="date" id="artFavTimeByCompositeQuery" class="form-control" placeholder="依日期搜尋"
+			                                aria-label="Recipient's username" aria-describedby="findArtFavTimeByButton">
+			                            <div class="input-group-append">
+			                                <button class="btn btn-outline-secondary" type="button"
+			                                    id="findArtFavTimeByButton">查詢</button>
+			                            </div>
+			                        </div>
+			                    </div>
+			                    <div id="artFavListCenter"></div>
+			                </div>
+			            </div>
+			        </div>
+			    </div>
             </div>
             <!-- PUT HERE End -->
             
@@ -205,27 +192,28 @@
 
         
 <%@ include file="/front-end/files/frontend_importJs.file"%>
+
+<!-- 	moment -->
 	<script src="<%=request.getContextPath()%>/resource/js/moment-with-locales.min.js" ></script>
     <!-- toastr v2.1.4 -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/2.1.4/toastr.min.js"></script>
     <script>
         toastr.options = {
-            // 參數設定
-            "closeButton": false, // 顯示關閉按鈕
-            "debug": false, // 除錯
-            "newestOnTop": false, // 最新一筆顯示在最上面
-            "progressBar": true, // 顯示隱藏時間進度條
-            "positionClass": "toast-top-right", // 位置的類別
-            "preventDuplicates": false, // 隱藏重覆訊息
-            "onclick": null, // 當點選提示訊息時，則執行此函式
-            "showDuration": "300", // 顯示時間(單位: 毫秒)
-            "hideDuration": "1000", // 隱藏時間(單位: 毫秒)
-            "timeOut": "5000", // 當超過此設定時間時，則隱藏提示訊息(單位: 毫秒)
-            "extendedTimeOut": "1000", // 當使用者觸碰到提示訊息時，離開後超過此設定時間則隱藏提示訊息(單位: 毫秒)
-            "showEasing": "swing", // 顯示動畫時間曲線
-            "hideEasing": "linear", // 隱藏動畫時間曲線
-            "showMethod": "fadeIn", // 顯示動畫效果
-            "hideMethod": "fadeOut" // 隱藏動畫效果
+            "closeButton": false,
+            "debug": false,
+            "newestOnTop": false,
+            "progressBar": true,
+            "positionClass": "toast-top-right",
+            "preventDuplicates": false,
+            "onclick": null, 
+            "showDuration": "300",
+            "hideDuration": "1000",
+            "timeOut": "5000",
+            "extendedTimeOut": "1000",
+            "showEasing": "swing",
+            "hideEasing": "linear",
+            "showMethod": "fadeIn",
+            "hideMethod": "fadeOut"
         }
     </script>
  
@@ -234,6 +222,11 @@
 function clearArtList() {
     $('#artListCenter').empty();
 };
+
+//清空收藏列表
+function clearArtFavList(){
+	$('#artFavListCenter').empty();
+}
 
 //清空燈箱
 function clearOneArticle(){
@@ -249,15 +242,11 @@ function addCompositeQueryData(e) {
   	debugger;
   if ($('#artTitleByCompositeQuery').val() != null) {
       addArtDataAttr['artTitle'] = $('#artTitleByCompositeQuery').val();
-      console.log("artTitle add ");
   }
 //   	debugger;
   if ($('#artTimeForByCompositeQuery').val() != null || $('#artTimeForByCompositeQuery').val() != 'null') {
       addArtDataAttr['artTime'] = $('#artTimeForByCompositeQuery').val();
-      console.log("artTime add " + addArtDataAttr);
   }
-
-  console.log("addCompositeQueryData:" + addArtDataAttr);
   return addArtDataAttr;
 };
 
@@ -271,6 +260,7 @@ function findArtByCompositeQuery(e) {
         dataType: 'json',
         success: function (artVO) {
             clearArtList();
+            clearArtFavList();
             $(artVO).each(function (i, item) {
                  debugger;
                 $('#artListCenter').append(
@@ -301,22 +291,18 @@ function findArtByCompositeQuery(e) {
 
 //收藏複合查詢data
 function addFavCompositeQueryData(e) {
-var addArtDataAttr = {
-    'action': 'find_By_CompositeQuery_Use_AJAX', 'memNo':'${MemberVO.memNo}'
-};
-	debugger;
-if ($('#artTitleByCompositeQuery').val() != null) {
-    addArtDataAttr['artTitle'] = $('#artTitleByCompositeQuery').val();
-    console.log("artTitle add ");
-}
-// 	debugger;
-if ($('#artTimeForByCompositeQuery').val() != null || $('#artTimeForByCompositeQuery').val() != 'null') {
-    addArtDataAttr['artTime'] = $('#artTimeForByCompositeQuery').val();
-    console.log("artTime add " + addArtDataAttr);
-}
-
-console.log("addCompositeQueryData:" + addArtDataAttr);
-return addArtDataAttr;
+	var addArtDataAttr = {
+	    'action': 'find_By_CompositeQuery_Use_AJAX', 'memNo':'${MemberVO.memNo}'
+	};
+		debugger;
+	if ($('#artFavTitleByCompositeQuery').val() != null) {
+	    addArtDataAttr['artTitle'] = $('#artFavTitleByCompositeQuery').val();
+	}
+	// 	debugger;
+	if ($('#artFavTimeByCompositeQuery').val() != null || $('#artFavTimeByCompositeQuery').val() != 'null') {
+	    addArtDataAttr['artTime'] = $('#artFavTimeByCompositeQuery').val();
+	}
+	return addArtDataAttr;
 };
 
 //收藏複合查詢
@@ -328,20 +314,21 @@ function findArtFavByCompositeQuery(e) {
       data: addFavCompositeQueryData(e),
       dataType: 'json',
       success: function (artFavVO) {
-          clearArtList();
+    	  clearArtList();
+    	  clearArtFavList();
           $(artFavVO).each(function (i, item) {
                debugger;
               $('#artFavListCenter').append(
                   '<div id="movType" class="divWidth divHeight" style="display: inline-block"><div style="display: inline-block">電影類型：</div> <div style="display: inline-block">' +
                   item.artMovType + '</div></div>' +
-                 	'<div id="updateArticleDiv" style="display: inline-block"><form method="POST" action="<%= request.getContextPath()%>/art/art.do"><input type="hidden" class="artUpdateMemNo" name="memNo" value="${MemberVO.memNo}"><input type="hidden" class="artUpdateArtNo" name="artNo" value="'+item.artNo+'"><input type="hidden" name="action" value="select_Upadte_One_Art"><input type="hidden" class="artManageUpdate" name="artManageUpdate" value="true"><input type="submit" class="updateArticleButton combtn" value="收藏"></form></div>' +
+                  '<div id="artLike" style="display: inline-block"><button class="artFavButton combtn" title="取消收藏">取消收藏</button></div>' +
                   '<div id="artTitle"><div class="divHeight" style="font-size: 1.2rem;"><b>' + item.artTitle + '</b></div></div>' +
                   '<div id="artFavTime"><div class="divHeight" style="display: inline-block">加入收藏時間：</div> <div class="divHeight" style="display: inline-block">' +
-                  moment(item.artTime).locale('zh_TW').format('llll') +
+                  moment(item.artFavTime).locale('zh_TW').format('llll') +
                   '</div></div>' +
                   '<div><div class="artContent" data-value="' + item.artNo + '">' +
                   item.artContent + '</div></div><hr>');
-              $('#artListCenter .artContent').css({
+              $('#artFavListCenter .artContent').css({
                   'height': '10vh',
                   'white-space': 'nowrap',
                   'overflow': 'hidden',
@@ -356,35 +343,57 @@ function findArtFavByCompositeQuery(e) {
   });
 };
 
-//觸發複合查詢
-$('#findArtByTitleButton, #artTitleByCompositeQuery ,#findArtByTimeButton, #artTimeForByCompositeQuery').on('click keypress', function (e) {
+//觸發文章複合查詢
+$('#v-pills-article-tab, #findArtByTitleButton, #artTitleByCompositeQuery ,#findArtByTimeButton, #artTimeForByCompositeQuery').on('click keypress', function (e) {
         // debugger;
-        if (e.which === 13 || e.currentTarget.id === 'findArtByTimeButton' || e.currentTarget.id === 'findArtByTitleButton') {
-            debugger;
+        if (e.which === 13 || e.currentTarget.id === 'v-pills-article-tab' ||e.currentTarget.id === 'findArtByTimeButton' || e.currentTarget.id === 'findArtByTitleButton') {
             findArtByCompositeQuery(e);
+            $('#artTitleByCompositeQuery').val('');
+            $('#artTimeForByCompositeQuery').val('');
         }
     });
+    
+//觸發收藏複合查詢
+$('#v-pills-artFav-tab, #artFavTitleByCompositeQuery, #findArtFavTitleByButton, #artFavTimeByCompositeQuery, #findArtFavTimeByButton').on('click keypress', function(e){
+	if(e.which === 13 || this.id === 'v-pills-artFav-tab' || this.id === 'findArtFavTitleByButton' || this.id === 'findArtFavTimeByButton'){
+		findArtFavByCompositeQuery(e);
+		$('#artFavTitleByCompositeQuery').val('');
+		$('#artFavTimeForByCompositeQuery').val('');
+	}
+});
 
 //進入查該會員全部文章
 debugger;
 findArtByCompositeQuery(this);
 
-//進入查該會員全部收藏
-debugger;
-findArtFavByCompositeQuery(this);
-
 //修改成功訊息
 if ('${updateSuccess}' == 'updateSuccess') {
-    //      	debugger;
-    toastr['success']('修改成功！！', '成功'); 
     <%
-    session.removeAttribute("updateSuccess"); 
+    session.removeAttribute("updateSuccess");
     %>
+    toastr['success']('修改成功！！', '成功');
 }
+
+//取消收藏文章
+$('#artFavListCenter').on('click', '.artFavButton', function (event){
+	$.ajax({
+		type: 'POST',
+		url: '<%=request.getContextPath()%>/art/artFav.do',
+		data: {'action':'deleteArtFav', 'artNo':$(this).parent('div').siblings('div').children('.artContent').attr('data-value')},
+		dataType: 'json',
+		success: function (){
+					toastr['warning']('刪除收藏', '成功');
+					debugger;
+					findArtFavByCompositeQuery('v-pills-artFav-tab');
+					
+		},
+		error: function(){console.log("AJAX-changeArtFav發生錯誤囉!")}
+	});
+});
 
 //單篇文章燈箱
 debugger;
-$('#artListCenter').on('click', '.artContent', function (event) {
+$('#artListCenter, #artFavListCenter').on('click', '.artContent', function (event) {
     console.log("artContent clicked:" + $(event.currentTarget).html());
     console.log("artNo:" + $(event.currentTarget).attr('data-value'));
     // debugger;
