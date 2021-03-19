@@ -13,6 +13,10 @@
 		bottom: 1%;
 		right: 5%;
 	}
+	div>p>img {
+	width: 30px;
+	height: 40px;
+}
 </style>
 </head>
 <body>

@@ -47,7 +47,7 @@ public class TicTypService {
 		return dao.getAll();
 	}
 	
-	public Set<TicTypCartVO> getTicTypCart(Map<Integer, Integer> ticTypMap) {
+	public List<TicTypCartVO> getTicTypCart(Map<Integer, Integer> ticTypMap) {
 		return dao.getTicTypCart(ticTypMap);
 	}
 	

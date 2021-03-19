@@ -20,6 +20,7 @@ import com.food.model.FooCartVO;
 import com.food.model.FooService;
 import com.food.model.FooVO;
 import com.order_master.model.OrdMasService;
+import com.order_master.model.OrdMasVO;
 import com.session.model.SesService;
 import com.ticket_list.model.TicLisVO;
 import com.ticket_type.model.TicTypCartVO;
@@ -73,7 +74,7 @@ public class OrdMasServlet extends HttpServlet {
 			Set<FooCartVO> fooCartSet = fooSvc.getFooCart(foodMap);
 			
 			TicTypService ticTypSvc = new TicTypService();
-			Set<TicTypCartVO> ticTypCartSet = ticTypSvc.getTicTypCart(ticTypMap);
+			List<TicTypCartVO> ticTypCartSet = ticTypSvc.getTicTypCart(ticTypMap);
 			
 			/***************************3.新增完成,準備轉交(Send the Success view)***********/
 			HttpSession session = req.getSession();
@@ -103,7 +104,7 @@ public class OrdMasServlet extends HttpServlet {
 				List<String> list = sesSvc.updateSeatStatus(chooseSeatNo, sesNo);
 				
 				HttpSession session = req.getSession();
-				Set<TicTypCartVO> ticTypCartSet = (Set<TicTypCartVO>)session.getAttribute("ticTypCartSet");
+				List<TicTypCartVO> ticTypCartSet = (List<TicTypCartVO>)session.getAttribute("ticTypCartSet");
 				int i = 0;
 				for (TicTypCartVO ticTypCartVO : ticTypCartSet) {
 					ticTypCartVO.setSesSeatNo(list.get(i));
@@ -132,14 +133,15 @@ public class OrdMasServlet extends HttpServlet {
 			Integer sesNo = new Integer(req.getParameter("sesNo"));
 			
 			HttpSession session = req.getSession();
-			Set<TicTypCartVO> ticTypCartSet = (Set<TicTypCartVO>)session.getAttribute("ticTypCartSet");
+			List<TicTypCartVO> ticTypCartSet = (List<TicTypCartVO>)session.getAttribute("ticTypCartSet");
 			Set<FooCartVO> fooCartSet = (Set<FooCartVO>)session.getAttribute("fooCartSet");
 			
 			/***************************2.開始新增資料***************************************/
 			OrdMasService ordMasSvc = new OrdMasService();
-			ordMasSvc.insertWithDetail(memNo, sesNo, fooCartSet, ticTypCartSet);
+			OrdMasVO ordMasVO = ordMasSvc.insertWithDetail(memNo, sesNo, fooCartSet, ticTypCartSet);
 			
 			/***************************3.修改完成,準備轉交(Send the Success view)***********/
+			req.setAttribute("ordMasVO", ordMasVO);
 			String url = "/front-end/ordMas/OrderComplete.jsp";
 			RequestDispatcher successView = req.getRequestDispatcher(url);
 			successView.forward(req, res);
@@ -148,6 +150,40 @@ public class OrdMasServlet extends HttpServlet {
 			} catch (Exception e) {
 				errorMsgs.add(e.getMessage());
 				RequestDispatcher failureView = req.getRequestDispatcher("/front-end/ordMas/SelectSeat.jsp");
+				failureView.forward(req, res);
+			} 
+			
+		}
+		
+		if ("getOne_For_Display".equals(action)) {
+			
+			LinkedList<String> errorMsgs = new LinkedList<String>();
+			req.setAttribute("errorMsgs", errorMsgs);
+			
+			try {
+				/***********************1.接收請求參數 - 輸入格式的錯誤處理*************************/
+				String requestURL = req.getParameter("requestURL");
+				Integer ordMasNo = new Integer(req.getParameter("ordMasNo"));
+				
+				/***************************2.開始查詢資料***************************************/
+				OrdMasService ordMasSvc = new OrdMasService();
+				OrdMasVO ordMasVO =ordMasSvc.getOneOrdMas(ordMasNo);
+				
+				/***************************3.查詢完成,準備轉交(Send the Success view)***********/
+				
+				String url = "/back-end/ordMas/listOneOrder.jsp"; //預設到取票頁面
+				if ("/front-end/ordMas/listMemOrder.jsp".equals(requestURL)) {  //會員自己查看訂單明細
+					url = "/front-end/ordMas/listOrderDetail.jsp"; //forward到 訂單明細(頁面有QRcode)
+				}
+				
+				req.setAttribute("ordMasVO", ordMasVO);
+				RequestDispatcher successView = req.getRequestDispatcher(url);
+				successView.forward(req, res);
+				
+				
+			} catch (Exception e) {
+				errorMsgs.add(e.getMessage());
+				RequestDispatcher failureView = req.getRequestDispatcher("/front-end/ordMas/listMemOrder.jsp");
 				failureView.forward(req, res);
 			} 
 			

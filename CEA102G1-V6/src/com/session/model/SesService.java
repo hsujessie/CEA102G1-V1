@@ -82,12 +82,13 @@ public class SesService {
 		StringBuilder sb = new StringBuilder(orgSeatStatus);
 		String orgSeatNo = sesVO.getSesSeatNo();
 		
+		
 		List<String> list = new ArrayList<String>();
 		for (int i = 0; i < chooseSeatNo.length() ; i +=3) {
 			String oneSeatNo = chooseSeatNo.substring(i, i + 3);
 			list.add(oneSeatNo);
-			
 			int index = orgSeatNo.indexOf(oneSeatNo) / 3;
+			
 			sb.setCharAt(index, '1');
 		}
 		dao.updateSeatStatus(sesNo, sb.toString());

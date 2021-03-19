@@ -72,6 +72,15 @@
   	<url-pattern>/adm/adm.do</url-pattern>
   </servlet-mapping>  
   
+  <servlet>
+  	<servlet-name>GenerateQRcode</servlet-name>
+  	<servlet-class>jdbc.util.read_img.GenerateQRcode</servlet-class>
+  </servlet>
+  <servlet-mapping>
+  	<servlet-name>GenerateQRcode</servlet-name>
+  	<url-pattern>/util/generateQRcode</url-pattern>
+  </servlet-mapping>  
+  
 <!--  05 -->
   <servlet>
     <servlet-name>ArtServlet</servlet-name>

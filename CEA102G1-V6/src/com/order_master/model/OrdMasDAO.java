@@ -41,7 +41,7 @@ public class OrdMasDAO implements OrdMasDAO_interface {
 	private static final String GET_ONE_STMT = "SELECT ORDMAS_NO, MEM_NO, SES_NO, ORDMAS_DATE, ORDMAS_PRICE, ORDMAS_STATUS FROM ORDER_MASTER WHERE ORDMAS_NO=?";
 	
 	@Override
-	public void insertWithDetail(OrdMasVO ordMasVO, Set<TicTypCartVO> ticTypCartSet, Set<FooCartVO> fooCartSet) {
+	public OrdMasVO insertWithDetail(OrdMasVO ordMasVO, List<TicTypCartVO> ticTypCartSet, Set<FooCartVO> fooCartSet) {
 		
 		Connection con = null;
 		PreparedStatement pstmt = null;
@@ -67,6 +67,8 @@ public class OrdMasDAO implements OrdMasDAO_interface {
 				throw new RuntimeException("未取得自增主鍵");
 			}
 			key.close();
+			ordMasVO.setOrdMasNo(ordMasNo);
+			
 			TicLisService ticLisSvc = new TicLisService();
 			for (TicTypCartVO  ticTypCartVO: ticTypCartSet) {
 				Integer ticTypNo = ticTypCartVO.getTicTypNo();
@@ -111,6 +113,7 @@ public class OrdMasDAO implements OrdMasDAO_interface {
 				}
 			}
 		}
+		return ordMasVO;
 	}
 
 	@Override

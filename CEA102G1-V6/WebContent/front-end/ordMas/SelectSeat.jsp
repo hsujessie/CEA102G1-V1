@@ -48,6 +48,8 @@ div.seatCharts-legend {
 	bottom: 1%;
 	right: 5%;
 }
+
+
 </style>
 </head>
 <body>
@@ -131,6 +133,7 @@ div.seatCharts-legend {
 							<tbody>
 								<jsp:useBean id="ideSvc" scope="page" class="com.identity.model.IdeService" />
 								<c:forEach var="ticTypCartVO" items="${ticTypCartSet}">
+								<c:if test="${check != ticTypCartVO.ideNo}">
 									<tr>
 										<td>
 											<p>${ideSvc.getOneDept(ticTypCartVO.ideNo).ide_name}</p>
@@ -140,6 +143,8 @@ div.seatCharts-legend {
 											</p>
 										</td>
 									</tr>
+								</c:if>
+									<c:set var="check" value="${ticTypCartVO.ideNo}"/>
 								</c:forEach>
 								<c:forEach var="fooCartVO" items="${fooCartSet}">
 									<tr>

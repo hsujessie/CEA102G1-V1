@@ -253,7 +253,7 @@ public class AdmServlet extends HttpServlet {
 				res.sendRedirect(url);
 			} catch (Exception e) {
 				errorMsgs.add(e.getMessage());
-				RequestDispatcher failureView = req.getRequestDispatcher("/back-end/admin/updateAdmin.jsp");
+				RequestDispatcher failureView = req.getRequestDispatcher("/back-end/admin/login.jsp");
 				failureView.forward(req, res);
 			}
 		}

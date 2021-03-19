@@ -7,7 +7,7 @@ import com.food.model.FooCartVO;
 import com.ticket_type.model.TicTypCartVO;
 
 public interface OrdMasDAO_interface {
-	public void insertWithDetail(OrdMasVO ordMasVO, Set<TicTypCartVO> ticTypCartSet, Set<FooCartVO> fooCartSet);
+	public OrdMasVO insertWithDetail(OrdMasVO ordMasVO, List<TicTypCartVO> ticTypCartSet, Set<FooCartVO> fooCartSet);
 	
 	public List<OrdMasVO> getAll();
 	public List<OrdMasVO> findByMemVO(Integer memNo);

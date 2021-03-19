@@ -8,6 +8,12 @@
 <meta charset="UTF-8">
 <title>Front-End</title>
 <%@ include file="/front-end/files/frontend_importCss.file"%>
+<style>
+div>p>img {
+	width: 30px;
+	height: 40px;
+}
+</style>
 </head>
 <body>
 	<div class="wrapper">
@@ -54,48 +60,50 @@
 								</div>
 							</div>
 						</div>
+						<div class="list-group-item">
+							<h2>取票二維碼</h2>
+							<img src="<%=request.getContextPath()%>/util/generateQRcode?ordMasNo=${ordMasVO.ordMasNo}">
+						</div>
 						<div class="list-group-item">付款成功</div>
 						<div class="list-group-item">
 							會員資料
 						</div>
 						<div class="list-group-item">
 							<table class="table">
-								<thead>
-									<tr class="table-secondary">
-										<th>商品</th>
-										<th>價格</th>
-										<th>數量</th>
-										<th>小計</th>
-									</tr>
-								</thead>
-								<tbody>
-
-								<jsp:useBean id="theSvc" scope="page" class="com.theater.model.TheService" />
-								<jsp:useBean id="ticTypSvc" scope="page" class="com.ticket_type.model.TicTypService" />
+							<tbody>
 								<jsp:useBean id="ideSvc" scope="page" class="com.identity.model.IdeService" />
-
-									<c:forEach var="ticTypCartVO" items="${ticTypCartSet}">
-										<tr>
-											<td>${ideSvc.getOneDept(ticTypCartVO.ideNo).ide_name}</td>
-											<td>$<span>${ticTypCartVO.ticLisPrice}</span></td>
-											<td>${ticTypCartVO.ticTypCount}</td>
-											<td>123</td>
-										</tr>
-									</c:forEach>
-							
-									<c:forEach var="fooCartVO" items="${fooCartSet}">
-										<tr>
-											<td>${fooCartVO.fooName}</td>
-											<td>
-												$
-												<span>${fooCartVO.fooPrice}</span>
-											</td>
-											<td>${fooCartVO.fooCount}</td>
-											<td>123</td>
-										</tr>
-									</c:forEach>
-								</tbody>
-							</table>
+								<c:forEach var="ticTypCartVO" items="${ticTypCartSet}">
+									<tr>
+										<td>
+											<p>${ideSvc.getOneDept(ticTypCartVO.ideNo).ide_name}</p>
+											<p class="text-right">
+												X
+												<span>${ticTypCartVO.ticTypCount}</span>
+											</p>
+										</td>
+									</tr>
+								</c:forEach>
+								<c:forEach var="fooCartVO" items="${fooCartSet}">
+									<tr>
+										<td>
+											<p>${fooCartVO.fooName}</p>
+											<p class="text-right">
+												X
+												<span>${fooCartVO.fooCount}</span>
+											</p>
+										</td>
+									</tr>
+								</c:forEach>
+								<tr>
+									<td>
+										<p class="text-right">
+											合計
+											<span id="orderTotal">${ordMas.ordMasPrice}</span>
+										</p>
+									</td>
+								</tr>
+							</tbody>
+						</table>
 						</div>
 					</div>
 				</div>

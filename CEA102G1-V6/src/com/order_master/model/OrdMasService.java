@@ -16,7 +16,7 @@ public class OrdMasService {
 		dao = new OrdMasDAO();
 	}
 	
-	public void insertWithDetail(Integer memNo, Integer sesNo, Set<FooCartVO> fooCartSet, Set<TicTypCartVO> ticTypCartSet) {
+	public OrdMasVO insertWithDetail(Integer memNo, Integer sesNo, Set<FooCartVO> fooCartSet, List<TicTypCartVO> ticTypCartSet) {
 		OrdMasVO ordMasVO = new OrdMasVO();
 		
 		int ordMasPrice = 0;
@@ -30,7 +30,7 @@ public class OrdMasService {
 		ordMasVO.setSesNo(sesNo);
 		ordMasVO.setOrdMasPrice(ordMasPrice);
 		
-		dao.insertWithDetail(ordMasVO, ticTypCartSet, fooCartSet);
+		return dao.insertWithDetail(ordMasVO, ticTypCartSet, fooCartSet);
 	}
 	
 	public List<OrdMasVO> getAll() {
