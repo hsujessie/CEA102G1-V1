@@ -263,7 +263,7 @@
 	/* =========================================================================================== */	
 	<c:if test="${empty sesTimeList}">
 	let addtime = document.getElementById("addtime");
-		let count = 0;
+	let count = 0;
 	let timeCount = 10;   // 預設 10'o clock
 	addtime.addEventListener("click",function(){
 		$('#sesTime-errmsg').css('display','none');
@@ -295,7 +295,7 @@
 	},false);
 	
 	function removeTr(e){
-		i--;
+		count--;
 		e.closest('tr').remove();
 	}
 	</c:if>
