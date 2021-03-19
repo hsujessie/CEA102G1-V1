@@ -8,13 +8,11 @@
 
 <!DOCTYPE html>
 <%		
-
-		if(session.getAttribute("MemberVO") != null){
-			MemberVO memberVO = (MemberVO)session.getAttribute("MemberVO");
-			session.setAttribute("memNo", memberVO.getMemNo());
-			session.getAttribute("memNo");			
-		}
-
+	if(session.getAttribute("MemberVO") != null){
+		MemberVO memberVO = (MemberVO)session.getAttribute("MemberVO");
+		session.setAttribute("memNo", memberVO.getMemNo());
+		session.getAttribute("memNo");			
+	}
 %>
 <html>
 
@@ -37,6 +35,10 @@
     <!-- toastr v2.1.4 -->
     <link href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/2.1.4/toastr.min.css" rel="stylesheet" />
     <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/2.1.4/toastr.min.js"></script>
+<!--     moment -->
+    <script src="<%=request.getContextPath()%>/resource/js/moment-with-locales.min.js" ></script>
+<!-- 	fontawesome -->
+	<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.15.2/css/all.css" integrity="sha384-vSIIfh2YWi9wW0r9iZe7RJPrKwp6bG+s9QZMoITbCckVJqGCCRhc+ccxNcdpHuYu" crossorigin="anonymous">
 <!--     fronend_importJs -->
 	<script src="<%=request.getContextPath()%>/resource/easing/easing.min.js"></script>
 	<script src="<%=request.getContextPath()%>/resource/owlcarousel/owl.carousel.min.js"></script>
@@ -45,21 +47,21 @@
     <script>
         toastr.options = {
             // 參數設定
-            "closeButton": false, // 顯示關閉按鈕
-            "debug": false, // 除錯
-            "newestOnTop": false, // 最新一筆顯示在最上面
-            "progressBar": true, // 顯示隱藏時間進度條
-            "positionClass": "toast-top-right", // 位置的類別
-            "preventDuplicates": false, // 隱藏重覆訊息
-            "onclick": null, // 當點選提示訊息時，則執行此函式
-            "showDuration": "300", // 顯示時間(單位: 毫秒)
-            "hideDuration": "1000", // 隱藏時間(單位: 毫秒)
-            "timeOut": "5000", // 當超過此設定時間時，則隱藏提示訊息(單位: 毫秒)
-            "extendedTimeOut": "1000", // 當使用者觸碰到提示訊息時，離開後超過此設定時間則隱藏提示訊息(單位: 毫秒)
-            "showEasing": "swing", // 顯示動畫時間曲線
-            "hideEasing": "linear", // 隱藏動畫時間曲線
-            "showMethod": "fadeIn", // 顯示動畫效果
-            "hideMethod": "fadeOut" // 隱藏動畫效果
+            "closeButton": false,
+            "debug": false,
+            "newestOnTop": false,
+            "progressBar": true,
+            "positionClass": "toast-top-right",
+            "preventDuplicates": false,
+            "onclick": null,
+            "showDuration": "300",
+            "hideDuration": "1000",
+            "timeOut": "5000",
+            "extendedTimeOut": "1000",
+            "showEasing": "swing",
+            "hideEasing": "linear",
+            "showMethod": "fadeIn",
+            "hideMethod": "fadeOut"
         }
     </script>
     <style>
@@ -117,9 +119,9 @@
             //列出側邊欄電影類型
             showArtMoveType();
             
-          	//列出Top3點擊文章列表
-          	debugger;
-          	ListArtTopThreeQuery();
+//           	//列出Top3點擊文章列表
+//           	debugger;
+//           	ListArtTopThreeQuery();
             
             //列出全部文章列表
             ListArtQuery();
@@ -205,12 +207,15 @@
                 document.getElementById("artTitleByCompositeQuery").placeholder = '依' + $(this).data(
                     'value') + '查詢';
                 debugger;
+              	//清空熱門文章列表
+    			clearListArtTopThreeQuery();
+              	
                 clearArtCompositeQuery();
                 $(this).addClass('selectedMovType');
                 findArtByCompositeQuery(e);
                 
               	//呼叫電影類型熱門文章
-                movTypeHotArticle($(this).data('value'));
+//                 movTypeHotArticle($(this).data('value'));
             });
             
             //時間月曆
@@ -255,17 +260,41 @@
             //返回討論區首頁
             $('#returnArticle').click(function(){
             	
+                //清空文章列表
+                clearArtList();
+                
+              	//清空熱門文章列表
+    			clearListArtTopThreeQuery();
+            	
+                //列出全部文章列表
+                ListArtQuery();            	
+            });
+            
+            //依時間排序
+            $('#findArtByTimeNav').click(function(){
+            	//清空文章列表
+                clearArtList();
+            	
             	//清空熱門文章列表
     			clearListArtTopThreeQuery();
             	
-                //清空文章列表
+                //列出全部文章列表
+                ListArtQuery();
+            });
+            
+            //依熱門度排序
+            $('#findArtByClickedTimesNav').click(function(){
+            	//清空文章列表
                 clearArtList();
+            	
+            	//清空熱門文章列表
+    			clearListArtTopThreeQuery();
             	
               	//列出Top3點擊文章列表
               	ListArtTopThreeQuery();
-                
-                //列出全部文章列表
-                ListArtQuery();            	
+              	
+              	//列出Top3點後擊文章列表
+              	ListAfterTopThreeArticle();
             });
         });
 

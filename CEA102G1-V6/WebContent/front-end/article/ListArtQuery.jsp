@@ -9,16 +9,9 @@
 <jsp:useBean id="artSvc" scope="page" class="com.art.model.ArtService"/>
 
 <!DOCTYPE html>
-
-
-
-
 <html>
 <head>
 <meta charset="UTF-8">
-<script src="<%=request.getContextPath()%>/resource/js/moment-with-locales.min.js" ></script>
-<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.15.2/css/all.css" integrity="sha384-vSIIfh2YWi9wW0r9iZe7RJPrKwp6bG+s9QZMoITbCckVJqGCCRhc+ccxNcdpHuYu" crossorigin="anonymous">
-
 
 <style>
 	#artListCenter{
@@ -112,6 +105,9 @@
     	border-radius: 20px;
     	padding: 5%;
     }
+    .nav-item{
+    	cursor: pointer;
+    }
 </style>
 
 <script type="text/javascript">
@@ -203,9 +199,6 @@ function ListArtTopThreeQuery(){
 		dataType: 'json',
 		success: function (artVO){
 			debugger;
-			//清空熱門文章列表
-			clearListArtTopThreeQuery();
-			
 			//加入文章內容
 			$(artVO).each(function(i, item){
 				$('#Top3Article').append(
@@ -221,6 +214,32 @@ function ListArtTopThreeQuery(){
 		},
 		error: function(){console.log("AJAX-ListArtTopThreeQuery發生錯誤囉!")}
 	});
+}
+
+//列出前三高點擊率後文章
+function ListAfterTopThreeArticle(){
+	//列出top3以後文章
+	debugger;
+	$.ajax({
+		type: 'POST',
+		url: '<%=request.getContextPath()%>/art/art.do',
+		data: {'action':'artNotTopThree_Show_By_AJAX'},
+		dataType: 'json',
+		success: function (artVO){
+			debugger;
+			//加入文章內容
+			$(artVO).each(function(i, item){
+				$('#artListCenter').append(
+						'<div id="artAuthor" style="display: inline-block"><div style="display: inline-block">作者：</div> <div style="display: inline-block">'+item.memName+'</div></div>'
+						+'<div id="movType" style="display: inline-block"><div style="display: inline-block">電影類型：</div> <div style="display: inline-block">'+item.artMovType+'</div></div>'
+						+'<div id="artTitle"><div style="font-size: 1.2rem;"><b>'+item.artTitle+'</b></div></div>'
+						+'<div id="artTime"><div style="display: inline-block">修改時間：</div> <div style="display: inline-block">'+moment(item.artTime).locale('zh_TW').format('llll')+'</div></div>'
+						+'<div><div class="artContent" data-value="'+item.artNo+'">'+item.artContent+'</div></div><hr>')			
+						;
+			});
+		},
+		error: function(){console.log("AJAX-ListArtTopThreeQuery發生錯誤囉!")}
+	});	
 }
 
 //查詢收藏此文章的情況
@@ -402,6 +421,17 @@ function clearRepRptReson(){
 </head>
 <body>
 <!-- 中間區塊開始 -->
+<!-- 選擇依何種排列 -->
+<ul class="nav">
+    <li id="findArtByTimeNav" class="nav-item">
+        <a class="nav-link active">日期排序</a>
+    </li>
+    <li id="findArtByClickedTimesNav" class="nav-item">
+        <a class="nav-link">熱門度排序</a>
+    </li>
+</ul>
+<hr>
+<!-- 前三熱門文章 -->
 <div id="Top3Article">
 	
 </div>

@@ -348,7 +348,7 @@ public class ArtServlet extends HttpServlet {
 			out.close();
 		}
 		
-		//列出熱門文章
+		//列出前三熱門文章
 		if("artTopThree_Show_By_AJAX".equals(action)) {
 			JSONArray array = new JSONArray();
 			ArtService artSvc = new ArtService();
@@ -365,6 +365,7 @@ public class ArtServlet extends HttpServlet {
 			
 			for(String artNo : resultArt) {
 				JSONObject obj = new JSONObject();
+				System.out.println("artNo:"+Integer.parseInt(artNo));
 				ArtVO artVO = artSvc.getOneArt(Integer.parseInt(artNo));
 				
 				try {
@@ -381,7 +382,52 @@ public class ArtServlet extends HttpServlet {
 					e.printStackTrace();
 				}
 				array.put(obj);
+			}
+			jedis.close();
+			
+			/*==============傳回=============*/
+			response.setContentType("text/plain");
+			response.setCharacterEncoding("UTF-8");
+			PrintWriter out = response.getWriter();
+			out.write(array.toString());
+			out.flush();
+			out.close();
+		}
+		
+		//列出非前三熱門文章
+		if("artNotTopThree_Show_By_AJAX".equals(action)) {
+			JSONArray array = new JSONArray();
+			ArtService artSvc = new ArtService();
+			MemberService memSvc = new MemberService();
+			
+			/*====================從redis取前三筆點擊率===================*/
+			//建立redis連線
+			Jedis jedis = pool.getResource();
+			jedis.auth("123456");
+
+			//查Top3
+			List<String> resultArt = jedis.sort("all:artNo", new SortingParams().by("artNo:*->clickTimes").desc().limit(3, -1));
+			System.out.println("查非Top3:"+resultArt);
+			
+			for(String artNo : resultArt) {
+				JSONObject obj = new JSONObject();
+				System.out.println("artNo:"+Integer.parseInt(artNo));
+				ArtVO artVO = artSvc.getOneArt(Integer.parseInt(artNo));
 				
+				try {
+					obj.put("artNo", artVO.getArtNo());
+					obj.put("memName", memSvc.getOneMember((artVO.getMemNo())).getMemName());
+					obj.put("memNo", artVO.getMemNo());
+					obj.put("artTitle", artVO.getArtTitle());
+					obj.put("artContent", artVO.getArtContent());
+					obj.put("artTime", artVO.getArtTime());
+					obj.put("artMovType", artVO.getMovType());
+					obj.put("artReplyno", artVO.getArtReplyno());
+					
+				} catch (JSONException e) {
+					e.printStackTrace();
+				}
+				array.put(obj);
 			}
 			jedis.close();
 			
