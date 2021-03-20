@@ -44,4 +44,8 @@ public class OrdMasService {
 	public OrdMasVO getOneOrdMas(Integer ordMasNo) {
 		return dao.findByprimarykey(ordMasNo);
 	}
+	
+	public void changeStatus(Integer ordMasNo, Integer ordMasStatus) {
+		dao.changeStatus(ordMasNo, ordMasStatus);
+	}
 }

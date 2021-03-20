@@ -98,9 +98,24 @@ public class OrdMasServlet extends HttpServlet {
 				String chooseSeatNo = req.getParameter("chooseSeatNo");
 				
 				Integer sesNo = new Integer(req.getParameter("sesNo"));
-			
-			/***************************2.開始修改資料***************************************/
+				
+				Integer ticTypTotal = new Integer(req.getParameter("ticTypTotal"));
 				SesService sesSvc = new SesService();
+				boolean result = sesSvc.isAlreadyChoose(chooseSeatNo, sesNo);
+				String sesSeatStatus = sesSvc.getOneSes(sesNo).getSesSeatStatus();
+				
+				if (result) {
+					errorMsgs.push("error");
+					req.setAttribute("sesSeatStatus", sesSeatStatus);
+					req.setAttribute("ticTypTotal", ticTypTotal);
+					
+					String url = "/front-end/ordMas/SelectSeat.jsp";
+					RequestDispatcher successView = req.getRequestDispatcher(url);
+					successView.forward(req, res);
+					return;
+				}
+				
+			/***************************2.開始修改資料***************************************/
 				List<String> list = sesSvc.updateSeatStatus(chooseSeatNo, sesNo);
 				
 				HttpSession session = req.getSession();
@@ -167,18 +182,48 @@ public class OrdMasServlet extends HttpServlet {
 				
 				/***************************2.開始查詢資料***************************************/
 				OrdMasService ordMasSvc = new OrdMasService();
-				OrdMasVO ordMasVO =ordMasSvc.getOneOrdMas(ordMasNo);
 				
-				/***************************3.查詢完成,準備轉交(Send the Success view)***********/
-				
+				//判斷是否會員自己查看明細
 				String url = "/back-end/ordMas/listOneOrder.jsp"; //預設到取票頁面
-				if ("/front-end/ordMas/listMemOrder.jsp".equals(requestURL)) {  //會員自己查看訂單明細
-					url = "/front-end/ordMas/listOrderDetail.jsp"; //forward到 訂單明細(頁面有QRcode)
+				if ("/front-end/ordMas/listMemOrder.jsp".equals(requestURL)) {  
+					url = "/front-end/ordMas/listOrderDetail.jsp"; //forward到 會員訂單明細(頁面有QRcode)
+				} else {
+					ordMasSvc.changeStatus(ordMasNo, 1); 
 				}
+				
+				OrdMasVO ordMasVO =ordMasSvc.getOneOrdMas(ordMasNo);
+				/***************************3.查詢完成,準備轉交(Send the Success view)***********/
 				
 				req.setAttribute("ordMasVO", ordMasVO);
 				RequestDispatcher successView = req.getRequestDispatcher(url);
 				successView.forward(req, res);
+				
+				
+			} catch (Exception e) {
+				errorMsgs.add(e.getMessage());
+				RequestDispatcher failureView = req.getRequestDispatcher("/front-end/ordMas/listMemOrder.jsp");
+				failureView.forward(req, res);
+			} 
+			
+		}
+		
+		if ("change_status".equals(action)) {
+			
+			LinkedList<String> errorMsgs = new LinkedList<String>();
+			req.setAttribute("errorMsgs", errorMsgs);
+			
+			try {
+				/***********************1.接收請求參數 - 輸入格式的錯誤處理*************************/
+				Integer ordMasNo = new Integer(req.getParameter("ordMasNo"));
+				
+				/***************************2.開始修改資料***************************************/
+				OrdMasService ordMasSvc = new OrdMasService();
+				ordMasSvc.changeStatus(ordMasNo, 2);
+				
+				/***************************3.修改完成,準備轉交(Send the Success view)***********/
+				String url = req.getContextPath() + "/front-end/ordMas/listMemOrder.jsp";
+				
+				res.sendRedirect(url);
 				
 				
 			} catch (Exception e) {

@@ -95,4 +95,20 @@ public class SesService {
 		
 		return list;
 	}
+	
+	public boolean isAlreadyChoose(String chooseSeatNo, Integer sesNo) {
+		SesVO sesVO = dao.findByPrimaryKey(sesNo);
+		String orgSeatStatus = sesVO.getSesSeatStatus();
+		String orgSeatNo = sesVO.getSesSeatNo();
+		
+		for (int i = 0; i < chooseSeatNo.length() ; i +=3) {
+			String oneSeatNo = chooseSeatNo.substring(i, i + 3);
+			int index = orgSeatNo.indexOf(oneSeatNo) / 3;
+			
+			if (orgSeatStatus.charAt(index) == '1') {
+				return true;
+			}
+		}
+		return false;
+	}
 }

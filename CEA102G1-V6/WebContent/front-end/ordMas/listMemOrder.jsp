@@ -24,6 +24,10 @@
 .form-sty {
 	margin: 20px 0 0 10px;
 }
+
+.nav-pills .nav-link.active, .nav-pills .show>.nav-link {
+	background-color:#aa9166;
+}
 </style>
 </head>
 <body>
@@ -36,15 +40,6 @@
 
 		<!-- Page Header Start -->
 		<!-- 看自己需不需要標題 -->
-<!-- 		<div class="page-header"> -->
-<!-- 			<div class="container"> -->
-<!-- 				<div class="row"> -->
-<!-- 					<div class="col-12"> -->
-<!-- 						<h2>Front-End</h2> -->
-<!-- 					</div> -->
-<!-- 				</div> -->
-<!-- 			</div> -->
-<!-- 		</div> -->
 		<!-- Page Header End -->
 
 
@@ -70,7 +65,9 @@
 										<th class="th-adjust">電影</th>
 										<th>場次時間</th>
 										<th>訂單狀態</th>
+										<th>訂購時間</th>
 										<th>查看</th>
+										<th>退票</th>
 									</tr>
 								</thead>
 
@@ -87,7 +84,8 @@
 												<td>${count}</td>
 												<td>${movSvc.getOneMov(sesSvc.getOneSes(sesNo).movNo).movname}</td>
 												<td>${sesSvc.getOneSes(sesNo).sesDate} <fmt:formatDate value="${sesSvc.getOneSes(sesNo).sesTime}" pattern="HH:mm"/></td>
-												<td>未取票</td>
+												<td style="color:blue">未取票</td>
+												<td><fmt:formatDate value="${ordMasVO.ordMasDate}" pattern="yyyy-MM-dd HH:mm"/></td>
 												<td>
 																									<form method="post" action="<%=request.getContextPath()%>/ordMas/ordMas.do">
 																										<input type="hidden" name="ordMasNo" value="${ordMasVO.ordMasNo}" />
@@ -95,7 +93,13 @@
 																										<input type="hidden" name="requestURL" value="<%=request.getServletPath()%>" />
 																										<input type="submit" value="查看詳情" class="input-pos combtn" />
 																									</form>
-<!-- 													<button type="button" class="combtn look-detail" data-toggle="modal" data-target="#exampleModal">查看詳情</button> -->
+												</td>
+												<td>
+													<form method="post" action="<%=request.getContextPath()%>/ordMas/ordMas.do" id="changeStatusForm">
+														<input type="hidden" name="action" value="change_status">
+														<input type="hidden" name="ordMasNo" value="${ordMasVO.ordMasNo}">
+													</form>
+													<button class="refund combtn">退票</button>
 												</td>
 											</tr>
 											<c:set var="count" value="${count + 1}" />
@@ -124,8 +128,8 @@
 											<tr class="sty-height" valign='middle'>
 												<td>${count}</td>
 												<td>${movSvc.getOneMov(sesSvc.getOneSes(sesNo).movNo).movname}</td>
-												<td>${sesSvc.getOneSes(sesNo).sesDate}${sesSvc.getOneSes(sesNo).sesTime}</td>
-												<td>${ordMasVO.ordMasStatus == 1?"已完成":"已取消"}</td>
+												<td>${sesSvc.getOneSes(sesNo).sesDate} <fmt:formatDate value="${sesSvc.getOneSes(sesNo).sesTime}" pattern="HH:mm"/></td>
+												<td ${ordMasVO.ordMasStatus == 1?"style='color:green'":"style='color:red'"}>${ordMasVO.ordMasStatus == 1?"已完成":"已取消"}</td>
 												<td>
 																									<form method="post" action="<%=request.getContextPath()%>/ordMas/ordMas.do">
 																										<input type="hidden" name="ordMasNo" value="${ordMasVO.ordMasNo}" />
@@ -133,32 +137,14 @@
 																										<input type="hidden" name="requestURL" value="<%=request.getServletPath()%>" />
 																										<input type="submit" value="查看詳情" class="input-pos combtn" />
 																									</form>
-<!-- 													<button type="button" class=" combtn look-detail" data-toggle="modal" data-target="#exampleModal">查看詳情</button> -->
 												</td>
+												
 											</tr>
 											<c:set var="count" value="${count + 1}" />
 										</c:if>
 									</c:forEach>
 								</tbody>
 							</table>
-						</div>
-					</div>
-					<div class="modal fade" id="exampleModal" tabindex="-1"
-						aria-labelledby="exampleModalLabel" aria-hidden="true">
-						<div class="modal-dialog">
-							<div class="modal-content">
-								<div class="modal-header">
-									<h5 class="modal-title" id="exampleModalLabel">訂單詳情</h5>
-									<button type="button" class="close" data-dismiss="modal"
-										aria-label="Close">
-										<span aria-hidden="true">&times;</span>
-									</button>
-								</div>
-								<div class="modal-body">...</div>
-								<div class="modal-footer">
-									<button type="button" class="combtn" data-dismiss="modal">關閉</button>
-								</div>
-							</div>
 						</div>
 					</div>
 				</div>
@@ -176,10 +162,38 @@
 	</div>
 
 	<%@ include file="/front-end/files/frontend_importJs.file"%>
+	<script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
 	<script>
 		$(".look-detail").click(function() {
 			
 		})
+		
+		$(".refund").click(function() {
+			swal({
+                icon: "warning",
+                title: "確定要退票嗎?",
+                buttons: {
+                    a: {
+                        text: "取消",
+                        value: "cancel",
+                        visible: true
+                    },
+                    danger: {
+                        text: "確定",
+                        value: "confirm",
+                        visible: true
+                    }
+                }
+            }).then((value) => {
+                if (value === "confirm") {
+                	$("#changeStatusForm").submit();
+//                     swal("退票成功!", "", "success", { button: "關閉" });
+                }
+            });
+		});
+		
+		
+		
 	</script>
 </body>
 </html>

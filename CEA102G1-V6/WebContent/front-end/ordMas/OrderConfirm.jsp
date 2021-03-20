@@ -15,8 +15,63 @@
 		right: 5%;
 	}
 	div>p>img {
-	width: 30px;
-	height: 40px;
+		width: 30px;
+		height: 40px;
+	}
+	
+	#grade {
+	border: 1px solid black;
+	height: 100px;
+	width: 100px;
+}
+
+#grade-number {
+	color: white;
+}
+
+#grade-number,#grade-word {
+	padding-top: 15px;
+	height: 50px;
+}
+
+.list-group-item, #tabs_item, .card {
+	border: 1px solid #aa9166;
+	margin-bottom: 10px;
+
+}
+
+#table-secondary {
+	background-color: #c5b497;
+}
+
+#tabs>.ui-widget-header {
+	background-color: #d7ccb8;
+}
+
+#tabs>ul>li {
+	background-color: #c5b497;
+	border: 1px solid #b39d76;
+}
+
+.ui-widget.ui-widget-content,.ui-widget-content {
+	border:0;
+}
+
+.card-header {
+	background-color: #c5b497;
+}
+
+.list-group-item+.list-group-item {
+	border:1px solid #aa9166;
+}
+
+div>p>span {
+	margin: 0 3px;
+}
+
+.info {
+	border: 0;
+	background-color: #b39d76;
 }
 </style>
 </head>
@@ -65,11 +120,20 @@
 							</div>
 						</div>
 					</div>
+					<div class="list-group-item info">
+							<div class="row">
+								<div class="col text-center">
+									<h2 class="title">確認訂單內容</h2>
+									<p>請再次確認所選座位以及以下商品名稱、價格、數量</p>
+								</div>
+							</div>
+					</div>
+					
 					<div class="list-group-item">
 						<form method="post" action="<%=request.getContextPath()%>/ordMas/ordMas.do" id="form">
 							<table class="table">
 								<thead>
-									<tr class="table-secondary">
+									<tr id="table-secondary">
 										<th>商品</th>
 										<th>價格</th>
 										<th>數量</th>
@@ -123,16 +187,37 @@
 							<input type="hidden" name="action" value="check_out">
 						</form>
 					</div>
+					
+					<div class="list-group-item info">
+							<div class="row">
+								<div class="col text-center">
+									<h2 class="title">請輸入付款資訊</h2>
+									<p>以下輸入您的信用卡資訊</p>
+								</div>
+							</div>
+					</div>
+					<div class="list-group-item">
+							<div class="row">
+								<div class="col text-center">
+									<h2 class="title">請輸入付款資訊</h2>
+									<p>以下輸入您的信用卡資訊</p>
+								</div>
+							</div>
+					</div>
 				</div>
 			</div>
 
 			<div id="b" class="col-3">
-				<div class="card border-primary mb-3">
+				<div class="card mb-3">
+					<div class="card-header">時間剩餘  <span id="timeOut">5:00</span></div>
+					<div class="card-body"></div>
+				</div>
+				<div class="card mb-3">
 					<div class="card-header">會員專區</div>
 					<div class="card-body">XXX 你好</div>
 				</div>
 
-				<button id="nextStep" class="btn btn-primary btn-lg">確認結帳</button>
+				<button id="nextStep" class="btn combtn btn-lg">確認結帳</button>
 			</div>
 		</div>
 	</div>
@@ -198,6 +283,23 @@
 				total += parseInt($(items[i]).text());
 			}
 			return total;
+		}
+		
+		let sec = 20;
+		setInterval(function() {
+			$("#timeOut").text(timeFormat(sec));
+            sec -= 1;
+        }, 1000)
+        
+        setTimeout(function() {
+            window.location.replace("${pageContext.request.contextPath}/front-end/index.jsp");
+        }, sec * 1000);
+        
+        function timeFormat(second) {
+			let minute = parseInt(second / 60);
+			second %= 60;
+			(second < 10) ? second = '0' + second: second;
+			return minute + ":" + second;
 		}
 	</script>
 </body>

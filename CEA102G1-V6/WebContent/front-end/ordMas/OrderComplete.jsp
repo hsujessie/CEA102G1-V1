@@ -10,10 +10,70 @@
 <title>Front-End</title>
 <%@ include file="/front-end/files/frontend_importCss.file"%>
 <style>
+#nextStep {
+		position: absolute;
+		bottom: 1%;
+		right: 5%;
+	}
 div>p>img {
 	width: 30px;
 	height: 40px;
 }
+	#grade {
+	border: 1px solid black;
+	height: 100px;
+	width: 100px;
+}
+
+#grade-number {
+	color: white;
+}
+
+#grade-number,#grade-word {
+	padding-top: 15px;
+	height: 50px;
+}
+
+.list-group-item, #tabs_item, .card {
+	border: 1px solid #aa9166;
+	margin-bottom: 10px;
+
+}
+
+#table-secondary {
+	background-color: #c5b497;
+}
+
+#tabs>.ui-widget-header {
+	background-color: #d7ccb8;
+}
+
+#tabs>ul>li {
+	background-color: #c5b497;
+	border: 1px solid #b39d76;
+}
+
+.ui-widget.ui-widget-content,.ui-widget-content {
+	border:0;
+}
+
+.card-header {
+	background-color: #c5b497;
+}
+
+.list-group-item+.list-group-item {
+	border:1px solid #aa9166;
+}
+
+div>p>span {
+	margin: 0 3px;
+}
+
+.info {
+	border: 0;
+	background-color: #b39d76;
+}
+
 </style>
 </head>
 <body>
@@ -32,9 +92,11 @@ div>p>img {
 		<!-- PUT HERE Start -->
 		<div class="container">
 			<div class="row">
-				<div class="col">
+				<div class="col-12"><h2 style="color:green;">付款成功</h2></div>
+				<div class="col-9">
 					<div class="list-group">
-						<div class="list-group-item">
+					<div class="row">
+						<div class="list-group-item" style="width:100%;">
 							<div class="row">
 								<jsp:useBean id="sesSvc" scope="page" class="com.session.model.SesService" />
 								<jsp:useBean id="movSvc" scope="page" class="com.movie.model.MovService" />
@@ -61,15 +123,9 @@ div>p>img {
 								</div>
 							</div>
 						</div>
-						<div class="list-group-item">
-							<h2>取票二維碼</h2>
-							<img src="<%=request.getContextPath()%>/util/generateQRcode?ordMasNo=${ordMasVO.ordMasNo}">
-						</div>
-						<div class="list-group-item">付款成功</div>
-						<div class="list-group-item">
-							會員資料
-						</div>
-						<div class="list-group-item">
+
+						<div class="list-group-item" style="width:100%;">
+							<h4 style="font-style:normal;">商品明細</h4>
 							<table class="table">
 							<tbody>
 								<jsp:useBean id="ideSvc" scope="page" class="com.identity.model.IdeService" />
@@ -111,6 +167,14 @@ div>p>img {
 						</div>
 					</div>
 				</div>
+			</div>
+			<div class="col-3">
+				<div class="list-group-item" style="text-align:center;">
+					<h2 style="font-style:normal;">取票二維碼</h2>
+					<img src="<%=request.getContextPath()%>/util/generateQRcode?ordMasNo=${ordMasVO.ordMasNo}">
+				</div>
+				<a id="nextStep" class="btn combtn" href="<%=request.getContextPath()%>/front-end/ordMas/listMemOrder.jsp">前往購票管理</a>
+			</div>
 			</div>
 		</div>
 		<!-- PUT HERE End -->

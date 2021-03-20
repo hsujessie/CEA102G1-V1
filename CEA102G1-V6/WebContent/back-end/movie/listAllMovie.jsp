@@ -98,7 +98,7 @@
 			                            </c:forEach>
 			                        </select>
 			                        <input type="hidden" name="action" value="listMovies_ByCompositeQuery">
-				        			<a class="btn btn-light btn-brd grd1 effect-1 mr-botm">
+				        			<a id="nextStep"class="btn btn-light btn-brd grd1 effect-1 mr-botm">
 										<input type="submit" value="搜尋" class="input-pos">
 				        			</a>
 		                    	</FORM>                    

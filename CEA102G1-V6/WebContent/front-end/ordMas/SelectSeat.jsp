@@ -134,6 +134,7 @@ li.seatCharts-legendItem {
 </style>
 </head>
 <body>
+	
         <div class="wrapper">
             <!-- Nav Bar Start -->
 			<c:set value="${pageContext.request.requestURI}" var="urlRecog"></c:set>
@@ -194,6 +195,7 @@ li.seatCharts-legendItem {
 								</div>
 							</div>
 							<input type="hidden" name="sesNo" value="${param.sesNo}">
+							<input type="hidden" name="ticTypTotal" value="${ticTypTotal}">
 							<input type="hidden" name="chooseSeatNo" value="" id="chooseSeatNo">
 							<input type="hidden" name="action" value="confirm_order">
 						</form>
@@ -383,7 +385,10 @@ li.seatCharts-legendItem {
 				return "18+";
 			}
 		}
-    
+    	
+		if (${not empty errorMsgs}) {
+			swal("位置已被選擇", "請重新選位", "error", {button: "關閉"});
+		}
 	</script>
 </body>
 </html>
