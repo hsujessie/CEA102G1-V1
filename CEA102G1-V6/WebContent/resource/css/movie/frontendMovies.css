@@ -65,6 +65,7 @@
 .movies .movies-wrap {
     position: relative;
     width: 100%;
+    height: 100%;
 }
 
 .movies img {
@@ -277,59 +278,9 @@
     padding: 0 15px;
     position: relative;
     background: inherit;
-    width: 50%;
+    width: 60%;
     margin-top: -5px;
-}
-
-.reviews .reviews-container.left {
-    left: 0;
-}
-
-.reviews .reviews-container.right {
-    left: 50%;
-}
-
-.reviews .reviews-container::before {
-    content: '';
-    position: absolute;
-    width: 15px;
-    height: 5px;
-    background: #aa9166;
-    z-index: 1;
-}
-
-.reviews .reviews-container.left::before {
-    top: 0;
-    right: 0;
-}
-
-.reviews .reviews-container.right::before {
-    bottom: 0;
-    left: 0;
-}
-
-.reviews .reviews-container::after {
-    content: '';
-    position: absolute;
-    width: 15px;
-    height: 5px;
-    background: #aa9166;
-    z-index: 1;
-}
-
-.reviews .reviews-container.left::after {
-    bottom: 0;
-    right: 0;
-}
-
-.reviews .reviews-container.right::after {
-    top: 0;
-    left: 0;
-}
-
-.reviews .reviews-container:first-child::before,
-.reviews .reviews-container:last-child::before {
-    display: none;
+    margin: auto;
 }
 
 .reviews .reviews-container .reviews-content {
@@ -337,6 +288,7 @@
     background: #121518;
     position: relative;
     border-right: 5px solid #aa9166;
+    margin-top: 5%;
 }
 
 .reviews .reviews-container.right .reviews-content {

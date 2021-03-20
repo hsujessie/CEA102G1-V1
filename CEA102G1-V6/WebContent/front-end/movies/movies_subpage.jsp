@@ -259,12 +259,12 @@
                         <h2>Reviews</h2>
                     </div>
                     <div class="reviews-start">
-                    	<c:forEach var="comVO" items="${comSvc.all}" varStatus="no">
+                    	<c:forEach var="comVO" items="${comSvc.all}">
                     		<c:if test="${(comVO.movNo == movVO.movno) and (comVO.comStatus == 0)}">
-		                         <div class="reviews-container ${(no.index mod 2 == 0) ? 'left' : 'right'}"><!-- 這邊怪怪的ㄋㄟ -->
+		                         <div class="reviews-container">
 		                            <div class="reviews-content">
 		                                <c:set var="satObj" value="${satSvc.getOneSat(comVO.movNo,comVO.memNo)}"></c:set>                            
-		                                <h2><span>Ratings</span><c:forEach var="i" begin="1" end="${satObj.satRating}"><i class="fa fa-star" aria-hidden="true"></i></c:forEach></h2>	                                
+		                                <h2><span>Ratings</span><c:forEach var="i" begin="0" end="${satObj.satRating}"><i class="fa fa-star" aria-hidden="true"></i></c:forEach></h2>	                                
 		                                <p>${comVO.comContent}</p>
 		                                																														
 										<jsp:useBean id="memSvc" scope="page" class="com.member.model.MemberService"/>
