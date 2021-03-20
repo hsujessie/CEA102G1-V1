@@ -1,6 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
 
 <!DOCTYPE html>
 <html>
@@ -41,18 +42,18 @@ div>p>img {
 								<div class="col-2">
 									<div id="grade" class="text-center">
 										<div id="grade-number"></div>
-										<div id="grade-word">${movSvc.getOneMov(sesSvc.getOneSes(1).movNo).movrating}</div>
+										<div id="grade-word">${movSvc.getOneMov(sesSvc.getOneSes(param.sesNo).movNo).movrating}</div>
 									</div>
 								</div>
 								<div class="col-7">
-									<h3>(${movSvc.getOneMov(sesSvc.getOneSes(1).movNo).movver}${movSvc.getOneMov(sesSvc.getOneSes(1).movNo).movlan})${movSvc.getOneMov(sesSvc.getOneSes(1).movNo).movname}</h3>
+									<h3>(${movSvc.getOneMov(sesSvc.getOneSes(param.sesNo).movNo).movver}${movSvc.getOneMov(sesSvc.getOneSes(param.sesNo).movNo).movlan})${movSvc.getOneMov(sesSvc.getOneSes(param.sesNo).movNo).movname}</h3>
 								</div>
 								<div class="col-3">
 									<p>
-										<img src="<%=request.getContextPath()%>/resource/images/ordMasIcons/sesTime.png"><span> </span>${sesSvc.getOneSes(1).sesDate}${sesSvc.getOneSes(1).sesTime}
+										<img src="<%=request.getContextPath()%>/resource/images/ordMasIcons/sesTime.png"><span> </span>${sesSvc.getOneSes(param.sesNo).sesDate} <fmt:formatDate value="${sesSvc.getOneSes(param.sesNo).sesTime}" pattern="HH:mm"/>
 									</p>
 									<p>
-										<img src="<%=request.getContextPath()%>/resource/images/ordMasIcons/theater.png"><span> </span>第${sesSvc.getOneSes(1).theNo}廳
+										<img src="<%=request.getContextPath()%>/resource/images/ordMasIcons/theater.png"><span> </span>第${sesSvc.getOneSes(param.sesNo).theNo}廳
 									</p>
 									<p>
 										<img src="<%=request.getContextPath()%>/resource/images/ordMasIcons/seatNo.png"><span> </span><span id="chooseSeatNo"></span>
@@ -73,6 +74,7 @@ div>p>img {
 							<tbody>
 								<jsp:useBean id="ideSvc" scope="page" class="com.identity.model.IdeService" />
 								<c:forEach var="ticTypCartVO" items="${ticTypCartSet}">
+								<c:if test="${check != ticTypCartVO.ideNo}">
 									<tr>
 										<td>
 											<p>${ideSvc.getOneDept(ticTypCartVO.ideNo).ide_name}</p>
@@ -82,6 +84,8 @@ div>p>img {
 											</p>
 										</td>
 									</tr>
+									</c:if>
+									<c:set var="check" value="${ticTypCartVO.ideNo}"/>
 								</c:forEach>
 								<c:forEach var="fooCartVO" items="${fooCartSet}">
 									<tr>
@@ -98,7 +102,7 @@ div>p>img {
 									<td>
 										<p class="text-right">
 											合計
-											<span id="orderTotal">${ordMas.ordMasPrice}</span>
+											<span id="orderTotal">${ordMasVO.ordMasPrice}</span>
 										</p>
 									</td>
 								</tr>
@@ -122,8 +126,26 @@ div>p>img {
 
 	<%@ include file="/front-end/files/frontend_importJs.file"%>
 	<script>
-		var chooseSeatNo = "${param.chooseSeatNo}";
-		console.log(addComma(chooseSeatNo));
+		$("#grade-number").text(getGradeNumber($("#grade-word").text()));
+
+		function getGradeNumber(gradeWord) {
+			if ("普遍級" === gradeWord) {
+				$("#grade-number").css("background-color","#00A600");
+				return "0+";
+			} else if ("保護級" === gradeWord) {
+				$("#grade-number").css("background-color","#2894FF");
+				return "6+";
+			} else if ("輔導級" === gradeWord) {
+				$("#grade-number").css("background-color","#FFE153");
+				return "12+";
+			} else {
+				$("#grade-number").css("background-color","#EA0000");
+				return "18+";
+			}
+		}
+	
+	
+		let chooseSeatNo = "${param.chooseSeatNo}";
 		$("#chooseSeatNo").text(addComma(chooseSeatNo));
 		
 		function addComma(chooseSeatNo) {

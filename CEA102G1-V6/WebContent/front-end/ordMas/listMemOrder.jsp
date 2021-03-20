@@ -1,6 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
 
 <!DOCTYPE html>
 <html>
@@ -85,7 +86,7 @@
 											<tr class="sty-height" valign='middle'>
 												<td>${count}</td>
 												<td>${movSvc.getOneMov(sesSvc.getOneSes(sesNo).movNo).movname}</td>
-												<td>${sesSvc.getOneSes(sesNo).sesDate}${sesSvc.getOneSes(sesNo).sesTime}</td>
+												<td>${sesSvc.getOneSes(sesNo).sesDate} <fmt:formatDate value="${sesSvc.getOneSes(sesNo).sesTime}" pattern="HH:mm"/></td>
 												<td>未取票</td>
 												<td>
 																									<form method="post" action="<%=request.getContextPath()%>/ordMas/ordMas.do">

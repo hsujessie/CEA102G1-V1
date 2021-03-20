@@ -41,11 +41,7 @@ public class GenerateQRcode extends HttpServlet {
 		Hashtable<EncodeHintType, Object> hints = new Hashtable<>();
 		hints.put(EncodeHintType.CHARACTER_SET, "UTF-8");
 		hints.put(EncodeHintType.ERROR_CORRECTION, ErrorCorrectionLevel.H);
-		// 設置QRCode的存放目錄、檔名與圖片格式
-//		String filePath = "/Users/hangermo/Desktop/Pic/";
-//		String fileName = new SimpleDateFormat("yyyyMMddHHmmss").format(new java.util.Date()) + ".jpg";
-//		Path path = FileSystems.getDefault().getPath(filePath, fileName);
-		// 開始產生QRCode
+
 		BitMatrix matrix = null;
 		try {
 			matrix = new MultiFormatWriter().encode(url, BarcodeFormat.QR_CODE, width, height, hints);
@@ -53,7 +49,6 @@ public class GenerateQRcode extends HttpServlet {
 		}
 		// 把產生的QRCode存到指定的目錄
 		MatrixToImageWriter.writeToStream(matrix, format, out);
-//		MatrixToImageWriter.writeToPath(matrix, format, path);
 		
 	}
 

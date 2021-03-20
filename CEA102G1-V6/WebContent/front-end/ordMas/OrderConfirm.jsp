@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
 
 <!DOCTYPE html>
 <html>
@@ -45,18 +46,18 @@
 							<div class="col-2">
 								<div id="grade" class="text-center">
 									<div id="grade-number"></div>
-									<div id="grade-word">${movSvc.getOneMov(sesSvc.getOneSes(1).movNo).movrating}</div>
+									<div id="grade-word">${movSvc.getOneMov(sesSvc.getOneSes(param.sesNo).movNo).movrating}</div>
 								</div>
 							</div>
 							<div class="col-7">
-								<h3>(${movSvc.getOneMov(sesSvc.getOneSes(1).movNo).movver}${movSvc.getOneMov(sesSvc.getOneSes(1).movNo).movlan})${movSvc.getOneMov(sesSvc.getOneSes(1).movNo).movname}</h3>
+								<h3>(${movSvc.getOneMov(sesSvc.getOneSes(param.sesNo).movNo).movver}${movSvc.getOneMov(sesSvc.getOneSes(param.sesNo).movNo).movlan})${movSvc.getOneMov(sesSvc.getOneSes(param.sesNo).movNo).movname}</h3>
 							</div>
 							<div class="col-3">
 								<p>
-									<img src="<%=request.getContextPath()%>/resource/images/ordMasIcons/sesTime.png"><span> </span>${sesSvc.getOneSes(1).sesDate} ${sesSvc.getOneSes(1).sesTime}
+									<img src="<%=request.getContextPath()%>/resource/images/ordMasIcons/sesTime.png"><span> </span>${sesSvc.getOneSes(param.sesNo).sesDate} <fmt:formatDate value="${sesSvc.getOneSes(param.sesNo).sesTime}" pattern="HH:mm"/>
 								</p>
 								<p>
-									<img src="<%=request.getContextPath()%>/resource/images/ordMasIcons/theater.png"><span> </span>第${sesSvc.getOneSes(1).theNo}廳
+									<img src="<%=request.getContextPath()%>/resource/images/ordMasIcons/theater.png"><span> </span>第${sesSvc.getOneSes(param.sesNo).theNo}廳
 								</p>
 								<p>
 									<img src="<%=request.getContextPath()%>/resource/images/ordMasIcons/seatNo.png"><span> </span><span id="chooseSeatNo"></span>
@@ -83,12 +84,15 @@
 								<jsp:useBean id="ideSvc" scope="page" class="com.identity.model.IdeService" />
 
 									<c:forEach var="ticTypCartVO" items="${ticTypCartSet}">
+									<c:if test="${check != ticTypCartVO.ideNo}">
 										<tr>
 											<td>${ideSvc.getOneDept(ticTypCartVO.ideNo).ide_name}</td>
 											<td>$<span>${ticTypCartVO.ticLisPrice}</span></td>
 											<td>${ticTypCartVO.ticTypCount}</td>
-											<td>123</td>
+											<td class="subtotal">${ticTypCartVO.ticLisPrice * ticTypCartVO.ticTypCount}</td>
 										</tr>
+										</c:if>
+										<c:set var="check" value="${ticTypCartVO.ideNo}"/>
 									</c:forEach>
 							
 									<c:forEach var="fooCartVO" items="${fooCartSet}">
@@ -99,7 +103,7 @@
 												<span>${fooCartVO.fooPrice}</span>
 											</td>
 											<td>${fooCartVO.fooCount}</td>
-											<td>123</td>
+											<td class="subtotal">${fooCartVO.fooPrice * fooCartVO.fooCount}</td>
 										</tr>
 									</c:forEach>
 									
@@ -107,7 +111,7 @@
 										<th>總額</th>
 										<td></td>
 										<td></td>
-										<td>110</td>
+										<td id="totalPrice"></td>
 									</tr>
 								</tbody>
 							</table>
@@ -128,42 +132,6 @@
 					<div class="card-body">XXX 你好</div>
 				</div>
 
-<!-- 				<div class="card border-primary mb-3"> -->
-<!-- 					<div class="card-header">購物清單</div> -->
-<!-- 					<div class="card-body"> -->
-<!-- 						<table class="table"> -->
-<!-- 							<tbody> -->
-<%-- 								<c:forEach var="ticTypCartVO" items="${ticTypCartSet}"> --%>
-<!-- 									<tr> -->
-<!-- 										<td> -->
-<%-- 											<p>${ideSvc.getOneDept(ticTypCartVO.ideNo).ide_name}</p> --%>
-<!-- 											<p class="text-right"> -->
-<%-- 												X <span>${ticTypCartVO.ticLisPrice}</span> --%>
-<!-- 											</p> -->
-<!-- 										</td> -->
-<!-- 									</tr> -->
-<%-- 								</c:forEach> --%>
-<%-- 								<c:forEach var="fooCartVO" items="${fooCartSet}"> --%>
-<!-- 									<tr> -->
-<!-- 										<td> -->
-<%-- 											<p>${fooCartVO.fooName}</p> --%>
-<!-- 											<p class="text-right"> -->
-<%-- 												X <span>${fooCartVO.fooCount}</span> --%>
-<!-- 											</p> -->
-<!-- 										</td> -->
-<!-- 									</tr> -->
-<%-- 								</c:forEach> --%>
-<!-- 								<tr> -->
-<!-- 									<td> -->
-<!-- 										<p class="text-right"> -->
-<!-- 											合計 <span id="orderTotal">0</span> -->
-<!-- 										</p> -->
-<!-- 									</td> -->
-<!-- 								</tr> -->
-<!-- 							</tbody> -->
-<!-- 						</table> -->
-<!-- 					</div> -->
-<!-- 				</div> -->
 				<button id="nextStep" class="btn btn-primary btn-lg">確認結帳</button>
 			</div>
 		</div>
@@ -183,8 +151,25 @@
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 	<script>
 	
-		var chooseSeatNo = "${param.chooseSeatNo}";
-		console.log(addComma(chooseSeatNo));
+		$("#grade-number").text(getGradeNumber($("#grade-word").text()));
+
+		function getGradeNumber(gradeWord) {
+			if ("普遍級" === gradeWord) {
+				$("#grade-number").css("background-color","#00A600");
+				return "0+";
+			} else if ("保護級" === gradeWord) {
+				$("#grade-number").css("background-color","#2894FF");
+				return "6+";
+			} else if ("輔導級" === gradeWord) {
+				$("#grade-number").css("background-color","#FFE153");
+				return "12+";
+			} else {
+				$("#grade-number").css("background-color","#EA0000");
+				return "18+";
+			}
+		}
+	
+		let chooseSeatNo = "${param.chooseSeatNo}";
 		$("#chooseSeatNo").text(addComma(chooseSeatNo));
 	
 		function addComma(chooseSeatNo) {
@@ -203,6 +188,17 @@
 		$("#nextStep").click(function() {
 			$("#form").submit();
 		});
+		
+		$("#totalPrice").text(getTotalPrice());
+		function getTotalPrice() {
+			let total = 0;
+			let items = $(".subtotal");
+			
+			for (let i = 0; i < items.length; i++) {
+				total += parseInt($(items[i]).text());
+			}
+			return total;
+		}
 	</script>
 </body>
 </html>

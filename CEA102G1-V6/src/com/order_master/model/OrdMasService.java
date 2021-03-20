@@ -24,7 +24,7 @@ public class OrdMasService {
 			ordMasPrice += (fooCartVO.getFooPrice() * fooCartVO.getFooCount());
 		}
 		for (TicTypCartVO ticTypCartVO : ticTypCartSet) {
-			ordMasPrice += (ticTypCartVO.getTicLisPrice() * ticTypCartVO.getTicTypCount());
+			ordMasPrice += ticTypCartVO.getTicLisPrice();
 		}
 		ordMasVO.setMemNo(memNo);
 		ordMasVO.setSesNo(sesNo);

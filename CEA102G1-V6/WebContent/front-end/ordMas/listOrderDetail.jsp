@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
 
 <!DOCTYPE html>
 <html>
@@ -87,7 +88,7 @@
 							</tr>
 							<tr>
 								<th>場次</th>
-								<td>${sesSvc.getOneSes(ordMasVO.sesNo).sesTime}</td>
+								<td><fmt:formatDate value="${sesSvc.getOneSes(ordMasVO.sesNo).sesTime}" pattern="HH:mm"/></td>
 							</tr>
 							<tr>
 							<jsp:useBean id="ticLisSvc" scope="page" class="com.ticket_list.model.TicLisService" />
