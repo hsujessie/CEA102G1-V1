@@ -36,7 +36,6 @@ public class MovServlet extends HttpServlet{
 	public void doPost(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException{
 		req.setCharacterEncoding("UTF-8");
 		String action = req.getParameter("action");
-		System.out.println("action:"+action);
 		
 		// 來自select_page.jsp的請求
 		if("getOne_For_Display".equals(action)) { 
@@ -68,7 +67,7 @@ public class MovServlet extends HttpServlet{
 				
 				ExpService expSvc = new ExpService();
 				List<ExpVO> explist = expSvc.getAll();
-				System.out.print("movno= "+movno);
+				
 				Double expSum = explist.stream().filter(exp -> exp.getMovNo().equals(movno)).mapToDouble(exp -> exp.getExpRating()).sum();   //期待度總分	
 				Integer expPeo = (int) explist.stream().filter(exp -> exp.getMovNo().equals(movno)).mapToInt(exp -> exp.getMemNo()).count(); //期待度評價人數				
 				
@@ -596,8 +595,6 @@ public class MovServlet extends HttpServlet{
 				movObj = (MovVO)list.get(i);
 				if (movObj.getMovondate().before(date) || movObj.getMovondate().equals(date)) {
 					if(date.before(movObj.getMovoffdate())) {
-					    System.out.println("now_Showing ondate======" + movObj.getMovondate());
-					    System.out.println("now_Showing offdate======" + movObj.getMovoffdate());
 					    nowShowingList.add(movObj);
 					    req.setAttribute("nowShowing", nowShowingList);
 					}
@@ -616,7 +613,6 @@ public class MovServlet extends HttpServlet{
 			for(int i = 0; i < list.size(); i++) {
 				movObj = (MovVO)list.get(i);
 				if (movObj.getMovondate().after(date)) {
-				    System.out.println("comming_Soon======" + movObj.getMovondate());
 				    commingSoonList.add(movObj);
 				    req.setAttribute("commingSoon", commingSoonList);
 				}
