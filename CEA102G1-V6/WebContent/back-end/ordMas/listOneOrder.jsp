@@ -90,6 +90,11 @@ td {
 							class="com.movie.model.MovService" />
 						<div class="col-8">
 							<h3 class="h3-style listOne-h3-pos">訂單詳情</h3>
+							<c:if test="${not empty errorMsgs}">
+								<c:forEach var="msg" items="${errorMsgs}">
+									<h2 style="margin-left:60px; color:red">${msg}</h2>
+								</c:forEach>
+							</c:if>
 							<table>
 								<tr>
 									<th>電影</th>

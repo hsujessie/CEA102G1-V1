@@ -87,7 +87,9 @@ img.card-img-top {
 	background-color: #c5b497;
 }
 
-
+select.form-control{
+	width:70px;
+}
 
 </style>
 </head>

@@ -188,7 +188,12 @@ public class OrdMasServlet extends HttpServlet {
 				if ("/front-end/ordMas/listMemOrder.jsp".equals(requestURL)) {  
 					url = "/front-end/ordMas/listOrderDetail.jsp"; //forward到 會員訂單明細(頁面有QRcode)
 				} else {
+					boolean result = ordMasSvc.isAlreadyGet(ordMasNo);
+					if (result) {
+						errorMsgs.add("此訂單已完成或已取消");
+					} else {
 					ordMasSvc.changeStatus(ordMasNo, 1); 
+					}
 				}
 				
 				OrdMasVO ordMasVO =ordMasSvc.getOneOrdMas(ordMasNo);

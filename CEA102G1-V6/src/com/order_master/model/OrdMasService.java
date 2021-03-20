@@ -48,4 +48,15 @@ public class OrdMasService {
 	public void changeStatus(Integer ordMasNo, Integer ordMasStatus) {
 		dao.changeStatus(ordMasNo, ordMasStatus);
 	}
+	
+	public boolean isAlreadyGet(Integer ordMasNo) {
+		OrdMasVO ordMasVO = dao.findByprimarykey(ordMasNo);
+		Integer ordMasStatus = ordMasVO.getOrdMasStatus();
+		
+		if (ordMasStatus == 0) {
+			return false;
+		}
+		return true;
+		
+	}
 }
