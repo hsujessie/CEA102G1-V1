@@ -16,6 +16,7 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -324,10 +325,11 @@ public class SesServlet extends HttpServlet {
                  String sesDateStr = req.getParameter("sesDate").trim();     
 	             java.sql.Date sesDate = null;
 	             sesDate = Date.valueOf(sesDateStr);    
-                       
+                 System.out.println(sesDate); 
 	    	    /***************************2.開始修改資料*****************************************/ 
  	            SesService sesSvc = new SesService();
-				List<SesVO> list  =  sesSvc.getMoviesBySesDate(sesDate);
+				List<SesVO> list  =  sesSvc.getMoviesByDate(sesDate);
+				
 				req.setAttribute("getMovies_BySesDate",list); 
 	            
 				/***************************3.修改完成,準備轉交(Send the Success view)*************/		            

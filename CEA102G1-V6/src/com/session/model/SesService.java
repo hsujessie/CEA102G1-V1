@@ -6,8 +6,10 @@ import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 public class SesService {
@@ -53,25 +55,64 @@ public class SesService {
 		return dao.getAll(map);
 	}
 
-	public List<SesVO> getMoviesBySesDate(Date sesDate) {
-		return dao.findMoviesBySesDate(sesDate);
+	public List<SesVO> getMoviesByDate(Date date) {
+		return dao.findMoviesByDate(date);
 	}
 
-	public List<SesVO> getDistinctSesDate() {
-		List<SesVO> list = dao.findDistinctSesDate();
-		List<SesVO> seslist = new ArrayList<SesVO>();
+
+	public List<SesVO> sesDateEqualsToday() {     
 		SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");		
 		java.util.Date now = new java.util.Date();
-		java.sql.Date today = new java.sql.Date(now.getTime());		
-		String strToday = dateFormat.format(today);      
+		java.sql.Date today = new java.sql.Date(now.getTime());
 		
-		for (SesVO sesDate: list){
-    		String strSesDate = dateFormat.format(sesDate.getSesDate());     
-    		if(strSesDate.equals(strToday)) {
-    			seslist.add(sesDate);
-    		}
-        }
-		return seslist;
+		return getMoviesByDate(today);
+	}
+	
+	public List<Integer> getDistinctMovNo() {     
+		List<SesVO> list = sesDateEqualsToday();
+		List<Integer> movNoList = new ArrayList<Integer>();
+		
+		for (SesVO sesLists : list){
+			movNoList.add(sesLists.getMovNo());
+	    }
+		
+		return movNoList.stream().distinct().collect(Collectors.toList());
+	}
+	
+	public List<Date> getDistinctSesDate() {     
+		List<SesVO> list = sesDateEqualsToday();
+		List<Date> sesDateList = new ArrayList<Date>();
+		
+		for (SesVO sesLists : list){
+			sesDateList.add(sesLists.getSesDate());
+	    }
+		return sesDateList.stream().distinct().collect(Collectors.toList());
+	}
+
+	
+	public List<Integer> getDistinctMovNoBySearchDate(Date sesDate) {     
+		List<SesVO> list = dao.findMoviesByDate(sesDate);
+		List<Integer> movNoList = new ArrayList<Integer>();
+		
+		for (SesVO sesLists : list){
+			movNoList.add(sesLists.getMovNo());
+	    }
+		
+		return movNoList.stream().distinct().collect(Collectors.toList());
+	}
+	
+	public List<Date> getDistinctSesDateBySearchDate(Date sesDate) {     
+		List<SesVO> list = dao.findMoviesByDate(sesDate);
+		List<Date> sesDateList = new ArrayList<Date>();
+		
+		for (SesVO sesLists : list){
+			sesDateList.add(sesLists.getSesDate());
+	    }
+		return sesDateList.stream().distinct().collect(Collectors.toList());
+	}
+	
+	public List<SesVO> getSesTimes(Integer movNo,Date sesDate) { 
+		return dao.findSesTimeByMovNoAndDate(movNo,sesDate);
 	}
 	
 	public List<String> updateSeatStatus(String chooseSeatNo, Integer sesNo) {
