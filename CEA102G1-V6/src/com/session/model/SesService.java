@@ -75,7 +75,7 @@ public class SesService {
 		return seslist;
 	}
 	
-	public List<String> updateSeatStatus(String chooseSeatNo, Integer sesNo) {
+	public List<String> updateSeatStatus(String chooseSeatNo, Integer sesNo, String whatAction) {
 		SesVO sesVO = dao.findByPrimaryKey(sesNo);
 		
 		String orgSeatStatus = sesVO.getSesSeatStatus();
@@ -84,13 +84,17 @@ public class SesService {
 		
 		
 		List<String> list = new ArrayList<String>();
-		for (int i = 0; i < chooseSeatNo.length() ; i +=3) {
-			String oneSeatNo = chooseSeatNo.substring(i, i + 3);
-			list.add(oneSeatNo);
-			int index = orgSeatNo.indexOf(oneSeatNo) / 3;
+			for (int i = 0; i < chooseSeatNo.length() ; i +=3) {
+				String oneSeatNo = chooseSeatNo.substring(i, i + 3);
+				list.add(oneSeatNo);
+				int index = orgSeatNo.indexOf(oneSeatNo) / 3;
 			
-			sb.setCharAt(index, '1');
-		}
+				if ("lock_seat".equals(whatAction)) {
+					sb.setCharAt(index, '1');
+				} else {
+					sb.setCharAt(index, '0');
+				}
+			}
 		dao.updateSeatStatus(sesNo, sb.toString());
 		
 		return list;

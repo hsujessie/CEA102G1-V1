@@ -214,7 +214,7 @@ div>p>span {
 				</div>
 				<div class="card mb-3">
 					<div class="card-header">會員專區</div>
-					<div class="card-body">XXX 你好</div>
+					<div class="card-body">嗨!${MemberVO.memName} 您好</div>
 				</div>
 
 				<button id="nextStep" class="btn combtn btn-lg">確認結帳</button>

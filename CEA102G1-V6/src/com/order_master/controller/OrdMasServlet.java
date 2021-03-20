@@ -8,6 +8,7 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.Timer;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -25,6 +26,8 @@ import com.session.model.SesService;
 import com.ticket_list.model.TicLisVO;
 import com.ticket_type.model.TicTypCartVO;
 import com.ticket_type.model.TicTypService;
+
+import jdbc.util.schedule.startSchedule;
 
 public class OrdMasServlet extends HttpServlet {
        
@@ -116,7 +119,8 @@ public class OrdMasServlet extends HttpServlet {
 				}
 				
 			/***************************2.開始修改資料***************************************/
-				List<String> list = sesSvc.updateSeatStatus(chooseSeatNo, sesNo);
+				List<String> list = sesSvc.updateSeatStatus(chooseSeatNo, sesNo, "lock_seat");
+				Timer timer = startSchedule.start(20 * 1000, sesNo, chooseSeatNo);
 				
 				HttpSession session = req.getSession();
 				List<TicTypCartVO> ticTypCartSet = (List<TicTypCartVO>)session.getAttribute("ticTypCartSet");
@@ -126,6 +130,7 @@ public class OrdMasServlet extends HttpServlet {
 					i++;
 				}
 			/***************************3.修改完成,準備轉交(Send the Success view)***********/
+				session.setAttribute("timer", timer);
 				String url = "/front-end/ordMas/OrderConfirm.jsp";
 				RequestDispatcher successView = req.getRequestDispatcher(url);
 				successView.forward(req, res);
@@ -155,6 +160,8 @@ public class OrdMasServlet extends HttpServlet {
 			OrdMasService ordMasSvc = new OrdMasService();
 			OrdMasVO ordMasVO = ordMasSvc.insertWithDetail(memNo, sesNo, fooCartSet, ticTypCartSet);
 			
+			Timer timer = (Timer) session.getAttribute("timer");
+			timer.cancel();
 			/***************************3.修改完成,準備轉交(Send the Success view)***********/
 			req.setAttribute("ordMasVO", ordMasVO);
 			String url = "/front-end/ordMas/OrderComplete.jsp";

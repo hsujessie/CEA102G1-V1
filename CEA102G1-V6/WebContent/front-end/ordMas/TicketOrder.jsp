@@ -236,7 +236,7 @@ select.form-control{
 				<div class="col-3">
 					<div class="card mb-3">
 						<div class="card-header">會員專區</div>
-						<div class="card-body">xxx 你好</div>
+						<div class="card-body">嗨!${MemberVO.memName} 您好</div>
 					</div>
 
 					<div class="card mb-3">
