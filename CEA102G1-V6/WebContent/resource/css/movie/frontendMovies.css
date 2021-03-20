@@ -376,10 +376,8 @@
     height: 180px;
     position: relative;
     display: flex;
-    align-items: center;
-    justify-content: center;
-    background: rgba(18,21,24);
-    border: 2px solid #aa9166;
+    width: 127px;
+    margin: auto;
 }
 
 .session .session-icon i {
@@ -405,7 +403,7 @@
     font-weight: 600;
 }
 
-.session .session-item h3::after {
+/* .session .session-item h3::after {
     position: absolute;
     content: "";
     width: 50px;
@@ -413,7 +411,7 @@
     left: 0;
     bottom: 0;
     background: #aa9166;
-}
+} */
 
 .session .session-item p {
     margin: 0;
@@ -422,6 +420,7 @@
 
 .session .session-img {
     position: relative;
+    width: 100%;
     height: 100%;
     padding: 10px;
     background: #121518;

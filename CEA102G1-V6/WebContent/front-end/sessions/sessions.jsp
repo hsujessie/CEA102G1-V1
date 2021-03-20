@@ -18,6 +18,13 @@
 	vertical-align: bottom;
 	width: 150px;
 }
+.line-spearate{
+	border-bottom: 2px solid rgb(170,145,102);
+    box-sizing: border-box;
+}
+.pd-bottom{
+    padding-bottom: 3%;
+}
 </style>
 </head>
 <body>
@@ -71,14 +78,14 @@
                                		<div class="row align-items-center session-item"> <!-- session-item Start -->
 	                            	<c:set var="movVO" value="${movSvc.getOneMov(distinctMovNo)}" />	
                        				<c:if test="${(not empty movVO.movpos)}">
-		                                <div class="col-5"> <!-- col-5 Start -->
+		                                <div class="col-5 pd-bottom"> <!-- col-5 Start -->
 		                                    <div class="session-icon">
-		                                        <img onclick="sendData(this,${distinctMovNo})"  style="height: 100%; cursor: pointer;" src="<%=request.getContextPath()%>/movie/mov.do?movno=${distinctMovNo}&img=movpos&action=get_One_MovPos" alt="Movies Image">				                                    	
+		                                        <img onclick="sendData(this,${distinctMovNo})"  style="height: 100%; cursor: pointer; border: 2px solid #aa9166;" src="<%=request.getContextPath()%>/movie/mov.do?movno=${distinctMovNo}&img=movpos&action=get_One_MovPos" alt="Movies Image">				                                    	
 		                                    </div>
 		                                </div> <!-- col-5 End -->
                                 	</c:if>	
                                	
-			                           	<div class="col-7"> <!-- col-7 Start -->
+			                           	<div class="col-7 line-spearate pd-bottom"> <!-- col-7 Start -->
 	                                 		<h3><a href="<%=request.getContextPath()%>/movie/mov.do?action=getOne_For_Display&fromFrontend=true&movno=${distinctMovNo}">${movVO.movname}</a></h3>		                                	
                                  			<c:forEach var="distinctSesDate" items="${sesSvc.getDistinctSesDate()}" >
                                  				<p><fmt:formatDate value="${distinctSesDate}" type="DATE" dateStyle="FULL"/></p>
@@ -104,14 +111,14 @@
 		                               		<div class="row align-items-center session-item"> <!-- session-item Start -->
 			                            	<c:set var="movVO" value="${movSvc.getOneMov(distinctMovNo)}" />	
 		                       				<c:if test="${(not empty movVO.movpos)}">
-				                                <div class="col-5"> <!-- col-5 Start -->
+				                                <div class="col-5 pd-bottom"> <!-- col-5 Start -->
 				                                    <div class="session-icon">
-				                                        <img onclick="sendData(this,${distinctMovNo})"  style="height: 100%; cursor: pointer;" src="<%=request.getContextPath()%>/movie/mov.do?movno=${distinctMovNo}&img=movpos&action=get_One_MovPos" alt="Movies Image">				                                    	
+				                                        <img onclick="sendData(this,${distinctMovNo})"  style="height: 100%; cursor: pointer; border: 2px solid #aa9166;" src="<%=request.getContextPath()%>/movie/mov.do?movno=${distinctMovNo}&img=movpos&action=get_One_MovPos" alt="Movies Image">				                                    	
 				                                    </div>
 				                                </div> <!-- col-5 End -->
 		                                	</c:if>	
 		                               	
-					                           	<div class="col-7"> <!-- col-7 Start -->
+					                           	<div class="col-7 line-spearate pd-bottom"> <!-- col-7 Start -->
 			                                 		<h3><a href="<%=request.getContextPath()%>/movie/mov.do?action=getOne_For_Display&fromFrontend=true&movno=${distinctMovNo}">${movVO.movname}</a></h3>		                                	
 		                                 			<c:forEach var="distinctSesDate" items="${sesSvc.getDistinctSesDateBySearchDate(searchDate)}" >
 		                                 				<p><fmt:formatDate value="${distinctSesDate}" type="DATE" dateStyle="FULL"/></p>
