@@ -14,7 +14,7 @@
 		width: 120px;
 	}
 	.form-sty{
-		margin: 20px 0 0 30px;
+		margin: 20px 0 0 12.5%;
 	}
 </style>
 </head>
@@ -63,7 +63,7 @@
 			                            </c:forEach>
 			                        </select>
 			                        <b>選擇月份</b>
-			                        <select name="mov_ondate_month">
+			                        <select name="mov_ondate_month" style="margin-right: 1%;">
 			                            <option value=""></option>
 			                            <c:forEach var="month" begin="1" end="12">
 			                                <option value="${month}">${month}月</option>

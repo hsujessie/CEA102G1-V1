@@ -25,7 +25,7 @@
 	    font-size: 16px;
 	}
 	.form-sty{
-		margin: 20px 0 0 0;
+		margin: 20px 0 0 2%;
 	}
 	.time-input-sty{
 		font-size: 14px;
@@ -82,17 +82,17 @@
 		            			<jsp:useBean id="movSvcAll" scope="page" class="com.movie.model.MovService"/>                        
 	                           	<FORM class="form-sty" METHOD="post" ACTION="<%=request.getContextPath()%>/session/ses.do">				                        
 			                        <b>電影名稱</b>
-			                            <select name="movNo" style="width: 185px;">
+			                            <select name="movNo" style="width: 185px; margin-right:1%; vertical-align: middle;">
 			                                <option value=""></option>
 			                                <c:forEach var="movVO" items="${movSvcAll.all}" >
 			                                    <option value="${movVO.movno}">${movVO.movname}
 			                                </c:forEach>
-			                            </select>&ensp;&ensp;
+			                            </select>
 			                        <b>場次日期</b>
 			                        <input class="sty-input time-input-sty" name="sesDateBegin" id="sesdate_Begin" type="text" value=""> 
 			                        ~ <input class="sty-input time-input-sty" name="sesDateEnd" id="sesdate_End" type="text" value="">
 			                        
-			                        <input type="hidden" name="action" value="listSessions_ByCompositeQuery">
+			                        <input type="hidden" name="action" value="listSessions_ByCompositeQuery" style="margin-right:1.5%;">
 				        			<a class="btn btn-light btn-brd grd1 effect-1">
 										<input type="submit" value="搜尋" class="input-pos">
 				        			</a>
