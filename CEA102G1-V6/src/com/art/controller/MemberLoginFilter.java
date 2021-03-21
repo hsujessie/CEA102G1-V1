@@ -31,7 +31,7 @@ public class MemberLoginFilter implements Filter {
 		HttpServletResponse res = (HttpServletResponse) response;
 		
 		HttpSession session = req.getSession();
-		MemberVO memberVO = (MemberVO) session.getAttribute("memberVO");
+		MemberVO memberVO = (MemberVO) session.getAttribute("MemberVO");
 		
 		if (memberVO == null) {
 			session.setAttribute("location", req.getRequestURI());
