@@ -82,7 +82,7 @@
             height: 80vh;
 
         }
-        @media (max-width: 767px) {
+        @media (max-width: 991px) {
         	#articleTop{
  				position: sticky;      	
         	}
@@ -438,7 +438,7 @@
 	    <div id="articleTop" class="container">
 	    
 	        <div class="row">
-	            <div class="col-12 col-md-3">
+	            <div class="col-12 col-lg-3">
 	                <!-- 左區塊開始 -->
 	                <div id="artListLeft">
 	                    <!-- 錯誤列表 -->
@@ -542,7 +542,7 @@
 	                </div>
 	                <!-- 左區塊結束 -->
 	            </div>
-	            <div class="col-12 col-md-9">
+	            <div class="col-12 col-lg-9">
 	                <!-- 中間區塊開始 -->
 	                    <!-- ====================include ListArtQuery.jsp==================== -->
 	                    <jsp:include page="/front-end/article/ListArtQuery.jsp"></jsp:include>

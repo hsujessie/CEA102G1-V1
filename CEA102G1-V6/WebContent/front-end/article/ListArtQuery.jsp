@@ -120,6 +120,14 @@
     	vertical-align: top;
     	text-align: left;
     }
+    @media (max-width: 991px){
+		.HotArticleDiv {
+			display: block;
+		    width: 50vw;
+		    height: 30vh;
+		    margin: auto;
+		}	
+	}
     .nav-item{
     	cursor: pointer;
     }
@@ -128,6 +136,12 @@
     	color: #808080;
     	text-align: center
     }
+/*     @media (min-width: 767px){ */
+/* 		.navbar-expand-lg .navbar-toggler { */
+/* 		    display: none; */
+/* 		}     */
+/*     } */
+
 </style>
 
 <script type="text/javascript">
