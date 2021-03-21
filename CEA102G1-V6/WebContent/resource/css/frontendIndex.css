@@ -138,7 +138,7 @@
 
 .movie .movie-img {
     position: relative;
-    height: 280px;
+    height: 380px;
 }
 
 .movie .movie-img img {
@@ -186,8 +186,8 @@
 
 .movie .movie-social a {
     display: inline-block;
-    margin-right: 15px;
-    font-size: 18px;
+    margin: 0 15px;
+    font-size: 12px;
     text-align: center;
     color: #121518;
     transition: .3s;
