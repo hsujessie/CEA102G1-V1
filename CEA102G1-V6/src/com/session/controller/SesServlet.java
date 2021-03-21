@@ -122,8 +122,7 @@ public class SesServlet extends HttpServlet {
 	
 	
 		if ("insert".equals(action)) {
-            Map<String,String> errorMsgs = new LinkedHashMap<String,String>();
-			req.setAttribute("errorMsgs",errorMsgs);
+            String errorMsgs = "";
 
             try {
                 /***********************1.接收請求參數 - 輸入格式的錯誤處理*************************/
@@ -133,13 +132,13 @@ public class SesServlet extends HttpServlet {
                  String[] theNoArr = req.getParameterValues("theNo");
                  Integer theNo = null;
                  if (theNoArr == null || theNoArr.length == 0) {
-                	 errorMsgs.put("theNo ","請選擇廳院");
+                	 errorMsgs = "請選擇廳院";
                      System.out.println("theNo is empty!");
                  }
                  
                  String sesDateBegin = req.getParameter("sesDateBegin").trim();
 	             String sesDateEnd = req.getParameter("sesDateEnd").trim();            
-	             List<String> sesDateList = null;
+	             List<String> sesDateList = new ArrayList<String>();
 	             java.sql.Date sesDate = null;
             	 try {
 	            	 sesDateList = getDates(sesDateBegin,sesDateEnd);
@@ -155,13 +154,13 @@ public class SesServlet extends HttpServlet {
 	             List<LocalTime> sesTimeList = new ArrayList<LocalTime>();
 	             Duration diff = null;
 	             if (sesTimeArr == null || sesTimeArr.length == 0) {
-					   errorMsgs.put("sesTime ","請選擇電影時間");
+					   errorMsgs = "請選擇電影時間";
 	                   System.out.println("sesTime is empty!");
 	             }else {
 	            	 
 	            	/* =====================================================================
 	            	                          場次時間間距，錯誤驗證
-	            	   =====================================================================*/
+	            	   =====================================================================*/	            	 
 	            	 if(sesTimeArr.length > 1) {
 						System.out.println("if= " + sesTimeArr.length);
 						for(int j = 0; j < sesTimeArr.length; j++) {
@@ -174,19 +173,16 @@ public class SesServlet extends HttpServlet {
 							diff = Duration.between(sesTimeList.get(i - 1),sesTimeList.get(i));  // 「get(i)」 minus 「get(i - 1)」的 difference 不能少於2
 							System.out.println("diff= " + diff.toHours()); 
 							if(diff.toHours() < 2) {
-				                errorMsgs.put("sesTime ","間距不可少於2小時");  							
+								errorMsgs = "間距不可少於2小時";  							
 							}
 						}
-						
-						
 					}else {
-						System.out.println("else= " +  + sesTimeArr.length);
 						sesTime = Time.valueOf(java.time.LocalTime.parse(sesTimeArr[0]));
 					}
 	             }
-                  
+	             
 	             // Send the use back to the form, if there were errors   
-	             if (!errorMsgs.isEmpty()) {
+	             if (errorMsgs != "") {
 		             List<Integer> theNoList = new ArrayList<Integer>();
 					 for(int k = 0; k < theNoArr.length; k++) {
 						theNoList.add(new Integer(theNoArr[k]));
@@ -197,6 +193,7 @@ public class SesServlet extends HttpServlet {
 					 req.setAttribute("sesDateEnd", sesDateEnd);
 					 req.setAttribute("sesTimeList", sesTimeList);
 					 req.setAttribute("theNoList", theNoList);
+					 req.setAttribute("errorMsgs",errorMsgs);
 					 
 					 RequestDispatcher failureView = req.getRequestDispatcher("/back-end/session/addSession.jsp");
 					 failureView.forward(req, res);
@@ -206,6 +203,30 @@ public class SesServlet extends HttpServlet {
            
 	           SesService sesSvc = new SesService();
 	           TheService theSvc = new TheService();
+
+           	/* =====================================================================
+           	                          場次是否重複，錯誤驗證  //movNo、theNo、sesDate、sesTime
+           	   =====================================================================*/
+//	           List<SesVO> seslists = sesSvc.getAll(); 
+//	           List<Date> dateResult = new ArrayList<Date>(sesDateList.size()); 
+//	           List<Time> timeResult = new ArrayList<Time>(sesTimeList.size()); 
+//        	   
+//	           for(Date dates : dateResult) {
+//	        	   System.out.println("dates= " + dates);
+//	           }
+//	           for(Time times : timeResult) {
+//	        	   System.out.println("times= " + times);
+//	           }
+//	           
+//	           for (SesVO lists : seslists) {
+//	               if (movNo == lists.getMovNo() && dateResult.contains(lists.getSesDate()) && timeResult.contains(lists.getSesTime())) {
+//	                   System.out.println("true");
+//	               }else {
+//	                   System.out.println("false");
+//	               }
+//	               return;
+//	           }
+	           	             
                for(int i = 0; i < sesDateArr.length; i++) {
 	                 sesDate = Date.valueOf(sesDateArr[i]);  
                    for(int j = 0; j < sesTimeArr.length; j++) {
@@ -229,7 +250,7 @@ public class SesServlet extends HttpServlet {
                
                /***************************其他可能的錯誤處理**********************************/
 			}catch (Exception e) {
-	            errorMsgs.put("Exception ",e.getMessage());
+	            errorMsgs = "Exception " + e.getMessage();
 	            RequestDispatcher failureView = req.getRequestDispatcher("/back-end/session/addSession.jsp");
 	            failureView.forward(req, res);
 	        }		

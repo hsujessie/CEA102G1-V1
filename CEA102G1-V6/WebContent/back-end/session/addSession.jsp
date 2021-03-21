@@ -102,15 +102,6 @@
                        <!-- addSession Start -->  
 						<FORM method="post" action="<%=request.getContextPath()%>/session/ses.do" name="form_addSession"  enctype="multipart/form-data">
 						<h3 class="h3-style listOne-h3-pos">場次新增</h3>
-						
-                    	<!-- exception failure message Start -->
-						<c:if test="${errorMsgs != null}">
-							<span class="fail-span"> 
-								<i class="far fa-frown"></i>
-								${errorMsgs}
-							</span>
-						</c:if>
-                    	<!-- exception failure message End -->
                     	
 						<table>
 							<tr>
@@ -121,11 +112,8 @@
 							             <option value=""></option>
 							             <c:forEach var="movVO" items="${movSvc.all}" >											
 											<jsp:useBean id="now" class="java.util.Date"/>
-											<c:if test="${movVO.movondate gt now}">
-												<c:set value="${movVO.movondate.time - now.time}" var="dateDiff"/>  <!-- the difference of 上映日期 minus 當天日期 has to greater than 7days --> 												
-												<c:if test="${dateDiff gt 604800000}">                              <!-- 7日 = 604800000毫秒 -->       <!-- 在SesServlet.java 驗證，若有不符驗證，會丟 a movNo attribute 到 jsp，為了留住原本已選的電影。 -->
-													<option value="${movVO.movno}" data-movver="${movVO.movver}" data-movondate="${movVO.movondate}" <c:if test="${not empty movNo and movNo == movVO.movno}">selected</c:if>>${movVO.movname}
-												</c:if>
+											<c:if test="${movVO.movoffdate le now}">                                                         <!-- 在SesServlet.java 驗證，若有不符驗證，會丟 a movNo attribute 到 jsp，為了留住原本已選的電影。 -->
+												<option value="${movVO.movno}" data-movver="${movVO.movver}" data-movondate="${movVO.movondate}" <c:if test="${not empty movNo and movNo == movVO.movno}">selected</c:if>>${movVO.movname}
 											</c:if>
 							             </c:forEach>
 						             </select>
@@ -142,9 +130,26 @@
 									<jsp:useBean id="theSvc" scope="page" class="com.theater.model.TheService"/>
 									<jsp:useBean id="movVerSvc" scope="page" class="com.movie_version.model.MovVerService"/>
 									<c:forEach var="theVO" items="${theSvc.all}" >	
-										<c:set var="movVerVO" value="${movVerSvc.getOneMovie_version(theVO.the_no)}"></c:set>
-										<input class="mr-left mr-btm-sm" type="checkbox" name="theNo" value="${theVO.the_no}" <c:if test="${not empty theNo and theNo eq theVO.the_no}">checked</c:if> >											 
-											<span class="ml-ten">${theVO.movver_no}廳 【<c:if test="${theVO.movver_no == movVerVO.movver_no}">${movVerVO.movver_name}</c:if>】</span><br>
+										<%-- <c:set var="movVerVO" value="${movVerSvc.getOneMovie_version(theVO.the_no)}"></c:set> --%>
+										<input class="mr-left mr-btm-sm" type="checkbox" name="theNo" value="${theVO.the_no}" <c:if test="${not empty theNo and theNo eq theVO.the_no}">checked</c:if> >
+										<c:choose>
+											<c:when test="${theVO.the_no ge 10 && theVO.the_no != 1 && theVO.the_no != 7 && theVO.the_no != 11}">
+												<c:set var="left" value="10"/>
+    										</c:when>
+											<c:when test="${theVO.the_no eq 1}">
+												<c:set var="left" value="20"/>
+    										</c:when>
+											<c:when test="${theVO.the_no eq 7}">
+												<c:set var="left" value="19"/>
+    										</c:when>
+											<c:when test="${theVO.the_no eq 11}">
+												<c:set var="left" value="12"/>
+    										</c:when>
+    										<c:otherwise>
+												<c:set var="left" value="18"/>
+    										</c:otherwise>
+										</c:choose>
+										<span class="ml-ten">${theVO.the_no}廳</span><span style="padding-left:${left}px;">【<c:forEach var="movVerVO" items="${movVerSvc.all}"><c:if test="${theVO.movver_no == movVerVO.movver_no}">${movVerVO.movver_name}</c:if></c:forEach>】</span><br>
 									</c:forEach>
 									<span id="theNo-errmsg" style="display:none;">			
 										<i class="far fa-hand-point-up" style="color:#bb9d52;"></i>
@@ -173,13 +178,13 @@
 								</th>
 							</tr>
 						</table>
-						<table id="timetb" ${not empty errorMsgs.sesTime? 'style="display:block;"' : 'style="display:none;"'}>
+						<table id="timetb" ${not empty errorMsgs? 'style="display:block;"' : 'style="display:none;"'}>
 							<tr>
 								<th>編號</th>
 								<th style="padding-left: 10px;">時間
-									<c:if test="${not empty errorMsgs.sesTime}">					
+									<c:if test="${not empty errorMsgs}">					
 										<span id="sesTime-errmsg">		
-											<label class="err-color"><i class="far fa-hand-point-down" style="color:#bb9d52;"></i>${errorMsgs.sesTime}</label>
+											<label class="err-color"><i class="far fa-hand-point-down" style="color:#bb9d52;"></i>${errorMsgs}</label>
 										</span>
 									</c:if>	
 								</th>								
@@ -247,6 +252,18 @@
 	let theNoZero = $("input[name='theNo']")[0];
 	let theNoFirst = $("input[name='theNo']")[1];
 	let theNoSecond = $("input[name='theNo']")[2];
+	let theNothree = $("input[name='theNo']")[3];
+	let theNoFour = $("input[name='theNo']")[4];
+	let theNoFif = $("input[name='theNo']")[5];
+	let theNoSix = $("input[name='theNo']")[6];
+	let theNoSev = $("input[name='theNo']")[7];
+	let theNoEig = $("input[name='theNo']")[8];
+	let theNoNin = $("input[name='theNo']")[9];
+	let theNoTen = $("input[name='theNo']")[10];
+	let theNoEle = $("input[name='theNo']")[11];
+	let theNoTwe = $("input[name='theNo']")[12];
+	let theNoThirt = $("input[name='theNo']")[13];
+	let theNoFourt = $("input[name='theNo']")[14];
 	
 	/* =====================================================================================================
 		    * 在SesServlet.java 驗證，若有不符驗證，會丟 a theNoList attribute 到 jsp，為了留住原本已勾選的廳院。
@@ -266,6 +283,42 @@
 			if(theNoArr[i] == "3"){	// IMAX
 				theNoSecond.checked = true;
 			} 
+	 		if(theNoArr[i] == "4"){	// 2D
+	 			theNothree.checked = true;
+			}
+			if(theNoArr[i] == "5"){	// 3D
+				theNoFour.checked = true;
+			}
+	 		if(theNoArr[i] == "6"){	// IMAX
+	 			theNoFif.checked = true;
+			}
+			if(theNoArr[i] == "7"){	// 2D
+				theNoSix.checked = true;
+			}
+			if(theNoArr[i] == "8"){	// 3D
+				theNoSev.checked = true;
+			}
+			if(theNoArr[i] == "9"){	// IMAX
+				theNoEig.checked = true;
+			} 
+			if(theNoArr[i] == "10"){ // 2D
+				theNoNin.checked = true;
+			} 
+			if(theNoArr[i] == "11"){ // 3D
+				theNoTen.checked = true;
+			} 
+			if(theNoArr[i] == "12"){ // IMAX
+				theNoEle.checked = true;
+			} 
+			if(theNoArr[i] == "13"){ // 2D
+				theNoTwe.checked = true;
+			} 
+			if(theNoArr[i] == "14"){ // 3D
+				theNoThirt.checked = true;
+			} 
+			if(theNoArr[i] == "15"){ // IMAX
+				theNoFourt.checked = true;
+			}  
 		}
  	</c:if> 
  
@@ -283,21 +336,63 @@
 			theNoZero.checked = false;
 			theNoFirst.checked = false;
 			theNoSecond.checked = false;
-			
+			theNothree.checked = false;
+			theNoFour.checked = false;
+			theNoFif.checked = false;
+			theNoSix.checked = false;
+			theNoSev.checked = false;
+			theNoEig.checked = false;
+			theNoNin.checked = false;
+			theNoTen.checked = false;
+			theNoEle.checked = false;
+			theNoNin.checked = false;
+			theNoTen.checked = false;
+			theNoEle.checked = false;
+			theNoTwe.checked = false;
+			theNoThirt.checked = false;
+			theNoFourt.checked = false;
+						
 			if(movVer == "2D"){
 				theNoZero.checked = true;
+				theNothree.checked = true;
+				theNoSix.checked = true;
+				theNoNin.checked = true;
+				theNoTwe.checked = true;
 			}
 			if(movVer == "3D"){
 				theNoFirst.checked = true;
+				theNoFour.checked = true;
+				theNoSev.checked = true;
+				theNoTen.checked = true;
+				theNoThirt.checked = true;
 			}
 			if(movVer == "IMAX"){
 				theNoSecond.checked = true;
+				theNoFif.checked = true;
+				theNoEle.checked = true;
+				theNoEle.checked = true;
+				theNoFourt.checked = true;
 			}	
 		}else{
 			
 			theNoZero.checked = false;
 			theNoFirst.checked = false;
 			theNoSecond.checked = false;
+			theNothree.checked = false;
+			theNoFour.checked = false;
+			theNoFif.checked = false;
+			theNoSix.checked = false;
+			theNoSev.checked = false;
+			theNoEig.checked = false;
+			theNoNin.checked = false;
+			theNoTen.checked = false;
+			theNoEle.checked = false;
+			theNoNin.checked = false;
+			theNoTen.checked = false;
+			theNoEle.checked = false;
+			theNoTwe.checked = false;
+			theNoThirt.checked = false;
+			theNoFourt.checked = false;
 			
 			/* ================================================================================================
 			    * 新增電影時，movver是checkbox多選，用字串串接的方式存進db, so that it has to split the string here.
@@ -307,12 +402,24 @@
 				console.log(movVerArr[i]);	
 				if(movVerArr[i] == "2D"){
 					theNoZero.checked = true;
+					theNothree.checked = true;
+					theNoSix.checked = true;
+					theNoNin.checked = true;
+					theNoTwe.checked = true;
 				}
 				if(movVerArr[i] == "3D"){
 					theNoFirst.checked = true;
+					theNoFour.checked = true;
+					theNoSev.checked = true;
+					theNoTen.checked = true;
+					theNoThirt.checked = true;
 				}
 				if(movVerArr[i] == "IMAX"){
 					theNoSecond.checked = true;
+					theNoFif.checked = true;
+					theNoEle.checked = true;
+					theNoEle.checked = true;
+					theNoFourt.checked = true;
 				}	
 			}
 		}
