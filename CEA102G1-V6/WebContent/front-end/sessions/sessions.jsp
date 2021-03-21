@@ -91,7 +91,7 @@
                                  				<p><fmt:formatDate value="${distinctSesDate}" type="DATE" dateStyle="FULL"/></p>
                                  				<c:forEach var="sesTimes" items="${sesSvc.getSesTimes(distinctMovNo,distinctSesDate)}" > 
                                   					<p>
-                                  						<a href="<%=request.getContextPath()%>/front-end/ordMas/TicketOrder.jsp?sesNo=${sesTimes.sesNo}"><fmt:formatDate value="${sesTimes.sesTime}" pattern="HH:mm" type="DATE"/> <i class="fas fa-ticket-alt" style="color:#aa9166;"></i></a>  <label>【${sesTimes.theNo}廳】</label>
+                                  						<a href="<%=request.getContextPath()%>/front-end/ordMas/TicketOrder.jsp?sesNo=${sesTimes.sesNo}"><fmt:formatDate value="${sesTimes.sesTime}" pattern="HH:mm" type="DATE"/> <i class="fas fa-ticket-alt" style="color:#aa9166;"></i></a> <label>【${sesTimes.theNo}廳】</label>
                                   					</p>          				
                                 				</c:forEach>
                                  			</c:forEach>

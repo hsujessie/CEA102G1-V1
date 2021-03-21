@@ -60,8 +60,7 @@ public class SesService {
 	}
 
 
-	public List<SesVO> sesDateEqualsToday() {     
-		SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");		
+	public List<SesVO> sesDateEqualsToday() {     	
 		java.util.Date now = new java.util.Date();
 		java.sql.Date today = new java.sql.Date(now.getTime());
 		
@@ -113,6 +112,20 @@ public class SesService {
 	
 	public List<SesVO> getSesTimes(Integer movNo,Date sesDate) { 
 		return dao.findSesTimeByMovNoAndDate(movNo,sesDate);
+	}
+	
+	public Boolean isGreater(Date sesDate) {
+		Boolean result = false;	
+		java.util.Date today = new java.util.Date();
+		
+		long milis = 259200000;  //毫秒 = 3天
+		long diffDate = (sesDate.getTime() - today.getTime());
+		
+		if(diffDate > milis) {
+			result = true;
+		}
+		
+		return result;
 	}
 	
 	public List<String> updateSeatStatus(String chooseSeatNo, Integer sesNo) {
