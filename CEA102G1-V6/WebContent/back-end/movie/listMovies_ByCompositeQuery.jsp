@@ -10,6 +10,13 @@
 	<%@ include file="/back-end/files/sb_head.file"%>
 
 <style>
+	.success-span{
+	    color: #bb9d52;
+		position: absolute;
+	    top: 8%;
+	    left: 17%;
+	    font-size: 16px;
+	}
 	.th-adjust{
 		width: 120px;
 	}
@@ -29,8 +36,17 @@
                 <main>
                     <div class="container-fluid">
 
-                    	<!-- search Start -->
                     	<h3 class="h3-style" style="display: inline-block;">電影查詢</h3>
+						<!-- update success message Start -->
+						<c:if test="${updateSuccess != null }">
+							<span class="success-span"> 
+								${updateSuccess}
+								<i class="far fa-smile-wink"></i>
+							</span>
+						</c:if>
+                    	<!-- update success message End -->
+                    	
+                    	<!-- search Start -->
                     	<div class="row " style="margin: -60px 0 20px 0;">         
 			                <div class="col-2"></div>
 	                        <div class="col-10">          

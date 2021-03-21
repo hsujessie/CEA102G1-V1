@@ -19,7 +19,7 @@
 	.success-span{
 	    color: #bb9d52;
 		position: absolute;
-	    top: 8%;
+	    top: 7.5%;
 	    left: 17%;
 	    font-size: 16px;
 	}
@@ -31,6 +31,9 @@
 	}
 	.mr-botm{
 		margin-bottom: 5px;
+	}
+	.table{
+		height: 400px;
 	}
 </style>
 <body class="sb-nav-fixed">

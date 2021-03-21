@@ -126,7 +126,7 @@
 								<td class="fake-txt">
 									<select class="mr-left mr-btm-normal" name="movdurat">
 										<c:forEach var="mins" begin="60" end="240">
-											<option value="${movVO.movdurat}" <c:if test="${movVO.movdurat eq mins}"></c:if> >${movVO.movdurat}</option>
+											<option value="${mins}" <c:if test="${movVO.movdurat eq mins}">selected</c:if> >${mins}</option>
 										</c:forEach>
 									</select>
 								</td>

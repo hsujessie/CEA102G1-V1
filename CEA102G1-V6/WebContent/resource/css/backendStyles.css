@@ -8,7 +8,6 @@ body a:hover,a:focus{
 
 .table{
 	table-layout: fixed;
-	height: 400px;
 }
 
 .table th, .table td {
