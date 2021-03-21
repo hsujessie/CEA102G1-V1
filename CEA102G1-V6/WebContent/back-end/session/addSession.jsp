@@ -369,7 +369,7 @@
 			if(movVer == "IMAX"){
 				theNoSecond.checked = true;
 				theNoFif.checked = true;
-				theNoEle.checked = true;
+				theNoEig.checked = true;
 				theNoEle.checked = true;
 				theNoFourt.checked = true;
 			}	
@@ -417,7 +417,7 @@
 				if(movVerArr[i] == "IMAX"){
 					theNoSecond.checked = true;
 					theNoFif.checked = true;
-					theNoEle.checked = true;
+					theNoEig.checked = true;
 					theNoEle.checked = true;
 					theNoFourt.checked = true;
 				}	

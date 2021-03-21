@@ -127,7 +127,6 @@ public class SesServlet extends HttpServlet {
             try {
                 /***********************1.接收請求參數 - 輸入格式的錯誤處理*************************/
                  Integer movNo = new Integer(req.getParameter("movNo").trim());
-	             System.out.println("movNo= " + movNo);
                  
                  String[] theNoArr = req.getParameterValues("theNo");
                  Integer theNo = null;
@@ -210,7 +209,32 @@ public class SesServlet extends HttpServlet {
 //	           List<SesVO> seslists = sesSvc.getAll(); 
 //	           List<Date> dateResult = new ArrayList<Date>(sesDateList.size()); 
 //	           List<Time> timeResult = new ArrayList<Time>(sesTimeList.size()); 
-//        	   
+//	           List<Integer> theNoResult = new ArrayList<Integer>();
+//	           
+//	           for (int i = 0; i < seslists.size(); i++) {
+//
+//	        	   System.out.println(i);                 
+//	        	   System.out.println(seslists.get(i).getMovNo());
+//	        	   
+//	        	   return;
+//	           }
+	           
+//	           for (SesVO lists : seslists) {                 
+//        		   System.out.println("list" + lists.getMovNo());
+//        		   System.out.println("movNo" + movNo);
+//	        	   if (lists.getMovNo() == movNo) {	                   
+//	        		   System.out.println("true");
+//	        	   }else {
+//	                   System.out.println("false");
+//	                   
+//	               }
+//	        	   return;
+//	           }
+	             
+//			   for(int k = 0; k < theNoArr.length; k++) {
+//				   theNoResult.add(new Integer(theNoArr[k]));
+//			   }
+//				 
 //	           for(Date dates : dateResult) {
 //	        	   System.out.println("dates= " + dates);
 //	           }
@@ -219,12 +243,11 @@ public class SesServlet extends HttpServlet {
 //	           }
 //	           
 //	           for (SesVO lists : seslists) {
-//	               if (movNo == lists.getMovNo() && dateResult.contains(lists.getSesDate()) && timeResult.contains(lists.getSesTime())) {
+//	               if (movNo == lists.getMovNo() && theNoResult.contains(lists.getTheNo()) && dateResult.contains(lists.getSesDate()) && timeResult.contains(lists.getSesTime())) {
 //	                   System.out.println("true");
 //	               }else {
 //	                   System.out.println("false");
 //	               }
-//	               return;
 //	           }
 	           	             
                for(int i = 0; i < sesDateArr.length; i++) {
