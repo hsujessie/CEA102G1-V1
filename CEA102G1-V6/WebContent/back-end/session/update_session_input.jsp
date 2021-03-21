@@ -47,6 +47,10 @@
   #abled-btn{
     z-index: 0;
   }
+  .err-color{
+    text-shadow: 0 0 0.1em #f87, 0 0 0.1em #f87;
+    font-size: 14px;
+  }
 </style>
 </head>
 <body class="sb-nav-fixed">
@@ -95,7 +99,11 @@
 								<th>時間</th>
 								<td>	
 								    <input class="sty-input" type="text" name="sesTime" value="${sesVO.sesTime}">
-								</td>
+									<span id="addtime-errmsg" style="display:none;">			
+										<i class="far fa-hand-point-left" style="color:#bb9d52;"></i>
+										<label id="addtime-errmsg-txt" class="err-color"></label>
+									</span>	
+								</td>	
 							</tr>
 						</table>
 						<br>
@@ -103,8 +111,12 @@
 						<input type="hidden" name="sesNo" value="${sesVO.sesNo}">
 						<input type="hidden" name="requestURL" value="<%=request.getParameter("requestURL")%>">
 						<input type="hidden" name="whichPage"  value="<%=request.getParameter("whichPage")%>">
-						<a id="abled-btn" class="btn btn-light btn-brd grd1 effect-1 btn-pos" style="margin: 1% 0 1% 50%;" >
+						
+						<a id="abled-btn" class="btn btn-light btn-brd grd1 effect-1 btn-pos" style="margin: 1% 0 1% 50%; display:block;" >
 							<input type="submit" value="送出" class="input-pos">
+						</a>
+						<a id="disabled-btn" class="btn btn-light btn-brd grd1 btn-pos" style="margin: 1% 0 1% 50%; background-color: #808080; border: 2px solid #808080!important; cursor: default;  display:none;" >
+							<input type="submit" value="送出" class="input-pos" style="background-color: #808080;" disabled>
 						</a>
 						</FORM>
                        <!-- update session End -->
@@ -128,6 +140,31 @@
 		dropdown: true,
 		scrollbar: false
 	});
+
+
+	/* =========================================================================================== */
+									/* Varify Inputs */
+	/* =========================================================================================== */
+	let sesTimeInput = document.querySelector('input[name="sesTime"]');
+	sesTimeInput.addEventListener('change', isEmpty, false);
+	sesTimeInput.addEventListener('keyup', isEmpty, false);
+	sesTimeInput.addEventListener('focus', isEmpty, false);
+	
+	function isEmpty(){
+		console.log($('input[name="sesTime"]').val());
+		if($('input[name="sesTime"]').val() == ''){
+			$("#abled-btn").css('display','none');
+			$("#disabled-btn").css('display','block'); 
+			$("#addtime-errmsg").css('display','inline-block'); 
+			$("#addtime-errmsg-txt").text("請新增時間");
+		}else{
+			$("#abled-btn").css('display','block');
+			$("#disabled-btn").css('display','none'); 
+			$("#addtime-errmsg").css('display','none');
+			$("#addtime-errmsg-txt").text("");
+		}
+	}
+		
 </script>
 </body>
 </html>

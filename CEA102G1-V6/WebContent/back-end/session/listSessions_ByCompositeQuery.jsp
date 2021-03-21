@@ -61,14 +61,14 @@
 							</span>
 						</c:if>
                     	<!-- success message End -->
-                    	<!-- failure message Start -->
-						<c:if test="${errMsg != null}">
+                    	<!-- failure message Start 測試用 --> 
+					<%-- 	<c:if test="${errMsg != null}">
 							<span class="fail-span"> 
 								<i class="far fa-frown"></i>
 								${errMsg}
 							</span>
-						</c:if>
-                    	<!-- failure message End -->
+						</c:if> --%>
+                    	<!-- failure message End 測試用 -->
                     	
                     	<!-- search Start -->
                     	<div class="row " style="margin: -60px 0 20px 50px;">        

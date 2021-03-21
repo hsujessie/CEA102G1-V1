@@ -19,8 +19,8 @@
 	.success-span{
 	    color: #bb9d52;
 		position: absolute;
-	    top: 8%;
-	    left: 17%;
+	    top: 4%;
+    	left: 40%;
 	    font-size: 16px;
 	}
 </style>
