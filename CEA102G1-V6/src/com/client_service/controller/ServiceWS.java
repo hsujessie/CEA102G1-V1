@@ -44,7 +44,7 @@ public class ServiceWS {
 								AdmService admSvc = new AdmService();
 								String admName = admSvc.getOneAdm(new Integer(admNo)).getAdmName();
 								try {
-									jsonObj.put("admID", admNo);
+									jsonObj.put("admNo", admNo);
 									jsonObj.put("admName", admName);
 									jsonObj.put("type", "open");
 									jsonObj.put("message", "您好，我是"+admName+"，很高興為您服務，請問有什麼我能幫您的呢？");
@@ -61,6 +61,7 @@ public class ServiceWS {
 				JSONObject jsonObj = new JSONObject();
 				try {
 					jsonObj.put("type", "noAdminOnline");
+					jsonObj.put("message", "轉接客服人員中，請稍後。");
 				} catch (JSONException e) {
 					e.printStackTrace();
 				}
@@ -80,7 +81,7 @@ public class ServiceWS {
 					AdmService admSvc = new AdmService();
 					String admName = admSvc.getOneAdm(new Integer(admNo)).getAdmName();
 					try {
-						jsonObj.put("admID", admNo);
+						jsonObj.put("admNo", admNo);
 						jsonObj.put("admName", admName);
 						jsonObj.put("type", "open");
 						jsonObj.put("message", "您好讓您久等了，我是"+admName+"，很高興為您服務，請問有什麼我能幫您的呢？");
@@ -111,7 +112,6 @@ public class ServiceWS {
 			String action = cmsg.getType();
 			message = new JSONObject(cmsg).toString();
 			
-			
 			if ("history".equals(action)) {
 				List<String> historyData = JedisHandleMessage.getHistoryMsg(sender, receiver);
 				String historyMsg = gson.toJson(historyData);
@@ -123,13 +123,15 @@ public class ServiceWS {
 			}
 			if (receiver.contains("adm")) { //會員發送給客服人員
 				Session admSession = sessionsMapForAdm.get(receiver.split("-")[1]);
+				System.out.println(admSession);
 				if (admSession != null && admSession.isOpen()) {
 					admSession.getAsyncRemote().sendText(message);
 					userSession.getAsyncRemote().sendText(message);
 					JedisHandleMessage.saveChatMessage(sender, receiver, message);
 				}
 			} else { //客服人員發送給會員
-				Session memSession = sessionsMapForMem.get(receiver.split("-")[0]);
+				Session memSession = sessionsMapForMem.get(receiver.split("-")[1]);
+				System.out.println(memSession);
 				if (memSession != null && memSession.isOpen()) {
 					memSession.getAsyncRemote().sendText(message);
 					userSession.getAsyncRemote().sendText(message);

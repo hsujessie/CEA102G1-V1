@@ -57,15 +57,12 @@ public class TicTypServlet extends HttpServlet{
 			}
 		}		
 		if ("update".equals(action)) { // �Ӧ�update_emp_input.jsp���ШD
-			
 			List<String> errorMsgs = new LinkedList<String>();
 			req.setAttribute("errorMsgs", errorMsgs);
 			
 			String requestURL = req.getParameter("requestURL"); 
 			req.setAttribute("requestURL", requestURL); 
 			
-			String whichPage = req.getParameter("whichPage"); 
-			req.setAttribute("whichPage", whichPage);   
 		
 			try {
 				/***************************1.�����ШD�Ѽ� - ��J�榡�����~�B�z**********************/
@@ -73,13 +70,7 @@ public class TicTypServlet extends HttpServlet{
 				Integer movver_no = new Integer(req.getParameter("movver_no").trim());
 				Integer ide_no = new Integer(req.getParameter("ide_no").trim());				
 
-				Integer tictyp_price = null;
-				try {
-					tictyp_price = new Integer(req.getParameter("tictyp_price").trim());
-				} catch (NumberFormatException e) {
-					tictyp_price = 0;
-					errorMsgs.add("�����ж�Ʀr.");
-				}
+				Integer tictyp_price = new Integer(req.getParameter("tictyp_price").trim());
 
 
 				TicTypVO ticket_typeVO = new TicTypVO();
@@ -88,18 +79,10 @@ public class TicTypServlet extends HttpServlet{
 				ticket_typeVO.setIde_no(ide_no);
 				ticket_typeVO.setTictyp_price(tictyp_price);
 
-				if (!errorMsgs.isEmpty()) {
-					req.setAttribute("ticket_typeVO", ticket_typeVO); 
-					RequestDispatcher failureView = req
-							.getRequestDispatcher("/back-end/ticket_type/update_ticket_type_input.jsp");
-					failureView.forward(req, res);
-					return; //�{�����_
-				}
 				
 				/***************************2.�}�l�ק���*****************************************/
 				TicTypService ticket_typeService = new TicTypService();
 				ticket_typeVO = ticket_typeService.updateTicket_type(tictyp_no, movver_no, ide_no, tictyp_price);
-				
 				/***************************3.�ק粒��,�ǳ����(Send the Success view)*************/
 				IdeService identitySvc = new IdeService();
 				if(requestURL.equals("/back-end/identity/listTicket_typesByIde_no.jsp") || requestURL.equals("/back-end/movie_version/listAllMovie_version.jsp"))
@@ -109,7 +92,7 @@ public class TicTypServlet extends HttpServlet{
 					req.setAttribute("listTicket_type_ByMovver_no",movie_versionSvc.getTicket_typeByMovver_no(movver_no)); 
 
 				
-				String url = requestURL+"?whichPage="+whichPage+"&tictyp_no="+tictyp_no; 
+				String url = requestURL+"?tictyp_no="+tictyp_no; 
 				RequestDispatcher successView = req.getRequestDispatcher(url);   
 				successView.forward(req, res);
 

@@ -6,8 +6,9 @@
 	<title>Back-End Management</title>
 	<%@ include file="/back-end/files/sb_head.file"%>
 	  <link rel="stylesheet" href="<%=request.getContextPath()%>/resource/css/chatbox/cliSerForBac.css" >
+
 </head>
-<body class="sb-nav-fixed">
+<body onload="connect();" onunload="disconnect();">
 		<%@ include file="/back-end/files/sb_navbar.file"%> <!-- 引入navbar (上方) -->
         <div id="layoutSidenav">
             <div id="layoutSidenav_nav">            
@@ -25,11 +26,10 @@
             <div class="container">
                 <div class="left">
                     <div class="top" id="chatArea">
-                        <span class="name"><i class="far fa-user"></i>客服專員： -</span>
+                        <span class="name"><i class="far fa-user"></i>客服專員：${admVO.admName}</span>
                     </div>
                     <div class="write">
                         <input type="text" id="sendMessage" onkeydown="if (event.keyCode == 13) sendMessage();" disabled />
-                        <i class="fas fa-paper-plane"></i>
                     </div>
                 </div>
                 <div class="right">
@@ -47,9 +47,10 @@
             </div>
         </div>
 		<%@ include file="/back-end/files/sb_importJs.file"%> <!-- 引入template要用的js -->
+			  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
 		           <script>
         //WebSocket
-        var MyPoint = "/serviceWS/admin/${admVO.admNo}";
+        var MyPoint = "/ServiceWS/admin/${admVO.admNo}";
 		var host = window.location.host;
 		var path = window.location.pathname;
 		var webCtx = path.substring(0, path.indexOf('/', 1));
@@ -59,7 +60,18 @@
 		var webSocket;
 		
 		// 註冊列表點擊事件並抓取好友名字以取得歷史訊息
-
+			$(document).on("click", ".person", function(e){
+			let mem = $(this).attr("data-mbid");
+			$("#sendMessage").prop("disabled", false);
+			$(".person").removeClass("active");
+			$(this).addClass("active");
+			$(".chat").removeClass("active-chat")
+			let chatBox = document.getElementById("chat-" + mem);
+			chatBox.classList.add("active-chat");
+			chatBox.scrollTop = chatBox.scrollHeight;
+			$(this).children(".unread").hide();
+			$(this).children(".unread").text("0");
+		});
 		
 		
 		function connect() {
@@ -100,9 +112,9 @@
 					let memNo;
 					let admNo;
 					for (var i = 0; i < messages.length; i++) {
-						let msg = messages[i];
+						let msg = JSON.parse(messages[i]);
 						let showMsg = msg.message;
-						let sender = msg.sender;
+						let sender = msg["sender"];
 						let receiver = msg.receiver;
 						let div = document.createElement("div");
 						let img = document.createElement("img");
@@ -113,7 +125,7 @@
 							admNo = sender.split("-")[1];
 							memNo = receiver.split("-")[1];
 							div.classList.add("me");
-							img.setAttribute("src", "pic---for---adm---!!!");
+							img.setAttribute("src", "<%=request.getContextPath()%>/resource/images/clientAdm.png");
 							img.classList.add("admpic");
 							div.append(showMsg);
 							div.append(img);
@@ -122,7 +134,7 @@
 							memNo = sender.split("-")[1];
 							admNo = receiver.split("-")[1];
 							div.classList.add("you");
-							img.setAttribute("src","pic---for---mem---!!!");
+							img.setAttribute("src","<%=request.getContextPath()%>/Member/reader.do?memNo=" + memNo);
 							img.classList.add("mempic");
 							div.append(span);
 							div.append(img);
@@ -142,20 +154,20 @@
 					div.classList.add("bubble");
 					let admNo;
 					let memNo;
-					if (jsonObj.sender.indexOf("EMP") >= 0){
-						admNo = jsonObj.sender.split("-")[0];
-						memNo = jsonObj.receiver.split("-")[0];
+					if (jsonObj.sender.indexOf("adm") >= 0){
+						admNo = jsonObj.sender.split("-")[1];
+						memNo = jsonObj.receiver.split("-")[1];
 						div.classList.add("me");
-						img.setAttribute("src", "<%=request.getContextPath()%>/emp/emp.do?action=getEmpPic&emp_id=${empVO.emp_id}");
-						img.classList.add("emppic");
+						img.setAttribute("src", "<%=request.getContextPath()%>/resource/images/clientAdm.png");
+						img.classList.add("admpic");
 						div.append(showMsg);
 						div.append(img);
 						div.append(span);
 					} else {
-						memNo = jsonObj.sender.split("-")[0];
-						admNo = jsonObj.receiver.split("-")[0];
+						memNo = jsonObj.sender.split("-")[1];
+						admNo = jsonObj.receiver.split("-")[1];
 						div.classList.add("you");
-						img.setAttribute("src", "<%=request.getContextPath()%>/MembersServlet?action=getMbPicForChat&mb_id=" + memNo);
+						img.setAttribute("src", "<%=request.getContextPath()%>/Member/reader.do?memNo=" + memNo);
 						img.classList.add("mempic");
 						div.append(span);
 						div.append(img);
@@ -216,6 +228,9 @@
 		
 		function showNewestMsg(memNo){
 			let memberChats = $("#chat-"+memNo).children(".you").last();
+			if(!(memberChats.html())){
+				return;
+			}
 			let memberBox = $("#"+memNo).children(".preview");
 			let unreadMsg = $("#"+memNo).children(".unread");
 			let msg = memberChats.html().split(">").slice(-1)[0];
@@ -245,18 +260,19 @@
 			for (var i = 0; i < memNos.length; i++) {
 				let memNo = memNos[i];
 				var memName = "";
+
 				$.ajax({
-					url: "<%=request.getContextPath()%>/Member/member.do?action=ajaxGetmemName",
+					url: "<%=request.getContextPath()%>/Member/member.do?action=ajaxGetMemberName",
 					data: {
-						memNo: memNo,
+						memNo: memNo
 					},
 					type: "POST",
 					success: function(msg){
 						memName = msg;
 						memberList.innerHTML += 
 							`
-							<li class="person" id="${memNo}" data-mbid="${memNo}" data-mbname="${memName}">
-		                            <img src="pic---for---mem---!!!" alt="" />
+							<li class="person" id="\${memNo}" data-mbid="\${memNo}" data-mbname="\${memName}">
+		                            <img src="<%=request.getContextPath()%>/Member/reader.do?memNo=\${memNo}" alt="" />
 		                            <span class="name">\${memName}</span>
 		                            <span class="preview"></span>
 		                            <span class="unread">-1</span>
@@ -280,7 +296,7 @@
 							$("#" + id).addClass("active");
 						}
 					}
-				})
+				});
 				
 			}
 		}
