@@ -66,7 +66,7 @@
 		                                <figure>
 		                                    <p><img style="width:100%; max-width: 40px;" src="<%=request.getContextPath()%>/resource/images/logos/seenema_W.ico" alt="Logo"></p>
 		                                    <a href="<%=request.getContextPath()%>/movie/mov.do?action=getOne_For_Display&fromFrontend=true&movno=${movVO.movno}">${movVO.movname}</a>
-		                                    <span>${movVO.movondate} ${today} ${movOffdate}</span>
+		                                    <span>${movVO.movondate}</span>
 		                                </figure>
 		                            </div>
 		                        </div>

@@ -3,6 +3,9 @@
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <c:set var="loginUrl" value="${pageContext.request.contextPath}/front-end/Member_Login/login.jsp" scope="page"/>
 <c:set var="location" value="${pageContext.request.requestURI}" scope="session"/> <!-- 若沒登入，無法對該電影評分+短評，here have tp set a session attribute for the login page to get the origin url -->
+<c:set var="testMemNo" value="1" scope="page"/> <!-- 測試用 -->
+<c:set var="testMemAccount" value="abc" scope="page"/> <!-- 測試用 -->
+
 <!DOCTYPE html>
 <html>
 <head>
@@ -178,13 +181,24 @@
   								<input type="hidden" name="movNo" value="${movVO.movno}" />
 								<input type="hidden" name="action" value="insert">
 								
-	                    		<c:if test="${not empty MemberVO.memAccount}"> <!-- 已登入 --> 
-  									<input type="hidden" name="memNo" value="${MemberVO.memNo}" />
-                            		<input class="combtn" type="submit" value="送出" style="margin-left: 5%; padding: 2px 10px;">
-	                            </c:if>
-	                    		<c:if test="${empty MemberVO.memAccount}"> <!-- 未登入 --> 
+	                    		<c:if test="${not empty MemberVO.memAccount}"> <!-- 已登入 Start --> 
+	                    			<c:forEach var="expList" items="${expSvc.all}" >
+										<c:set var="expMemNo" value="${expList.memNo}"/>
+										<c:set var="movNo" value="${movVO.movno}"/>
+										<c:set var="expOne" value="${expSvc.getOneExp(movNo,expMemNo)}"/>
+									</c:forEach>
+									<c:if test="${expOne.memNo == MemberVO.memNo}"> <!-- 此會員已給期待度 -->
+										<label style="font-size: 14px;">【已評分】</label>
+									</c:if>
+									<c:if test="${expOne.memNo != MemberVO.memNo}"> <!-- 此會員未期待度 -->
+	  									<input type="hidden" name="memNo" value="${MemberVO.memNo}" />
+	                            		<input class="combtn" type="submit" value="送出" style="margin-left: 5%; padding: 2px 10px;">
+									</c:if>
+	                            </c:if> <!-- 已登入 End --> 
+	                            
+	                    		<c:if test="${empty MemberVO.memAccount}"> <!-- 未登入 Start --> 
 	                    			<a class="combtn" style="margin-left: 5%; padding: 5px 10px;" href="${loginUrl}">送出</a>
-	                            </c:if>
+	                            </c:if> <!-- 未登入 End --> 
                             </form>
                             
                         	<c:if test="${today ge movOndate and today lt movOffdate}"> <!-- 已上映 --> 
@@ -211,13 +225,25 @@
   								<input type="hidden" name="movNo" value="${movVO.movno}" />
 								<input type="hidden" name="action" value="insert">
 								
-	                    		<c:if test="${not empty MemberVO.memAccount}"> <!-- 已登入 --> 
-  									<input type="hidden" name="memNo" value="${MemberVO.memNo}" />
-	                            	<input class="combtn" type="submit" value="送出" style="margin-left: 13.4%; padding: 2px 10px;">
-	                            </c:if>
-	                    		<c:if test="${empty MemberVO.memAccount}"> <!-- 未登入 --> 
+	                    		<c:if test="${not empty MemberVO.memAccount}"> <!-- 已登入 Start --> 
+									<c:forEach var="satList" items="${satSvc.all}" >
+										<c:set var="satMemNo" value="${satList.memNo}"/>
+										<c:set var="movNo" value="${movVO.movno}"/>
+										<c:set var="satOne" value="${satSvc.getOneSat(movNo,satMemNo)}"/>
+									</c:forEach>
+									<c:if test="${satOne.memNo == MemberVO.memNo}">
+										<label style="font-size: 14px;">【已評分】</label> <!-- 此會員已給滿意度 -->
+									</c:if>
+									<c:if test="${satOne.memNo != MemberVO.memNo}"> <!-- 此會員未給滿意度 -->
+	  									<input type="hidden" name="memNo" value="${MemberVO.memNo}" />
+		                            	<input class="combtn" type="submit" value="送出" style="margin-left: 13.4%; padding: 2px 10px;">
+									</c:if>
+	                            
+	                            </c:if> <!-- 已登入 End --> 
+	                    		
+	                    		<c:if test="${empty MemberVO.memAccount}"> <!-- 未登入 Start --> 
 	                    			<a class="combtn" style="margin-left: 13.4%; padding: 5px 10px;" href="${loginUrl}">送出</a>
-	                            </c:if>
+	                            </c:if> <!-- 未登入 End --> 
                             </form>
                             
                         	<c:if test="${today le movOndate}"> <!-- 已上映 --> 
@@ -302,7 +328,7 @@
                                 
   								<input type="hidden" name="movNo" value="${movVO.movno}" />
   								<%-- <input type="hidden" name="memNo" value="${MemberVO.memNo}" /> --%>
-  								<input type="hidden" name="memNo" value="1" /> <!-- 測試用 -->
+  								<input type="hidden" name="memNo" value="${testMemNo}" /> <!-- 測試用 -->
   								
 								<input type="hidden" name="action" value="insert">
                             	<input class="combtn" type="submit" value="送出">

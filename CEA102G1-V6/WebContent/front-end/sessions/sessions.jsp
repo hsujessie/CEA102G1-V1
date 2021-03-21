@@ -102,8 +102,7 @@
 	                             
 	                         
 	                            <!-- 依日期查詢 Start -->
-	                            <c:if test="${not empty getMovies_BySesDate}">       
-									<!-- 顯示查詢之電影 Start -->
+	                            <c:if test="${not empty getMovies_BySesDate}"> <!-- 顯示查詢之電影 Start -->
 		                               	<c:forEach var="list" items="${getMovies_BySesDate}" >
 		                               		<c:set var="searchDate" value="${list.sesDate}" />
 		                               	</c:forEach>
@@ -130,9 +129,8 @@
 		                                 			</c:forEach>
 			                                 	</div> <!-- col-7 End --> 
 		                                	</div> <!-- session-item End --> 
-		                               	</c:forEach>
-									  <!-- 顯示查詢之電影 End -->    	 
-	                            </c:if>
+		                               	</c:forEach> 
+	                            </c:if> <!-- 顯示查詢之電影 End --> 
 	                            <!-- 依日期查詢 End -->                         
                         </div>
                     </div>
