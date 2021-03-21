@@ -110,6 +110,8 @@
 						<br>
 						<input type="hidden" name="admNo" value="${oneAdmVO.admNo}">
 						<input type="hidden" name="action" value="update">
+						<input type="hidden" name="requestURL" value="${param.requestURL}">
+						<input type="hidden" name="whichPage" value="${param.whichPage}">
 						<a class="btn btn-light btn-brd grd1 effect-1 btn-pos" style="margin: 1% 0 1% 50%;" >
 							<input type="submit" value="送出" class="input-pos">
 						</a>

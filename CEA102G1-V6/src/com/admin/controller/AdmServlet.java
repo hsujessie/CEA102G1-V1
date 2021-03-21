@@ -3,6 +3,7 @@ package com.admin.controller;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.LinkedList;
 import java.util.List;
@@ -112,6 +113,8 @@ public class AdmServlet extends HttpServlet {
 
 			Map<String, String> errorMsgs = new LinkedHashMap<String, String>();
 			req.setAttribute("errorMsgs", errorMsgs);
+			
+			String requestURL = req.getParameter("requestURL");
 
 			try {
 				/*********************** 1.接收請求參數 - 輸入格式的錯誤處理 *************************/
@@ -183,7 +186,14 @@ public class AdmServlet extends HttpServlet {
 				String updateSuccess = "【  " + admName + " 】" + "修改成功";
 				req.setAttribute("updateSuccess", updateSuccess);
 				
-				String url = "/back-end/admin/listAllAdmin.jsp";
+				if(requestURL.equals("/back-end/admin/listAdmin_ByCompositeQuery.jsp")){
+					HttpSession session = req.getSession();
+					Map<String, String[]> map = (Map<String, String[]>)session.getAttribute("map");
+					List<AdmVO> list  = admSvc.getAll(map);
+					req.setAttribute("listAdmins_ByCompositeQuery",list); //  複合查詢, 資料庫取出的list物件,存入request
+				}
+				
+				String url = requestURL;
 				RequestDispatcher successView = req.getRequestDispatcher(url);
 				successView.forward(req, res);
 			} catch (Exception e) {
@@ -272,6 +282,39 @@ public class AdmServlet extends HttpServlet {
 			session.removeAttribute("funList");
 			
 			res.sendRedirect(req.getContextPath() + "/back-end/index.jsp");
+		}
+		
+		if ("listAdmins_ByCompositeQuery".equals(action)) {
+			Map<String, String> errorMsgs = new LinkedHashMap<String, String>();
+			req.setAttribute("errorMsgs", errorMsgs);
+			
+			try {
+				
+				/***************************1.將輸入資料轉為Map**********************************/ 
+				HttpSession session = req.getSession();
+				Map<String, String[]> map = (Map<String,String[]>)session.getAttribute("map");
+				if(req.getParameter("whichPage") == null) {
+					HashMap<String, String[]> map1 = new HashMap<String, String[]>(req.getParameterMap());
+					
+					session.setAttribute("map",map1);
+					map = map1;
+				}
+				
+				/***************************2.開始複合查詢***************************************/
+				AdmService admSvc = new AdmService();
+				List<AdmVO> list = admSvc.getAll(map);
+				
+				/***************************3.查詢完成,準備轉交(Send the Success view)************/
+				req.setAttribute("listAdmins_ByCompositeQuery", list);
+				RequestDispatcher successView = req.getRequestDispatcher("/back-end/admin/listAdmin_ByCompositeQuery.jsp");
+				successView.forward(req, res);
+				
+				
+			} catch (Exception e) {
+				errorMsgs.put("error",e.getMessage());
+				RequestDispatcher failureView = req.getRequestDispatcher("/back-end/admin/listAllAdmin.jsp");
+				failureView.forward(req, res);
+			}
 		}
 			
 	}

@@ -1,6 +1,7 @@
 package com.admin.model;
 
 import java.util.List;
+import java.util.Map;
 
 import com.admin_auth.model.AdmAutVO;
 
@@ -64,6 +65,10 @@ public class AdmService {
 	
 	public List<AdmVO> getAll() {
 		return dao.getAll();
+	}
+	
+	public List<AdmVO> getAll(Map<String, String[]> map) {
+		return dao.getAll(map);
 	}
 	
 	public AdmVO getOneAdm(Integer admNo) {
