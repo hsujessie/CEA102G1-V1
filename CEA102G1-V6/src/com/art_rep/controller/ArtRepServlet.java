@@ -37,9 +37,6 @@ public class ArtRepServlet extends HttpServlet {
 		String action = request.getParameter("action");
 		System.out.println("action---"+action);
 		
-		
-
-		
 		//新增回覆文章
 		if("addArtRep".equals(action)) {
 

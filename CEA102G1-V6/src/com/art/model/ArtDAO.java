@@ -40,7 +40,7 @@ public class ArtDAO implements ArtDAO_interface{
 			"UPDATE ARTICLE SET ART_REPLYNO=? WHERE ART_NO=?";
 	private static final String DELETE_STMT="DELETE FROM ARTICLE WHERE ART_NO=?";
 	private static final String FINDBYPK_STMT="SELECT ART_NO, MEM_NO, ART_TITLE, ART_CONTENT, ART_REPLYNO, ART_TIME, ART_STATUS, MOV_TYPE FROM ARTICLE WHERE ART_NO=?";	
-	private static final String GETALL_STMT="SELECT ART_NO, MEM_NO, ART_TITLE, ART_CONTENT, ART_REPLYNO, ART_TIME, ART_STATUS, MOV_TYPE FROM ARTICLE WHERE ART_STATUS=0 ORDER BY ART_NO DESC";
+	private static final String GETALL_STMT="SELECT ART_NO, MEM_NO, ART_TITLE, ART_CONTENT, ART_REPLYNO, ART_TIME, ART_STATUS, MOV_TYPE FROM ARTICLE WHERE ART_STATUS=0 ORDER BY ART_TIME DESC";
 	private static final String GETALL_MOVETYPE_STMT=
 			"select CONCAT('MOV_TYPE', @s:=@s+1) movTypeIndex , aa.* from (select MOV_TYPE,min(ART_TIME) FROM Seenema.ARTICLE group by MOV_TYPE) aa, (SELECT @s:= 0) AS s";
 	
@@ -292,7 +292,7 @@ public class ArtDAO implements ArtDAO_interface{
 			
 			if(artTitle.trim() != null) {
 				//若artTitle有值
-				FINDBYTITLE_STMT += "WHERE ART_TITLE LIKE ?";
+				FINDBYTITLE_STMT += "WHERE ART_TITLE LIKE ? ORDER BY ART_TIME DESC";
 				
 				pstmt = con.prepareStatement(FINDBYTITLE_STMT);
 				pstmt.setString(1, "%"+artTitle+"%");
@@ -359,7 +359,7 @@ public class ArtDAO implements ArtDAO_interface{
 			con = ds.getConnection();
 			String compositeQuerySQL = "select * from article, MEMBER where ARTICLE.MEM_NO = MEMBER.MEM_NO and ART_STATUS=0 " + 
 										jdbcUtil_CompositeQuery_Art.get_WhereCondition(map) +
-										"order by ART_NO DESC";
+										"order by ART_TIME DESC";
 			pstmt = con.prepareStatement(compositeQuerySQL);
 			System.out.println("ArtDAO_compositeQuerySQL:" + compositeQuerySQL ); //印出最後的SQL
 			rs = pstmt.executeQuery();

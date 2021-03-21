@@ -115,16 +115,16 @@
     </style>
 
     <script>
+//     window.load
         $(document).ready(function () {
             //列出側邊欄電影類型
             showArtMoveType();
             
-//           	//列出Top3點擊文章列表
-//           	debugger;
-//           	ListArtTopThreeQuery();
-            
             //列出全部文章列表
             ListArtQuery();
+            
+            //列出前三高點擊文章
+            ListArtTopThreeQuery();
 
             //單篇文章燈箱
             debugger;
@@ -190,13 +190,11 @@
             });
 
             //觸發複合查詢
-            $('#findArtByTitleButton ,#findArtByCompositeQueryButton, #artTitleByCompositeQuery, #artTimeForByCompositeQuery, #artAuthorForByCompositeQuery')
-                .on('click keypress', function (e) {
-                    //     	debugger;
-                    if (e.which === 13 || e.currentTarget.id === 'findArtByCompositeQueryButton' || e
-                        .currentTarget.id === 'findArtByTitleButton') {
-                        //         	debugger;
-                        findArtByCompositeQuery(e);
+            $('#findArtByTitleButton ,#findArtByCompositeQueryButton, #artTitleByCompositeQuery, #artTimeForByCompositeQuery, #artAuthorForByCompositeQuery').on('click keypress', function (e) {
+                    //  debugger;
+                    if (e.which === 13 || e.currentTarget.id === 'findArtByCompositeQueryButton' || e.currentTarget.id === 'findArtByTitleButton') {
+                        debugger;
+                    	findArtByCompositeQuery(e);
                     }
             });
 
@@ -213,9 +211,27 @@
                 clearArtCompositeQuery();
                 $(this).addClass('selectedMovType');
                 findArtByCompositeQuery(e);
+            });
+            
+            //返回討論區首頁
+            $('#returnArticle').click(function(){
+                //清空文章列表
+                clearArtList();
                 
-              	//呼叫電影類型熱門文章
-//                 movTypeHotArticle($(this).data('value'));
+              	//清空熱門文章列表
+    			clearListArtTopThreeQuery();
+              	
+              	//清除選擇電影類型
+    			$('.selectedMovType').removeClass('selectedMovType');
+              	
+              	//reset find by title text
+              	document.getElementById("artTitleByCompositeQuery").placeholder = '搜尋標題';
+            	
+                //列出全部文章列表
+                ListArtQuery();
+                
+              	//列出前三高點擊文章
+                ListArtTopThreeQuery();
             });
             
             //時間月曆
@@ -257,47 +273,9 @@
             //呼叫檢舉留言
             addRepRpt();
             
-            //返回討論區首頁
-            $('#returnArticle').click(function(){
-            	
-                //清空文章列表
-                clearArtList();
-                
-              	//清空熱門文章列表
-    			clearListArtTopThreeQuery();
-            	
-                //列出全部文章列表
-                ListArtQuery();            	
-            });
-            
-            //依時間排序
-            $('#findArtByTimeNav').click(function(){
-            	//清空文章列表
-                clearArtList();
-            	
-            	//清空熱門文章列表
-    			clearListArtTopThreeQuery();
-            	
-                //列出全部文章列表
-                ListArtQuery();
-            });
-            
-            //依熱門度排序
-            $('#findArtByClickedTimesNav').click(function(){
-            	//清空文章列表
-                clearArtList();
-            	
-            	//清空熱門文章列表
-    			clearListArtTopThreeQuery();
-            	
-              	//列出Top3點擊文章列表
-              	ListArtTopThreeQuery();
-              	
-              	//列出Top3點後擊文章列表
-              	ListAfterTopThreeArticle();
-            });
         });
-
+// window load
+        
         //側邊欄電影類型
         function showArtMoveType() {
             $.ajax({
@@ -324,7 +302,7 @@
             });
         };
 
-        //複合查詢
+        //文章複合查詢
         function findArtByCompositeQuery(e) {
             // 	debugger;
             $.ajax({
@@ -335,7 +313,7 @@
                 success: function (artVO) {
                     clearArtList();
                     $(artVO).each(function (i, item) {
-                        //             	debugger;
+                        debugger;
                         $('#artListCenter').append(
                             '<div id="artAuthor" style="display: inline-block"><div style="display: inline-block">作者：</div> <div style="display: inline-block">' +
                             item.memName + '</div></div>' +
@@ -356,6 +334,8 @@
                             'cursor': 'pointer'
                         });
                     });
+                    clearListArtTopThreeQuery();
+                    ListArtTopThreeQuery();
                 },
                 error: function () {
                     console.log('AJAX-findArtByCompositeQuery發生錯誤囉!')
@@ -368,7 +348,7 @@
             var addArtDataAttr = {
                 'action': 'find_By_CompositeQuery_Use_AJAX'
             };
-            // 	debugger;
+            	debugger;
             addArtDataAttr['artMovType'] = $('.selectedMovType').attr('data-value');
             console.log('artMovType add ' + addArtDataAttr);
             // 	debugger;
