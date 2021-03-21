@@ -278,7 +278,6 @@ public class MovDAO implements MovDAO_interface{
 			          		   + jdbcUtil_CompositeQuery_Movie.get_WhereCondition(map)
 			          		   + " order by mov_ondate";
 			pstmt = con.prepareStatement(finalSQL);
-			System.out.println("●●finalSQL(by MovDAO) = "+finalSQL);
 			
 			rs = pstmt.executeQuery();
 			

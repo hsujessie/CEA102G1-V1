@@ -241,7 +241,6 @@ public class SesDAO implements SesDAO_interface{
 			          		   + jdbcUtil_CompositeQuery_Session.get_WhereCondition(map)
 			          		   + " ORDER BY ses_date DESC,ses_time ASC";
 			pstmt = con.prepareStatement(finalSQL);
-			System.out.println("●●finalSQL(by SesDAO) = "+finalSQL);
 			
 			rs = pstmt.executeQuery();
 			
