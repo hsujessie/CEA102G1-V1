@@ -12,4 +12,8 @@ public class FunService {
 	public List<FunVO> getAll() {
 		return dao.getAll();
 	}
+	
+	public FunVO getOneFun(Integer funNo) {
+		return dao.findByPrimarykey(funNo);
+	}
 }

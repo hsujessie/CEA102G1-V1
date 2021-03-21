@@ -74,6 +74,10 @@ div>p>span {
 	background-color: #b39d76;
 }
 
+p {
+	margin-bottom: 0.5rem;
+}
+
 </style>
 </head>
 <body>

@@ -131,6 +131,10 @@ li.seatCharts-legendItem {
 	background-color: #121518;
 }
 
+p {
+	margin-bottom: 0.5rem;
+}
+
 </style>
 </head>
 <body>

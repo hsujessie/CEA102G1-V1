@@ -80,6 +80,10 @@ div>p>span {
 .jp-card-front {
 	background-color: black !important;
 }
+
+p {
+	margin-bottom: 0.5rem;
+}
 </style>
 </head>
 <body>

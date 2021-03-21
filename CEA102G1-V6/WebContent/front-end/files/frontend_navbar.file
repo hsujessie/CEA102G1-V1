@@ -4,7 +4,7 @@
 
 <c:set var="home" value="/CEA102G1-V6/front-end/index.jsp"/>
 <c:set var="tickets" value="/CEA102G1-V6/front-end/tickets.jsp"/>
-<c:set var="searchTickets" value="/CEA102G1-V6/front-end/searchTickets.jsp"/>
+<c:set var="searchTickets" value="${pageContext.request.contextPath}/front-end/ordMas/listMemOrder.jsp"/>
 <c:set var="sessions" value="/CEA102G1-V6/front-end/sessions/sessions.jsp"/>
 <c:set var="movies" value="/CEA102G1-V6/front-end/movies/movies.jsp"/>
 <c:set var="forum" value="${pageContext.request.contextPath}/front-end/article/article.jsp"/>

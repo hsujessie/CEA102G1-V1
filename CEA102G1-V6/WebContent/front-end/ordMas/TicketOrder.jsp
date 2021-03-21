@@ -91,6 +91,9 @@ select.form-control{
 	width:70px;
 }
 
+p {
+	margin-bottom: 0.5rem;
+}
 </style>
 </head>
 <body>

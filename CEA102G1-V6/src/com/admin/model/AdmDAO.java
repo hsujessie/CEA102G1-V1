@@ -37,8 +37,8 @@ public class AdmDAO implements AdmDAO_interface{
 	private static final String LOGIN_STMT = "SELECT ADM_NO, ADM_NAME, ADM_ACCOUNT, ADM_PASSWORD, ADM_MAIL, ADM_STATUS FROM ADMINISTRATOR WHERE ADM_ACCOUNT=? AND ADM_PASSWORD=?";
 	
 	
-	private static final String UPDATE = "UPDATE ADMINISTRATOR SET ADM_NAME=?, ADM_IMG=?, ADM_ACCOUNT=?, ADM_PASSWORD=?, ADM_MAIL=?, ADM_STATUS=? WHERE ADM_NO=?";
-	private static final String UPDATE_NOIMG = "UPDATE ADMINISTRATOR SET ADM_NAME=?, ADM_ACCOUNT=?, ADM_PASSWORD=?, ADM_MAIL=?, ADM_STATUS=? WHERE ADM_NO=?";
+	private static final String UPDATE = "UPDATE ADMINISTRATOR SET ADM_NAME=?, ADM_IMG=?, ADM_ACCOUNT=?, ADM_MAIL=?, ADM_STATUS=? WHERE ADM_NO=?";
+	private static final String UPDATE_NOIMG = "UPDATE ADMINISTRATOR SET ADM_NAME=?, ADM_ACCOUNT=?, ADM_MAIL=?, ADM_STATUS=? WHERE ADM_NO=?";
 	
 	@Override
 	public void insertWithAuth(AdmVO admVO, String[] funNoArray) {
@@ -120,10 +120,9 @@ public class AdmDAO implements AdmDAO_interface{
 			pstmt.setString(1, admVO.getAdmName());
 			pstmt.setBytes(2, admVO.getAdmImg());
 			pstmt.setString(3, admVO.getAdmAccount());
-			pstmt.setString(4, admVO.getAdmPassword());
-			pstmt.setString(5, admVO.getAdmMail());
-			pstmt.setInt(6, admVO.getAdmStatus());
-			pstmt.setInt(7, admVO.getAdmNo());
+			pstmt.setString(4, admVO.getAdmMail());
+			pstmt.setInt(5, admVO.getAdmStatus());
+			pstmt.setInt(6, admVO.getAdmNo());
 			
 			pstmt.executeUpdate();
 			
@@ -294,10 +293,9 @@ public class AdmDAO implements AdmDAO_interface{
 			
 			pstmt.setString(1, admVO.getAdmName());
 			pstmt.setString(2, admVO.getAdmAccount());
-			pstmt.setString(3, admVO.getAdmPassword());
-			pstmt.setString(4, admVO.getAdmMail());
-			pstmt.setInt(5, admVO.getAdmStatus());
-			pstmt.setInt(6, admVO.getAdmNo());
+			pstmt.setString(3, admVO.getAdmMail());
+			pstmt.setInt(4, admVO.getAdmStatus());
+			pstmt.setInt(5, admVO.getAdmNo());
 			
 			pstmt.executeUpdate();
 			
