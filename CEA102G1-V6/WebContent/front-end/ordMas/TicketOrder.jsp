@@ -349,9 +349,9 @@ select.form-control{
         		tableStructure += "<tr id='"+productName +"'><td>";
         		tableStructure += "<p>"+ productName +"</p>";
         		tableStructure += "<p class='text-right'>$";
-        		tableStructure += "<span>" + productPrice + "</span>X";
-        		tableStructure += "<span>" + productCount + "</span>=";
-        		tableStructure += "<span class='subtotal'>"+ (productPrice * productCount) +"</span>";
+        		tableStructure += "<span style='margin:3px;'>" + productPrice + "</span>X";
+        		tableStructure += "<span style='margin:3px;'>" + productCount + "</span>=";
+        		tableStructure += "<span class='subtotal' style='margin:3px;'>"+ (productPrice * productCount) +"</span>";
         		tableStructure += "</p></td></tr>";
         	} else {
         		$(idName).remove();
@@ -376,9 +376,9 @@ select.form-control{
         		tableStructure += "<tr id='"+target +"'><td>";
         		tableStructure += "<p>"+ productName +"</p>";
         		tableStructure += "<p class='text-right'>$";
-        		tableStructure += "<span>" + productPrice + "</span>X";
-        		tableStructure += "<span>" + productCount + "</span>=";
-        		tableStructure += "<span class='subtotal'>"+ (productPrice * productCount) +"</span>";
+        		tableStructure += "<span style='margin:3px;'>" + productPrice + "</span>X";
+        		tableStructure += "<span style='margin:3px;'>" + productCount + "</span>=";
+        		tableStructure += "<span class='subtotal' style='margin:3px;'>"+ (productPrice * productCount) +"</span>";
         		tableStructure += "</p></td></tr>";
         		
         	} else {

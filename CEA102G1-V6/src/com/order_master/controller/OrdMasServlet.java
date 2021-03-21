@@ -120,7 +120,7 @@ public class OrdMasServlet extends HttpServlet {
 				
 			/***************************2.開始修改資料***************************************/
 				List<String> list = sesSvc.updateSeatStatus(chooseSeatNo, sesNo, "lock_seat");
-				Timer timer = startSchedule.start(20 * 1000, sesNo, chooseSeatNo);
+				Timer timer = startSchedule.start(60 * 1000, sesNo, chooseSeatNo);
 				
 				HttpSession session = req.getSession();
 				List<TicTypCartVO> ticTypCartSet = (List<TicTypCartVO>)session.getAttribute("ticTypCartSet");
