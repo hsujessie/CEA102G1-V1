@@ -15,10 +15,6 @@ import javax.servlet.http.HttpSession;
 import com.admin.model.AdmVO;
 import com.member.model.MemberVO;
 
-/**
- * Servlet Filter implementation class MemberLoginFilter
- */
-@WebFilter("/MemberLoginFilter")
 public class MemberLoginFilter implements Filter {
 	private FilterConfig config;
 
