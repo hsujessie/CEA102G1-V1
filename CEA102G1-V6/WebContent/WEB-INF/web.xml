@@ -24,7 +24,24 @@
 <!--     <dispatcher>ERROR</dispatcher> -->
 <!--     <dispatcher>ASYNC</dispatcher> -->
 <!--   </filter-mapping> -->
-  
+
+<!--   前臺登入濾器 -->
+  <filter>
+  	<filter-name>MemberLoginFilter</filter-name>
+  	<filter-class>com.art.controller.MemberLoginFilter</filter-class>
+  </filter>
+  <filter-mapping>
+  	<filter-name>MemberLoginFilter</filter-name>
+  	<url-pattern>/front-end/article/articleManage.jsp</url-pattern>
+  	<url-pattern>/front-end/article/newArticle.jsp</url-pattern>
+  	<url-pattern>/front-end/article/updateArticle.jsp</url-pattern>
+  	<url-pattern>/front-end/ordMas/*</url-pattern>
+  	<dispatcher>REQUEST</dispatcher>
+    <dispatcher>FORWARD</dispatcher>
+    <dispatcher>INCLUDE</dispatcher>
+    <dispatcher>ERROR</dispatcher>
+    <dispatcher>ASYNC</dispatcher>
+  </filter-mapping>  
   
 <!--   11  -->
   <servlet>

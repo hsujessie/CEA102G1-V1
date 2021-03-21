@@ -14,6 +14,9 @@
 <meta charset="UTF-8">
 
 <style>
+	#Top3Article{
+		text-align: center;
+	}
 	#artListCenter{
 /* 		border-radius:0.5rem; */
  		line-height: 2rem;
@@ -115,6 +118,7 @@
     	border-radius: 20px;
     	padding: 5%;
     	vertical-align: top;
+    	text-align: left;
     }
     .nav-item{
     	cursor: pointer;
@@ -217,9 +221,9 @@ function ListArtTopThreeQuery(){
 			debugger;
 			//加入文章內容
 			if($('.selectedMovType').attr('data-value') == null){
-				$('#Top3Article').append('<h4>熱門文章</h4>');
+				$('#Top3Article').append('<h4 style="text-align: left;">熱門文章</h4>');
 			}else{
-				$('#Top3Article').append('<h4>'+$('.selectedMovType').attr('data-value')+'熱門文章</h4>');
+				$('#Top3Article').append('<h4 style="text-align: left;">'+$('.selectedMovType').attr('data-value')+'熱門文章</h4>');
 			}
 			$(artVO).each(function(i, item){
 				$('#Top3Article').append(
