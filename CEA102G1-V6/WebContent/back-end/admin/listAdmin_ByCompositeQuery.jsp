@@ -120,10 +120,12 @@ table {
 											<td>${admVO.admMail}</td>
 											<td
 												${admVO.admStatus=="0" ?"style='color:blue;'":"style='color:red;'"}>${admVO.admStatus=="0" ?"在職中":"已離職"}</td>
-											<td><a class="btn btn-light btn-brd grd1 effect-1">
-													<input type="submit" value="查看" class="input-pos"
-													data-toggle="modal" data-target="#exampleModal">
-											</a></td>
+											<td>
+												<a class="btn btn-light btn-brd grd1 effect-1">
+													<input class="input-pos look" type="button" value="查看" data-toggle="modal" data-target="#exampleModal">
+													<input type="hidden" name="admNo" value="${admVO.admNo}"/>
+												</a>
+											</td>
 											<td>
 												<form method="post"
 													action="<%=request.getContextPath()%>/adm/adm.do">
@@ -152,18 +154,23 @@ table {
 					<div class="modal-dialog">
 						<div class="modal-content">
 							<div class="modal-header">
-								<h5 class="modal-title" id="exampleModalLabel">XXX 所擁有的權限</h5>
+								<h5 class="modal-title" id="exampleModalLabel"> </h5>
 								<button type="button" class="close" data-dismiss="modal"
 									aria-label="Close">
 									<span aria-hidden="true">&times;</span>
 								</button>
 							</div>
-							<div class="modal-body">...</div>
+							<div class="modal-body" id="modal-body"> </div>
 							<div class="modal-footer">
 								<button type="button" class="btn btn-secondary"
 									data-dismiss="modal" style="width: 60px; padding: 0px;">關閉</button>
-								<button type="button" class="btn btn-primary"
-									style="width: 90px; padding: 0px;">前往修改</button>
+								<form method="post" action="<%=request.getContextPath()%>/adm/adm.do">
+								<input id="admNo" type="hidden" name="admNo" value=""/>
+														<input type="hidden" name="action" value="getOne_for_update"/> 
+														<input type="hidden" name="requestURL" value="<%=request.getServletPath()%>"/> 
+														<input type="hidden" name="whichPage" value="${param.whichPage}"/> 
+								<button type="submit" class="btn btn-primary" style="width: 90px; padding: 0px;">前往修改</button>
+								</form>
 							</div>
 						</div>
 					</div>
@@ -173,6 +180,37 @@ table {
 		</div>
 	</div>
 	<%@ include file="/back-end/files/sb_importJs.file"%>
+	<script>
+		$(".look").click(function() {
+			let url = "${pageContext.request.contextPath}" + "/adm/adm.do";
+			let admNo = $(this).next().val();
+			
+			$.ajax({
+				url: url,
+				type: "POST",
+				dataType: "json",
+				cache: false,
+				data : {
+					action: "get_fun_byAdmNo",
+					admNo : admNo
+				},
+				success: function(data) {
+					$("#exampleModalLabel").text(data.admName + " 所擁有的權限");
+					$("#admNo").val(data.admNo);
+					putData(data.funList);
+				}
+			});
+		});
+		
+		function putData(data) {
+			let txt = "<ol>"
+			for (let i = 0; i < data.length; i++) {
+				txt += "<li>" + data[i] + "</li>";
+			}
+			txt += "</ol>";
+			$("#modal-body").html(txt);
+		}
+	</script>
 	<!-- 引入template要用的js -->
 
 

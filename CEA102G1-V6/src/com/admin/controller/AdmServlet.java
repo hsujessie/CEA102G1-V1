@@ -2,6 +2,7 @@ package com.admin.controller;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.PrintWriter;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
@@ -11,16 +12,22 @@ import java.util.Map;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
+import javax.servlet.ServletOutputStream;
 import javax.servlet.annotation.MultipartConfig;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import javax.servlet.http.Part;
+
+import org.json.JSONArray;
+import org.json.JSONObject;
+
 import com.admin.model.AdmService;
 import com.admin.model.AdmVO;
 import com.admin_auth.model.AdmAutService;
 import com.admin_auth.model.AdmAutVO;
+import com.func.model.FunService;
 import com.func.model.FunVO;
 
 @MultipartConfig
@@ -290,7 +297,7 @@ public class AdmServlet extends HttpServlet {
 			
 			try {
 				
-				/***************************1.將輸入資料轉為Map**********************************/ 
+				/*************************** 1.接收請求參數 - 輸入格式的錯誤處理 **********************************/ 
 				HttpSession session = req.getSession();
 				Map<String, String[]> map = (Map<String,String[]>)session.getAttribute("map");
 				if(req.getParameter("whichPage") == null) {
@@ -300,7 +307,7 @@ public class AdmServlet extends HttpServlet {
 					map = map1;
 				}
 				
-				/***************************2.開始複合查詢***************************************/
+				/*************************** 2.開始查詢資料 ***************************************/
 				AdmService admSvc = new AdmService();
 				List<AdmVO> list = admSvc.getAll(map);
 				
@@ -314,6 +321,34 @@ public class AdmServlet extends HttpServlet {
 				errorMsgs.put("error",e.getMessage());
 				RequestDispatcher failureView = req.getRequestDispatcher("/back-end/admin/listAllAdmin.jsp");
 				failureView.forward(req, res);
+			}
+		}
+		
+		if ("get_fun_byAdmNo".equals(action)) {
+			res.setContentType("text/plain;charset=UTF-8");
+			PrintWriter out = res.getWriter();
+			try {
+				
+				/*************************** 1.接收請求參數 - 輸入格式的錯誤處理 **********************************/ 
+				Integer admNo = new Integer(req.getParameter("admNo"));
+				/*************************** 2.開始查詢資料 ***************************************/
+				AdmService admSvc = new AdmService();
+				AdmVO admVO = admSvc.getOneAdm(admNo);
+				List<AdmAutVO> list = admSvc.getAuthsByAdmNo(admNo);
+				
+				FunService funSvc = new FunService();
+				JSONArray jsonArray = funSvc.getFunName(list);
+				
+				/***************************3.查詢完成,準備轉交(Send the Success view)************/
+				JSONObject obj = new JSONObject();
+				
+				obj.put("admNo", admNo);
+				obj.put("admName", admVO.getAdmName());
+				obj.put("funList", jsonArray);
+				
+				out.print(obj.toString());
+			} catch (Exception e) {
+				out.print(e.getMessage());
 			}
 		}
 			
