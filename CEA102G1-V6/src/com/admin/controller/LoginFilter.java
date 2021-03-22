@@ -35,7 +35,7 @@ public class LoginFilter implements Filter {
 		AdmVO admVO = (AdmVO) session.getAttribute("admVO");
 		
 		if (admVO == null) {
-			session.setAttribute("location", req.getRequestURI());
+			session.setAttribute("back_end_location", req.getRequestURI());
 			res.sendRedirect(req.getContextPath() + "/back-end/login.jsp");
 			return;
 		}
