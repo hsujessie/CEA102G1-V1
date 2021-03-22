@@ -74,7 +74,7 @@
         autoplayTimeout: 4000,
         autoplaySpeed: 2500, //速度
         animateOut: "fadeOut",
-        dotsEach: true, //有幾張圖，dots就有幾個
+        dotsEach: false, //有幾張圖，dots就有幾個
         responsive: {
             0:{
                 items:1

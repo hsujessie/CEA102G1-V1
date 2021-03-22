@@ -1,5 +1,6 @@
 <%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%@ page import="com.movie.model.*"%>
 
 <jsp:useBean id="listMovies_ByCompositeQuery" scope="request" type="java.util.List<MovVO>"/>
@@ -9,11 +10,18 @@
 	<%@ include file="/back-end/files/sb_head.file"%>
 
 <style>
+	.success-span{
+	    color: #bb9d52;
+		position: absolute;
+	    top: 8%;
+	    left: 17%;
+	    font-size: 16px;
+	}
 	.th-adjust{
 		width: 120px;
 	}
 	.form-sty{
-		margin: 20px 0 0 30px;
+		margin: 20px 0 0 12.5%;
 	}
 </style>
 </head>
@@ -28,8 +36,17 @@
                 <main>
                     <div class="container-fluid">
 
-                    	<!-- search Start -->
                     	<h3 class="h3-style" style="display: inline-block;">電影查詢</h3>
+						<!-- update success message Start -->
+						<c:if test="${updateSuccess != null }">
+							<span class="success-span"> 
+								${updateSuccess}
+								<i class="far fa-smile-wink"></i>
+							</span>
+						</c:if>
+                    	<!-- update success message End -->
+                    	
+                    	<!-- search Start -->
                     	<div class="row " style="margin: -60px 0 20px 0;">         
 			                <div class="col-2"></div>
 	                        <div class="col-10">          
@@ -55,13 +72,14 @@
 			                            </select>
 			                        <b>選擇年份</b>
 			                        <select name="mov_ondate_year">
+										<fmt:formatDate value="<%=new java.util.Date()%>" pattern="yyyy" var="thisYear" />
 			                            <option value=""></option>
-			                            <c:forEach var="year" begin="2018" end="<%= (int) (java.util.Calendar.getInstance().get(java.util.Calendar.YEAR))+1%>">
+			                            <c:forEach var="year" begin="${thisYear-4}" end="${thisYear}">
 			                                <option value="${year}">${year}年</option>
 			                            </c:forEach>
 			                        </select>
 			                        <b>選擇月份</b>
-			                        <select name="mov_ondate_month">
+			                        <select name="mov_ondate_month" style="margin-right: 1%;">
 			                            <option value=""></option>
 			                            <c:forEach var="month" begin="1" end="12">
 			                                <option value="${month}">${month}月</option>
@@ -99,7 +117,7 @@
 									<td>${movVO.getMovname()}</td>
 									<td>${movVO.getMovondate()}</td>
 									<td>${movVO.getMovoffdate()}</td>
-									<td>${movVO.getMovdurat()}小時</td>
+									<td>${movVO.getMovdurat()}分鐘</td>
 									<td>${movVO.getMovtype()}</td>
 									<td>
 					        			 <a id="listOne" onclick="getData(this,${movVO.movno})" class="btn btn-light btn-brd grd1 effect-1">

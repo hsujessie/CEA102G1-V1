@@ -28,36 +28,10 @@ public class TheServlet extends HttpServlet {
 			req.setAttribute("errorMsgs", errorMsgs);
 
 			try {
-				String str = req.getParameter("the_no");
-				if (str == null || (str.trim()).length() == 0) {
-					errorMsgs.add("�п�J�U�|�s��");
-				}
-
-				if (!errorMsgs.isEmpty()) {
-					RequestDispatcher failureView = req
-							.getRequestDispatcher("/back-end/theater/select_page.jsp");
-					failureView.forward(req, res);
-					return;
-				}
-				
-				Integer the_no = null;
-				try {
-					the_no = new Integer(str);
-				} catch (Exception e) {
-					errorMsgs.add("�U�|�s���榡�����T");
-				}
-				if (!errorMsgs.isEmpty()) {
-					RequestDispatcher failureView = req
-							.getRequestDispatcher("/back-end/theater/select_page.jsp");
-					failureView.forward(req, res);
-					return;
-				}
+				Integer the_no = new Integer(req.getParameter("the_no"));
 				
 				TheService theSvc = new TheService();
 				TheVO theaterVO = theSvc.getOneTheater(the_no);
-				if (theaterVO == null) {
-					errorMsgs.add("�d�L���");
-				}
 				if (!errorMsgs.isEmpty()) {
 					RequestDispatcher failureView = req
 							.getRequestDispatcher("/back-end/theater/select_page.jsp");
@@ -174,13 +148,7 @@ public class TheServlet extends HttpServlet {
 				Integer movver_no = new Integer(req.getParameter("movver_no").trim());
 				
 				String the_seat = req.getParameter("the_seat").trim();
-				if (the_seat == null || the_seat.trim().length() == 0) {
-					errorMsgs.add("�U�|�y��s�ƽФŪť�");
-				}
-				String the_seatno = req.getParameter("the_seatno").trim();
-				if (the_seatno == null || the_seatno.trim().length() == 0) {
-					errorMsgs.add("�U�|�y��s���ФŪť�");
-				}
+				String the_seatno = theaterSeat.seatNoTransform.seatNoTran(the_seat);
 				
 
 				TheVO theaterVO = new TheVO();

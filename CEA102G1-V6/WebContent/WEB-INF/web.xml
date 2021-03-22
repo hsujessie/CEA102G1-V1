@@ -90,6 +90,15 @@
   	<url-pattern>/adm/adm.do</url-pattern>
   </servlet-mapping>  
   
+  <servlet>
+  	<servlet-name>GenerateQRcode</servlet-name>
+  	<servlet-class>jdbc.util.read_img.GenerateQRcode</servlet-class>
+  </servlet>
+  <servlet-mapping>
+  	<servlet-name>GenerateQRcode</servlet-name>
+  	<url-pattern>/util/generateQRcode</url-pattern>
+  </servlet-mapping>  
+  
 <!--  05 -->
   <servlet>
     <servlet-name>ArtServlet</servlet-name>
@@ -163,6 +172,14 @@
     <servlet-name>MemberServlet</servlet-name>
     <url-pattern>/Member/member.do</url-pattern>
   </servlet-mapping> 
+  <servlet>
+    <servlet-name>MemImgReader</servlet-name>
+    <servlet-class>com.member.controller.MemImgReader</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>MemImgReader</servlet-name>
+    <url-pattern>/Member/reader.do</url-pattern>
+  </servlet-mapping> 
 
 <!-- 28 -->
   <servlet>
@@ -196,6 +213,14 @@
   <servlet-mapping>
     <servlet-name>Ticket_typeServlet</servlet-name>
     <url-pattern>/ticket_type/ticket_type.do</url-pattern>
+  </servlet-mapping>
+  <servlet>
+    <servlet-name>FaqServlet</servlet-name>
+    <servlet-class>com.faq.controller.FaqServlet</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>FaqServlet</servlet-name>
+    <url-pattern>/faq/faq.do</url-pattern>
   </servlet-mapping>
 
 <!-- 31 -->

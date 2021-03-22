@@ -84,7 +84,7 @@ MovVO movVO = (MovVO) request.getAttribute("movVO");
 							</tr>
 							<tr>
 								<th>片長</th>
-								<td><%=movVO.getMovdurat()%>小時</td>
+								<td><%=movVO.getMovdurat()%>分鐘</td>
 							</tr>
 							<tr>
 								<th>級數</th>

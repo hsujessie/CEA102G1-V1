@@ -1,6 +1,10 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+<c:set var="loginUrl" value="${pageContext.request.contextPath}/front-end/Member_Login/login.jsp" scope="page"/>
+<c:set var="location" value="${pageContext.request.requestURI}" scope="session"/> <!-- 若沒登入，無法對該電影評分+短評，here have tp set a session attribute for the login page to get the origin url -->
+<c:set var="testMemNo" value="1" scope="page"/> <!-- 測試用 -->
+<c:set var="testMemAccount" value="abc" scope="page"/> <!-- 測試用 -->
 
 <!DOCTYPE html>
 <html>
@@ -17,7 +21,7 @@
 		color: #bb9d52
 	}
 	
-/* -- Light box -- */
+	/* -- Light box -- */
 	#movies-comrep{
 		position: fixed;
 		top: 0;
@@ -81,9 +85,6 @@
 	ol, ul {
     	list-style: none;
 	}
-	#comrepForm ul {
-    	line-height: 2;
-	}
 	#comrepForm ul li input{
     	margin-right: 10px;
 	}
@@ -127,7 +128,7 @@
 <body>
         <div class="wrapper">
             <!-- Nav Bar Start -->
-			<c:set value="moviesSub" var="urlRecog"></c:set>        <!-- 給navbar_frontend.file的參數-Sub -->
+			<c:set value="moviesSub" var="urlRecog"></c:set> <!-- 給navbar_frontend.file的參數-Sub -->
             <%@ include file="/front-end/files/frontend_navbar.file"%>
             <!-- Nav Bar End -->
 
@@ -162,27 +163,50 @@
                         </div>
                     </div>
                     
-					<!-- 電影--未上映：顯示，已上映：不顯示 -->
+					<!-- for 判斷 電影是否上映 Start -->
+					<fmt:formatDate value="<%=new java.util.Date()%>" pattern="yyyy-MM-dd" var="today" />
+        			<fmt:formatDate value="${movVO.movondate}" pattern="yyyy-MM-dd" var="movOndate" />
+        			<fmt:formatDate value="${movVO.movoffdate}" pattern="yyyy-MM-dd" var="movOffdate" />
+                    <!-- for 判斷 電影是否上映 End -->
+                    
                     <div class="row">
                         <div class="col-lg-1 col-md-3">
                             <p style="color:#aa9166;">期待度</p>
                         </div>
-                        <div class="col-lg-11 col-md-9">                     
-                            <form method="post" action="<%=request.getContextPath()%>/expectation/exp.do">                                                       
+                        <div class="col-lg-11 col-md-9">                    								          <!-- 已上映 - 上映日大於等於當日 and 下檔日小於當日-->          													   <!-- 已下檔 - 下檔日大於當日 -->
+                            <form method="post" action="<%=request.getContextPath()%>/expectation/exp.do" <c:if test="${today ge movOndate and today lt movOffdate}">style="display:none;"</c:if> <c:if test="${today ge movOffdate}">style="display:none;"</c:if> >                                                       
 	                            <label><input type="radio" name="expRating" value="1"><span class="ml">想看</span><i class="far fa-smile ml" style="color:#aa9166;"></i></label>&emsp;&emsp;
 	                            <label><input type="radio" name="expRating" value="0"><span class="ml">不想看</span><i class="far fa-meh ml" style="color:#aa9166;"></i></label>
 
   								<input type="hidden" name="movNo" value="${movVO.movno}" />
-  								<input type="hidden" name="memNo" value="${MemberVO.memNo}" />
 								<input type="hidden" name="action" value="insert">
 								
-	                    		<c:if test="${not empty MemberVO.memAccount}">
-                            		<input class="combtn" type="submit" value="送出" style="margin-left: 5%; padding: 2px 10px;">
-	                            </c:if>
-	                    		<c:if test="${empty MemberVO.memAccount}">
-	                    			<a class="combtn" style="margin-left: 5%; padding: 5px 10px;" href="<%=request.getContextPath()%>/front-end/Login.jsp">送出</a>
-	                            </c:if>
+	                    		<c:if test="${not empty MemberVO.memAccount}"> <!-- 已登入 Start --> 
+	                    			<c:forEach var="expList" items="${expSvc.all}" >
+										<c:set var="expMemNo" value="${expList.memNo}"/>
+										<c:set var="movNo" value="${movVO.movno}"/>
+										<c:set var="expOne" value="${expSvc.getOneExp(movNo,expMemNo)}"/>
+									</c:forEach>
+									<c:if test="${expOne.memNo == MemberVO.memNo}"> <!-- 此會員已給期待度 -->
+										<label style="font-size: 14px;">【已評分】</label>
+									</c:if>
+									<c:if test="${expOne.memNo != MemberVO.memNo}"> <!-- 此會員未期待度 -->
+	  									<input type="hidden" name="memNo" value="${MemberVO.memNo}" />
+	                            		<input class="combtn" type="submit" value="送出" style="margin-left: 5%; padding: 2px 10px;">
+									</c:if>
+	                            </c:if> <!-- 已登入 End --> 
+	                            
+	                    		<c:if test="${empty MemberVO.memAccount}"> <!-- 未登入 Start --> 
+	                    			<a class="combtn" style="margin-left: 5%; padding: 5px 10px;" href="${loginUrl}">送出</a>
+	                            </c:if> <!-- 未登入 End --> 
                             </form>
+                            
+                        	<c:if test="${today ge movOndate and today lt movOffdate}"> <!-- 已上映 --> 
+	                        	<label style="font-size: 14px;">【電影已上映,投票結束】</label>
+	                        </c:if>
+	                        <c:if test="${today ge movOffdate}"> <!-- 已下檔 --> 
+	                        	<label style="font-size: 14px;">【電影已下檔,投票結束】</label>
+	                        </c:if>
                         </div>
                     </div>
                     
@@ -190,8 +214,8 @@
                         <div class="col-lg-1 col-md-3">
                             <p style="color:#aa9166;">滿意度</p>
                         </div>
-                        <div class="col-lg-11 col-md-9">                   
-                            <form method="post" action="<%=request.getContextPath()%>/satisfaction/sat.do">        	
+                        <div class="col-lg-11 col-md-9">                    							    <!-- 已上映 - 上映日小於等於當日-->          					    <!-- 已下檔 - 下檔日大於當日 -->                   
+                            <form method="post" action="<%=request.getContextPath()%>/satisfaction/sat.do" <c:if test="${today le movOndate}">style="display:none;"</c:if> <c:if test="${today ge movOffdate}">style="display:none;"</c:if> >        	
                             	<label><input type="checkbox" name="satRating" value="1" style="display:none;" /><i class="fa fa-star" aria-hidden="true"></i></label>
                             	<label><input type="checkbox" name="satRating" value="1" style="display:none;" /><i class="fa fa-star" aria-hidden="true"></i></label>
                             	<label><input type="checkbox" name="satRating" value="1" style="display:none;" /><i class="fa fa-star" aria-hidden="true"></i></label>
@@ -199,23 +223,42 @@
                             	<label><input type="checkbox" name="satRating" value="1" style="display:none;" /><i class="fa fa-star" aria-hidden="true"></i></label>
                   
   								<input type="hidden" name="movNo" value="${movVO.movno}" />
-  								<input type="hidden" name="memNo" value="${MemberVO.memNo}" />
 								<input type="hidden" name="action" value="insert">
 								
-	                    		<c:if test="${not empty MemberVO.memAccount}">
-	                            	<input class="combtn" type="submit" value="送出" style="margin-left: 13.4%; padding: 2px 10px;">
-	                            </c:if>
-	                    		<c:if test="${empty MemberVO.memAccount}">
-	                    			<a class="combtn" style="margin-left: 13.4%; padding: 5px 10px;" href="<%=request.getContextPath()%>/front-end/Login.jsp">送出</a>
-	                            </c:if>
+	                    		<c:if test="${not empty MemberVO.memAccount}"> <!-- 已登入 Start --> 
+									<c:forEach var="satList" items="${satSvc.all}" >
+										<c:set var="satMemNo" value="${satList.memNo}"/>
+										<c:set var="movNo" value="${movVO.movno}"/>
+										<c:set var="satOne" value="${satSvc.getOneSat(movNo,satMemNo)}"/>
+									</c:forEach>
+									<c:if test="${satOne.memNo == MemberVO.memNo}">
+										<label style="font-size: 14px;">【已評分】</label> <!-- 此會員已給滿意度 -->
+									</c:if>
+									<c:if test="${satOne.memNo != MemberVO.memNo}"> <!-- 此會員未給滿意度 -->
+	  									<input type="hidden" name="memNo" value="${MemberVO.memNo}" />
+		                            	<input class="combtn" type="submit" value="送出" style="margin-left: 13.4%; padding: 2px 10px;">
+									</c:if>
+	                            
+	                            </c:if> <!-- 已登入 End --> 
+	                    		
+	                    		<c:if test="${empty MemberVO.memAccount}"> <!-- 未登入 Start --> 
+	                    			<a class="combtn" style="margin-left: 13.4%; padding: 5px 10px;" href="${loginUrl}">送出</a>
+	                            </c:if> <!-- 未登入 End --> 
                             </form>
+                            
+                        	<c:if test="${today le movOndate}"> <!-- 已上映 --> 
+	                        	<label style="font-size: 14px;">【電影未上映,投票尚未開始】</label>
+	                        </c:if>
+	                        <c:if test="${today ge movOffdate}"> <!-- 已下檔 --> 
+	                        	<label style="font-size: 14px;">【電影已下檔,投票結束】</label>
+	                        </c:if>
                         </div>
                     </div>
                 </div>
             </div>
             <!-- Information End -->
 
-<!-- ================================= 以下 電影--未上映：不顯示，已上映：顯示 ====================================== -->
+
             <!-- Synopsis Start -->
             <jsp:useBean id="comSvc" scope="page" class="com.comment.model.ComService"/>
             <div class="movinfo">
@@ -242,12 +285,12 @@
                         <h2>Reviews</h2>
                     </div>
                     <div class="reviews-start">
-                    	<c:forEach var="comVO" items="${comSvc.all}" varStatus="no">
+                    	<c:forEach var="comVO" items="${comSvc.all}">
                     		<c:if test="${(comVO.movNo == movVO.movno) and (comVO.comStatus == 0)}">
-		                         <div class="reviews-container ${(no.index mod 2 == 0) ? 'right' : 'left'}">
+		                         <div class="reviews-container">
 		                            <div class="reviews-content">
 		                                <c:set var="satObj" value="${satSvc.getOneSat(comVO.movNo,comVO.memNo)}"></c:set>                            
-		                                <h2><span>Ratings</span><c:forEach var="i" begin="1" end="${satObj.satRating}"><i class="fa fa-star" aria-hidden="true"></i></c:forEach></h2>	                                
+		                                <h2><span>Ratings</span><c:forEach var="i" begin="0" end="${satObj.satRating}"><i class="fa fa-star" aria-hidden="true"></i></c:forEach></h2>	                                
 		                                <p>${comVO.comContent}</p>
 		                                																														
 										<jsp:useBean id="memSvc" scope="page" class="com.member.model.MemberService"/>
@@ -277,13 +320,15 @@
                         </div>
                     </div>
 
-                    <div class="row align-items-center" ${not empty MemberVO.memAccount ? '':'style="display:none;"'}>
+                    <%-- <div class="row align-items-center" ${not empty MemberVO.memAccount ? '':'style="display:none;"'}> --%>
+                    <div class="row align-items-center">
                         <div class="col-lg-12 col-md-12">
                             <form method="post" action="<%=request.getContextPath()%>/comment/com.do">
                                 <textarea name="comContent" cols="30" rows="5" style="width: 100%; margin: 20px 0 5px 0;" placeholder="Write something here..."></textarea>                          
                                 
   								<input type="hidden" name="movNo" value="${movVO.movno}" />
-  								<input type="hidden" name="memNo" value="${MemberVO.memNo}" />
+  								<%-- <input type="hidden" name="memNo" value="${MemberVO.memNo}" /> --%>
+  								<input type="hidden" name="memNo" value="${testMemNo}" /> <!-- 測試用 -->
   								
 								<input type="hidden" name="action" value="insert">
                             	<input class="combtn" type="submit" value="送出">
@@ -291,13 +336,13 @@
                         </div>
                     </div>
 
-                    <div class="row align-items-center" ${not empty MemberVO.memAccount ? 'style="display:none;"':''}>
+<%--                     <div class="row align-items-center" ${not empty MemberVO.memAccount ? 'style="display:none;"':''}>
                         <div class="col-lg-45 col-md-5"></div>
                         <div class="col-lg-2 col-md-2 writeComment">
-                            <a href="<%=request.getContextPath()%>/front-end/Login.jsp">點我寫短評 <i class="fas fa-pencil-alt" style="color:#aa9166;"></i></a>
+                            <a href="${loginUrl}">點我寫短評 <i class="fas fa-pencil-alt" style="color:#aa9166;"></i></a>
                         </div>
                         <div class="col-lg-5 col-md-5"></div>
-                    </div>
+                    </div> --%>
                 </div>
             </div>
             <!-- Comment End -->
@@ -318,7 +363,7 @@
 		<div class="movies-lightbox-inside">
 			<div>
 				<form id="comrepForm" method="post" action="">
-					<ul>
+					<ul style="margin-left: -30px;">
 					<li><input type="radio" name="comRepReason" value="1"><label>與本電影無關、捏造假冒、不實敘述</label></li>
 					<li><input type="radio" name="comRepReason" value="2"><label>具有廣告性質或大量重複散布</label></li>
 					<li><input type="radio" name="comRepReason" value="3"><label>相互惡意攻訐、猥褻騷擾、人身攻擊</label></li>

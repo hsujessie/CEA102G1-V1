@@ -2,7 +2,7 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%@ page import="com.member.model.*" %>
-
+<c:set var="location" value="${pageContext.request.requestURI}" scope="session"/> <!-- set a session attribute for the login page to get the origin url -->
 <!DOCTYPE html>
 <html>
 <head>
@@ -46,7 +46,7 @@
       </div>
       <div class="chat-logs">
        
-      </div><!--chat-log -->
+      </div>chat-log
     </div>
     <div class="chat-input">      
       <input type="text" id="chat-input" placeholder="Send a message..." onkeydown="if (event.keyCode == 13) sendMessage();"/>
@@ -114,6 +114,11 @@
                     <div class="owl-carousel movie-carousel">
                         <!-- move content Start -->
 						<c:forEach var="movVO" items="${movSvc.all}" >
+						<!-- for 判斷 電影是否下檔 Start -->
+						<fmt:formatDate value="<%=new java.util.Date()%>" pattern="yyyy-MM-dd" var="today" />
+			      		<fmt:formatDate value="${movVO.movoffdate}" pattern="yyyy-MM-dd" var="movOffdate" />
+			            <!-- for 判斷 電影是否下檔 End -->
+			            	<c:if test="${today lt movOffdate}">
 		                        <div class="col-lg-10 col-md-12">
 		                            <div class="movie-item">
 			                            <div class="movie-img">
@@ -134,6 +139,7 @@
 		                                </div>
 		                            </div>
 		                        </div>
+	                    	</c:if>
 						</c:forEach>
                         <!-- move content End -->
                     </div>
@@ -210,7 +216,6 @@
 <%@ include file="/front-end/files/frontend_importJs.file"%>
 
 	<script>
-
 		  var INDEX = 0; 
 		  var memberImg = "";
 		  var admImg = "";
@@ -337,7 +342,6 @@
 		function disconnect() {
 			if (webSocket != null) webSocket.close();
 		}
-
 	</script>
 </body>
 </html>

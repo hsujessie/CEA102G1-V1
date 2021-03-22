@@ -16,7 +16,7 @@ public class OrdMasService {
 		dao = new OrdMasDAO();
 	}
 	
-	public void insertWithDetail(Integer memNo, Integer sesNo, Set<FooCartVO> fooCartSet, Set<TicTypCartVO> ticTypCartSet) {
+	public OrdMasVO insertWithDetail(Integer memNo, Integer sesNo, Set<FooCartVO> fooCartSet, List<TicTypCartVO> ticTypCartSet) {
 		OrdMasVO ordMasVO = new OrdMasVO();
 		
 		int ordMasPrice = 0;
@@ -24,13 +24,13 @@ public class OrdMasService {
 			ordMasPrice += (fooCartVO.getFooPrice() * fooCartVO.getFooCount());
 		}
 		for (TicTypCartVO ticTypCartVO : ticTypCartSet) {
-			ordMasPrice += (ticTypCartVO.getTicLisPrice() * ticTypCartVO.getTicTypCount());
+			ordMasPrice += ticTypCartVO.getTicLisPrice();
 		}
 		ordMasVO.setMemNo(memNo);
 		ordMasVO.setSesNo(sesNo);
 		ordMasVO.setOrdMasPrice(ordMasPrice);
 		
-		dao.insertWithDetail(ordMasVO, ticTypCartSet, fooCartSet);
+		return dao.insertWithDetail(ordMasVO, ticTypCartSet, fooCartSet);
 	}
 	
 	public List<OrdMasVO> getAll() {
@@ -43,5 +43,20 @@ public class OrdMasService {
 	
 	public OrdMasVO getOneOrdMas(Integer ordMasNo) {
 		return dao.findByprimarykey(ordMasNo);
+	}
+	
+	public void changeStatus(Integer ordMasNo, Integer ordMasStatus) {
+		dao.changeStatus(ordMasNo, ordMasStatus);
+	}
+	
+	public boolean isAlreadyGet(Integer ordMasNo) {
+		OrdMasVO ordMasVO = dao.findByprimarykey(ordMasNo);
+		Integer ordMasStatus = ordMasVO.getOrdMasStatus();
+		
+		if (ordMasStatus == 0) {
+			return false;
+		}
+		return true;
+		
 	}
 }

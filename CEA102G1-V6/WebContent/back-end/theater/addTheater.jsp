@@ -1,100 +1,190 @@
-<%@ page contentType="text/html; charset=UTF-8" pageEncoding="Big5"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
-<%@ page import="com.theater.model.*"%>
-
+<%@ page import="com.theater.model.*" %>
 <%
 	TheVO theaterVO = (TheVO) request.getAttribute("theaterVO");
 %>
-
 <html>
 <head>
-<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1"/>
-<title>�U�|��Ʒs�W</title>
-
-<style>
-  table#table-1 {
-	background-color: #CCCCFF;
-    border: 2px solid black;
-    text-align: center;
+	<title>Back-End Management</title>
+	<%@ include file="/back-end/files/sb_head.file"%>
+	<style>
+  #table1 {
+	width: 750px;
+	margin: 5px auto 5px auto;
+    background-color: rgb(255,255,255);
+    border-radius: 10px;
+	-webkit-box-shadow: 0px 3px 5px rgb(8,8,8, 0.3);
+	-moz-box-shadow: 0px 3px 5px rgb(8,8,8, 0.3);
+	box-shadow: 0px 3px 5px rgb(8,8,8, 0.3);
   }
-  table#table-1 h4 {
-    color: red;
-    display: block;
-    margin-bottom: 1px;
+ #table1 th td{
+  	box-sizing:border-box;
+    border-radius: 10px;
   }
-  h4 {
-    color: blue;
-    display: inline;
+ #table1 th{
+  	width: 200px;
+  	padding: 10px 0px 10px 70px;
   }
+ #table1 td{
+  	width: 250px;
+  	padding: 10px 20px 10px 30px;
+    border-bottom: 2px dotted #bb9d52;
+  }
+  .listOne-h3-pos,#a-color{
+  	margin-left: 50%;
+  }
+  .listOne-h3-pos{
+  	display: inline-block; 
+  }
+  #a-color{
+  	font-size: 16px;
+  }
+  .ml-ten{
+  	margin-left: 10px;
+  }
+  #table2{
+	margin: 100px auto 5px auto;
+  }
+ #tbody1 tr td {
+/*  box-sizing:border-box; */
+ 	width:30px;
+ 	height:30px;
+/*  	background-color:#bb9d52; */
+ 	border:5px solid;
+ 	border-color:white;
+ }
+ .s0{
+ 	background-color:#6AD5D2;
+ 	}
+ .s3{
+ 	background-color:#D44444;
+ 	}
+ .s9{
+ 	background-color:#103C3B;
+ 	}
 </style>
-
-<style>
-  table {
-	width: 450px;
-	background-color: white;
-	margin-top: 1px;
-	margin-bottom: 1px;
-  }
-  table, th, td {
-    border: 0px solid #CCCCFF;
-  }
-  th, td {
-    padding: 1px;
-  }
-</style>
-
 </head>
-<body bgcolor='white'>
-
-<table id="table-1">
-	<tr><td>
-		 <h3>�U�|��Ʒs�W</h3></td><td>
-		 <h4><a href="<%=request.getContextPath()%>/back-end/theater/select_page.jsp">�^�U�|����</a></h4>
-	</td></tr>
-</table>
-
-<h3>��Ʒs�W:</h3>
-
-<%-- ���~���C --%>
-<c:if test="${not empty errorMsgs}">
-	<font style="color:red">�Эץ��H�U���~:</font>
-	<ul>
-		<c:forEach var="message" items="${errorMsgs}">
-			<li style="color:red">${message}</li>
-		</c:forEach>
-	</ul>
-</c:if>
-
-<FORM METHOD="post" ACTION="<%=request.getContextPath()%>/theater/theater.do" name="form1">
-<table>
-	<tr>
-	<jsp:useBean id="movie_versionSvc" scope="page" class="com.movie_version.model.MovVerService" />
-		<td>��M����:<font color=red><b>*</b></font></td>
-		<td><select size="1" name="movver_no">
-			<c:forEach var="movie_versionVO" items="${movie_versionSvc.all}">
-				<option value="${movie_versionVO.movver_no}" ${(theaterVO.movver_no==movie_versionVO.movver_no)? 'selected':'' } >${movie_versionVO.movver_name}
-			</c:forEach>
-		</select></td>
-	</tr>
-	<tr>
-		<td>�U�|�y��s��:</td>
-		<td><input type="TEXT" name="the_seat" size="45" 
-			 value="<%= (theaterVO==null)? "" : theaterVO.getThe_seat()%>" /></td>
-	</tr>
-	<tr>
-		<td>�U�|�y��s��:</td>
-		<td><input type="TEXT" name="the_seatno" size="45"
-			 value="<%= (theaterVO==null)? "" : theaterVO.getThe_seatno()%>" /></td>
-	</tr>
-
-</table>
-<br>
-<input type="hidden" name="action" value="insert">
-<input type="submit" value="�e�X�s�W"></FORM>
-</body>
-
-
-
-
-
+<body class="sb-nav-fixed">
+		<%@ include file="/back-end/files/sb_navbar.file"%> <!-- 引入navbar (上方) -->
+        <div id="layoutSidenav">
+            <div id="layoutSidenav_nav">            
+            	<%-- <c:set value="${pageContext.request.requestURI}" var="urlRecog"></c:set> --%> <!-- 在listAllXXX.jsp，加上這行，給sb_sidebar.file的參數-Home -->
+                <c:set value="theaterAdd" var="urlRecog"></c:set> <!-- 在addXXX.jsp，加上這行，「value」請參照「sb_sidebar.file」給予相對應的值，給sb_sidebar.file的參數-Add -->
+                <%-- <c:set value="movieSub" var="urlRecog"></c:set> --%> <!-- 在除了以上兩個jsp以外的子頁面，加上這行，「value」請參照「sb_sidebar.file」給予相對應的值，給sb_sidebar.file的參數-Sub -->         
+				<%@ include file="/back-end/files/sb_sidebar.file"%> <!-- 引入sidebar (左方) -->
+            </div>
+            <div id="layoutSidenav_content">
+                <main>
+                    <div class="container-fluid">
+                    <!-- PUT HERE Start-->
+                    <FORM METHOD="post" ACTION="<%=request.getContextPath()%>/theater/theater.do" id="form">
+                    <h3 class="h3-style listOne-h3-pos">影廳新增</h3>
+                    <table id="table1">
+                    		<jsp:useBean id="movie_versionSvc" scope="page" class="com.movie_version.model.MovVerService" />
+						<tr>
+							<th>種類</th>
+							<td><select size="1" name="movver_no">
+								<c:forEach var="movie_versionVO" items="${movie_versionSvc.all}">
+									<option value="${movie_versionVO.movver_no}" ${(theaterVO.movver_no==movie_versionVO.movver_no)?'selected':'' } >${movie_versionVO.movver_name}
+								</c:forEach>
+							</select></td>
+						</tr>
+                    </table>
+                    <table id="table2">
+					    <tbody id="tbody1">
+					    </tbody>
+					</table>
+			     <input type="hidden" name="action"     value="insert">
+			     <input type="hidden" id="the_seat" name="the_seat"     value="">
+			    <a class="btn btn-light btn-brd grd1 effect-1 btn-pos" style="margin: 1% 0 1% 50%;" >
+				<input type="submit" value="送出" class="input-pos">
+				</a>
+					</FORM>
+					<!-- PUT HERE End-->
+                    </div>
+                </main>
+                <%@ include file="/back-end/files/sb_footer.file"%>
+            </div>
+        </div>
+		<%@ include file="/back-end/files/sb_importJs.file"%> <!-- 引入template要用的js -->
+		<script type="text/javascript">
+		window.onload=function () {
+			let index = 0;
+			let theSeat = 
+				'9999330000000033999999993300000000339999999933000000003399999999330000000033999900003300000000330000000033000000003300000000330000000033000000003300000000330000000033000000003300000000330000000033000000003300000000330000333333333333333333330000330000000033000000003300000000330000000033000000003300000000330000000033000000003300000000330000000033000000003300000000330000000033000000003300000000330000';
+			let tableData="<tr><td></td>";
+			
+			for(i=0;i<20;i++){
+				tableData+="<td class=selector data-column="+(i+1)+">";
+			}
+			tableData+="</tr>"
+			for(i=0;i<20;i++){
+				tableData+="<tr>";
+					tableData+="<td class=selector data-row="+(i+1)+">";
+				for(j=0;j<20;j++){
+					switch(theSeat.charAt(index)) {
+						case '0':
+							tableData+="<td class=s0";
+							break;
+						case '3':
+							tableData+="<td class=s3";
+							break;
+						case '9':
+							tableData+="<td class=s9";
+							break;
+					}
+					tableData+=" data-seat=true data-row="+(i+1)+" data-column="+(j+1)+"></td>";
+					index++;
+				}
+			  tableData+="</tr>"
+			}
+		
+			  //現在tableData已經生成好了，把他賦值給上面的tbody
+			  $("#tbody1").html(tableData)
+		console.log($("[data-seat]"));
+ 		$("[data-seat]").on("click",function(){
+ 			if($(this).attr("class")==="s0"){
+ 			$(this).attr("class","s3");
+ 			} else if($(this).attr("class")==="s3") {
+ 			$(this).attr("class","s9"); 				
+ 			} else if($(this).attr("class")==="s9") {
+ 			$(this).attr("class","s0"); 				
+ 			} 				
+ 		});
+ 		$("#tbody1 td[data-seat!='true']").on("click",function(){
+ 			let row = $(this).attr("data-row");
+ 			let column = $(this).attr("data-column");
+ 			if(row){ 			
+ 				if($("[data-seat][data-row="+row+"]").first().attr("class")==="s0"){
+ 					$("[data-seat][data-row="+row+"]").attr("class","s3");
+	 			} else if($($("[data-seat][data-row="+row+"]").first()).attr("class")==="s3") {
+	 				$("[data-seat][data-row="+row+"]").attr("class","s9"); 				
+	 			} else if($($("[data-seat][data-row="+row+"]").first()).attr("class")==="s9") {
+	 				$("[data-seat][data-row="+row+"]").attr("class","s0"); 				
+	 			}				
+ 			} else if (column){
+ 				if($("[data-seat][data-column="+column+"]").first().attr("class")==="s0"){
+ 					$("[data-seat][data-column="+column+"]").attr("class","s3");
+	 			} else if($($("[data-seat][data-column="+column+"]").first()).attr("class")==="s3") {
+	 				$("[data-seat][data-column="+column+"]").attr("class","s9"); 				
+	 			} else if($($("[data-seat][data-column="+column+"]").first()).attr("class")==="s9") {
+	 				$("[data-seat][data-column="+column+"]").attr("class","s0"); 				
+	 			}					
+ 			}
+ 		})
+ 		
+		$("a").click(function(e){
+			e.preventDefault();
+			let seatClass = "";
+				$("[data-seat]").each(function(){
+					seatClass+=$(this).attr("class")[1];
+				});
+			
+ 			$("#the_seat").val(seatClass);
+ 			$("#form").submit();
+		});
+  		}
+</script>
+    </body>
 </html>

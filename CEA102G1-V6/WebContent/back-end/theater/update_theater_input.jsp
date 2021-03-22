@@ -31,9 +31,14 @@
   	padding: 10px 20px 10px 30px;
     border-bottom: 2px dotted #bb9d52;
   }
+  .listOne-h3-pos,#a-color{
+  	margin-left: 50%;
+  }
   .listOne-h3-pos{
-  	display: inline-block;	
-  	margin-left: 45%;
+  	display: inline-block; 
+  }
+  #a-color{
+  	font-size: 16px;
   }
   .ml-ten{
   	margin-left: 10px;
@@ -116,16 +121,13 @@
 			let theSeat = '<%=theaterVO.getThe_seat()%>';
 			let tableData="<tr><td></td>";
 			
-// 			  for(var i=0;i<theSeat.length;i++){
-// 			    tableData+="<td>"+theSeat.charAt(i)+"</td>"
-// 			  }
 			for(i=0;i<20;i++){
-				tableData+="<td data-column="+(i+1)+">";
+				tableData+="<td class=selector data-column="+(i+1)+">";
 			}
 			tableData+="</tr>"
 			for(i=0;i<20;i++){
 				tableData+="<tr>";
-					tableData+="<td data-row="+(i+1)+">";
+					tableData+="<td class=selector data-row="+(i+1)+">";
 				for(j=0;j<20;j++){
 					switch(theSeat.charAt(index)) {
 						case '0':
@@ -146,9 +148,6 @@
 		
 			  //現在tableData已經生成好了，把他賦值給上面的tbody
 			  $("#tbody1").html(tableData)
-				console.log(theSeat);
-				console.log(theSeat.length);
-				console.log(theSeat.charAt(0));
 		console.log($("[data-seat]"));
  		$("[data-seat]").on("click",function(){
  			if($(this).attr("class")==="s0"){
@@ -159,14 +158,34 @@
  			$(this).attr("class","s0"); 				
  			} 				
  		});
-		
+ 		$("#tbody1 td[data-seat!='true']").on("click",function(){
+ 			let row = $(this).attr("data-row");
+ 			let column = $(this).attr("data-column");
+ 			if(row){ 			
+ 				if($("[data-seat][data-row="+row+"]").first().attr("class")==="s0"){
+ 					$("[data-seat][data-row="+row+"]").attr("class","s3");
+	 			} else if($($("[data-seat][data-row="+row+"]").first()).attr("class")==="s3") {
+	 				$("[data-seat][data-row="+row+"]").attr("class","s9"); 				
+	 			} else if($($("[data-seat][data-row="+row+"]").first()).attr("class")==="s9") {
+	 				$("[data-seat][data-row="+row+"]").attr("class","s0"); 				
+	 			}				
+ 			} else if (column){
+ 				if($("[data-seat][data-column="+column+"]").first().attr("class")==="s0"){
+ 					$("[data-seat][data-column="+column+"]").attr("class","s3");
+	 			} else if($($("[data-seat][data-column="+column+"]").first()).attr("class")==="s3") {
+	 				$("[data-seat][data-column="+column+"]").attr("class","s9"); 				
+	 			} else if($($("[data-seat][data-column="+column+"]").first()).attr("class")==="s9") {
+	 				$("[data-seat][data-column="+column+"]").attr("class","s0"); 				
+	 			}					
+ 			}
+ 		})
+ 		
 		$("a").click(function(e){
 			e.preventDefault();
 			let seatClass = "";
 				$("[data-seat]").each(function(){
 					seatClass+=$(this).attr("class")[1];
 				});
-			console.log(seatClass);
 			
  			$("#the_seat").val(seatClass);
  			$("#form").submit();
