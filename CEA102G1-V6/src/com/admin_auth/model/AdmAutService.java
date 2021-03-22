@@ -1,6 +1,9 @@
 package com.admin_auth.model;
 
 import java.sql.Connection;
+import java.util.List;
+
+import com.func.model.FunVO;
 
 public class AdmAutService {
 	private AdmAutDAO_interface dao;
@@ -28,5 +31,9 @@ public class AdmAutService {
 		admAutVO.setFunNo(funNo);
 		
 		return dao.checkAdmAut(admAutVO);
+	}
+	
+	public List<String> getAdmFun(Integer admNo) {
+		return dao.getAdmFun(admNo);
 	}
 }

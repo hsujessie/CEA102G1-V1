@@ -37,6 +37,11 @@
   .ml-ten{
   	margin-left: 10px;
   }
+    #myImg {
+  	height: 150px;
+  	width: 150px;
+  }
+  
 </style>
 </head>
 <body class="sb-nav-fixed">
@@ -51,53 +56,38 @@
                     <div class="container-fluid">
                     
                        <!-- addMovie Start -->  
-                       <c:if test="${not empty errorMsgs}">
-							<font style="color:red">請修正以下錯誤:</font>
-								<ul>
-									<c:forEach var="message" items="${errorMsgs}">
-										<li style="color:red">${message}</li>
-									</c:forEach>
-								</ul>
-					   </c:if>
                        
 						<FORM method="post" action="<%=request.getContextPath()%>/adm/adm.do" enctype="multipart/form-data">
 						<h3 class="h3-style listOne-h3-pos">員工修改</h3>
 						<table>
 							<tr>
 								<th>姓名</th>
-								<td><input class="sty-input mr-left mr-btm-normal" type="text" name="admName" value="${admVO.admName}" /></td>		
+								<td><input class="sty-input mr-left mr-btm-normal" type="text" name="admName" value="${oneAdmVO.admName}" required/>${errorMsgs.admName}</td>		
 							</tr>
 							<tr>
 								<th>照片</th>
 								<td>
-									<input type="file" name="admImg">
+									<input id="myfile" type="file" name="admImg">${errorMsgs.admImg}
+									<img id="myImg" src="<%=request.getContextPath()%>/util/imgReader${oneAdmVO.admImgParam}">
 								</td>
 								
 							</tr>
 							<tr>
 								<th>帳號</th>
 								<td>
-									<input class="sty-input mr-left mr-btm-normal" type="text" name="admAccount" value="${admVO.admAccount}" />
+									<input class="sty-input mr-left mr-btm-normal" type="text" name="admAccount" value="${oneAdmVO.admAccount}" required/>${errorMsgs.admAccount}
 								</td>
 							</tr>
-							<tr>
-								<th>密碼</th>
-								<td>
-									<input class="sty-input mr-left mr-btm-normal" type="text" name="admPassword" value="${admVO.admPassword}" />
-								</td>
-								
-							</tr>
-							
 							<tr>
 								<th>信箱</th>
-								<td><input class="sty-input mr-left mr-btm-normal" name="admMail" type="text" value="${admVO.admMail}"></td>
+								<td><input class="sty-input mr-left mr-btm-normal" name="admMail" type="email" value="${oneAdmVO.admMail}" required />${errorMsgs.email}</td>
 							</tr>
 							<tr>
 								<th>狀態</th>
 								<td>
 									<select name="admStatus">
 										<c:forEach varStatus="i" begin="0" end="1">
-											<option value="${i.index}" ${i.index==admVO.admStatus ? "selected" :""}>${i.index=="0" ? "在職" : "離職"}
+											<option value="${i.index}" ${i.index==oneAdmVO.admStatus ? "selected" :""}>${i.index=="0" ? "在職" : "離職"}
 										</c:forEach>
 									</select>
 								</td>
@@ -109,16 +99,19 @@
 									<jsp:useBean id="funSvc" scope="page" class="com.func.model.FunService"></jsp:useBean>
 									<jsp:useBean id="admAutSvc" scope="page" class="com.admin_auth.model.AdmAutService"></jsp:useBean>
 									<div class="row">
+									<div class="col-12" style="color:red;font-size:20px;">${errorMsgs.funNo}</div>
 										<c:forEach var="funVO" items="${funSvc.all}">
-												<div class="col-4"><input type="checkbox" name="funNo" value="${funVO.funNo}" ${admAutSvc.checkAdmAut(admVO.admNo, funVO.funNo)? "checked" :""}>${funVO.funName}</div>
+												<div class="col-4"><label><input type="checkbox" name="funNo" value="${funVO.funNo}" ${admAutSvc.checkAdmAut(oneAdmVO.admNo, funVO.funNo)? "checked" :""}>${funVO.funName}</label></div>
 										</c:forEach>
 									</div>
 								</td>
 							</tr>
 						</table>
 						<br>
-						<input type="hidden" name="admNo" value="${admVO.admNo}">
+						<input type="hidden" name="admNo" value="${oneAdmVO.admNo}">
 						<input type="hidden" name="action" value="update">
+						<input type="hidden" name="requestURL" value="${param.requestURL}">
+						<input type="hidden" name="whichPage" value="${param.whichPage}">
 						<a class="btn btn-light btn-brd grd1 effect-1 btn-pos" style="margin: 1% 0 1% 50%;" >
 							<input type="submit" value="送出" class="input-pos">
 						</a>
@@ -131,6 +124,25 @@
             </div>
         </div>
 		<%@ include file="/back-end/files/sb_importJs.file"%> <!-- 引入template要用的js -->
+		<script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+		<script>
+                	$("#myfile").change(function(e) {
+                		let files = e.target.files;
+                		let file = files[0];
+                		let reader = new FileReader();
+                        reader.readAsDataURL(file);
+                        
+                        if (file.type.indexOf("image") > -1) {
+                        	reader.addEventListener("load", function(e) {
+                            	let result = e.target.result;
+                            	$("#myImg").css("display","block");
+                            	$("#myImg").attr("src", result);
+                       	 	});
+                        } else {
+                        	swal("請上傳圖片", "所選的檔案不是圖片,請重新確認", "warning", {button: "確定"});
+                        }
+                	});
+                </script>
 </body>
 
 

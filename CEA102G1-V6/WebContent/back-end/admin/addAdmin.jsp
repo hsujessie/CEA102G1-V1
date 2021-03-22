@@ -4,7 +4,7 @@
 
 <html>
 <head>
-	<title>電影新增</title>	
+	<title>員工新增</title>	
 	<%@ include file="/back-end/files/sb_head.file"%>
 
 <style>
@@ -37,6 +37,12 @@
   .ml-ten{
   	margin-left: 10px;
   }
+  
+  #myImg {
+  	display:none;
+  	height: 150px;
+  	width: 150px;
+  }
 </style>
 </head>
 <body class="sb-nav-fixed">
@@ -51,39 +57,32 @@
                     <div class="container-fluid">
                     
                        <!-- addMovie Start -->  
-                       <c:if test="${not empty errorMsgs}">
-							<font style="color:red">請修正以下錯誤:</font>
-								<ul>
-									<c:forEach var="message" items="${errorMsgs}">
-										<li style="color:red">${message}</li>
-									</c:forEach>
-								</ul>
-					   </c:if>
                        
 						<FORM method="post" action="<%=request.getContextPath()%>/adm/adm.do" enctype="multipart/form-data">
 						<h3 class="h3-style listOne-h3-pos">員工新增</h3>
 						<table>
 							<tr>
 								<th>姓名</th>
-								<td><input class="sty-input mr-left mr-btm-normal" type="text" name="admName" value="${addAdmVO.admName}" /></td>		
+								<td><input class="sty-input mr-left mr-btm-normal" type="text" name="admName" value="${addAdmVO.admName}" required/>${errorMsgs.admName}</td>		
 							</tr>
 							<tr>
 								<th>照片</th>
 								<td>
-									<input type="file" name="admImg">
+									<input id="myfile" type="file" name="admImg" required>${errorMsgs.admImg}
+									<img id="myImg" src="">
 								</td>
 								
 							</tr>
 							<tr>
 								<th>帳號</th>
 								<td>
-									<input class="sty-input mr-left mr-btm-normal" type="text" name="admAccount" value="${addAdmVO.admAccount}" />
+									<input class="sty-input mr-left mr-btm-normal" type="text" name="admAccount" value="${addAdmVO.admAccount}" required/>${errorMsgs.admAccount}
 								</td>
 							</tr>
 							
 							<tr>
 								<th>信箱</th>
-								<td><input class="sty-input mr-left mr-btm-normal" name="admMail" type="text" value="${addAdmVO.admMail}"></td>
+								<td><input class="sty-input mr-left mr-btm-normal" name="admMail" type="email" value="${addAdmVO.admMail}" required>${errorMsgs.admMail}</td>
 							</tr>
 							
 							<tr>
@@ -91,8 +90,10 @@
 								<td>
 									<jsp:useBean id="funSvc" scope="page" class="com.func.model.FunService"></jsp:useBean>
 									<div class="row">
+										<div class="col-12" style="color:red;font-size:20px;">${errorMsgs.funNo}</div>
 										<c:forEach var="funVO" items="${funSvc.all}">
-											<div class="col-4"><input type="checkbox" name="funNo" value="${funVO.funNo}">${funVO.funName}</div>
+											
+											<div class="col-4"><label><input type="checkbox" name="funNo" value="${funVO.funNo}">${funVO.funName}</label></div>
 										</c:forEach>
 									</div>
 								</td>
@@ -109,9 +110,30 @@
                     </div>
                 </main>
                 <%@ include file="/back-end/files/sb_footer.file"%>
+                
+                
             </div>
         </div>
 		<%@ include file="/back-end/files/sb_importJs.file"%> <!-- 引入template要用的js -->
+		<script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+		<script>
+                	$("#myfile").change(function(e) {
+                		let files = e.target.files;
+                		let file = files[0];
+                		let reader = new FileReader();
+                        reader.readAsDataURL(file);
+                        
+                        if (file.type.indexOf("image") > -1) {
+                        	reader.addEventListener("load", function(e) {
+                            	let result = e.target.result;
+                            	$("#myImg").css("display","block");
+                            	$("#myImg").attr("src", result);
+                       	 	});
+                        } else {
+                        	swal("請上傳圖片", "所選的檔案不是圖片,請重新確認", "warning", {button: "確定"});
+                        }
+                	});
+                </script>
 </body>
 
 

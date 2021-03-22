@@ -4,12 +4,6 @@
 <%@ page import="java.util.*"%>
 <%@ page import="com.admin.model.*"%>
 
-<%
-	AdmService admSvc = new AdmService();
-	List<AdmVO> list = admSvc.getAll();
-	pageContext.setAttribute("list",list);
-%>
-
 <html>
 <head>
 <title>Movies Management</title>
@@ -24,7 +18,7 @@
 }
 
 .th-adjust {
-	  		width: 120px;  
+	/*  		width: 120px;  */
 	
 }
 
@@ -113,8 +107,9 @@ table {
 								</thead>
 
 								<tbody>
-								<%@ include file="/back-end/admin/pages/page1.file" %>
-									<c:forEach var="admVO" items="${list}" varStatus="no" begin="<%=pageIndex%>" end="<%=pageIndex+rowsPerPage-1%>">
+								<jsp:useBean id="listAdmins_ByCompositeQuery" scope="request" type="java.util.List<AdmVO>"/>
+								<%@ include file="/back-end/admin/pages/page1_ByCompositeQuery.file"%> 
+									<c:forEach var="admVO" items="${listAdmins_ByCompositeQuery}" varStatus="no" begin="<%=pageIndex%>" end="<%=pageIndex+rowsPerPage-1%>">
 										<tr class="sty-height" valign='middle'
 											${(admVO.admNo==param.admNo) ? 'style="background-color:#bb9d52; color:#fff;"':''}>
 											<td>${no.index+1}</td>
@@ -132,10 +127,11 @@ table {
 												</a>
 											</td>
 											<td>
-												<form method="post" action="<%=request.getContextPath()%>/adm/adm.do">
+												<form method="post"
+													action="<%=request.getContextPath()%>/adm/adm.do">
 													<a class="btn btn-light btn-brd grd1 effect-1"> 
 														<input type="hidden" name="admNo" value="${admVO.admNo}"/>
-														<input type="hidden" name="action" value="getOne_for_update"/> 
+														<input type="hidden" name="action" value="getOne_for_update"/>
 														<input type="hidden" name="requestURL" value="<%=request.getServletPath()%>"/> 
 														<input type="hidden" name="whichPage" value="${param.whichPage}"/> 
 														<input type="submit" value="修改" class="input-pos"/>
@@ -146,10 +142,10 @@ table {
 									</c:forEach>
 								</tbody>
 							</table>
-							<%@ include file="/back-end/admin/pages/page2.file" %>
+							<%@ include file="/back-end/admin/pages/page2_ByCompositeQuery.file" %>
 						</div>
 					</div>
-					<!-- listAllAdmin End -->
+					<!-- listAllMovie End -->
 
 				</div>
 

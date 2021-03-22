@@ -75,23 +75,44 @@ public class SesService {
 		return seslist;
 	}
 	
-	public List<String> updateSeatStatus(String chooseSeatNo, Integer sesNo) {
+	public List<String> updateSeatStatus(String chooseSeatNo, Integer sesNo, String whatAction) {
 		SesVO sesVO = dao.findByPrimaryKey(sesNo);
 		
 		String orgSeatStatus = sesVO.getSesSeatStatus();
 		StringBuilder sb = new StringBuilder(orgSeatStatus);
 		String orgSeatNo = sesVO.getSesSeatNo();
 		
+		
 		List<String> list = new ArrayList<String>();
-		for (int i = 0; i < chooseSeatNo.length() ; i +=3) {
-			String oneSeatNo = chooseSeatNo.substring(i, i + 3);
-			list.add(oneSeatNo);
+			for (int i = 0; i < chooseSeatNo.length() ; i +=3) {
+				String oneSeatNo = chooseSeatNo.substring(i, i + 3);
+				list.add(oneSeatNo);
+				int index = orgSeatNo.indexOf(oneSeatNo) / 3;
 			
-			int index = orgSeatNo.indexOf(oneSeatNo) / 3;
-			sb.setCharAt(index, '1');
-		}
+				if ("lock_seat".equals(whatAction)) {
+					sb.setCharAt(index, '1');
+				} else {
+					sb.setCharAt(index, '0');
+				}
+			}
 		dao.updateSeatStatus(sesNo, sb.toString());
 		
 		return list;
+	}
+	
+	public boolean isAlreadyChoose(String chooseSeatNo, Integer sesNo) {
+		SesVO sesVO = dao.findByPrimaryKey(sesNo);
+		String orgSeatStatus = sesVO.getSesSeatStatus();
+		String orgSeatNo = sesVO.getSesSeatNo();
+		
+		for (int i = 0; i < chooseSeatNo.length() ; i +=3) {
+			String oneSeatNo = chooseSeatNo.substring(i, i + 3);
+			int index = orgSeatNo.indexOf(oneSeatNo) / 3;
+			
+			if (orgSeatStatus.charAt(index) == '1') {
+				return true;
+			}
+		}
+		return false;
 	}
 }

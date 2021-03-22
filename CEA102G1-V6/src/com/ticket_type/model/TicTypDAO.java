@@ -272,8 +272,8 @@ public class TicTypDAO implements TicTypDAO_interface{
 	}
 
 	@Override
-	public Set<TicTypCartVO> getTicTypCart(Map<Integer, Integer> ticTypMap) {
-		Set<TicTypCartVO> ticTypCartSet = new LinkedHashSet<TicTypCartVO>();
+	public List<TicTypCartVO> getTicTypCart(Map<Integer, Integer> ticTypMap) {
+		List<TicTypCartVO> ticTypCartSet = new LinkedList<TicTypCartVO>();
 		TicTypCartVO ticTypCartVO = null;
 		
 		Connection con = null;
@@ -289,15 +289,18 @@ public class TicTypDAO implements TicTypDAO_interface{
 				pstmt = con.prepareStatement(GET_ONE_STMT);
 				pstmt.setInt(1, ticTypNo);
 				
+				Integer ticTypCount = ticTypMap.get(ticTypNo);
 				rs = pstmt.executeQuery();
-				while (rs.next()) {
-					ticTypCartVO = new TicTypCartVO();
+				if (rs.next()) {
+					for (int i = 0; i < ticTypCount; i ++) {
+						ticTypCartVO = new TicTypCartVO();
 					
-					ticTypCartVO.setTicTypNo(rs.getInt("TICTYP_NO"));
-					ticTypCartVO.setTicLisPrice(rs.getInt("TICTYP_PRICE"));
-					ticTypCartVO.setIdeNo(rs.getInt("IDE_NO"));
-					ticTypCartVO.setTicTypCount(ticTypMap.get(ticTypNo));
-					ticTypCartSet.add(ticTypCartVO);
+						ticTypCartVO.setTicTypNo(rs.getInt("TICTYP_NO"));
+						ticTypCartVO.setTicLisPrice(rs.getInt("TICTYP_PRICE"));
+						ticTypCartVO.setIdeNo(rs.getInt("IDE_NO"));
+						ticTypCartVO.setTicTypCount(ticTypCount);
+						ticTypCartSet.add(ticTypCartVO);
+					}
 				}
 			}
 			

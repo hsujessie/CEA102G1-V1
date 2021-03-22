@@ -28,14 +28,14 @@ public class FooDAO implements FooDAO_interface {
 		}
 	}
 	
-	private static final String INSERT_STMT = "INSERT INTO FOOD(FOO_NAME, FOOCAT_NO, FOO_INTRO, FOO_IMG, FOO_PRICE) VALUES(?,?,?,?,?)";
+	private static final String INSERT_STMT = "INSERT INTO FOOD(FOO_NAME, FOOCAT_NO, FOO_IMG, FOO_PRICE) VALUES(?,?,?,?,?)";
 	
-	private static final String GET_ALL_STMT = "SELECT FOO_NO, FOO_NAME, FOOCAT_NO, FOO_INTRO, FOO_IMG, FOO_PRICE, FOO_STATUS FROM FOOD ORDER BY FOO_NO";
-	private static final String GET_ONE_STMT = "SELECT FOO_NO, FOO_NAME, FOOCAT_NO, FOO_INTRO, FOO_IMG, FOO_PRICE, FOO_STATUS FROM FOOD WHERE FOO_NO=?";
-	private static final String GET_FOOS_ByFOOSTATUS_STMT = "SELECT FOO_NO, FOO_NAME, FOOCAT_NO, FOO_INTRO, FOO_IMG, FOO_PRICE, FOO_STATUS FROM FOOD WHERE FOO_STATUS = ? ORDER BY FOO_NO";
+	private static final String GET_ALL_STMT = "SELECT FOO_NO, FOO_NAME, FOOCAT_NO, FOO_IMG, FOO_PRICE, FOO_STATUS FROM FOOD ORDER BY FOO_NO";
+	private static final String GET_ONE_STMT = "SELECT FOO_NO, FOO_NAME, FOOCAT_NO, FOO_IMG, FOO_PRICE, FOO_STATUS FROM FOOD WHERE FOO_NO=?";
+	private static final String GET_FOOS_ByFOOSTATUS_STMT = "SELECT FOO_NO, FOO_NAME, FOOCAT_NO, FOO_IMG, FOO_PRICE, FOO_STATUS FROM FOOD WHERE FOO_STATUS = ? ORDER BY FOO_NO";
 	
-	private static final String UPDATE = "UPDATE FOOD SET FOO_NAME=?, FOOCAT_NO=?, FOO_INTRO=?, FOO_IMG=?, FOO_PRICE=?, FOO_STATUS=? WHERE FOO_NO=?";
-	private static final String UPDATE_NOIMG = "UPDATE FOOD SET FOO_NAME=?, FOOCAT_NO=?, FOO_INTRO=?, FOO_PRICE=?, FOO_STATUS=? WHERE FOO_NO=?";
+	private static final String UPDATE = "UPDATE FOOD SET FOO_NAME=?, FOOCAT_NO=?, FOO_IMG=?, FOO_PRICE=?, FOO_STATUS=? WHERE FOO_NO=?";
+	private static final String UPDATE_NOIMG = "UPDATE FOOD SET FOO_NAME=?, FOOCAT_NO=?, FOO_PRICE=?, FOO_STATUS=? WHERE FOO_NO=?";
 	private static final String UPDATE_STATUS = "UPDATE FOOD SET FOO_STATUS=? WHERE FOO_NO=?";
 	
 	@Override
@@ -49,9 +49,8 @@ public class FooDAO implements FooDAO_interface {
 			
 			pstmt.setString(1, fooVO.getFooName());
 			pstmt.setInt(2, fooVO.getFooCatNo());
-			pstmt.setString(3, fooVO.getFooIntro());
-			pstmt.setBytes(4, fooVO.getFooImg());
-			pstmt.setInt(5, fooVO.getFooPrice());
+			pstmt.setBytes(3, fooVO.getFooImg());
+			pstmt.setInt(4, fooVO.getFooPrice());
 			
 			pstmt.executeUpdate();
 			
@@ -88,11 +87,10 @@ public class FooDAO implements FooDAO_interface {
 			
 			pstmt.setString(1, fooVO.getFooName());
 			pstmt.setInt(2, fooVO.getFooCatNo());
-			pstmt.setString(3, fooVO.getFooIntro());
-			pstmt.setBytes(4, fooVO.getFooImg());
-			pstmt.setInt(5, fooVO.getFooPrice());
-			pstmt.setInt(6, fooVO.getFooStatus());
-			pstmt.setInt(7, fooVO.getFooNo());
+			pstmt.setBytes(3, fooVO.getFooImg());
+			pstmt.setInt(4, fooVO.getFooPrice());
+			pstmt.setInt(5, fooVO.getFooStatus());
+			pstmt.setInt(6, fooVO.getFooNo());
 			pstmt.executeUpdate();
 		} catch (SQLException se) {
 			throw new RuntimeException("A database error occured. "
@@ -135,7 +133,6 @@ public class FooDAO implements FooDAO_interface {
 				fooVO.setFooNo(rs.getInt("FOO_NO"));
 				fooVO.setFooName(rs.getString("FOO_NAME"));
 				fooVO.setFooCatNo(rs.getInt("FOOCAT_NO"));
-				fooVO.setFooIntro(rs.getString("FOO_INTRO"));
 				fooVO.setFooImg(rs.getBytes("FOO_IMG"));
 				fooVO.setFooPrice(rs.getInt("FOO_PRICE"));
 				fooVO.setFooStatus(rs.getInt("FOO_STATUS"));
@@ -193,7 +190,6 @@ public class FooDAO implements FooDAO_interface {
 				fooVO.setFooNo(rs.getInt("FOO_NO"));
 				fooVO.setFooName(rs.getString("FOO_NAME"));
 				fooVO.setFooCatNo(rs.getInt("FOOCAT_NO"));
-				fooVO.setFooIntro(rs.getString("FOO_INTRO"));
 				fooVO.setFooImg(rs.getBytes("FOO_IMG"));
 				fooVO.setFooPrice(rs.getInt("FOO_PRICE"));
 				fooVO.setFooStatus(rs.getInt("FOO_STATUS"));
@@ -252,7 +248,6 @@ public class FooDAO implements FooDAO_interface {
 				fooVO.setFooNo(rs.getInt("FOO_NO"));
 				fooVO.setFooName(rs.getString("FOO_NAME"));
 				fooVO.setFooCatNo(rs.getInt("FOOCAT_NO"));
-				fooVO.setFooIntro(rs.getString("FOO_INTRO"));
 				fooVO.setFooImg(rs.getBytes("FOO_IMG"));
 				fooVO.setFooPrice(rs.getInt("FOO_PRICE"));
 				fooVO.setFooStatus(rs.getInt("FOO_STATUS"));
@@ -300,10 +295,9 @@ public class FooDAO implements FooDAO_interface {
 			
 			pstmt.setString(1, fooVO.getFooName());
 			pstmt.setInt(2, fooVO.getFooCatNo());
-			pstmt.setString(3, fooVO.getFooIntro());
-			pstmt.setInt(4, fooVO.getFooPrice());
-			pstmt.setInt(5, fooVO.getFooStatus());
-			pstmt.setInt(6, fooVO.getFooNo());
+			pstmt.setInt(3, fooVO.getFooPrice());
+			pstmt.setInt(4, fooVO.getFooStatus());
+			pstmt.setInt(5, fooVO.getFooNo());
 			pstmt.executeUpdate();
 			
 		} catch (SQLException se) {

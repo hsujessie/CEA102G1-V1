@@ -25,6 +25,7 @@ public class FunDAO implements FunDAO_interface {
 	}
 	
 	private static final String GET_ALL_STMT = "SELECT FUN_NO, FUN_NAME FROM FUNC ORDER BY FUN_NO";
+	private static final String GET_ONE_STMT = "SELECT FUN_NO, FUN_NAME FROM FUNC WHERE FUN_NO=?";
 	
 	@Override
 	public List<FunVO> getAll() {
@@ -76,6 +77,59 @@ public class FunDAO implements FunDAO_interface {
 		}
 		
 		return list;
+	}
+
+	@Override
+	public FunVO findByPrimarykey(Integer funNo) {
+		FunVO funVO = null;
+		
+		Connection con = null;
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+		
+		try {
+			con = ds.getConnection();
+			pstmt = con.prepareStatement(GET_ONE_STMT);
+			
+			pstmt.setInt(1, funNo);
+			rs = pstmt.executeQuery();
+			
+			if (rs.next()) {
+				funVO = new FunVO();
+				
+				funVO.setFunNo(rs.getInt("FUN_NO"));
+				funVO.setFunName(rs.getString("FUN_NAME"));
+				
+			}
+			
+		} catch (SQLException se) {
+			throw new RuntimeException("A database error occured. "
+					+ se.getMessage());
+		} finally {
+			if (rs != null) {
+				try {
+					rs.close();
+				} catch (SQLException se) {
+					se.printStackTrace(System.err);
+				}
+			}
+			if (pstmt != null) {
+				try {
+					pstmt.close();
+				} catch (SQLException se) {
+					se.printStackTrace(System.err);
+				}
+			}
+			if (con != null) {
+				try {
+					con.close();
+				} catch (Exception e) {
+					e.printStackTrace(System.err);
+				}
+			}
+		}
+		
+		return funVO;
 	}
 
 }

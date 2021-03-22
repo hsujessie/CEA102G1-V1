@@ -47,6 +47,7 @@
 <nav class="sb-sidenav accordion sb-sidenav-dark" id="sidenavAccordion">
     <div class="sb-sidenav-menu">
         <div class="nav">
+        <c:if test='${funList.contains("管理員管理")}'>
             <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#admin" aria-expanded="false" aria-controls="admin">
                 <div class="sb-nav-link-icon"><i class="fas fa-user-cog"></i></div>
                 管理員管理
@@ -58,6 +59,9 @@
                     <a class="nav-link" href="${adminAdd}">管理員新增</a>
                 </nav>
             </div>
+        </c:if>
+        
+        <c:if test='${funList.contains("會員管理")}'>
             <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#member" aria-expanded="false" aria-controls="member">
                 <div class="sb-nav-link-icon"><i class="fas fa-user"></i></div>
                 會員管理
@@ -68,6 +72,9 @@
                     <a class="nav-link" href="">會員列表</a>
                 </nav>
             </div>
+        </c:if>
+        
+        <c:if test='${funList.contains("訂單管理")}'>
             <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#order" aria-expanded="false" aria-controls="order">
                 <div class="sb-nav-link-icon"><i class="far fa-file-alt"></i></div>
                 訂單管理
@@ -78,6 +85,9 @@
                     <a class="nav-link" href="${order}">訂單列表</a>
                 </nav>
             </div>
+       	</c:if>
+       	
+       	<c:if test='${funList.contains("場次排程管理")}'>
             <a class="nav-link collapsed <c:if test="${urlRecog == sessionSub}">active</c:if>" href="${session}" data-toggle="collapse" data-target="#session" aria-expanded="false" aria-controls="session">                        
                 <div class="sb-nav-link-icon"><i class="far fa-clock"></i></div>
                 場次排程管理
@@ -89,7 +99,9 @@
                     <a class="nav-link <c:if test="${urlRecog == sessionAdd}">active</c:if>" href="${sessionAdd}">場次新增</a>
                 </nav>
             </div>
-            
+         </c:if>
+         
+         <c:if test='${funList.contains("電影資訊管理")}'>
             <a class="nav-link collapsed <c:if test="${urlRecog == movieSub}">active</c:if>" href="${movie}" data-toggle="collapse" data-target="#movie" aria-expanded="false" aria-controls="movie">
                 <div class="sb-nav-link-icon"><i class="fas fa-film iconPos"></i></div>
                 電影資訊管理
@@ -101,11 +113,16 @@
                     <a class="nav-link <c:if test="${urlRecog == movieAdd}">active</c:if>" href="${movieAdd}">電影新增</a>
                 </nav>
             </div>
+         </c:if>
+         
+         <c:if test='${funList.contains("即時客服管理")}'>
             <a class="nav-link collapsed" <c:if test="${urlRecog == client}">active</c:if>" href="${client}">
                 <div class="sb-nav-link-icon"><i class="fas fa-user-friends"></i></div>
                 即時客服管理
             </a>
-            
+         </c:if>
+         
+         <c:if test='${funList.contains("檢舉管理")}'>
             <a class="nav-link collapsed <c:if test="${urlRecog == movieComreportSub}">active</c:if>" href="#" data-toggle="collapse" data-target="#report" aria-expanded="false" aria-controls="report">
                 <div class="sb-nav-link-icon"><i class="fas fa-user-alt-slash"></i></div>
                 檢舉管理                
@@ -117,7 +134,11 @@
                     <a class="nav-link <c:if test="${urlRecog == articleComreport}">active</c:if>" href="${articleComreport}">文章回覆檢舉</a>
                 </nav>
             </div>
+         </c:if>
+         
+         <c:if test='${funList.contains("影廳管理")}'>        
             <a class="nav-link collapsed" <c:if test="${urlRecog == theaterSub}">active</c:if>" href="${theater}" data-toggle="collapse" data-target="#theater" aria-expanded="false" aria-controls="theater">
+
                 <div class="sb-nav-link-icon"><i class="fab fa-fort-awesome-alt"></i></div>
                 影廳管理
                 <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
@@ -129,15 +150,25 @@
                     <a class="nav-link <c:if test="${urlRecog == ticket}">active</c:if>" href="${ticket}">票券列表</a>
                 </nav>
             </div>
+         </c:if>
+         
+         <c:if test='${funList.contains("餐點管理")}'>            
             <a class="nav-link collapsed" href="#">
                 <div class="sb-nav-link-icon"><i class="fas fa-utensils"></i></div>
                 餐點管理
             </a>
+         </c:if>   
+         
+         <c:if test='${funList.contains("公告管理")}'>
             <a class="nav-link collapsed" href="#">
                 <div class="sb-nav-link-icon"><i class="fa fa-bullhorn iconPos"></i></div>
                 公告管理
             </a>
+         </c:if>
+            
+         <c:if test='${funList.contains("FAQs管理")}'>           
             <a class="nav-link collapsed" <c:if test="${urlRecog == faqSub}">active</c:if>" href="${faq}" data-toggle="collapse" data-target="#faq" aria-expanded="false" aria-controls="faq">
+
                 <div class="sb-nav-link-icon"><i class="fas fa-question-circle"></i></div>
      FAQs管理
      			<div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
@@ -148,6 +179,8 @@
                     <a class="nav-link <c:if test="${urlRecog == faqAdd}">active</c:if>" href="${faqAdd}">FAQ新增</a>
                 </nav>
             </div>
+         </c:if>          
+           
         </div>
     </div>
 </nav>
