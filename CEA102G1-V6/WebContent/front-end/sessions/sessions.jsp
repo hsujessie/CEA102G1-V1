@@ -16,6 +16,14 @@
 }
 .vta-bm{
 	vertical-align: bottom;
+	width: 150px;
+}
+.line-spearate{
+	border-bottom: 2px solid rgb(170,145,102);
+    box-sizing: border-box;
+}
+.pd-bottom{
+    padding-bottom: 3%;
 }
 </style>
 </head>
@@ -64,65 +72,65 @@
                     
                     <div class="row">
                         <div class="col-md-12">
-                        
-                            <c:forEach var="movVO" items="${movSvc.all}" > <!-- forEach var="movVO" Start -->
-	                            <!-- 只顯示當日電影 Start -->
-	                            <c:if test="${empty getMovies_BySesDate}">
-		                            <div class="row align-items-center session-item">
-										<c:forEach var="distinctSesDate" items="${sesSvc.getDistinctSesDate()}" > <!-- 只顯示當日電影 Start -->          					                                    			                       			 
-										   <c:forEach var="sesVO" items="${sesSvc.all}" > <!-- 只顯示當日電影 1 -->    
-										    	<c:if test="${sesVO.movNo == movVO.movno}"> <!-- 只顯示當日電影 2 -->    
-										    		<c:if test="${distinctSesDate.sesDate == sesVO.sesDate}"> <!-- 只顯示當日電影 3 -->  
-										    		  
-						                                <div class="col-5"> <!-- col-5 Start -->
-						                                    <div class="session-icon">
-	                            								<c:if test="${not empty movVO.movpos}">
-						                                        	<img onclick="sendData(this,${movVO.movno})"  style="height: 100%; cursor: pointer;" src="<%=request.getContextPath()%>/movie/mov.do?movno=${movVO.movno}&img=movpos&action=get_One_MovPos" alt="Movies Image">
-						                                    	</c:if>
-						                                    </div>
-						                                </div> <!-- col-5 End -->
-						                                <div class="col-7"> <!-- col-7 Start -->
-						                                    <h3><a href="<%=request.getContextPath()%>/movie/mov.do?action=getOne_For_Display&fromFrontend=true&movno=${movVO.movno}">${movVO.movname}</a></h3>
-                                   							<p><fmt:formatDate value="${distinctSesDate.sesDate}" type="DATE" dateStyle="FULL"/></p>
-                                   							<p><a href="<%=request.getContextPath()%>/front-end/ordMas/TicketOrder.jsp?sesNo=${sesVO.sesNo}"><fmt:formatDate value="${sesVO.sesTime}" pattern="HH:mm" type="DATE"/> <i class="fas fa-ticket-alt" style="color:#aa9166;"></i></a></p>								                                    			                                    
-						                                </div> <!-- col-7 End -->
-		                              		                                
-										             </c:if> <!-- 只顯示當日電影 1 -->  
-										         </c:if> <!-- 只顯示當日電影 2 -->  
-										     </c:forEach> <!-- 只顯示當日電影 3 -->  
-										 </c:forEach> <!-- 只顯示當日電影 End -->
-		                            </div>
-	                            </c:if>
-	                            <!-- 只顯示當日電影 End -->   
-	                         </c:forEach> <!-- forEach var="movVO" End -->	
+	                            
+                           <c:if test="${empty getMovies_BySesDate}"> <!-- 只顯示當日電影 Start -->
+                               	<c:forEach var="distinctMovNo" items="${sesSvc.getDistinctMovNo()}" >
+                               		<div class="row align-items-center session-item"> <!-- session-item Start -->
+	                            	<c:set var="movVO" value="${movSvc.getOneMov(distinctMovNo)}" />	
+                       				<c:if test="${(not empty movVO.movpos)}">
+		                                <div class="col-5 pd-bottom"> <!-- col-5 Start -->
+		                                    <div class="session-icon">
+		                                        <img onclick="sendData(this,${distinctMovNo})"  style="height: 100%; cursor: pointer; border: 2px solid #aa9166;" src="<%=request.getContextPath()%>/movie/mov.do?movno=${distinctMovNo}&img=movpos&action=get_One_MovPos" alt="Movies Image">				                                    	
+		                                    </div>
+		                                </div> <!-- col-5 End -->
+                                	</c:if>	
+                               	
+			                           	<div class="col-7 line-spearate pd-bottom"> <!-- col-7 Start -->
+	                                 		<h3><a href="<%=request.getContextPath()%>/movie/mov.do?action=getOne_For_Display&fromFrontend=true&movno=${distinctMovNo}">${movVO.movname}</a></h3>		                                	
+                                 			<c:forEach var="distinctSesDate" items="${sesSvc.getDistinctSesDate()}" >
+                                 				<p><fmt:formatDate value="${distinctSesDate}" type="DATE" dateStyle="FULL"/></p>
+                                 				<c:forEach var="sesTimes" items="${sesSvc.getSesTimes(distinctMovNo,distinctSesDate)}" > 
+                                  					<p>
+                                  						<a href="<%=request.getContextPath()%>/front-end/ordMas/TicketOrder.jsp?sesNo=${sesTimes.sesNo}"><fmt:formatDate value="${sesTimes.sesTime}" pattern="HH:mm" type="DATE"/> <i class="fas fa-ticket-alt" style="color:#aa9166;"></i></a> <label>【${sesTimes.theNo}廳】</label>
+                                  					</p>          				
+                                				</c:forEach>
+                                 			</c:forEach>
+	                                 	</div> <!-- col-7 End --> 
+                                	</div> <!-- session-item End --> 
+                               	</c:forEach>
+	                            </c:if> <!-- 只顯示當日電影 End --> 
+	                             
 	                         
 	                            <!-- 依日期查詢 Start -->
-	                            <c:if test="${not empty getMovies_BySesDate}">       					                                    			                       			 
-									<c:forEach var="sesList" items="${getMovies_BySesDate}" > <!-- 顯示查詢之電影 Start -->
-		                            	<div class="row align-items-center session-item"> 
-		                                    <c:set var="movVO" value="${movSvc.getOneMov(sesList.movNo)}"/>
-		                                 									    		  										    		  
-				                                <div class="col-5"> <!-- col-5 Start -->
+	                            <c:if test="${not empty getMovies_BySesDate}"> <!-- 顯示查詢之電影 Start -->
+		                               	<c:forEach var="list" items="${getMovies_BySesDate}" >
+		                               		<c:set var="searchDate" value="${list.sesDate}" />
+		                               	</c:forEach>
+		                               	<c:forEach var="distinctMovNo" items="${sesSvc.getDistinctMovNoBySearchDate(searchDate)}" >
+		                               		<div class="row align-items-center session-item"> <!-- session-item Start -->
+			                            	<c:set var="movVO" value="${movSvc.getOneMov(distinctMovNo)}" />	
+		                       				<c:if test="${(not empty movVO.movpos)}">
+				                                <div class="col-5 pd-bottom"> <!-- col-5 Start -->
 				                                    <div class="session-icon">
-                           								<c:if test="${not empty movVO.movpos}">
-				                                        	<img onclick="sendData(this,${sesList.movNo})"  style="height: 100%; cursor: pointer;" src="<%=request.getContextPath()%>/movie/mov.do?movno=${movVO.movno}&img=movpos&action=get_One_MovPos" alt="Movies Image">
-				                                    	</c:if>
+				                                        <img onclick="sendData(this,${distinctMovNo})"  style="height: 100%; cursor: pointer; border: 2px solid #aa9166;" src="<%=request.getContextPath()%>/movie/mov.do?movno=${distinctMovNo}&img=movpos&action=get_One_MovPos" alt="Movies Image">				                                    	
 				                                    </div>
 				                                </div> <!-- col-5 End -->
-						                                
-												<%-- <c:forEach var="distinctSesDate" items="${sesSvc.getDistinctSesDate()}" > <!-- 顯示查詢之電影 1 --> 
-										    		<c:if test="${distinctSesDate.sesDate == sesList.sesDate}"> <!-- 顯示查詢之電影 3 --> --%>
-						                                <div class="col-7"> <!-- col-7 Start -->
-						                                    <h3><a href="<%=request.getContextPath()%>/movie/mov.do?action=getOne_For_Display&fromFrontend=true&movno=${sesList.movNo}">${movVO.movname}</a></h3>
-                                   							<p><fmt:formatDate value="${sesList.sesDate}" type="DATE" dateStyle="FULL"/></p> 
-                                   							<p><a href="<%=request.getContextPath()%>/front-end/ordMas/TicketOrder.jsp?sesNo=${sesList.sesNo}"><fmt:formatDate value="${sesList.sesTime}" pattern="HH:mm" type="DATE"/> <i class="fas fa-ticket-alt" style="color:#aa9166;"></i></a></p>							                                    						                                   					                                    
-						                                </div> <!-- col-7 End -->
-										        	<%-- </c:if> <!-- 顯示查詢之電影 1 -->  
-										     	</c:forEach> <!-- 顯示查詢之電影 3 -->	  --%>  
-										     	                             		                                
-		                            	 </div>
-									  </c:forEach> <!-- 顯示查詢之電影 End -->    	
-	                            </c:if>
+		                                	</c:if>	
+		                               	
+					                           	<div class="col-7 line-spearate pd-bottom"> <!-- col-7 Start -->
+			                                 		<h3><a href="<%=request.getContextPath()%>/movie/mov.do?action=getOne_For_Display&fromFrontend=true&movno=${distinctMovNo}">${movVO.movname}</a></h3>		                                	
+		                                 			<c:forEach var="distinctSesDate" items="${sesSvc.getDistinctSesDateBySearchDate(searchDate)}" >
+		                                 				<p><fmt:formatDate value="${distinctSesDate}" type="DATE" dateStyle="FULL"/></p>
+		                                 				<c:forEach var="sesTimes" items="${sesSvc.getSesTimes(distinctMovNo,distinctSesDate)}" > 
+		                                  					<p>
+		                                  						<a href="<%=request.getContextPath()%>/front-end/ordMas/TicketOrder.jsp?sesNo=${sesTimes.sesNo}"><fmt:formatDate value="${sesTimes.sesTime}" pattern="HH:mm" type="DATE"/> <i class="fas fa-ticket-alt" style="color:#aa9166;"></i></a> <label>【${sesTimes.theNo}廳】</label>		                                  						
+		                                  					</p>          				
+		                                				</c:forEach>
+		                                 			</c:forEach>
+			                                 	</div> <!-- col-7 End --> 
+		                                	</div> <!-- session-item End --> 
+		                               	</c:forEach> 
+	                            </c:if> <!-- 顯示查詢之電影 End --> 
 	                            <!-- 依日期查詢 End -->                         
                         </div>
                     </div>
@@ -153,7 +161,7 @@
 		場次日期搜尋 下拉選單 -> 只顯示當天+6日(共7天日期)
     ==========================================================*/
 	window.onload = function(){
-		let daysDuration = 7;
+		let daysDuration = 5;
 		
 		let today = new Date();	
 		let today_year = today.getFullYear();

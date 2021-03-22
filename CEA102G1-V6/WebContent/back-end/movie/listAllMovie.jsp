@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%@ page import="java.util.*"%>
 <%@ page import="com.movie.model.*"%>
 
@@ -18,18 +19,21 @@
 	.success-span{
 	    color: #bb9d52;
 		position: absolute;
-	    top: 10%;
-	    left: 19%;
+	    top: 7.5%;
+	    left: 17%;
 	    font-size: 16px;
 	}
 	.th-adjust{
 		width: 120px;
 	}
 	.form-sty{
-		margin: 20px 0 0 30px;
+		margin: 20px 0 0 12.5%;
 	}
 	.mr-botm{
 		margin-bottom: 5px;
+	}
+	.table{
+		height: 400px;
 	}
 </style>
 <body class="sb-nav-fixed">
@@ -85,20 +89,21 @@
 			                            </select>
 			                        <b>選擇年份</b>
 			                        <select name="mov_ondate_year">
+										<fmt:formatDate value="<%=new java.util.Date()%>" pattern="yyyy" var="thisYear" />
 			                            <option value=""></option>
-			                            <c:forEach var="year" begin="2018" end="<%= (int) (java.util.Calendar.getInstance().get(java.util.Calendar.YEAR))+1%>">
+			                            <c:forEach var="year" begin="${thisYear-4}" end="${thisYear}">
 			                                <option value="${year}">${year}年</option>
 			                            </c:forEach>
 			                        </select>
 			                        <b>選擇月份</b>
-			                        <select name="mov_ondate_month">
+			                        <select name="mov_ondate_month" style="margin-right: 1%;">
 			                            <option value=""></option>
 			                            <c:forEach var="month" begin="1" end="12">
 			                                <option value="${month}">${month}月</option>
 			                            </c:forEach>
 			                        </select>
 			                        <input type="hidden" name="action" value="listMovies_ByCompositeQuery">
-				        			<a id="nextStep"class="btn btn-light btn-brd grd1 effect-1 mr-botm">
+				        			<a class="btn btn-light btn-brd grd1 effect-1 mr-botm">
 										<input type="submit" value="搜尋" class="input-pos">
 				        			</a>
 		                    	</FORM>                    
@@ -129,7 +134,7 @@
 									<td>${movVO.getMovname()}</td>
 									<td>${movVO.getMovondate()}</td>
 									<td>${movVO.getMovoffdate()}</td>
-									<td>${movVO.getMovdurat()}小時</td>
+									<td>${movVO.getMovdurat()}分鐘</td>
 									<td>${movVO.getMovtype()}</td>
 									<td>
 					        			 <a id="listOne" onclick="getData(this,${movVO.movno})" class="btn btn-light btn-brd grd1 effect-1">

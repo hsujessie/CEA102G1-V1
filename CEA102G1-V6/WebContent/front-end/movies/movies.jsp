@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 
 <!DOCTYPE html>
 <html>
@@ -47,6 +48,11 @@
                     
 						<c:if test="${empty nowShowing && empty commingSoon}">	
 						<c:forEach var="movVO" items="${movSvc.all}" >
+						<!-- for 判斷 電影是否下檔 Start -->
+						<fmt:formatDate value="<%=new java.util.Date()%>" pattern="yyyy-MM-dd" var="today" />
+			      		<fmt:formatDate value="${movVO.movoffdate}" pattern="yyyy-MM-dd" var="movOffdate" />
+			            <!-- for 判斷 電影是否下檔 End -->
+			            	<c:if test="${today lt movOffdate}">
 		                        <div class="col-lg-4 col-md-6 col-sm-12 movies-item">
 		                            <div class="movies-wrap" onclick="sendData(this,${movVO.movno})" style="cursor:pointer;">		                               
 										
@@ -64,6 +70,7 @@
 		                                </figure>
 		                            </div>
 		                        </div>
+	                    	</c:if>
 						</c:forEach>
 	                    </c:if>
 						

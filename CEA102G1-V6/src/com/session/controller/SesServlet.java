@@ -16,6 +16,7 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -47,7 +48,7 @@ public class SesServlet extends HttpServlet {
 		
 		if("getOne_For_Display".equals(action)) { 
 			List<String> errorMsgs = new LinkedList<String>();
-			req.setAttribute("errorMsgs", errorMsgs);
+			req.setAttribute("errorMsgs",errorMsgs);
 
 			try {
 				/***************************1.接收請求參數*****************************************/
@@ -80,7 +81,7 @@ public class SesServlet extends HttpServlet {
 				successView.forward(req, res);
 				
 			}catch (Exception e) {
-				errorMsgs.add("無法取得資料:" + e.getMessage());
+				errorMsgs.add("無法取得資料 " + e.getMessage());
 				RequestDispatcher failureVoew = req.getRequestDispatcher("/back-end/session/listAllSession.jsp");
 				failureVoew.forward(req,res);
 			}
@@ -88,7 +89,7 @@ public class SesServlet extends HttpServlet {
 
 		if("listSessions_ByCompositeQuery".equals(action)) {
 			List<String> errorMsgs = new LinkedList<String>();
-			req.setAttribute("errorMsgs", errorMsgs);
+			req.setAttribute("errorMsgs",errorMsgs);
 			
 			try {
 				HttpSession session = req.getSession();
@@ -113,7 +114,7 @@ public class SesServlet extends HttpServlet {
 			
 			/***************************其他可能的錯誤處理**********************************/
 			}catch(Exception e) {
-				errorMsgs.add(e.getMessage());
+				errorMsgs.add("查無資料 " + e.getMessage());
 				RequestDispatcher failureView = req.getRequestDispatcher("/back-end/session/listAllSession.jsp");
 				failureView.forward(req, res);
 			}
@@ -121,24 +122,23 @@ public class SesServlet extends HttpServlet {
 	
 	
 		if ("insert".equals(action)) {
-            Map<String,String> errorMsgs = new LinkedHashMap<String,String>();
-			req.setAttribute("errorMsgs",errorMsgs);
-
+            String errorMsgs = "";
+            String errorDateMsgs = "";
+            String errorTimeMsgs = "";
             try {
                 /***********************1.接收請求參數 - 輸入格式的錯誤處理*************************/
                  Integer movNo = new Integer(req.getParameter("movNo").trim());
-	             System.out.println("movNo= " + movNo);
                  
                  String[] theNoArr = req.getParameterValues("theNo");
                  Integer theNo = null;
                  if (theNoArr == null || theNoArr.length == 0) {
-                	 errorMsgs.put("theNo"," 請選擇廳院");
+                	 errorMsgs = "請選擇廳院";
                      System.out.println("theNo is empty!");
                  }
                  
                  String sesDateBegin = req.getParameter("sesDateBegin").trim();
 	             String sesDateEnd = req.getParameter("sesDateEnd").trim();            
-	             List<String> sesDateList = null;
+	             List<String> sesDateList = new ArrayList<String>();
 	             java.sql.Date sesDate = null;
             	 try {
 	            	 sesDateList = getDates(sesDateBegin,sesDateEnd);
@@ -148,67 +148,118 @@ public class SesServlet extends HttpServlet {
 	             String[] sesDateArr = new String[sesDateList.size()];
 	             sesDateArr = sesDateList.toArray(sesDateArr);
 	             
+	          /* =====================================================================
+                 				           錯誤驗證：場次日期不可大於當日
+				 =====================================================================*/	
+//	             DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+//	             java.util.Date date = new java.util.Date();
+//	             java.util.Date dateBegin = dateFormat.parse(sesDateBegin);  // parse(String) to java.util.Date
+//	             java.util.Date dateEnd = dateFormat.parse(sesDateEnd);
+//	             	             
+//	             System.out.println("date= " + date);
+//	             System.out.println("begin= " + dateBegin);
+//	             System.out.println("end= " + dateEnd);
+//	             if(dateBegin.after(date) || dateEnd.after(date)) {  // use 「 .before() 」the type should be java.util.Date
+//	            	 errorDateMsgs = "場次日期不可大於當日";
+//	            	 System.out.println("if");
+//	             }
+//	             else {
+//	            	 System.out.println("else");
+//	             }
 	             
+	             
+	             	             
 	             Time sesTime = null;   
-	             String[] sesTimeArr = req.getParameterValues("sesTime");	             
-	             List<LocalTime> sesTimeListEven = new ArrayList<LocalTime>();
-	             List<LocalTime> sesTimeListOdd = new ArrayList<LocalTime>();
+	             String[] sesTimeArr = req.getParameterValues("sesTime");	  
+	             List<LocalTime> sesTimeList = new ArrayList<LocalTime>();
 	             Duration diff = null;
 	             if (sesTimeArr == null || sesTimeArr.length == 0) {
-					   errorMsgs.put("sesTime"," 請選擇電影時間");
+					   errorMsgs = "請選擇電影時間";
 	                   System.out.println("sesTime is empty!");
 	             }else {
 	            	 
 	            	/* =====================================================================
-	            	                          場次時間間距，錯誤驗證
+	            	                       錯誤驗證：場次時間間距，不可少於2小時
 	            	   =====================================================================*/
 	            	 if(sesTimeArr.length > 1) {
 						System.out.println("if= " + sesTimeArr.length);
-						for(int j = 0; j < sesTimeArr.length; j++) {	
-							if(j%2 == 0) {                                                                   //取到的時間格式為"10:00AM"，需轉為24小時制格式，才能取時間的difference
-								sesTimeListEven.add(java.time.LocalTime.parse(sesTimeArr[j])); //將偶數索引值的時間轉換後，存進list
-							}
-							if(j%2 != 0) {
-								sesTimeListOdd.add(java.time.LocalTime.parse(sesTimeArr[j]));  //將奇數索引值的時間轉換後，存進list
-							}
+						for(int j = 0; j < sesTimeArr.length; j++) {
+							sesTimeList.add(java.time.LocalTime.parse(sesTimeArr[j]));	// 將時間陣列存進list
 						}
 						
-						for(int i = 0; i < sesTimeListEven.size(); i++) {
-							System.out.println("Even List: " + sesTimeListEven.get(i));
-							System.out.println("Odd  List: " + sesTimeListOdd.get(i));
-							diff = Duration.between(sesTimeListEven.get(i),sesTimeListOdd.get(i));  //將兩個list裡面的時間相減
+						for(int i = 1; i < sesTimeList.size(); i++) {	
+							System.out.println("i List: " + sesTimeList.get(i));
+							System.out.println("i-1  List: " + sesTimeList.get(i - 1));
+							diff = Duration.between(sesTimeList.get(i - 1),sesTimeList.get(i));  // 「get(i)」 minus 「get(i - 1)」的 difference 不能少於2
 							System.out.println("diff= " + diff.toHours()); 
-							if(diff.toHours() < 2 && diff.toHours() > 0) {   // 判斷 > 0 為了避免 10:00AM - 12:00AM 的相差等於 -10 負數
-								errorMsgs.put("sesTime"," 間距不可少於2小時");  							
+							if(diff.toHours() < 2) {
+								errorTimeMsgs = "間距不可少於2小時";  							
 							}
 						}
-						
-						
 					}else {
-						System.out.println("else= " +  + sesTimeArr.length);
 						sesTime = Time.valueOf(java.time.LocalTime.parse(sesTimeArr[0]));
 					}
 	             }
-
-	             // Here're parameters for sending back to the front page, if there were errors   
-             	 SesVO sesVO = new SesVO();
-                 sesVO.setSesNo(movNo);
-                 sesVO.setTheNo(theNo);
-                 sesVO.setSesDate(sesDate);
-                 sesVO.setSesTime(sesTime);
-
+	             
 	             // Send the use back to the form, if there were errors   
-	             if (!errorMsgs.isEmpty()) {
-					  req.setAttribute("sesVO", sesVO);
-					  String url = "/back-end/session/addSession.jsp";
-					  RequestDispatcher failureView = req.getRequestDispatcher(url);
-					  failureView.forward(req, res);
-					  return;
+	             if (errorMsgs != "" || errorDateMsgs!= "" || errorTimeMsgs != "") {
+		             List<Integer> theNoList = new ArrayList<Integer>();
+					 for(int k = 0; k < theNoArr.length; k++) {
+						theNoList.add(new Integer(theNoArr[k]));
+					 }
+					 
+					 req.setAttribute("movNo", movNo);
+					 req.setAttribute("sesDateBegin", sesDateBegin);
+					 req.setAttribute("sesDateEnd", sesDateEnd);
+					 req.setAttribute("sesTimeList", sesTimeList);
+					 req.setAttribute("theNoList", theNoList);
+					 req.setAttribute("errorDateMsgs",errorDateMsgs);
+					 req.setAttribute("errorTimeMsgs",errorTimeMsgs);
+					 
+					 RequestDispatcher failureView = req.getRequestDispatcher("/back-end/session/addSession.jsp");
+					 failureView.forward(req, res);
+					 return;
 	             }
               
-            
+           
 	           SesService sesSvc = new SesService();
 	           TheService theSvc = new TheService();
+
+           	/* =====================================================================
+           	                          場次是否重複，錯誤驗證  //theNo、sesDate、sesTime
+           	   =====================================================================*/
+//	           List<SesVO> seslists = sesSvc.getAll(); 
+//	           List<Date> dateResult = new ArrayList<Date>(sesDateList.size()); 
+//	           List<Time> timeResult = new ArrayList<Time>(sesTimeList.size()); 
+//	           List<Integer> theNoResult = new ArrayList<Integer>();
+//	           
+//	           for (int i = 0; i < seslists.size(); i++) {
+//
+//	        	   System.out.println(i);                 
+//	        	   System.out.println(seslists.get(i).getSesDate());
+//	        	   
+//	        	   return;
+//	           }
+	             
+//			   for(int k = 0; k < theNoArr.length; k++) {
+//				   theNoResult.add(new Integer(theNoArr[k]));
+//			   }
+//				 
+//	           for(Date dates : dateResult) {
+//	        	   System.out.println("dates= " + dates);
+//	           }
+//	           for(Time times : timeResult) {
+//	        	   System.out.println("times= " + times);
+//	           }
+//	           
+//	           for (SesVO lists : seslists) {
+//	               if (theNoResult.contains(lists.getTheNo()) && dateResult.contains(lists.getSesDate()) && timeResult.contains(lists.getSesTime())) {
+//	                   System.out.println("true");
+//	               }else {
+//	                   System.out.println("false");
+//	               }
+//	           }
+	           	             
                for(int i = 0; i < sesDateArr.length; i++) {
 	                 sesDate = Date.valueOf(sesDateArr[i]);  
                    for(int j = 0; j < sesTimeArr.length; j++) {
@@ -217,7 +268,7 @@ public class SesServlet extends HttpServlet {
                            theNo = new Integer(theNoArr[k]);
                            TheVO theVO = theSvc.getOneTheater(theNo);
                            /***************************2.開始新增資料***************************************/   
-                           sesSvc.addSes(movNo, theNo, sesDate, sesTime, theVO.getThe_seat(), theVO.getThe_seatno());      //暫時寫死
+                           sesSvc.addSes(movNo, theNo, sesDate, sesTime, theVO.getThe_seat(), theVO.getThe_seatno());
                        }
                    }
                }
@@ -227,24 +278,20 @@ public class SesServlet extends HttpServlet {
               String addSuccess = "【 場次 】" + "新增成功";
               req.setAttribute("addSuccess", addSuccess);    
               
-              String url = "/back-end/session/listAllSession.jsp";
-              RequestDispatcher successView = req.getRequestDispatcher(url);
+              RequestDispatcher successView = req.getRequestDispatcher("/back-end/session/listAllSession.jsp");
               successView.forward(req, res);    
                
                /***************************其他可能的錯誤處理**********************************/
 			}catch (Exception e) {
-				System.out.println("Exception= " + e.getMessage());
-				
-	            errorMsgs.put("Exception",e.getMessage());
-	            String url = "/back-end/session/addSession.jsp";
-	            RequestDispatcher failureView = req.getRequestDispatcher(url);
+	            errorMsgs = "Exception " + e.getMessage();
+	            RequestDispatcher failureView = req.getRequestDispatcher("/back-end/session/addSession.jsp");
 	            failureView.forward(req, res);
 	        }		
 		}
 		
 		// 來自listAllSession.jsp的請求
 		if ("getOne_For_Update".equals(action)) {
-			Map<String,String> errorMsgs = new LinkedHashMap<String,String>();
+			List<String> errorMsgs = new LinkedList<String>();
 			req.setAttribute("errorMsgs", errorMsgs);
 			
 			String requestURL = req.getParameter("requestURL");
@@ -264,8 +311,6 @@ public class SesServlet extends HttpServlet {
 					Map<String, String[]> map = (Map<String, String[]>)session.getAttribute("map");
 					List<SesVO> list  = sesSvc.getAll(map);
 					req.setAttribute("listSessions_ByCompositeQuery",list); // 複合查詢, 資料庫取出的list物件,存入
-					Boolean cssForListSessionsByCompositeQuery = true;
-					req.setAttribute("cssForListSessionsByCompositeQuery",cssForListSessionsByCompositeQuery);
 				}
 	            
 	            req.setAttribute("sesVO", sesVO);
@@ -275,15 +320,16 @@ public class SesServlet extends HttpServlet {
 	
 				/***************************其他可能的錯誤處理**********************************/
 			} catch (Exception e) {
-				errorMsgs.put("Exception"," 無法取得要修改的資料:" + e.getMessage());
-				RequestDispatcher failureView = req.getRequestDispatcher(requestURL);
+				errorMsgs.add("無法取得要修改的資料 " + e.getMessage());
+				RequestDispatcher failureView = req.getRequestDispatcher("/back-end/session/listAllSession.jsp");
 				failureView.forward(req, res);
 			}
 		}
 		
 		// 來自update_session_input.jsp的請求
 		if ("update".equals(action)) {
-			Map<String,String> errorMsgs = new LinkedHashMap<String,String>();
+			List<String> errorMsgs = new LinkedList<String>();
+			req.setAttribute("errorMsgs", errorMsgs);
 			
 			String requestURL = req.getParameter("requestURL");
 			
@@ -291,9 +337,6 @@ public class SesServlet extends HttpServlet {
 				/***************************1.接收請求參數 - 輸入格式的錯誤處理**********************/
 				Integer sesNo = new Integer(req.getParameter("sesNo").trim());
 	            System.out.println("sesNo= " + sesNo);
-
-                Integer theNo = new Integer(req.getParameter("theNo").trim());
-	            System.out.println("theNo= " + theNo);
                 
                 String sesDateStr = req.getParameter("sesDate").trim();
 	            java.sql.Date sesDate = null;
@@ -305,7 +348,7 @@ public class SesServlet extends HttpServlet {
                        
 	    	    /***************************2.開始修改資料*****************************************/ 
  	            SesService sesSvc = new SesService();
-	            sesSvc.updateSes(theNo, sesDate, sesTime, sesNo);
+	            sesSvc.updateSes(sesDate, sesTime, sesNo);
 	            
 				/***************************3.修改完成,準備轉交(Send the Success view)*************/	
 				if(requestURL.equals("/back-end/session/listSessions_ByCompositeQuery.jsp")){
@@ -318,21 +361,13 @@ public class SesServlet extends HttpServlet {
 				String updateSuccess = "【 場次 】" + "修改成功";
 				req.setAttribute("updateSuccess", updateSuccess);
 				
-				String url = requestURL;
-				if(requestURL.equals("/back-end/session/update_session_input.jsp")){
-					url = "/back-end/session/listAllSession.jsp";
-				}
-
-				System.out.println("url= " + url);
-				RequestDispatcher successView = req.getRequestDispatcher(url);
+				RequestDispatcher successView = req.getRequestDispatcher("/back-end/session/listAllSession.jsp");
 				successView.forward(req, res);
 
 				/***************************其他可能的錯誤處理*************************************/
 			}catch (Exception e) {
-				String errMsg = "修改資料失敗 " + e.getMessage();
-				System.out.println(errMsg);
-				req.setAttribute("errMsg", errMsg);
-				RequestDispatcher failureView = req.getRequestDispatcher(requestURL);
+				errorMsgs.add("修改資料失敗 " + e.getMessage());
+				RequestDispatcher failureView = req.getRequestDispatcher("/back-end/session/listAllSession.jsp");
 				failureView.forward(req, res);
 			}			
 		}
@@ -344,10 +379,11 @@ public class SesServlet extends HttpServlet {
                  String sesDateStr = req.getParameter("sesDate").trim();     
 	             java.sql.Date sesDate = null;
 	             sesDate = Date.valueOf(sesDateStr);    
-                       
+                 System.out.println(sesDate); 
 	    	    /***************************2.開始修改資料*****************************************/ 
  	            SesService sesSvc = new SesService();
-				List<SesVO> list  =  sesSvc.getMoviesBySesDate(sesDate);
+				List<SesVO> list  =  sesSvc.getMoviesByDate(sesDate);
+				
 				req.setAttribute("getMovies_BySesDate",list); 
 	            
 				/***************************3.修改完成,準備轉交(Send the Success view)*************/		            
@@ -385,30 +421,30 @@ public class SesServlet extends HttpServlet {
         Calendar calEnd = Calendar.getInstance();
         calEnd.setTime(format.parse(dateEnd));
         
-        List<String> Datelist = new ArrayList<String>();
-        Datelist.add(format.format(calBegin.getTime()));
+        List<String> dateList = new ArrayList<String>();
+        dateList.add(format.format(calBegin.getTime()));
         
         
         /* ====================================================================================
      		* whether dateEnd is after calBegin
-     		* if it's true -> calBegin will be plus a day via using「 Calendar.DAY_OF_MONTH 」 
+     		* if it's true -> calBegin will be plused a day via using「 Calendar.DAY_OF_MONTH 」 
      	======================================================================================= */
         while (format.parse(dateEnd).after(calBegin.getTime()))  {
             calBegin.add(Calendar.DAY_OF_MONTH, 1);   // DAY_OF_MONTH 取出當前月的第幾天
-            Datelist.add(format.format(calBegin.getTime()));
+            dateList.add(format.format(calBegin.getTime()));
         }
-        return Datelist;
+        return dateList;
     }
 	
 	public List<String> getTimes(String times) {
-        List<String> TimeList = new ArrayList<String>();
-        TimeList.add(times);
-		return TimeList;
+        List<String> timeList = new ArrayList<String>();
+        timeList.add(times);
+		return timeList;
 	}
 	
 	
     /* ====================================================================================
- 		* 需把 update_session_input.jsp 來的時間格式改為24小時制，才可寫入db。
+ 		* 需把 update_session_input.jsp 來的時間格式改為24小時制，才可寫進資料庫。
  	======================================================================================= */
 	public static String convertTimes(String twelveHourTime) throws ParseException {
 		DateFormat twenty_tf = new SimpleDateFormat("hh:mm a", Locale.ENGLISH);

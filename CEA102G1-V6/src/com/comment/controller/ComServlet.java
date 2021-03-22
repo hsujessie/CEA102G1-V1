@@ -27,7 +27,7 @@ public class ComServlet extends HttpServlet {
 	public void doPost(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException{
 		req.setCharacterEncoding("UTF-8");
 		String action = req.getParameter("action");
-		System.out.println("action:"+action);
+		System.out.println("comment action: "+action);
 		
 
 		// 來自前台 movies_subpage.jsp的請求
@@ -37,12 +37,27 @@ public class ComServlet extends HttpServlet {
 			
 			try {
 				/***********************1.接收請求參數 - 輸入格式的錯誤處理*************************/
+				String movNoStr = req.getParameter("movNo").trim();
 				Integer movNo = null;
-				movNo = new Integer(req.getParameter("movNo").trim());
-				
+				if(movNoStr == null || movNoStr.length() == 0) {
+					errorMsgs.put("movNo","movNoStr is null.");
+				}else {
+					movNo = new Integer(movNoStr);
+				}
+
+				String memNoStr = req.getParameter("memNo").trim();
 				Integer memNo = null;
-				memNo = new Integer(req.getParameter("memNo").trim());
+				if(memNoStr == null || memNoStr.length() == 0) {
+					errorMsgs.put("memNo","memNoStr is null.");
+				}else {
+					memNo = new Integer(memNoStr);
+				}
+				
+				
 				String comContent = req.getParameter("comContent").trim(); 
+				if(comContent == null || memNoStr.length() == 0) {
+					errorMsgs.put("comContent","comContent is null.");
+				}
 				java.sql.Timestamp comTime = new Timestamp(System.currentTimeMillis());
 
 				System.out.println("movNo= " + movNo);
@@ -57,7 +72,11 @@ public class ComServlet extends HttpServlet {
 				comVO.setComTime(comTime);
 				comVO.setComContent(comContent);
 				comVO.setComStatus(comStatus);
-				
+
+				if (!errorMsgs.isEmpty()) {
+					System.out.println(errorMsgs);
+					return;
+				}
 				/***************************2.開始新增資料***************************************/				
 				ComService comSvc = new ComService();
 				comSvc.addCom(movNo, memNo, comTime, comContent, comStatus);
