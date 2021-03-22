@@ -23,7 +23,7 @@
                 <div class="container">
                     <div class="row">
                         <div class="col-12">
-                            <h2>Movies</h2>
+                            <h2></h2>
                         </div>
                     </div>
                 </div>
@@ -53,7 +53,7 @@
 			      		<fmt:formatDate value="${movVO.movoffdate}" pattern="yyyy-MM-dd" var="movOffdate" />
 			            <!-- for 判斷 電影是否下檔 End -->
 			            	<c:if test="${today lt movOffdate}">
-		                        <div class="col-lg-4 col-md-6 col-sm-12 movies-item">
+		                        <div class="col-lg-3 col-md-4 col-sm-12 movies-item">
 		                            <div class="movies-wrap" onclick="sendData(this,${movVO.movno})" style="cursor:pointer;">		                               
 										
 										<c:if test="${not empty movVO.movpos}">						    
@@ -77,7 +77,7 @@
 						<!-- Now Showing -->
 						<c:if test="${not empty nowShowing}">	
 						<c:forEach var="movVO" items="${nowShowing}" >				    
-	                        <div class="col-lg-4 col-md-6 col-sm-12 movies-item">
+	                        <div class="col-lg-3 col-md-4 col-sm-12 movies-item">
 	                            <div class="movies-wrap" onclick="sendData(this,${movVO.movno})" style="cursor:pointer;">
 	                                <c:if test="${not empty movVO.movpos}">
 	                                	<img src="<%=request.getContextPath()%>/movie/mov.do?movno=${movVO.movno}&img=movpos&action=get_One_MovPos" alt="Movies Image">
@@ -98,7 +98,7 @@
 						<!-- Comming Soon -->
 						<c:if test="${not empty commingSoon}">	
 						<c:forEach var="movVO" items="${commingSoon}" >				    
-		                        <div class="col-lg-4 col-md-6 col-sm-12 movies-item">
+		                        <div class="col-lg-3 col-md-4 col-sm-12 movies-item">
 		                            <div class="movies-wrap" onclick="sendData(this,${movVO.movno})" style="cursor:pointer;">
 		                                <c:if test="${not empty movVO.movpos}">
 		                                	<img src="<%=request.getContextPath()%>/movie/mov.do?movno=${movVO.movno}&img=movpos&action=get_One_MovPos" alt="Movies Image">

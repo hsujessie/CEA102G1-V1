@@ -4,7 +4,6 @@
 /*******************************/
 .movies {
     position: relative;
-    padding: 45px 0;
     background: #ffffff;
 }
 
@@ -111,7 +110,6 @@
 .movies figure a {
     font-family: 'EB Garamond', serif;
     color: #aa9166;
-    font-size: 25px;
     font-weight: 600;
     font-style: italic;
     transition: .3s;
@@ -125,8 +123,8 @@
 .movies figure span {
     position: relative;
     color: #999999;
-    font-size: 16px;
-    margin-top: 10px;
+    font-size: 14px;
+    margin-top: 5px;
 }
 
 
@@ -376,8 +374,7 @@
     height: 180px;
     position: relative;
     display: flex;
-    width: 127px;
-    margin: auto;
+    justify-content: center;
 }
 
 .session .session-icon i {
