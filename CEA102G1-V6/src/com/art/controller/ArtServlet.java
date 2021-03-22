@@ -67,7 +67,7 @@ public class ArtServlet extends HttpServlet {
 				RequestDispatcher newArticle = request.getRequestDispatcher(url);			
 				newArticle.forward(request, response);				
 			}else {
-				session.setAttribute("location", request.getRequestURI());
+				session.setAttribute("location", request.getContextPath()+"/front-end/article/article.jsp");
 				String location = (String) session.getAttribute("location");
 				String url = request.getContextPath()+"/front-end/Member_Login/login.jsp";
 				response.sendRedirect(url);
