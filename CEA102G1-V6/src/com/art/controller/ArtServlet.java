@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.sql.Date;
 import java.util.ArrayList;
+import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
@@ -24,6 +25,8 @@ import com.art.model.ArtService;
 import com.art.model.ArtVO;
 import com.member.model.MemberService;
 
+import oracle.net.aso.a;
+import oracle.net.aso.e;
 import redis.JedisUtil;
 import redis.clients.jedis.Jedis;
 import redis.clients.jedis.JedisPool;
@@ -65,9 +68,9 @@ public class ArtServlet extends HttpServlet {
 				newArticle.forward(request, response);				
 			}else {
 				session.setAttribute("location", request.getRequestURI());
-				String url = "/front-end/Member_Login/login.jsp";
-				RequestDispatcher newArticleLogin = request.getRequestDispatcher(url);			
-				newArticleLogin.forward(request, response);
+				String location = (String) session.getAttribute("location");
+				String url = request.getContextPath()+"/front-end/Member_Login/login.jsp";
+				response.sendRedirect(url);
 			}
 		}
 		
@@ -260,6 +263,10 @@ public class ArtServlet extends HttpServlet {
 		//article.jsp呼叫，show all article with AJAX or show an article with AJAX
 		if("art_Show_By_AJAX".equals(action)) {
 			JSONArray array = new JSONArray();
+			//建立redis連線
+			Jedis jedis = pool.getResource();
+			jedis.auth("123456");
+			
 			if(request.getParameter("artNo") == null) {
 				System.out.println("artNo == null");
 				ArtService artSvc = new ArtService();
@@ -269,6 +276,19 @@ public class ArtServlet extends HttpServlet {
 				for (ArtVO artVO : list) {
 					JSONObject obj = new JSONObject();
 					try {
+						//第一次新增
+						if(jedis.hexists("artNo:"+artVO.getArtNo(), "clickTimes") == false) {
+							Integer clickTimesN = 0;
+							String clickTimes = String.valueOf(clickTimesN);
+							jedis.hset("artNo:"+artVO.getArtNo(), "movType", artVO.getMovType());
+							jedis.hset("artNo:"+artVO.getArtNo(), "clickTimes", clickTimes);							
+						}
+
+						//把該movType的artNo新增至redis，判斷個別分類文章Top3時使用
+						jedis.sadd("movType:"+artVO.getMovType(), String.valueOf(artVO.getArtNo()));
+						//新增artNo至redis，判斷全部文章Top3時使用
+						jedis.sadd("all:artNo", String.valueOf(artVO.getArtNo()));
+						
 						obj.put("artNo", artVO.getArtNo());
 						obj.put("memName", memSvc.getOneMember((artVO.getMemNo())).getMemName());
 						obj.put("artTitle", artVO.getArtTitle());
@@ -284,10 +304,6 @@ public class ArtServlet extends HttpServlet {
 				
 			} else {				
 				System.out.println("artNo != null");
-				//建立redis連線
-				Jedis jedis = pool.getResource();
-				jedis.auth("123456");
-				System.out.println(jedis.ping());
 				
 				JSONObject obj = new JSONObject();
 				ArtService artSvc = new ArtService();
@@ -302,26 +318,10 @@ public class ArtServlet extends HttpServlet {
 					System.out.println(jedis.hget("artNo:"+artVO.getArtNo(), "clickTimes"));
 					
 					//新增點擊次數熱門度
-					if(jedis.hexists("artNo:"+artVO.getArtNo(), "clickTimes") == false) {
-						//第一次新增
-						Integer clickTimesN = 0;
-						clickTimesN++;
-						String clickTimes = String.valueOf(clickTimesN);
-						jedis.hset("artNo:"+artVO.getArtNo(), "movType", artVO.getMovType());
-						jedis.hset("artNo:"+artVO.getArtNo(), "clickTimes", clickTimes);
-												
-					}else {
-						//第n次新增
-						Integer clickTimesN = new Integer(jedis.hget("artNo:"+artVO.getArtNo(), "clickTimes"));
-						clickTimesN++;
-						String clickTimes = String.valueOf(clickTimesN);
-						jedis.hset("artNo:"+artVO.getArtNo(), "clickTimes", clickTimes);
-
-					}
-					//把該movType的artNo新增至redis，判斷個別分類文章Top3時使用
-					jedis.sadd("movType:"+artVO.getMovType(), String.valueOf(artVO.getArtNo()));
-					//新增artNo至redis，判斷全部文章Top3時使用
-					jedis.sadd("all:artNo", String.valueOf(artVO.getArtNo()));
+					Integer clickTimesN = new Integer(jedis.hget("artNo:"+artVO.getArtNo(), "clickTimes"));
+					clickTimesN++;
+					String clickTimes = String.valueOf(clickTimesN);
+					jedis.hset("artNo:"+artVO.getArtNo(), "clickTimes", clickTimes);
 					
 					System.out.println("artNo:"+artVO.getArtNo());
 					/*==============放入JSONObject==============*/
@@ -339,8 +339,8 @@ public class ArtServlet extends HttpServlet {
 				} catch (JSONException e) {
 					e.printStackTrace();
 				}
-				jedis.close();
 			}
+			jedis.close();
 			
 			/*==============傳回=============*/
 			response.setContentType("text/plain");
@@ -351,9 +351,10 @@ public class ArtServlet extends HttpServlet {
 			out.close();
 		}
 		
-		//列出熱門文章
+		//列出前三熱門文章
 		if("artTopThree_Show_By_AJAX".equals(action)) {
 			JSONArray array = new JSONArray();
+			HttpSession session = request.getSession();
 			ArtService artSvc = new ArtService();
 			MemberService memSvc = new MemberService();
 			
@@ -361,13 +362,24 @@ public class ArtServlet extends HttpServlet {
 			//建立redis連線
 			Jedis jedis = pool.getResource();
 			jedis.auth("123456");
-
-			//查Top3
-			List<String> resultArt = jedis.sort("all:artNo", new SortingParams().by("artNo:*->clickTimes").desc().limit(0, 3));
-			System.out.println("查Top3:"+resultArt);
+			String artMovType = request.getParameter("artMovType");
+			System.out.println("artMovType:"+artMovType);
+			List<String> resultArt = null;
 			
+			if(artMovType == null || artMovType.trim().length() == 0) {
+				//查Top3
+				resultArt = jedis.sort("all:artNo", new SortingParams().by("artNo:*->clickTimes").desc().limit(0, 3));
+				System.out.println("查Top3:"+resultArt);
+
+			}else {
+				//依電影分類查Top3
+				resultArt = jedis.sort("movType:"+artMovType, new SortingParams().by("artNo:*->clickTimes").desc().limit(0, 3));
+				System.out.println("依電影分類查Top3:"+resultArt);
+			}
+
 			for(String artNo : resultArt) {
 				JSONObject obj = new JSONObject();
+				System.out.println("artNo:"+Integer.parseInt(artNo));
 				ArtVO artVO = artSvc.getOneArt(Integer.parseInt(artNo));
 				
 				try {
@@ -384,7 +396,6 @@ public class ArtServlet extends HttpServlet {
 					e.printStackTrace();
 				}
 				array.put(obj);
-				
 			}
 			jedis.close();
 			
@@ -412,7 +423,7 @@ public class ArtServlet extends HttpServlet {
 
 			//查Top3
 			List<String> resultArt = jedis.sort("movType:"+movType, new SortingParams().by("artNo:*->clickTimes").desc().limit(0, 3));
-			System.out.println("查Top3:"+resultArt);
+			System.out.println("依電影分類查Top3:"+resultArt);
 			
 			for(String artNo : resultArt) {
 				JSONObject obj = new JSONObject();
@@ -444,6 +455,7 @@ public class ArtServlet extends HttpServlet {
 			out.flush();
 			out.close();
 		}
+		
 		//article.jsp呼叫，複合查詢
 		if("find_By_CompositeQuery_Use_AJAX".equals(action)) {
 			JSONArray array = new JSONArray();
@@ -463,6 +475,9 @@ public class ArtServlet extends HttpServlet {
 			ArtService artSvc = new ArtService();
 			System.out.println("artSvc.getAll(map):" + artSvc.getAll(map));
 			List<ArtVO> list = artSvc.getAll(map);
+			List<Integer> artNoList = new ArrayList<Integer>();
+			session.setAttribute("artVOCompositeQuery", list);
+			
 			System.out.println("---over getAll(map) method---");
 			System.out.println("ArtServlet_List:" + list);
 			System.out.println("list.size()"+list.size());
@@ -481,10 +496,13 @@ public class ArtServlet extends HttpServlet {
 					obj.put("artMovType", artVO.getMovType());
 					
 					array.put(obj);
+					artNoList.add(artVO.getArtNo());
 				} catch (JSONException e) {
 					e.printStackTrace();
 				}
 			}
+			session.setAttribute("artNoList", artNoList);
+			System.out.println("複合查詢artNoList:"+artNoList);
 			System.out.println("=================art_Show_By_CompositeQuery==============");
 			
 			/*==============傳回=============*/

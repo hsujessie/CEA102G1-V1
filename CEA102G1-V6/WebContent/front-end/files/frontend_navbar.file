@@ -1,15 +1,17 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 
 <!-- HomePage -->
-<c:set var="home" value="${pageContext.request.contextPath}/front-end/index.jsp"/>
-<c:set var="tickets" value="${pageContext.request.contextPath}/front-end/tickets.jsp"/>
-<c:set var="searchTickets" value="${pageContext.request.contextPath}/front-end/searchTickets.jsp"/>
-<c:set var="sessions" value="${pageContext.request.contextPath}/front-end/sessions/sessions.jsp"/>
-<c:set var="movies" value="${pageContext.request.contextPath}/front-end/movies/movies.jsp"/>
+
+<c:set var="home" value="/CEA102G1-V6/front-end/index.jsp"/>
+<c:set var="tickets" value="/CEA102G1-V6/front-end/tickets.jsp"/>
+<c:set var="searchTickets" value="/CEA102G1-V6/front-end/searchTickets.jsp"/>
+<c:set var="sessions" value="/CEA102G1-V6/front-end/sessions/sessions.jsp"/>
+<c:set var="movies" value="/CEA102G1-V6/front-end/movies/movies.jsp"/>
 <c:set var="forum" value="${pageContext.request.contextPath}/front-end/article/article.jsp"/>
-<c:set var="notices" value="${pageContext.request.contextPath}/front-end/notices.jsp"/>
-<c:set var="faqs" value="${pageContext.request.contextPath}/front-end/faqs.jsp"/>
-<c:set var="members" value="${pageContext.request.contextPath}/front-end/Member_Login/login.jsp"/>
+<c:set var="notices" value="/CEA102G1-V6/front-end/notices.jsp"/>
+<c:set var="faqs" value="/CEA102G1-V6/front-end/faqs.jsp"/>
+<c:set var="articlemanage" value="${pageContext.request.contextPath}/front-end/article/articleManage.jsp"/>
+<c:set var="members" value="/CEA102G1-V6/front-end/Member_Login/login.jsp"/>
 
 
 <!-- SubPage -->
@@ -39,6 +41,7 @@
                     <div class="nav-item dropdown">
                         <a href="" class="nav-link dropdown-toggle <c:if test="${(urlRecog == tickets) || (urlRecog == searchTickets) || (urlRecog == sessions) }">active</c:if>" data-toggle="dropdown"><i class="fas fa-ticket-alt iconPos"></i>訂票</a>
                         <div class="dropdown-menu">
+                            <a href="${tickets}" class="dropdown-item">線上訂票</a>
                             <a href="${searchTickets}" class="dropdown-item">查詢訂票</a>
                             <a href="${sessions}" class="dropdown-item">查看場次</a>
                         </div>
@@ -48,7 +51,14 @@
                     <a href="${forum}"   class="nav-item nav-link <c:if test="${urlRecog == forum}">active</c:if>"><i class="fa fa-users iconPos"></i>討論區</a>
                     <a href="${notices}" class="nav-item nav-link <c:if test="${urlRecog == notices}">active</c:if>"><i class="fa fa-bullhorn iconPos"></i>公告</a>
                     <a href="${faqs}"    class="nav-item nav-link <c:if test="${urlRecog == faqs}">active</c:if>"><i class="fas fa-question-circle iconPos"></i></i>FAQs</a>
-                    <a href="${members}" class="nav-item nav-link <c:if test="${urlRecog == members}">active</c:if>"><i class="fa fa-user iconPos"></i>會員</a>
+                    
+                	<div class="nav-item dropdown">
+                        <a href="" class="nav-link dropdown-toggle <c:if test="${(urlRecog == members) || (urlRecog == articalmanage)}">active</c:if>" data-toggle="dropdown"><i class="fa fa-user iconPos"></i>會員</a>
+                        <div class="dropdown-menu">
+                            <a href="${members}" class="dropdown-item">會員資料管理</a>
+                            <a href="${articlemanage}" class="dropdown-item">文章管理</a>
+                        </div>
+                    </div>
                     
                     <a href="${members}" class="nav-item nav-link loginPos <c:if test="${urlRecog == members}">active</c:if>">登入<i class="fas fa-user-circle"></i></a>
                 </div>
@@ -56,29 +66,3 @@
         </nav>
     </div>
 </div>
-
-<c:if test="${not empty MemberVO}">
-<!-- chatbox -->
-<div id="chat-circle" class="btn btn-raised">
-        <div id="chat-overlay"></div>
-        <i class="fas fa-comment-alt"></i>
-</div>
-<div class="chat-box">
-    <div class="chat-box-header">
-      		線上客服
-      <span class="chat-box-toggle"></span>
-    </div>
-    <div class="chat-box-body">
-      <div class="chat-box-overlay">   
-      </div>
-      <div class="chat-logs">
-       
-      </div><!--chat-log -->
-    </div>
-    <div class="chat-input">      
-      <input type="text" id="chat-input" placeholder="Send a message..." onkeydown="if (event.keyCode == 13) sendMessage();"/>
-      <button class="chat-submit" id="chat-submit"><i class="fas fa-paper-plane"></i></button>
-    </div>
-  </div>
-<!-- chatbox -->
-</c:if>

@@ -93,7 +93,7 @@
 							$('#tableTitle').append("文章檢舉列表");
 							$('#listAllReport').show();
 							$(artRptVO).each(function(i, item){
-								$('#listAllReport').append('<div class="bgGray"><div class="artRptNo inlineBlockLongDIV" data-value='+item.artRptNo+'>'+item.artRptNo+'</div><div class="inlineBlockDIV longText">'+item.memName+'</div><div class="inlineBlockLongDIV longText">'+item.artTitle+'</div><div class="inlineBlockLongDIV">'+moment(item.artRptTime).locale('zh_TW').format('LL')+'</div><div class="inlineBlockLongDIV longText">'+item.reportMemName+'</div><div class="inlineBlockLongDIV">'+item.artRptContent+'</div><div class="inlineBlockDIV">'+item.artRptStatus+'</div><div class="inlineBlockLongDIV"><button class="checkedButton btn-light btn-brd grd1 effect-1" style="color: #fff" data-value="'+item.artNo+'">'+item.artRptStatusButton+'</button></div></div>');					
+								$('#listAllReport').append('<div class="bgGray"><div class="artRptNo inlineBlockLongDIV" data-value='+item.artRptNo+'>'+item.artRptNo+'</div><div class="inlineBlockDIV longText">'+item.memName+'</div><div class="inlineBlockLongDIV longText">'+item.artTitle+'</div><div class="inlineBlockLongDIV">'+moment(item.artRptTime).locale('zh_TW').format('LL')+'</div><div class="inlineBlockLongDIV longText">'+item.reportMemName+'</div><div class="inlineBlockLongDIV">'+item.artRptContent+'</div><div class="artRptStatus inlineBlockDIV">'+item.artRptStatus+'</div><div class="inlineBlockLongDIV"><button class="checkedButton btn-light btn-brd grd1 effect-1" style="color: #fff" data-value="'+item.artNo+'">'+item.artRptStatusButton+'</button></div></div>');					
 							});						
 						},
 		                error: function () {
@@ -114,7 +114,7 @@
 							$('#listAllReport').show();
 							$('#tableTitle').append("留言檢舉列表");
 							$(artRepRptVO).each(function(i, item){
-								$('#listAllReport').append('<div class="bgGray"><div class="artRepRptNo inlineBlockLongDIV" data-value='+item.artRepRptNo+'>'+item.artRepRptNo+'</div><div class="inlineBlockDIV longText">'+item.memName+'</div><div class="inlineBlockLongDIV">'+item.artRepContent+'</div><div class="inlineBlockLongDIV">'+moment(item.artRepRptTime).locale('zh_TW').format('LL')+'</div><div class="inlineBlockLongDIV longText">'+item.reportMemName+'</div><div class="inlineBlockLongDIV">'+item.artRepRptReson+'</div><div class="inlineBlockDIV">'+item.artRepRptStatus+'</div><div class="inlineBlockLongDIV"><button class="checkedReplyButton btn-light btn-brd grd1 effect-1" style="color: #fff" data-value="'+item.artRepNo+'">'+item.artRepRptStatusButton+'</button></div></div>');					
+								$('#listAllReport').append('<div class="bgGray"><div class="artRepRptNo inlineBlockLongDIV" data-value='+item.artRepRptNo+'>'+item.artRepRptNo+'</div><div class="inlineBlockDIV longText">'+item.memName+'</div><div class="inlineBlockLongDIV">'+item.artRepContent+'</div><div class="inlineBlockLongDIV">'+moment(item.artRepRptTime).locale('zh_TW').format('LL')+'</div><div class="inlineBlockLongDIV longText">'+item.reportMemName+'</div><div class="inlineBlockLongDIV">'+item.artRepRptReson+'</div><div class="artRepRptStatus inlineBlockDIV">'+item.artRepRptStatus+'</div><div class="inlineBlockLongDIV"><button class="checkedReplyButton btn-light btn-brd grd1 effect-1" style="color: #fff" data-value="'+item.artRepNo+'">'+item.artRepRptStatusButton+'</button></div></div>');					
 							});						
 						},
 		                error: function () {
@@ -147,6 +147,7 @@
 						debugger;
 						$(artRptVO).each(function(i, item){
 							$(event.currentTarget).text(item.artRptStatusButton);
+							$(event.currentTarget).parent('div').siblings('.artRptStatus').text(item.artRptStatus);
 						});
 					},
 	                error: function () {
@@ -170,6 +171,7 @@
 						debugger;
 						$(artRepRptVO).each(function(i, item){
 							$(event.currentTarget).text(item.artRepRptStatusButton);
+							$(event.currentTarget).parent('div').siblings('.artRepRptStatus').text(item.artRepRptStatus);
 						});
 					},
 	                error: function () {

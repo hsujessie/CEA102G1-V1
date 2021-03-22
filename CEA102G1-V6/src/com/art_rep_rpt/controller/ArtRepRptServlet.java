@@ -140,9 +140,11 @@ public class ArtRepRptServlet extends HttpServlet {
 				try { 
 					if(artRepRptSvc.getOneArtRepRpt(artRepRptNo).getArtRepRptStatus() == 0) {
 						obj.put("artRepRptStatusButton", "確認檢舉");
+						obj.put("artRepRptStatus", artRepRptSvc.getOneArtRepRpt(artRepRptNo).getArtRepRptStatus());
 						System.out.println("artRepRptStatusButton: 確認檢舉");
 					}else {
 						obj.put("artRepRptStatusButton", "已檢舉");
+						obj.put("artRepRptStatus", artRepRptSvc.getOneArtRepRpt(artRepRptNo).getArtRepRptStatus());
 						System.out.println("artRepRptStatusButton: 已檢舉");
 					}
 				} catch (JSONException e) {

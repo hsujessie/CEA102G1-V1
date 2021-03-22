@@ -9,23 +9,26 @@
 <jsp:useBean id="artSvc" scope="page" class="com.art.model.ArtService"/>
 
 <!DOCTYPE html>
-
-
-
-
 <html>
 <head>
 <meta charset="UTF-8">
-<script src="<%=request.getContextPath()%>/resource/js/moment-with-locales.min.js" ></script>
-<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.15.2/css/all.css" integrity="sha384-vSIIfh2YWi9wW0r9iZe7RJPrKwp6bG+s9QZMoITbCckVJqGCCRhc+ccxNcdpHuYu" crossorigin="anonymous">
-
 
 <style>
+	#Top3Article{
+		text-align: center;
+	}
 	#artListCenter{
 /* 		border-radius:0.5rem; */
  		line-height: 2rem;
         max-width: 100%;
         margin: 2rem;
+	}
+	.artTitle{
+		font-size: 1.2rem;
+		height: 5vh;
+		white-space:nowrap;
+		overflow:hidden;
+		text-overflow:ellipsis;
 	}
 	.artContent{
 		height: 10vh;
@@ -108,10 +111,37 @@
     	padding: 5%;
     }
     .HotArticleDiv{
+    	display: inline-block;
+    	width: 17vw;
+    	height:40vh;
     	background-color: rgba(170,145,102,0.2);
     	border-radius: 20px;
     	padding: 5%;
+    	vertical-align: top;
+    	text-align: left;
     }
+    @media (max-width: 991px){
+		.HotArticleDiv {
+			display: block;
+		    width: 50vw;
+		    height: 30vh;
+		    margin: auto;
+		}	
+	}
+    .nav-item{
+    	cursor: pointer;
+    }
+    .noArticle{
+    	font-size: 3rem;
+    	color: #808080;
+    	text-align: center
+    }
+/*     @media (min-width: 767px){ */
+/* 		.navbar-expand-lg .navbar-toggler { */
+/* 		    display: none; */
+/* 		}     */
+/*     } */
+
 </style>
 
 <script type="text/javascript">
@@ -199,25 +229,29 @@ function ListArtTopThreeQuery(){
 	$.ajax({
 		type: 'POST',
 		url: '<%=request.getContextPath()%>/art/art.do',
-		data: {'action':'artTopThree_Show_By_AJAX'},
+		data: {'action':'artTopThree_Show_By_AJAX', 'artMovType':$('.selectedMovType').attr('data-value')},
 		dataType: 'json',
 		success: function (artVO){
 			debugger;
-			//清空熱門文章列表
-			clearListArtTopThreeQuery();
-			
 			//加入文章內容
+			if($('.selectedMovType').attr('data-value') == null){
+				$('#Top3Article').append('<h4 style="text-align: left;">熱門文章</h4>');
+			}else{
+				$('#Top3Article').append('<h4 style="text-align: left;">'+$('.selectedMovType').attr('data-value')+'熱門文章</h4>');
+			}
 			$(artVO).each(function(i, item){
 				$('#Top3Article').append(
-						'<div id="artAuthor" style="display: inline-block"><div style="display: inline-block">作者：</div> <div style="display: inline-block">'+item.memName+'</div></div>'
+						'<div id="hotArticleDiv" class="HotArticleDiv"><div id="topThreeArticle" style="color: #FF7575;"><i class="fas fa-crown" style="color: #bb9d52; margin: 0px 5px;"></i><b>HOT</b></div><div style="display: inline-block"><div style="display: inline-block">作者：</div> <div style="display: inline-block">'+item.memName+'</div></div>'
 						+'<div id="movType" style="display: inline-block"><div style="display: inline-block">電影類型：</div> <div style="display: inline-block">'+item.artMovType+'</div></div>'
-						+'<div id="topThreeArticle" style="display: inline-block; color: #FF7575;"><i class="fas fa-crown" style="color: #bb9d52; margin: 0px 5px;"></i><b>HOT</b></div>'
-						+'<div id="artTitle"><div style="font-size: 1.2rem;"><b>'+item.artTitle+'</b></div></div>'
-						+'<div id="artTime"><div style="display: inline-block">修改時間：</div> <div style="display: inline-block">'+moment(item.artTime).locale('zh_TW').format('llll')+'</div></div>'
-						+'<div><div class="artContent" data-value="'+item.artNo+'">'+item.artContent+'</div></div><hr>')			
-						;
-				$('#Top3Article').addClass('HotArticleDiv');
-				});
+						+'<div id="artTitle" class="artTitle"><div><b>'+item.artTitle+'</b></div></div>'
+						+'<div id="artTime"><div style="display: inline-block">修改時間：</div> <div style="display: inline-block">'+moment(item.artTime).locale('zh_TW').format('lll')+'</div></div>'
+						+'<div><div class="artContent" data-value="'+item.artNo+'">'+item.artContent+'</div></div></div>')			
+			});
+			$('#Top3Article').append('<hr>');
+			//若無文章
+			if (artVO.length == 0){
+				$('#Top3Article').append('<div class="noArticle">尚無文章</div>');
+			}
 		},
 		error: function(){console.log("AJAX-ListArtTopThreeQuery發生錯誤囉!")}
 	});
@@ -298,7 +332,13 @@ function addArtRpt(){
 //新增回文
 function addArtRep(){
 	$('#artRepButton').click(function(){
-// 		debugger;
+		debugger;
+	if('${MemberVO}' == ''){
+		<%
+		session.setAttribute("location", request.getRequestURI());
+		%>
+		window.location.href = "<%=request.getContextPath()%>/front-end/Member_Login/login.jsp"
+	}else{
 		$.ajax({
 			type: 'POST',
 			url: '<%=request.getContextPath()%>/art/artRep.do',
@@ -315,7 +355,9 @@ function addArtRep(){
 
 			},
 			error: function(){console.log("AJAX-addArtRpe發生錯誤囉!")}
-		});
+		});		
+	}
+
 	});
 };
 
@@ -394,6 +436,7 @@ function clearRepRptReson(){
 </head>
 <body>
 <!-- 中間區塊開始 -->
+<!-- 前三熱門文章 -->
 <div id="Top3Article">
 	
 </div>
