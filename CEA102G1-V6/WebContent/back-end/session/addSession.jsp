@@ -458,8 +458,15 @@
 		let timetb = document.getElementById("timetb");
 		timetb.style.display="block";
 
-		let tag = `<tr><th>${'${count}'}</th><td><input type="text" name="sesTime" value="${'${timeCount}'}:00"></td>
-				   <td><input type=button value="刪除" id="delete" class="delete-btn-sty" onclick='removeTr(this)'></td></tr>`;
+		let tag = `<tr>
+						<th>${'${count}'}</th>
+						<td>                                      /* ${'$'} 用EL，把 js ES6的$符號包起來，避免語法衝突。 */
+							<input type="text" name="sesTime" value="${'$'}{timeCount}:00">
+						</td>
+				   		<td>
+				   			<input type=button value="刪除" id="delete" class="delete-btn-sty" onclick='removeTr(this)'>
+				   		</td>
+				   	</tr>`;
 		timetb.innerHTML += tag;
 		
 		
