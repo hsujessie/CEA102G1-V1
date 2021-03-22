@@ -123,7 +123,8 @@ public class SesServlet extends HttpServlet {
 	
 		if ("insert".equals(action)) {
             String errorMsgs = "";
-
+            String errorDateMsgs = "";
+            String errorTimeMsgs = "";
             try {
                 /***********************1.接收請求參數 - 輸入格式的錯誤處理*************************/
                  Integer movNo = new Integer(req.getParameter("movNo").trim());
@@ -147,7 +148,27 @@ public class SesServlet extends HttpServlet {
 	             String[] sesDateArr = new String[sesDateList.size()];
 	             sesDateArr = sesDateList.toArray(sesDateArr);
 	             
-                 
+	          /* =====================================================================
+                 				           錯誤驗證：場次日期不可大於當日
+				 =====================================================================*/	
+//	             DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+//	             java.util.Date date = new java.util.Date();
+//	             java.util.Date dateBegin = dateFormat.parse(sesDateBegin);  // parse(String) to java.util.Date
+//	             java.util.Date dateEnd = dateFormat.parse(sesDateEnd);
+//	             	             
+//	             System.out.println("date= " + date);
+//	             System.out.println("begin= " + dateBegin);
+//	             System.out.println("end= " + dateEnd);
+//	             if(dateBegin.after(date) || dateEnd.after(date)) {  // use 「 .before() 」the type should be java.util.Date
+//	            	 errorDateMsgs = "場次日期不可大於當日";
+//	            	 System.out.println("if");
+//	             }
+//	             else {
+//	            	 System.out.println("else");
+//	             }
+	             
+	             
+	             	             
 	             Time sesTime = null;   
 	             String[] sesTimeArr = req.getParameterValues("sesTime");	  
 	             List<LocalTime> sesTimeList = new ArrayList<LocalTime>();
@@ -158,8 +179,8 @@ public class SesServlet extends HttpServlet {
 	             }else {
 	            	 
 	            	/* =====================================================================
-	            	                          場次時間間距，錯誤驗證
-	            	   =====================================================================*/	            	 
+	            	                       錯誤驗證：場次時間間距，不可少於2小時
+	            	   =====================================================================*/
 	            	 if(sesTimeArr.length > 1) {
 						System.out.println("if= " + sesTimeArr.length);
 						for(int j = 0; j < sesTimeArr.length; j++) {
@@ -172,7 +193,7 @@ public class SesServlet extends HttpServlet {
 							diff = Duration.between(sesTimeList.get(i - 1),sesTimeList.get(i));  // 「get(i)」 minus 「get(i - 1)」的 difference 不能少於2
 							System.out.println("diff= " + diff.toHours()); 
 							if(diff.toHours() < 2) {
-								errorMsgs = "間距不可少於2小時";  							
+								errorTimeMsgs = "間距不可少於2小時";  							
 							}
 						}
 					}else {
@@ -181,7 +202,7 @@ public class SesServlet extends HttpServlet {
 	             }
 	             
 	             // Send the use back to the form, if there were errors   
-	             if (errorMsgs != "") {
+	             if (errorMsgs != "" || errorDateMsgs!= "" || errorTimeMsgs != "") {
 		             List<Integer> theNoList = new ArrayList<Integer>();
 					 for(int k = 0; k < theNoArr.length; k++) {
 						theNoList.add(new Integer(theNoArr[k]));
@@ -192,7 +213,8 @@ public class SesServlet extends HttpServlet {
 					 req.setAttribute("sesDateEnd", sesDateEnd);
 					 req.setAttribute("sesTimeList", sesTimeList);
 					 req.setAttribute("theNoList", theNoList);
-					 req.setAttribute("errorMsgs",errorMsgs);
+					 req.setAttribute("errorDateMsgs",errorDateMsgs);
+					 req.setAttribute("errorTimeMsgs",errorTimeMsgs);
 					 
 					 RequestDispatcher failureView = req.getRequestDispatcher("/back-end/session/addSession.jsp");
 					 failureView.forward(req, res);
@@ -204,7 +226,7 @@ public class SesServlet extends HttpServlet {
 	           TheService theSvc = new TheService();
 
            	/* =====================================================================
-           	                          場次是否重複，錯誤驗證  //movNo、theNo、sesDate、sesTime
+           	                          場次是否重複，錯誤驗證  //theNo、sesDate、sesTime
            	   =====================================================================*/
 //	           List<SesVO> seslists = sesSvc.getAll(); 
 //	           List<Date> dateResult = new ArrayList<Date>(sesDateList.size()); 
@@ -214,20 +236,8 @@ public class SesServlet extends HttpServlet {
 //	           for (int i = 0; i < seslists.size(); i++) {
 //
 //	        	   System.out.println(i);                 
-//	        	   System.out.println(seslists.get(i).getMovNo());
+//	        	   System.out.println(seslists.get(i).getSesDate());
 //	        	   
-//	        	   return;
-//	           }
-	           
-//	           for (SesVO lists : seslists) {                 
-//        		   System.out.println("list" + lists.getMovNo());
-//        		   System.out.println("movNo" + movNo);
-//	        	   if (lists.getMovNo() == movNo) {	                   
-//	        		   System.out.println("true");
-//	        	   }else {
-//	                   System.out.println("false");
-//	                   
-//	               }
 //	        	   return;
 //	           }
 	             
@@ -243,7 +253,7 @@ public class SesServlet extends HttpServlet {
 //	           }
 //	           
 //	           for (SesVO lists : seslists) {
-//	               if (movNo == lists.getMovNo() && theNoResult.contains(lists.getTheNo()) && dateResult.contains(lists.getSesDate()) && timeResult.contains(lists.getSesTime())) {
+//	               if (theNoResult.contains(lists.getTheNo()) && dateResult.contains(lists.getSesDate()) && timeResult.contains(lists.getSesTime())) {
 //	                   System.out.println("true");
 //	               }else {
 //	                   System.out.println("false");

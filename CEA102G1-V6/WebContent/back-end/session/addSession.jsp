@@ -130,7 +130,6 @@
 									<jsp:useBean id="theSvc" scope="page" class="com.theater.model.TheService"/>
 									<jsp:useBean id="movVerSvc" scope="page" class="com.movie_version.model.MovVerService"/>
 									<c:forEach var="theVO" items="${theSvc.all}" >	
-										<%-- <c:set var="movVerVO" value="${movVerSvc.getOneMovie_version(theVO.the_no)}"></c:set> --%>
 										<input class="mr-left mr-btm-sm" type="checkbox" name="theNo" value="${theVO.the_no}" <c:if test="${not empty theNo and theNo eq theVO.the_no}">checked</c:if> >
 										<c:choose>
 											<c:when test="${theVO.the_no ge 10 && theVO.the_no != 1 && theVO.the_no != 7 && theVO.the_no != 11}">
@@ -166,6 +165,11 @@
 										<i class="far fa-hand-point-left" style="color:#bb9d52;"></i>
 										<label id="sesDate-errmsg-txt" class="err-color"></label>
 									</span>
+									<c:if test="${not empty errorDateMsgs}">					
+										<span>		
+											<label class="err-color"><i class="far fa-hand-point-left" style="color:#bb9d52;"></i>${errorDateMsgs}</label>
+										</span>
+									</c:if>	
 								</td>
 							</tr>
 							<tr>
@@ -178,13 +182,13 @@
 								</th>
 							</tr>
 						</table>
-						<table id="timetb" ${not empty errorMsgs? 'style="display:block;"' : 'style="display:none;"'}>
+						<table id="timetb" ${not empty errorTimeMsgs? 'style="display:block;"' : 'style="display:none;"'}>
 							<tr>
 								<th>編號</th>
 								<th style="padding-left: 10px;">時間
-									<c:if test="${not empty errorMsgs}">					
+									<c:if test="${not empty errorTimeMsgs}">					
 										<span id="sesTime-errmsg">		
-											<label class="err-color"><i class="far fa-hand-point-down" style="color:#bb9d52;"></i>${errorMsgs}</label>
+											<label class="err-color"><i class="far fa-hand-point-down" style="color:#bb9d52;"></i>${errorTimeMsgs}</label>
 										</span>
 									</c:if>	
 								</th>								

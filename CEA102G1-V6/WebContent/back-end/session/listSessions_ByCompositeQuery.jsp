@@ -72,8 +72,8 @@
                     	
                     	<!-- search Start -->
                     	<div class="row " style="margin: -60px 0 20px 50px;">        
-			                <div class="col-2"></div>
-	                        <div class="col-10">          
+			                <div class="col-1"></div>
+	                        <div class="col-11">          
 		            			<jsp:useBean id="movSvcAll" scope="page" class="com.movie.model.MovService"/>                        
 	                           	<FORM class="form-sty" METHOD="post" ACTION="<%=request.getContextPath()%>/session/ses.do">				                        
 			                        <b>電影名稱</b>
