@@ -12,7 +12,7 @@
 <c:set var="articleComreport" value="${pageContext.request.contextPath}/back-end/article/articleReport.jsp"/>                                  
 <c:set var="theater" value="${pageContext.request.contextPath}/back-end/theater/listAllTheater.jsp"/> 
 <c:set var="ticket" value="${pageContext.request.contextPath}/back-end/ticket_type/listAllTicket_type.jsp"/> 
-<c:set var="food" value="${pageContext.request.contextPath}/back-end/foo/fooSelectPage.jsp"/>
+<c:set var="food" value="${pageContext.request.contextPath}/back-end/foo/listAllFoo.jsp"/>
 
 <c:set var="board" value=""/> 
 <c:set var="faq" value="${pageContext.request.contextPath}/back-end/faq/listAllFaq.jsp"/>
@@ -153,10 +153,17 @@
          </c:if>
          
          <c:if test='${funList.contains("餐點管理")}'>            
-            <a class="nav-link collapsed" href="#">
-                <div class="sb-nav-link-icon"><i class="fas fa-utensils"></i></div>
+             <a class="nav-link collapsed <c:if test="${urlRecog == foodSub}">active</c:if>" href="${food}" data-toggle="collapse" data-target="#food" aria-expanded="false" aria-controls="food">                        
+                <div class="sb-nav-link-icon"><i class="far fa-clock"></i></div>
                 餐點管理
+                <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
             </a>
+            <div class="collapse" id="food" aria-labelledby="headingOne" data-parent="#sidenavAccordion">
+                <nav class="sb-sidenav-menu-nested nav">
+                    <a class="nav-link <c:if test="${urlRecog == food}">active</c:if>" href="${food}">餐點列表</a>
+                    <a class="nav-link <c:if test="${urlRecog == foodAdd}">active</c:if>" href="${foodAdd}">餐點新增</a>
+                </nav>
+            </div>
          </c:if>   
          
          <c:if test='${funList.contains("公告管理")}'>
