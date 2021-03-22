@@ -116,7 +116,7 @@
     	height:40vh;
     	background-color: rgba(170,145,102,0.2);
     	border-radius: 20px;
-    	padding: 5%;
+    	padding: 1% 5%;
     	vertical-align: top;
     	text-align: left;
     }
