@@ -207,7 +207,7 @@ p {
 								</table>
 
 
-								<input type="hidden" name="memNo" value="1"> <input
+								<input type="hidden" name="memNo" value="${MemberVO.memNo}"> <input
 									type="hidden" name="sesNo" value="${param.sesNo}"> <input
 									type="hidden" name="chooseSeatNo" value="${param.chooseSeatNo}">
 								<input type="hidden" name="action" value="check_out">

@@ -77,7 +77,7 @@
 									<jsp:useBean id="sesSvc" class="com.session.model.SesService"></jsp:useBean>
 									<jsp:useBean id="movSvc" class="com.movie.model.MovService"></jsp:useBean>
 									<c:set var="count" value="1" />
-									<c:forEach var="ordMasVO" items="${ordMasSvc.getByMemNo(1)}">
+									<c:forEach var="ordMasVO" items="${ordMasSvc.getByMemNo(MemberVO.memNo)}">
 										<c:if test="${ordMasVO.ordMasStatus == 0}">
 											<c:set var="sesNo" value="${ordMasVO.sesNo}" />
 											<tr class="sty-height" valign='middle'>
@@ -122,7 +122,7 @@
 
 								<tbody>
 									<c:set var="count" value="1" />
-									<c:forEach var="ordMasVO" items="${ordMasSvc.getByMemNo(1)}">
+									<c:forEach var="ordMasVO" items="${ordMasSvc.getByMemNo(MemberVO.memNo)}">
 										<c:if test="${ordMasVO.ordMasStatus == 1 || ordMasVO.ordMasStatus == 2}">
 											<c:set var="sesNo" value="${ordMasVO.sesNo}" />
 											<tr class="sty-height" valign='middle'>
