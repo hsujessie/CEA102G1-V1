@@ -11,10 +11,11 @@
 <c:set var="movieComreport" value="${pageContext.request.contextPath}/back-end/comment_report/listAllComReport.jsp"/>
 <c:set var="articleComreport" value="${pageContext.request.contextPath}/back-end/article/articleReport.jsp"/>                                  
 <c:set var="theater" value="${pageContext.request.contextPath}/back-end/theater/listAllTheater.jsp"/> 
+<c:set var="ticket" value="${pageContext.request.contextPath}/back-end/ticket_type/listAllTicket_type.jsp"/> 
 <c:set var="food" value="${pageContext.request.contextPath}/back-end/foo/fooSelectPage.jsp"/>
 
 <c:set var="board" value=""/> 
-<c:set var="faq" value=""/>
+<c:set var="faq" value="${pageContext.request.contextPath}/back-end/faq/listAllFaq.jsp"/>
 
 <!-- Add - 大家的 add jsp -->
 <c:set var="adminAdd" value="${pageContext.request.contextPath}/back-end/admin/addAdmin.jsp"/> 
@@ -23,10 +24,10 @@
 <c:set var="sessionAdd" value="${pageContext.request.contextPath}/back-end/session/addSession.jsp"/>
 <c:set var="movieAdd" value="${pageContext.request.contextPath}/back-end/movie/addMovie.jsp"/>       
 <c:set var="clientAdd" value=""/>                            
-<c:set var="theaterAdd" value=""/> 
+<c:set var="theaterAdd" value="${pageContext.request.contextPath}/back-end/theater/addTheater.jsp"/> 
 <c:set var="foodAdd" value="${pageContext.request.contextPath}/back-end/foo/addFoo.jsp"/>
 <c:set var="boardAdd" value=""/> 
-<c:set var="faqAdd" value=""/>
+<c:set var="faqAdd" value="${pageContext.request.contextPath}/back-end/faq/addFaq.jsp"/>
 
 <!-- Sub - 子頁面參數 -->    			
 <c:set var="adminSub" value="adminSub"/>
@@ -116,10 +117,18 @@
                     <a class="nav-link <c:if test="${urlRecog == articleComreport}">active</c:if>" href="${articleComreport}">文章回覆檢舉</a>
                 </nav>
             </div>
-            <a class="nav-link collapsed" href="#">
+            <a class="nav-link collapsed" <c:if test="${urlRecog == theaterSub}">active</c:if>" href="${theater}" data-toggle="collapse" data-target="#theater" aria-expanded="false" aria-controls="theater">
                 <div class="sb-nav-link-icon"><i class="fab fa-fort-awesome-alt"></i></div>
                 影廳管理
+                <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
             </a>
+            <div class="collapse" id="theater" aria-labelledby="headingOne" data-parent="#sidenavAccordion">
+                <nav class="sb-sidenav-menu-nested nav">
+                    <a class="nav-link <c:if test="${urlRecog == theater}">active</c:if>" href="${theater}">影廳列表</a>
+                    <a class="nav-link <c:if test="${urlRecog == theaterAdd}">active</c:if>" href="${theaterAdd}">影廳新增</a>
+                    <a class="nav-link <c:if test="${urlRecog == ticket}">active</c:if>" href="${ticket}">票券列表</a>
+                </nav>
+            </div>
             <a class="nav-link collapsed" href="#">
                 <div class="sb-nav-link-icon"><i class="fas fa-utensils"></i></div>
                 餐點管理
@@ -128,10 +137,17 @@
                 <div class="sb-nav-link-icon"><i class="fa fa-bullhorn iconPos"></i></div>
                 公告管理
             </a>
-            <a class="nav-link collapsed" href="#">
+            <a class="nav-link collapsed" <c:if test="${urlRecog == faqSub}">active</c:if>" href="${faq}" data-toggle="collapse" data-target="#faq" aria-expanded="false" aria-controls="faq">
                 <div class="sb-nav-link-icon"><i class="fas fa-question-circle"></i></div>
-                FAQs管理
+     FAQs管理
+     			<div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
             </a>
+            <div class="collapse" id="faq" aria-labelledby="headingOne" data-parent="#sidenavAccordion">
+                <nav class="sb-sidenav-menu-nested nav">
+                    <a class="nav-link <c:if test="${urlRecog == faq}">active</c:if>" href="${faq}">FAQs列表</a>
+                    <a class="nav-link <c:if test="${urlRecog == faqAdd}">active</c:if>" href="${faqAdd}">FAQ新增</a>
+                </nav>
+            </div>
         </div>
     </div>
 </nav>

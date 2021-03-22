@@ -27,43 +27,10 @@ public class FaqServlet extends HttpServlet{
 			req.setAttribute("errorMsgs", errorMsgs);
 
 			try {
-				String str = req.getParameter("faq_no");
-				if (str == null || (str.trim()).length() == 0) {
-					errorMsgs.add("�п�J�s��");
-				}
-
-				if (!errorMsgs.isEmpty()) {
-					RequestDispatcher failureView = req
-							.getRequestDispatcher("/back-end/faq/select_page.jsp");
-					failureView.forward(req, res);
-					return;
-				}
-				
-				Integer faq_no = null;
-				try {
-					faq_no = new Integer(str);
-				} catch (Exception e) {
-					errorMsgs.add("�s���榡�����T");
-				}
-				if (!errorMsgs.isEmpty()) {
-					RequestDispatcher failureView = req
-							.getRequestDispatcher("/back-end/faq/select_page.jsp");
-					failureView.forward(req, res);
-					return;
-				}
-				
+				Integer faq_no = new Integer(req.getParameter("faq_no"));
 				FaqService faqSvc = new FaqService();
 				FaqVO faqVO = faqSvc.getOneFaq(faq_no);
-				if (faqVO == null) {
-					errorMsgs.add("�d�L���");
-				}
-				if (!errorMsgs.isEmpty()) {
-					RequestDispatcher failureView = req
-							.getRequestDispatcher("/back-end/faq/select_page.jsp");
-					failureView.forward(req, res);
-					return;
-				}
-				
+				faqVO.setFaq_answer(faqVO.getFaq_answer().replaceAll("\n", "<br>"));
 				req.setAttribute("faqVO", faqVO);
 				String url = "/back-end/faq/listOneFaq.jsp";
 				RequestDispatcher successView = req.getRequestDispatcher(url); 
@@ -117,8 +84,6 @@ public class FaqServlet extends HttpServlet{
 			String requestURL = req.getParameter("requestURL"); 
 			req.setAttribute("requestURL", requestURL);
 			
-			String whichPage = req.getParameter("whichPage");
-			req.setAttribute("whichPage", whichPage);   
 		
 			try {
 				/***************************1.�����ШD�Ѽ� - ��J�榡�����~�B�z**********************/
@@ -158,7 +123,7 @@ public class FaqServlet extends HttpServlet{
 				if(requestURL.equals("/back-end/faq_type/listFaq_ByFaq_type.jsp") || requestURL.equals("/back-end/faq_type/listAllFaq_type.jsp"))
 					req.setAttribute("listFaq_ByFaq_type",faq_typeSvc.getFaqsByFaqtyp_no(faqtyp_no)); // ��Ʈw���X��list����,�s�Jrequest
 					
-				String url = requestURL+"?whichPage="+whichPage+"&faq_no="+faq_no;
+				String url = requestURL+"?faq_no="+faq_no;
 				RequestDispatcher successView = req.getRequestDispatcher(url); // �ק令�\��,���listOneEmp.jsp
 				successView.forward(req, res);
 

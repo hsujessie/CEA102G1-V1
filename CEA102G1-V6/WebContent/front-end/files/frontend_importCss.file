@@ -13,3 +13,6 @@
 <link href="<%=request.getContextPath()%>/resource/animate/animate.min.css" rel="stylesheet">
 <link href="<%=request.getContextPath()%>/resource/owlcarousel/owl.carousel.min.css" rel="stylesheet">
 <link rel="stylesheet" href="<%=request.getContextPath()%>/resource/css/frontendStyles.css">
+
+<!-- Chatbox -->
+<link rel="stylesheet" href="<%=request.getContextPath()%>/resource/css/chatbox/chatbox.css">
