@@ -6,6 +6,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 import javax.naming.Context;
 import javax.naming.InitialContext;
@@ -14,6 +15,8 @@ import javax.sql.DataSource;
 
 import com.admin_auth.model.AdmAutService;
 import com.admin_auth.model.AdmAutVO;
+
+import jdbc.util.CompositeQuery.jdbcUtil_CompositeQuery_Admin;
 
 
 public class AdmDAO implements AdmDAO_interface{
@@ -37,8 +40,8 @@ public class AdmDAO implements AdmDAO_interface{
 	private static final String LOGIN_STMT = "SELECT ADM_NO, ADM_NAME, ADM_ACCOUNT, ADM_PASSWORD, ADM_MAIL, ADM_STATUS FROM ADMINISTRATOR WHERE ADM_ACCOUNT=? AND ADM_PASSWORD=?";
 	
 	
-	private static final String UPDATE = "UPDATE ADMINISTRATOR SET ADM_NAME=?, ADM_IMG=?, ADM_ACCOUNT=?, ADM_PASSWORD=?, ADM_MAIL=?, ADM_STATUS=? WHERE ADM_NO=?";
-	private static final String UPDATE_NOIMG = "UPDATE ADMINISTRATOR SET ADM_NAME=?, ADM_ACCOUNT=?, ADM_PASSWORD=?, ADM_MAIL=?, ADM_STATUS=? WHERE ADM_NO=?";
+	private static final String UPDATE = "UPDATE ADMINISTRATOR SET ADM_NAME=?, ADM_IMG=?, ADM_ACCOUNT=?, ADM_MAIL=?, ADM_STATUS=? WHERE ADM_NO=?";
+	private static final String UPDATE_NOIMG = "UPDATE ADMINISTRATOR SET ADM_NAME=?, ADM_ACCOUNT=?, ADM_MAIL=?, ADM_STATUS=? WHERE ADM_NO=?";
 	
 	@Override
 	public void insertWithAuth(AdmVO admVO, String[] funNoArray) {
@@ -120,10 +123,9 @@ public class AdmDAO implements AdmDAO_interface{
 			pstmt.setString(1, admVO.getAdmName());
 			pstmt.setBytes(2, admVO.getAdmImg());
 			pstmt.setString(3, admVO.getAdmAccount());
-			pstmt.setString(4, admVO.getAdmPassword());
-			pstmt.setString(5, admVO.getAdmMail());
-			pstmt.setInt(6, admVO.getAdmStatus());
-			pstmt.setInt(7, admVO.getAdmNo());
+			pstmt.setString(4, admVO.getAdmMail());
+			pstmt.setInt(5, admVO.getAdmStatus());
+			pstmt.setInt(6, admVO.getAdmNo());
 			
 			pstmt.executeUpdate();
 			
@@ -294,10 +296,9 @@ public class AdmDAO implements AdmDAO_interface{
 			
 			pstmt.setString(1, admVO.getAdmName());
 			pstmt.setString(2, admVO.getAdmAccount());
-			pstmt.setString(3, admVO.getAdmPassword());
-			pstmt.setString(4, admVO.getAdmMail());
-			pstmt.setInt(5, admVO.getAdmStatus());
-			pstmt.setInt(6, admVO.getAdmNo());
+			pstmt.setString(3, admVO.getAdmMail());
+			pstmt.setInt(4, admVO.getAdmStatus());
+			pstmt.setInt(5, admVO.getAdmNo());
 			
 			pstmt.executeUpdate();
 			
@@ -452,6 +453,66 @@ public class AdmDAO implements AdmDAO_interface{
 			}
 		}
 		return admVO;
+	}
+
+	@Override
+	public List<AdmVO> getAll(Map<String, String[]> map) {
+		List<AdmVO> list = new ArrayList<AdmVO>();
+		AdmVO admVO = null;
+		
+		Connection con = null;
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+		
+		try {
+			con = ds.getConnection();
+			
+			String finalSQL = "select * from administrator "+ jdbcUtil_CompositeQuery_Admin.get_WhereCondition(map) + "order by adm_no";
+			
+			pstmt = con.prepareStatement(finalSQL);
+			rs = pstmt.executeQuery();
+			
+			while (rs.next()) {
+				admVO = new AdmVO();
+				
+				admVO.setAdmNo(rs.getInt("ADM_NO"));
+				admVO.setAdmName(rs.getString("ADM_NAME"));
+				admVO.setAdmAccount(rs.getString("ADM_ACCOUNT"));
+				admVO.setAdmPassword(rs.getString("ADM_PASSWORD"));
+				admVO.setAdmMail(rs.getString("ADM_MAIL"));
+				admVO.setAdmStatus(rs.getInt("ADM_STATUS"));
+				
+				list.add(admVO);
+			}
+			
+		} catch (SQLException se) {
+			throw new RuntimeException("A database error occured. " + se.getMessage());
+		} finally {
+			if (rs != null) {
+				try {
+					rs.close();
+				} catch (SQLException se) {
+					se.printStackTrace(System.err);
+				}
+			}
+			
+			if (pstmt != null) {
+				try {
+					pstmt.close();
+				} catch (SQLException se) {
+					se.printStackTrace(System.err);
+				}
+			}
+			if (con != null) {
+				try {
+					con.close();
+				} catch (Exception e) {
+					e.printStackTrace(System.err);
+				}
+			}
+		}
+		
+		return list;
 	}
 	
 	

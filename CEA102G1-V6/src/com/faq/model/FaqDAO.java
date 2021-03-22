@@ -223,12 +223,12 @@ public class FaqDAO implements FaqDAO_interface{
 			rs = pstmt.executeQuery();
 
 			while (rs.next()) {
-				// empVO ¤]ºÙ¬° Domain objects
+				// empVO ï¿½]ï¿½Ù¬ï¿½ Domain objects
 				faqVO = new FaqVO();
 				faqVO.setFaq_no(rs.getInt("faq_no"));
 				faqVO.setFaqtyp_no(rs.getInt("faqtyp_no"));
 				faqVO.setFaq_question(rs.getString("faq_question"));
-				faqVO.setFaq_answer(rs.getString("faq_answer"));
+				faqVO.setFaq_answer(rs.getString("faq_answer").replaceAll("\n", "<br>"));
 				list.add(faqVO); // Store the row in the list
 			}
 

@@ -83,11 +83,6 @@
 		</select></td>
 	</tr>
 	<tr>
-		<td>餐點簡介:</td>
-		<td><input name="fooIntro" type="text"
-		    value="<%= (fooVO==null)? "" : fooVO.getFooIntro()%>" /></td>
-	</tr>
-	<tr>
 		<td>餐點圖片:</td>
 		<td><input name="fooImg" type="file"></td>
 	</tr>

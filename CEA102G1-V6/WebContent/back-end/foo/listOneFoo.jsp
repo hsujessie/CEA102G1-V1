@@ -65,7 +65,6 @@
 		<th>餐點編號</th>
 		<th>餐點名稱</th>
 		<th>餐點類別</th>
-		<th>餐點簡介</th>
 		<th>餐點圖片</th>
 		<th>餐點售價</th>
 		<th>餐點狀態</th>
@@ -74,7 +73,6 @@
 		<td><%=fooVO.getFooNo()%></td>
 		<td><%=fooVO.getFooName()%></td>
 		<td><%=fooCatVO.getFooCatName()%></td>
-		<td><%=fooVO.getFooIntro()%></td>
 		<td><img src="<%=request.getContextPath()%>/util/imgReader${fooVO.fooImgParam}"></td>
 		<td><%=fooVO.getFooPrice()%></td>
 		<td><%=fooVO.getFooStatus()%></td>

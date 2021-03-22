@@ -11,6 +11,6 @@ public interface TicTypDAO_interface {
     public List<TicTypVO> getAll();
     
     public List<TicTypVO> getTicTypsByMovVerNo(Integer movVerNo);
-    public Set<TicTypCartVO> getTicTypCart(Map<Integer, Integer> ticTypMap);
+    public List<TicTypCartVO> getTicTypCart(Map<Integer, Integer> ticTypMap);
     
 }

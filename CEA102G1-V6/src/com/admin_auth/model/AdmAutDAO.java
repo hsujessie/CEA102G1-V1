@@ -4,11 +4,16 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.LinkedList;
+import java.util.List;
 
 import javax.naming.Context;
 import javax.naming.InitialContext;
 import javax.naming.NamingException;
 import javax.sql.DataSource;
+
+import com.func.model.FunService;
+import com.func.model.FunVO;
 
 public class AdmAutDAO implements AdmAutDAO_interface {
 	private static DataSource ds;
@@ -25,6 +30,8 @@ public class AdmAutDAO implements AdmAutDAO_interface {
 	
 	private static final String INSERT_STMT = "INSERT INTO ADMIN_AUTHORITY(ADM_NO, FUN_NO) VALUES (?,?)";
 	private static final String DELETE = "DELETE FROM ADMIN_AUTHORITY WHERE ADM_NO=?";
+	
+	private static final String GET_ADMAUTH_STMT = "SELECT ADM_NO, FUN_NO FROM ADMIN_AUTHORITY WHERE ADM_NO=?";
 	private static final String CHECK_ADMAUTH_STMT = "SELECT ADM_NO, FUN_NO FROM ADMIN_AUTHORITY WHERE ADM_NO=? AND FUN_NO=?";
 	
 	@Override
@@ -136,6 +143,60 @@ public class AdmAutDAO implements AdmAutDAO_interface {
 				}
 			}
 		}
+	}
+
+	@Override
+	public List<String> getAdmFun(Integer admNo) {
+		List<String> list = new LinkedList<String>();
+		FunVO funVO = null;
+		
+		Connection con = null;
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+		
+		try {
+			con = ds.getConnection();
+			pstmt = con.prepareStatement(GET_ADMAUTH_STMT);
+			
+			pstmt.setInt(1, admNo);
+			rs = pstmt.executeQuery();
+			
+			FunService funSvc = new FunService();
+			while (rs.next()) {
+				Integer funNo = rs.getInt("FUN_NO");
+				funVO = funSvc.getOneFun(funNo);
+				
+				list.add(funVO.getFunName());
+			}
+			
+		} catch (SQLException se) {
+			throw new RuntimeException("A database error occured. " + se.getMessage());
+		} finally {
+			if (rs != null) {
+				try {
+					rs.close();
+				} catch (SQLException se) {
+					se.printStackTrace(System.err);
+				}
+			}
+			
+			if (pstmt != null) {
+				try {
+					pstmt.close();
+				} catch (SQLException se) {
+					se.printStackTrace(System.err);
+				}
+			}
+			if (con != null) {
+				try {
+					con.close();
+				} catch (Exception e) {
+					e.printStackTrace(System.err);
+				}
+			}
+		}
+		
+		return list;
 	}
 
 }

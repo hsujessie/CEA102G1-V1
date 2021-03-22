@@ -50,6 +50,37 @@ public class TicTypCartVO implements Serializable{
 	public void setTicTypCount(Integer ticTypCount) {
 		this.ticTypCount = ticTypCount;
 	}
+
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + ((ticLisPrice == null) ? 0 : ticLisPrice.hashCode());
+		result = prime * result + ((ticTypNo == null) ? 0 : ticTypNo.hashCode());
+		return result;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		TicTypCartVO other = (TicTypCartVO) obj;
+		if (ticLisPrice == null) {
+			if (other.ticLisPrice != null)
+				return false;
+		} else if (!ticLisPrice.equals(other.ticLisPrice))
+			return false;
+		if (ticTypNo == null) {
+			if (other.ticTypNo != null)
+				return false;
+		} else if (!ticTypNo.equals(other.ticTypNo))
+			return false;
+		return true;
+	}
 	
 	
 }
