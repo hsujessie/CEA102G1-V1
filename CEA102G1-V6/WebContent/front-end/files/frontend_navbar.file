@@ -3,7 +3,6 @@
 <!-- HomePage -->
 
 <c:set var="home" value="${pageContext.request.contextPath}/front-end/index.jsp"/>
-<c:set var="tickets" value="${pageContext.request.contextPath}/front-end/tickets.jsp"/>
 <c:set var="searchTickets" value="${pageContext.request.contextPath}/front-end/ordMas/listMemOrder.jsp"/>
 <c:set var="sessions" value="${pageContext.request.contextPath}/front-end/sessions/sessions.jsp"/>
 <c:set var="movies" value="${pageContext.request.contextPath}/front-end/movies/movies.jsp"/>

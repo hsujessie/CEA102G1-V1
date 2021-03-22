@@ -3,7 +3,7 @@
     <div class="container footer-menu">
         <div class="f-menu">
             <a href="${home}">Home</a>
-            <a href="${tickets}">Tickets</a>
+            <a href="${searchTickets}">Tickets</a>
             <a href="${movies}">Movies</a>
             <a href="${forum}">Forum</a>
             <a href="${notices}">Notices</a>
