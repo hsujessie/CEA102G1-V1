@@ -28,11 +28,11 @@ public class FooDAO implements FooDAO_interface {
 		}
 	}
 	
-	private static final String INSERT_STMT = "INSERT INTO FOOD(FOO_NAME, FOOCAT_NO, FOO_IMG, FOO_PRICE) VALUES(?,?,?,?,?)";
+	private static final String INSERT_STMT = "INSERT INTO FOOD(FOO_NAME, FOOCAT_NO, FOO_IMG, FOO_PRICE) VALUES(?,?,?,?)";
 	
-	private static final String GET_ALL_STMT = "SELECT FOO_NO, FOO_NAME, FOOCAT_NO, FOO_IMG, FOO_PRICE, FOO_STATUS FROM FOOD ORDER BY FOO_NO";
-	private static final String GET_ONE_STMT = "SELECT FOO_NO, FOO_NAME, FOOCAT_NO, FOO_IMG, FOO_PRICE, FOO_STATUS FROM FOOD WHERE FOO_NO=?";
-	private static final String GET_FOOS_ByFOOSTATUS_STMT = "SELECT FOO_NO, FOO_NAME, FOOCAT_NO, FOO_IMG, FOO_PRICE, FOO_STATUS FROM FOOD WHERE FOO_STATUS = ? ORDER BY FOO_NO";
+	private static final String GET_ALL_STMT = "SELECT FOO_NO, FOO_NAME, FOOCAT_NO, FOO_PRICE, FOO_STATUS FROM FOOD ORDER BY FOO_NO DESC";
+	private static final String GET_ONE_STMT = "SELECT FOO_NO, FOO_NAME, FOOCAT_NO, FOO_PRICE, FOO_STATUS FROM FOOD WHERE FOO_NO=?";
+	private static final String GET_FOOS_ByFOOSTATUS_STMT = "SELECT FOO_NO, FOO_NAME, FOOCAT_NO, FOO_PRICE, FOO_STATUS FROM FOOD WHERE FOO_STATUS = ? ORDER BY FOO_NO";
 	
 	private static final String UPDATE = "UPDATE FOOD SET FOO_NAME=?, FOOCAT_NO=?, FOO_IMG=?, FOO_PRICE=?, FOO_STATUS=? WHERE FOO_NO=?";
 	private static final String UPDATE_NOIMG = "UPDATE FOOD SET FOO_NAME=?, FOOCAT_NO=?, FOO_PRICE=?, FOO_STATUS=? WHERE FOO_NO=?";
@@ -133,7 +133,6 @@ public class FooDAO implements FooDAO_interface {
 				fooVO.setFooNo(rs.getInt("FOO_NO"));
 				fooVO.setFooName(rs.getString("FOO_NAME"));
 				fooVO.setFooCatNo(rs.getInt("FOOCAT_NO"));
-				fooVO.setFooImg(rs.getBytes("FOO_IMG"));
 				fooVO.setFooPrice(rs.getInt("FOO_PRICE"));
 				fooVO.setFooStatus(rs.getInt("FOO_STATUS"));
 				list.add(fooVO);
@@ -190,7 +189,6 @@ public class FooDAO implements FooDAO_interface {
 				fooVO.setFooNo(rs.getInt("FOO_NO"));
 				fooVO.setFooName(rs.getString("FOO_NAME"));
 				fooVO.setFooCatNo(rs.getInt("FOOCAT_NO"));
-				fooVO.setFooImg(rs.getBytes("FOO_IMG"));
 				fooVO.setFooPrice(rs.getInt("FOO_PRICE"));
 				fooVO.setFooStatus(rs.getInt("FOO_STATUS"));
 			}
@@ -248,7 +246,6 @@ public class FooDAO implements FooDAO_interface {
 				fooVO.setFooNo(rs.getInt("FOO_NO"));
 				fooVO.setFooName(rs.getString("FOO_NAME"));
 				fooVO.setFooCatNo(rs.getInt("FOOCAT_NO"));
-				fooVO.setFooImg(rs.getBytes("FOO_IMG"));
 				fooVO.setFooPrice(rs.getInt("FOO_PRICE"));
 				fooVO.setFooStatus(rs.getInt("FOO_STATUS"));
 				set.add(fooVO);

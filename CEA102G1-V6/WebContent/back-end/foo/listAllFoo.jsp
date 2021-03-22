@@ -115,6 +115,7 @@ table {
 										<th>商品售價</th>
 										<th>商品狀態</th>
 										<th>修改</th>
+										<th>上下架</th>
 									</tr>
 								</thead>
 
@@ -132,19 +133,24 @@ table {
 											<td
 												${fooVO.fooStatus=="0" ?"style='color:blue;'":"style='color:red;'"}>${fooVO.fooStatus=="0" ?"上架中":"已下架"}</td>
 											<td>
-												<a class="btn btn-light btn-brd grd1 effect-1">
-													<input class="input-pos look" type="button" value="查看" data-toggle="modal" data-target="#exampleModal">
-													<input type="hidden" name="admNo" value="${fooVO.fooNo}"/>
-												</a>
+												<form method="post" action="<%=request.getContextPath()%>/foo/foo.do">
+													<a class="btn btn-light btn-brd grd1 effect-1"> 
+														<input type="hidden" name="fooNo" value="${fooVO.fooNo}"/>
+														<input type="hidden" name="action" value="getOne_For_Update"/> 
+														<input type="hidden" name="requestURL" value="<%=request.getServletPath()%>"/> 
+														<input type="hidden" name="whichPage" value="${param.whichPage}"/> 
+														<input type="submit" value="修改" class="input-pos"/>
+													</a>
+												</form>
 											</td>
 											<td>
 												<form method="post" action="<%=request.getContextPath()%>/foo/foo.do">
 													<a class="btn btn-light btn-brd grd1 effect-1"> 
+														<input type="hidden" name="action" value="change_Status"/> 
 														<input type="hidden" name="fooNo" value="${fooVO.fooNo}"/>
-														<input type="hidden" name="action" value="getOne_for_update"/> 
 														<input type="hidden" name="requestURL" value="<%=request.getServletPath()%>"/> 
 														<input type="hidden" name="whichPage" value="${param.whichPage}"/> 
-														<input type="submit" value="修改" class="input-pos"/>
+														<input type="submit" value=${(fooVO.fooStatus)==0?"下架":"上架"} class="input-pos"/>
 													</a>
 												</form>
 											</td>
@@ -158,33 +164,7 @@ table {
 					<!-- listAllAdmin End -->
 
 				</div>
-
-				<div class="modal fade" id="exampleModal" tabindex="-1"
-					aria-labelledby="exampleModalLabel" aria-hidden="true">
-					<div class="modal-dialog">
-						<div class="modal-content">
-							<div class="modal-header">
-								<h5 class="modal-title" id="exampleModalLabel"> </h5>
-								<button type="button" class="close" data-dismiss="modal"
-									aria-label="Close">
-									<span aria-hidden="true">&times;</span>
-								</button>
-							</div>
-							<div class="modal-body" id="modal-body"> </div>
-							<div class="modal-footer">
-								<button type="button" class="btn btn-secondary"
-									data-dismiss="modal" style="width: 60px; padding: 0px;">關閉</button>
-								<form method="post" action="<%=request.getContextPath()%>/foo/foo.do">
-								<input id="admNo" type="hidden" name="fooNo" value=""/>
-														<input type="hidden" name="action" value="getOne_for_update"/> 
-														<input type="hidden" name="requestURL" value="<%=request.getServletPath()%>"/> 
-														<input type="hidden" name="whichPage" value="${param.whichPage}"/> 
-								<button type="submit" class="btn btn-primary" style="width: 90px; padding: 0px;">前往修改</button>
-								</form>
-							</div>
-						</div>
-					</div>
-				</div>
+				
 			</main>
 			<%@ include file="/back-end/files/sb_footer.file"%>
 		</div>

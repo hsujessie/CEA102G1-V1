@@ -2,7 +2,9 @@ package com.food.controller;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.LinkedHashMap;
 import java.util.LinkedList;
+import java.util.Map;
 import java.util.Set;
 
 import javax.servlet.RequestDispatcher;
@@ -32,7 +34,7 @@ public class FooServlet extends HttpServlet {
 		
 		if ("insert".equals(action)) {
 			
-			LinkedList<String> errorMsgs = new LinkedList<String>();
+			Map<String, String> errorMsgs = new LinkedHashMap<String, String>();
 			req.setAttribute("errorMsgs", errorMsgs);
 			
 			try {
@@ -41,7 +43,7 @@ public class FooServlet extends HttpServlet {
 			//餐點名稱
 			String fooName = req.getParameter("fooName");
 			if (fooName == null || fooName.trim().isEmpty()) {
-				errorMsgs.add("餐點名稱不可為空白");
+				errorMsgs.put("fooName","餐點名稱不可為空白");
 			}
 			
 			//餐點類別編號
@@ -51,7 +53,7 @@ public class FooServlet extends HttpServlet {
 			Part part = req.getPart("fooImg");
 			byte[] fooImg = null;
 			if (part == null || part.getSize() == 0) {
-				errorMsgs.add("必須上傳餐點圖片");
+				errorMsgs.put("fooImg","必須上傳餐點圖片");
 			} else {
 				InputStream is = part.getInputStream();
 				fooImg = new byte[is.available()];
@@ -62,20 +64,23 @@ public class FooServlet extends HttpServlet {
 			Integer fooPrice = null;
 			try {
 				 fooPrice = new Integer(req.getParameter("fooPrice").trim());
+				 if (fooPrice < 0) {
+					 fooPrice = 0;
+					 errorMsgs.put("fooPrice","餐點價格請填大於0的整數.");
+				 }
 			} catch (NumberFormatException e) {
 				fooPrice = 0;
-				errorMsgs.add("餐點價格請填數字.");
+				errorMsgs.put("fooPrice","餐點價格請填整數.");
 			}
 			
 			FooVO fooVO = new FooVO();
 			fooVO.setFooName(fooName);
 			fooVO.setFooCatNo(fooCatNo);
-			fooVO.setFooImg(fooImg);
 			fooVO.setFooPrice(fooPrice);
 			
 			//有錯誤時，轉交回新增頁面
 			if (!errorMsgs.isEmpty()) {
-				req.setAttribute("fooVO", fooVO); // 含有輸入格式錯誤的empVO物件,也存入req
+				req.setAttribute("fooVO", fooVO);
 				RequestDispatcher failureView = req.getRequestDispatcher("/back-end/foo/addFoo.jsp");
 				failureView.forward(req, res);
 				return;
@@ -83,14 +88,16 @@ public class FooServlet extends HttpServlet {
 			
 			/***************************2.開始新增資料***************************************/
 			FooService fooSvc = new FooService();
+			System.out.println("a");
 			fooSvc.addFoo(fooName, fooCatNo, fooImg, fooPrice);
+			System.out.println("b");
 			
 			/***************************3.新增完成,準備轉交(Send the Success view)***********/
 			String url = "/back-end/foo/listAllFoo.jsp";
-			RequestDispatcher successView = req.getRequestDispatcher(url); // 新增成功後轉交listAllEmp.jsp
+			RequestDispatcher successView = req.getRequestDispatcher(url);
 			successView.forward(req, res);
 			} catch (Exception e) {
-				errorMsgs.add(e.getMessage());
+				errorMsgs.put("error",e.getMessage());
 				RequestDispatcher failureView = req.getRequestDispatcher("/back-end/foo/addFoo.jsp");
 				failureView.forward(req, res);
 			}
@@ -155,9 +162,8 @@ public class FooServlet extends HttpServlet {
 		}
 		
 		if ("getOne_For_Update".equals(action)) {
-			LinkedList<String> errorMsgs = new LinkedList<String>();
+			Map<String, String> errorMsgs = new LinkedHashMap<String, String>();
 			req.setAttribute("errorMsgs", errorMsgs);
-			
 			String requestURL = req.getParameter("requestURL"); // 送出修改的來源網頁路徑: 可能為【/back-end/foo/listAllFoo.jsp】 或  【/back-end/fooCat/listFoosByFooCatNo.jsp】 或 【/back-end /fooCat/listAllFooCat.jsp】
 			
 			try {
@@ -169,22 +175,21 @@ public class FooServlet extends HttpServlet {
 				FooVO fooVO = fooSvc.getOneFoo(fooNo);
 				
 				/***************************3.查詢完成,準備轉交(Send the Success view)************/
-				req.setAttribute("fooVO", fooVO); // 資料庫取出的fooVO物件,存入req
+				req.setAttribute("fooVO", fooVO);
 				String url = "/back-end/foo/updateFoo.jsp";
-				RequestDispatcher successView = req.getRequestDispatcher(url); // 成功轉交update_emp_input.jsp
+				RequestDispatcher successView = req.getRequestDispatcher(url);
 				successView.forward(req, res);
 
 				/***************************其他可能的錯誤處理************************************/
 			} catch (Exception e) {
-				errorMsgs.add("修改資料取出時失敗:"+e.getMessage());
-				RequestDispatcher failureView = req
-						.getRequestDispatcher(requestURL);
+				errorMsgs.put("error","修改資料取出時失敗:"+e.getMessage());
+				RequestDispatcher failureView = req.getRequestDispatcher(requestURL);
 				failureView.forward(req, res);
 			}
 		}
 		
 		if ("update".equals(action)) {
-			LinkedList<String> errorMsgs = new LinkedList<String>();
+			Map<String, String> errorMsgs = new LinkedHashMap<String, String>();
 			req.setAttribute("errorMsgs", errorMsgs);
 			
 			String requestURL = req.getParameter("requestURL"); // 送出修改的來源網頁路徑: 可能為【/back-end/foo/listAllFoo.jsp】 或  【/back-end/fooCat/listFoosByFooCatNo.jsp】 或 【/back-end /fooCat/listAllFooCat.jsp】
@@ -194,7 +199,7 @@ public class FooServlet extends HttpServlet {
 				//餐點名稱
 				String fooName = req.getParameter("fooName");
 				if (fooName == null || fooName.trim().isEmpty()) {
-					errorMsgs.add("餐點名稱不可為空白");
+					errorMsgs.put("fooName","餐點名稱不可為空白");
 				}
 				
 				//餐點類別編號
@@ -209,9 +214,13 @@ public class FooServlet extends HttpServlet {
 				Integer fooPrice = null;
 				try {
 					 fooPrice = new Integer(req.getParameter("fooPrice").trim());
+					 if(fooPrice < 0) {
+						 fooPrice = 0;
+						 errorMsgs.put("fooPrice","餐點價格請填大於0的整數.");
+					 }
 				} catch (NumberFormatException e) {
 					fooPrice = 0;
-					errorMsgs.add("餐點價格請填數字.");
+					errorMsgs.put("fooPrice","餐點價格請填整數.");
 				}
 				
 				Integer fooStatus = new Integer(req.getParameter("fooStatus"));
@@ -226,13 +235,13 @@ public class FooServlet extends HttpServlet {
 				
 				//有錯誤時，轉交回修改頁面
 				if (!errorMsgs.isEmpty()) {
-					req.setAttribute("fooVO", fooVO); // 含有輸入格式錯誤的fooVO物件,也存入req
+					req.setAttribute("fooVO", fooVO);
 					RequestDispatcher failureView = req.getRequestDispatcher("/back-end/foo/updateFoo.jsp");
 					failureView.forward(req, res);
 					return;
 				}
 				
-				/***************************2.開始新增資料***************************************/
+				/***************************2.開始修改資料***************************************/
 				FooService fooSvc = new FooService();
 				
 				if (part.getSize() != 0) {
@@ -256,7 +265,7 @@ public class FooServlet extends HttpServlet {
 				RequestDispatcher successView = req.getRequestDispatcher(url); // 新增成功後轉交listAllFoo.jsp
 				successView.forward(req, res);
 				} catch (Exception e) {
-					errorMsgs.add(e.getMessage());
+					errorMsgs.put("error",e.getMessage());
 					RequestDispatcher failureView = req.getRequestDispatcher("/back-end/foo/updateFoo.jsp");
 					failureView.forward(req, res);
 				}
