@@ -225,6 +225,12 @@
 <script>
 	$.datetimepicker.setLocale('zh');
 	$(function(){
+		 /* let date = new Date();
+		 date = new Date(date.setDate(date.getDate()+3));  // 當日 plus 3 days
+		 let cusDefaultDate = date.getFullYear() + "-" + ((date.getMonth()+1) > 9 ? date.getMonth()+1: "0"+( date.getMonth()+1)) + "-" + (date.getDate() > 9 ? date.getDate():"0" + date.getDate());
+		 $('#sesdate_begin').val(cusDefaultDate);  // make the input displays 當日plus 3 days 的日期
+		 $('#sesdate_end').val(cusDefaultDate); */
+		 
 		 $('#sesdate_begin').datetimepicker({
 		  theme:'dark',
 		  format:'Y-m-d',
@@ -234,6 +240,7 @@
 		   })
 		  },
 		  timepicker:false
+		  /* ,defaultDate: cusDefaultDate   // 自訂預設日期為 當日 plus 3 days */
 		 });
 	
 		 $('#sesdate_end').datetimepicker({
