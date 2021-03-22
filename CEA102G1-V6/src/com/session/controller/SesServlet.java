@@ -11,12 +11,10 @@ import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.HashMap;
-import java.util.LinkedHashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
-import java.util.stream.Collectors;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -149,26 +147,20 @@ public class SesServlet extends HttpServlet {
 	             sesDateArr = sesDateList.toArray(sesDateArr);
 	             
 	          /* =====================================================================
-                 				           錯誤驗證：場次日期不可大於當日
+                 				           錯誤驗證：場次日期不可小於當日
 				 =====================================================================*/	
-//	             DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
-//	             java.util.Date date = new java.util.Date();
-//	             java.util.Date dateBegin = dateFormat.parse(sesDateBegin);  // parse(String) to java.util.Date
-//	             java.util.Date dateEnd = dateFormat.parse(sesDateEnd);
-//	             	             
-//	             System.out.println("date= " + date);
-//	             System.out.println("begin= " + dateBegin);
-//	             System.out.println("end= " + dateEnd);
-//	             if(dateBegin.after(date) || dateEnd.after(date)) {  // use 「 .before() 」the type should be java.util.Date
-//	            	 errorDateMsgs = "場次日期不可大於當日";
-//	            	 System.out.println("if");
-//	             }
-//	             else {
-//	            	 System.out.println("else");
-//	             }
+	             DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+	             java.util.Date date = new java.util.Date();
+	             String strDate= dateFormat.format(date);  // 先把 java.util.Date format轉字串，才能parse，因為 parse(裡面要放字串)
+	             java.util.Date parsedDate = dateFormat.parse(strDate);      // 要parse new Date()的格式，去除時間秒數，因為只要比日期而已。 若把秒數也比進去，即使同一天，也會是false，因為new Date帶有秒數，永遠比前台來的值還大。
+	             java.util.Date dateBegin = dateFormat.parse(sesDateBegin);  // parse(String) to java.util.Date
+	             java.util.Date dateEnd = dateFormat.parse(sesDateEnd);
 	             
+	             if(dateBegin.before(parsedDate) || dateBegin.equals(parsedDate) || dateEnd.before(parsedDate) || dateBegin.equals(parsedDate)) {  // use 「 .before() 」the type should be java.util.Date
+	            	 errorDateMsgs = "場次日期有誤，不可小於當日";
+	             }
 	             
-	             	             
+	                        	             
 	             Time sesTime = null;   
 	             String[] sesTimeArr = req.getParameterValues("sesTime");	  
 	             List<LocalTime> sesTimeList = new ArrayList<LocalTime>();
