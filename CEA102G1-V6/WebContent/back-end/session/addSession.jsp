@@ -446,7 +446,7 @@
 	
 	 
 	/* =========================================================================================== */
-									/* 新增時間 */
+									/* 新增時間 */ 
 	/* =========================================================================================== */	
 	<c:if test="${empty sesTimeList}">
 	let addtime = document.getElementById("addtime");
@@ -457,10 +457,11 @@
 		count+=1;
 		let timetb = document.getElementById("timetb");
 		timetb.style.display="block";
-
+		
+		/* ${'$'} 用EL，把 js ES6的$符號包起來，避免語法衝突。 */
 		let tag = `<tr>
 						<th>${'${count}'}</th>
-						<td>                                      /* ${'$'} 用EL，把 js ES6的$符號包起來，避免語法衝突。 */
+						<td>                                      
 							<input type="text" name="sesTime" value="${'$'}{timeCount}:00">
 						</td>
 				   		<td>
