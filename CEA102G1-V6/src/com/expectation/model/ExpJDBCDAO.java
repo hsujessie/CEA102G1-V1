@@ -214,9 +214,6 @@ public class ExpJDBCDAO implements ExpDAO_interface{
 
 	@Override
 	public Double getExpRatingAvg(Integer movNo) {
-
-		ExpVO expVO = null;
-		
 		Connection con = null;
 		PreparedStatement pstmt = null;
 		ResultSet rs = null;
@@ -229,7 +226,6 @@ public class ExpJDBCDAO implements ExpDAO_interface{
 
 			System.out.println("movNo= " + movNo);
 			String getExpRatingAvg = "SELECT AVG(exp_rating) FROM EXPECTATION WHERE mov_no=" + movNo;
-			System.out.println("getExpRatingAvg= " + getExpRatingAvg);
 			
 			pstmt = con.prepareStatement(getExpRatingAvg);
 			

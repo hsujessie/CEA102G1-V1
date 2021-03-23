@@ -15,6 +15,7 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -123,6 +124,7 @@ public class SesServlet extends HttpServlet {
             String errorMsgs = "";
             String errorDateMsgs = "";
             String errorTimeMsgs = "";
+            String errorSessionMsgs = "";
             try {
                 /***********************1.接收請求參數 - 輸入格式的錯誤處理*************************/
                  Integer movNo = new Integer(req.getParameter("movNo").trim());
@@ -145,7 +147,8 @@ public class SesServlet extends HttpServlet {
 	             }             
 	             String[] sesDateArr = new String[sesDateList.size()];
 	             sesDateArr = sesDateList.toArray(sesDateArr);
-	             
+	 	           
+	 	           
 	          /* =====================================================================
                  				           錯誤驗證：場次日期不可小於當日
 				 =====================================================================*/	
@@ -156,7 +159,7 @@ public class SesServlet extends HttpServlet {
 	             java.util.Date dateBegin = dateFormat.parse(sesDateBegin);  // parse(String) to java.util.Date
 	             java.util.Date dateEnd = dateFormat.parse(sesDateEnd);
 	             
-	             if(dateBegin.before(parsedDate) || dateBegin.equals(parsedDate) || dateEnd.before(parsedDate) || dateBegin.equals(parsedDate)) {  // use 「 .before() 」the type should be java.util.Date
+	             if (dateBegin.before(parsedDate) || dateBegin.equals(parsedDate) || dateEnd.before(parsedDate) || dateBegin.equals(parsedDate)) {  // use 「 .before() 」the type should be java.util.Date
 	            	 errorDateMsgs = "場次日期有誤，不可小於當日";
 	             }
 	             
@@ -173,18 +176,18 @@ public class SesServlet extends HttpServlet {
 	            	/* =====================================================================
 	            	                       錯誤驗證：場次時間間距，不可少於2小時
 	            	   =====================================================================*/
-	            	 if(sesTimeArr.length > 1) {
+	            	 if (sesTimeArr.length > 1) {
 						System.out.println("if= " + sesTimeArr.length);
 						for(int j = 0; j < sesTimeArr.length; j++) {
 							sesTimeList.add(java.time.LocalTime.parse(sesTimeArr[j]));	// 將時間陣列存進list
 						}
 						
-						for(int i = 1; i < sesTimeList.size(); i++) {	
+						for (int i = 1; i < sesTimeList.size(); i++) {	
 							System.out.println("i List: " + sesTimeList.get(i));
 							System.out.println("i-1  List: " + sesTimeList.get(i - 1));
 							diff = Duration.between(sesTimeList.get(i - 1),sesTimeList.get(i));  // 「get(i)」 minus 「get(i - 1)」的 difference 不能少於2
 							System.out.println("diff= " + diff.toHours()); 
-							if(diff.toHours() < 2) {
+							if (diff.toHours() < 2) {
 								errorTimeMsgs = "間距不可少於2小時";  							
 							}
 						}
@@ -192,75 +195,59 @@ public class SesServlet extends HttpServlet {
 						sesTime = Time.valueOf(java.time.LocalTime.parse(sesTimeArr[0]));
 					}
 	             }
+
 	             
-	             // Send the use back to the form, if there were errors   
-	             if (errorMsgs != "" || errorDateMsgs!= "" || errorTimeMsgs != "") {
-		             List<Integer> theNoList = new ArrayList<Integer>();
-					 for(int k = 0; k < theNoArr.length; k++) {
-						theNoList.add(new Integer(theNoArr[k]));
-					 }
+	             SesService sesSvc = new SesService();
+		         TheService theSvc = new TheService();
+				 List<Integer> theNoList = new ArrayList<Integer>();
+				 for (int k = 0; k < theNoArr.length; k++) {
+					theNoList.add(new Integer(theNoArr[k]));
+				 }
+		      /* =====================================================================
+        	                   場次是否重複，錯誤驗證  //theNo、sesDate、sesTime
+        	     ===================================================================== */
+				 Boolean result = true;
+				 for (int i = 0; i < sesDateArr.length; i++) {
+	                 sesDate = Date.valueOf(sesDateArr[i]);  
+                   for (int j = 0; j < sesTimeArr.length; j++) {
+						sesTime = Time.valueOf(java.time.LocalTime.parse(sesTimeArr[j]));
+                       for (int k = 0; k < theNoArr.length; k++) {                       
+                            theNo = new Integer(theNoArr[k]); 
+           				 	result = sesSvc.isRepeatedSession(theNo, sesDate, sesTime); 
+                       }
+                   	}
+				 }
+				 if(result != false) {  // 資料庫有資料，代表有重複場次
+					errorSessionMsgs = "場次重複";  	
+				 }
+ 	              	             
+ 	           
+	           // Send the use back to the form, if there were errors   
+	           if (errorMsgs != "" || errorDateMsgs!= "" || errorTimeMsgs != "" || errorSessionMsgs!="") {
+					req.setAttribute("movNo", movNo);
+					req.setAttribute("sesDateBegin", sesDateBegin);
+					req.setAttribute("sesDateEnd", sesDateEnd);
+					req.setAttribute("sesTimeList", sesTimeList);
+					req.setAttribute("theNoList", theNoList);
+					req.setAttribute("errorDateMsgs",errorDateMsgs);
+					req.setAttribute("errorTimeMsgs",errorTimeMsgs);
+					req.setAttribute("errorSessionMsgs",errorSessionMsgs);
 					 
-					 req.setAttribute("movNo", movNo);
-					 req.setAttribute("sesDateBegin", sesDateBegin);
-					 req.setAttribute("sesDateEnd", sesDateEnd);
-					 req.setAttribute("sesTimeList", sesTimeList);
-					 req.setAttribute("theNoList", theNoList);
-					 req.setAttribute("errorDateMsgs",errorDateMsgs);
-					 req.setAttribute("errorTimeMsgs",errorTimeMsgs);
-					 
-					 RequestDispatcher failureView = req.getRequestDispatcher("/back-end/session/addSession.jsp");
-					 failureView.forward(req, res);
-					 return;
-	             }
+					RequestDispatcher failureView = req.getRequestDispatcher("/back-end/session/addSession.jsp");
+					failureView.forward(req, res);
+					return;
+	           }
               
            
-	           SesService sesSvc = new SesService();
-	           TheService theSvc = new TheService();
-
-           	/* =====================================================================
-           	                          場次是否重複，錯誤驗證  //theNo、sesDate、sesTime
-           	   =====================================================================*/
-//	           List<SesVO> seslists = sesSvc.getAll(); 
-//	           List<Date> dateResult = new ArrayList<Date>(sesDateList.size()); 
-//	           List<Time> timeResult = new ArrayList<Time>(sesTimeList.size()); 
-//	           List<Integer> theNoResult = new ArrayList<Integer>();
-//	           
-//	           for (int i = 0; i < seslists.size(); i++) {
-//
-//	        	   System.out.println(i);                 
-//	        	   System.out.println(seslists.get(i).getSesDate());
-//	        	   
-//	        	   return;
-//	           }
-	             
-//			   for(int k = 0; k < theNoArr.length; k++) {
-//				   theNoResult.add(new Integer(theNoArr[k]));
-//			   }
-//				 
-//	           for(Date dates : dateResult) {
-//	        	   System.out.println("dates= " + dates);
-//	           }
-//	           for(Time times : timeResult) {
-//	        	   System.out.println("times= " + times);
-//	           }
-//	           
-//	           for (SesVO lists : seslists) {
-//	               if (theNoResult.contains(lists.getTheNo()) && dateResult.contains(lists.getSesDate()) && timeResult.contains(lists.getSesTime())) {
-//	                   System.out.println("true");
-//	               }else {
-//	                   System.out.println("false");
-//	               }
-//	           }
-	           	             
-               for(int i = 0; i < sesDateArr.length; i++) {
+               for (int i = 0; i < sesDateArr.length; i++) {
 	                 sesDate = Date.valueOf(sesDateArr[i]);  
-                   for(int j = 0; j < sesTimeArr.length; j++) {
+                   for (int j = 0; j < sesTimeArr.length; j++) {
 						sesTime = Time.valueOf(java.time.LocalTime.parse(sesTimeArr[j]));
-                       for(int k = 0; k < theNoArr.length; k++) {                       
-                           theNo = new Integer(theNoArr[k]);
-                           TheVO theVO = theSvc.getOneTheater(theNo);
+                       for (int k = 0; k < theNoArr.length; k++) {                       
+                            theNo = new Integer(theNoArr[k]);
+                            TheVO theVO = theSvc.getOneTheater(theNo);
                            /***************************2.開始新增資料***************************************/   
-                           sesSvc.addSes(movNo, theNo, sesDate, sesTime, theVO.getThe_seat(), theVO.getThe_seatno());
+                            sesSvc.addSes(movNo, theNo, sesDate, sesTime, theVO.getThe_seat(), theVO.getThe_seatno());
                        }
                    }
                }
