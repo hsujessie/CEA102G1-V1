@@ -11,15 +11,17 @@
 <%@ include file="/front-end/files/frontend_importCss.file"%>
 <style>
 #nextStep {
-		position: absolute;
-		bottom: 1%;
-		right: 5%;
-	}
+	position: absolute;
+	bottom: 1%;
+	right: 5%;
+}
+
 div>p>img {
 	width: 30px;
 	height: 40px;
 }
-	#grade {
+
+#grade {
 	border: 1px solid black;
 	height: 100px;
 	width: 100px;
@@ -29,7 +31,7 @@ div>p>img {
 	color: white;
 }
 
-#grade-number,#grade-word {
+#grade-number, #grade-word {
 	padding-top: 15px;
 	height: 50px;
 }
@@ -37,7 +39,6 @@ div>p>img {
 .list-group-item, #tabs_item, .card {
 	border: 1px solid #aa9166;
 	margin-bottom: 10px;
-
 }
 
 #table-secondary {
@@ -53,8 +54,8 @@ div>p>img {
 	border: 1px solid #b39d76;
 }
 
-.ui-widget.ui-widget-content,.ui-widget-content {
-	border:0;
+.ui-widget.ui-widget-content, .ui-widget-content {
+	border: 0;
 }
 
 .card-header {
@@ -62,7 +63,7 @@ div>p>img {
 }
 
 .list-group-item+.list-group-item {
-	border:1px solid #aa9166;
+	border: 1px solid #aa9166;
 }
 
 div>p>span {
@@ -77,7 +78,6 @@ div>p>span {
 p {
 	margin-bottom: 0.5rem;
 }
-
 </style>
 </head>
 <body>
@@ -96,95 +96,98 @@ p {
 		<!-- PUT HERE Start -->
 		<div class="container">
 			<div class="row">
-				<div class="col-12"><h2 style="color:green;">付款成功</h2></div>
+				<div class="col-12">
+					<h2 style="color: green;">付款成功</h2>
+				</div>
 				<div class="col-9">
 					<div class="list-group">
-					<div class="row">
-						<div class="list-group-item" style="width:100%;">
-							<div class="row">
-								<jsp:useBean id="sesSvc" scope="page" class="com.session.model.SesService" />
-								<jsp:useBean id="movSvc" scope="page" class="com.movie.model.MovService" />
-
-								<div class="col-2">
-									<div id="grade" class="text-center">
-										<div id="grade-number"></div>
-										<div id="grade-word">${movSvc.getOneMov(sesSvc.getOneSes(param.sesNo).movNo).movrating}</div>
+						<div class="row">
+							<div class="list-group-item" style="width: 100%;">
+								<div class="row">
+									<jsp:useBean id="sesSvc" scope="request" class="com.session.model.SesService" />
+									<jsp:useBean id="movSvc" scope="request" class="com.movie.model.MovService" />
+									<c:set var="sesVO" value="${sesSvc.getOneSes(param.sesNo)}" scope="request" />
+									<c:set var="movVO" value="${movSvc.getOneMov(sesVO.movNo)}" scope="request" />
+									<div class="col-2">
+										<div id="grade" class="text-center">
+											<div id="grade-number"></div>
+											<div id="grade-word">${movVO.movrating}</div>
+										</div>
+									</div>
+									<div class="col-7">
+										<h3>(${movVO.movver}${movVO.movlan})${movVO.movname}</h3>
+									</div>
+									<div class="col-3">
+										<p>
+											<img src="<%=request.getContextPath()%>/resource/images/ordMasIcons/sesTime.png">
+											<span></span> ${sesVO.sesDate} <fmt:formatDate value="${sesVO.sesTime}" pattern="HH:mm" />
+										</p>
+										<p>
+											<img src="<%=request.getContextPath()%>/resource/images/ordMasIcons/theater.png">
+											<span></span> 第${sesVO.theNo}廳
+										</p>
+										<p>
+											<img src="<%=request.getContextPath()%>/resource/images/ordMasIcons/seatNo.png">
+											<span></span><span id="chooseSeatNo"></span>
+										</p>
 									</div>
 								</div>
-								<div class="col-7">
-									<h3>(${movSvc.getOneMov(sesSvc.getOneSes(param.sesNo).movNo).movver}${movSvc.getOneMov(sesSvc.getOneSes(param.sesNo).movNo).movlan})${movSvc.getOneMov(sesSvc.getOneSes(param.sesNo).movNo).movname}</h3>
-								</div>
-								<div class="col-3">
-									<p>
-										<img src="<%=request.getContextPath()%>/resource/images/ordMasIcons/sesTime.png"><span> </span>${sesSvc.getOneSes(param.sesNo).sesDate} <fmt:formatDate value="${sesSvc.getOneSes(param.sesNo).sesTime}" pattern="HH:mm"/>
-									</p>
-									<p>
-										<img src="<%=request.getContextPath()%>/resource/images/ordMasIcons/theater.png"><span> </span>第${sesSvc.getOneSes(param.sesNo).theNo}廳
-									</p>
-									<p>
-										<img src="<%=request.getContextPath()%>/resource/images/ordMasIcons/seatNo.png"><span> </span><span id="chooseSeatNo"></span>
-									</p>
-								</div>
 							</div>
-						</div>
 
-						<div class="list-group-item" style="width:100%;">
-							<h4 style="font-style:normal;">商品明細</h4>
-							<table class="table">
-							<tbody>
-								<jsp:useBean id="ideSvc" scope="page" class="com.identity.model.IdeService" />
-								<c:forEach var="ticTypCartVO" items="${ticTypCartSet}">
-								<c:if test="${check != ticTypCartVO.ideNo}">
-									<tr>
-										<td>
-											<p>${ideSvc.getOneDept(ticTypCartVO.ideNo).ide_name}</p>
-											<p class="text-right">
-												X
-												<span>${ticTypCartVO.ticTypCount}</span>
-											</p>
-										</td>
-									</tr>
-									</c:if>
-									<c:set var="check" value="${ticTypCartVO.ideNo}"/>
-								</c:forEach>
-								<c:forEach var="fooCartVO" items="${fooCartSet}">
-									<tr>
-										<td>
-											<p>${fooCartVO.fooName}</p>
-											<p class="text-right">
-												X
-												<span>${fooCartVO.fooCount}</span>
-											</p>
-										</td>
-									</tr>
-								</c:forEach>
-								<tr>
-									<td>
-										<p class="text-right">
-											合計
-											<span id="orderTotal">${ordMasVO.ordMasPrice}</span>
-										</p>
-									</td>
-								</tr>
-							</tbody>
-						</table>
+							<div class="list-group-item" style="width: 100%;">
+								<h4 style="font-style: normal;">商品明細</h4>
+								<table class="table">
+									<tbody>
+										<jsp:useBean id="ideSvc" scope="request" class="com.identity.model.IdeService" />
+										<c:forEach var="ticTypCartVO" items="${ticTypCartSet}">
+											<c:if test="${check != ticTypCartVO.ideNo}">
+												<tr>
+													<td>
+														<p>${ideSvc.getOneDept(ticTypCartVO.ideNo).ide_name}</p>
+														<p class="text-right">
+															X <span>${ticTypCartVO.ticTypCount}</span>
+														</p>
+													</td>
+												</tr>
+											</c:if>
+											<c:set var="check" value="${ticTypCartVO.ideNo}" />
+										</c:forEach>
+										<c:forEach var="fooCartVO" items="${fooCartSet}">
+											<tr>
+												<td>
+													<p>${fooCartVO.fooName}</p>
+													<p class="text-right">
+														X <span>${fooCartVO.fooCount}</span>
+													</p>
+												</td>
+											</tr>
+										</c:forEach>
+										<tr>
+											<td>
+												<p class="text-right">
+													合計 <span id="orderTotal">${ordMasVO.ordMasPrice}</span>
+												</p>
+											</td>
+										</tr>
+									</tbody>
+								</table>
+							</div>
 						</div>
 					</div>
 				</div>
-			</div>
-			<div class="col-3">
-				<div class="list-group-item" style="text-align:center;">
-					<h2 style="font-style:normal;">取票二維碼</h2>
-					<img src="<%=request.getContextPath()%>/util/generateQRcode?ordMasNo=${ordMasVO.ordMasNo}">
+				<div class="col-3">
+					<div class="list-group-item" style="text-align: center;">
+						<h2 style="font-style: normal;">取票二維碼</h2>
+						<img src="<%=request.getContextPath()%>/util/generateQRcode?ordMasNo=${ordMasVO.ordMasNo}">
+					</div>
+					<a id="nextStep" class="btn combtn" href="<%=request.getContextPath()%>/front-end/ordMas/listMemOrder.jsp">前往購票管理</a>
 				</div>
-				<a id="nextStep" class="btn combtn" href="<%=request.getContextPath()%>/front-end/ordMas/listMemOrder.jsp">前往購票管理</a>
-			</div>
 			</div>
 		</div>
 		<!-- PUT HERE End -->
 
 		<!-- Book Tickets Start -->
-<%-- 		<%@ include file="/front-end/files/frontend_bookTicketsTamplate.file"%> --%>
+		<%-- 		<%@ include file="/front-end/files/frontend_bookTicketsTamplate.file"%> --%>
 		<!-- Book Tickets End -->
 
 		<!-- Footer Start -->
@@ -198,30 +201,29 @@ p {
 
 		function getGradeNumber(gradeWord) {
 			if ("普遍級" === gradeWord) {
-				$("#grade-number").css("background-color","#00A600");
+				$("#grade-number").css("background-color", "#00A600");
 				return "0+";
 			} else if ("保護級" === gradeWord) {
-				$("#grade-number").css("background-color","#2894FF");
+				$("#grade-number").css("background-color", "#2894FF");
 				return "6+";
 			} else if ("輔導級" === gradeWord) {
-				$("#grade-number").css("background-color","#FFE153");
+				$("#grade-number").css("background-color", "#FFE153");
 				return "12+";
 			} else {
-				$("#grade-number").css("background-color","#EA0000");
+				$("#grade-number").css("background-color", "#EA0000");
 				return "18+";
 			}
 		}
-	
-	
+
 		let chooseSeatNo = "${param.chooseSeatNo}";
 		$("#chooseSeatNo").text(addComma(chooseSeatNo));
-		
+
 		function addComma(chooseSeatNo) {
 			let result = "";
 			for (let i = 0; i < chooseSeatNo.length; i += 3) {
 				let subStr = chooseSeatNo.substring(i, i + 3);
 				if (i + 3 !== chooseSeatNo.length) {
-					result = result + subStr + " ,";
+					result = result + subStr + ", ";
 				} else {
 					result = result + subStr;
 				}

@@ -15,7 +15,8 @@
 
 <style>
 div>p {
-/* 	font-size: 8px; */
+	/* 	font-size: 8px; */
+	
 }
 
 div>p>span {
@@ -31,8 +32,9 @@ img.card-img-top {
 	max-width: 100%;
 	max-height: 100%;
 }
+
 .foodImg {
-/* 	width: 200px; */
+	/* 	width: 200px; */
 	height: 150px;
 }
 
@@ -41,16 +43,18 @@ img.card-img-top {
 	height: 100px;
 	width: 100px;
 }
+
 #nextStep {
 	position: absolute;
 	bottom: 1%;
 	right: 5%;
 }
+
 #grade-number {
 	color: white;
 }
 
-#grade-number,#grade-word {
+#grade-number, #grade-word {
 	padding-top: 15px;
 	height: 50px;
 }
@@ -58,7 +62,6 @@ img.card-img-top {
 .list-group-item, #tabs_item, .card {
 	border: 1px solid #aa9166;
 	margin-bottom: 10px;
-
 }
 
 .info {
@@ -79,22 +82,21 @@ img.card-img-top {
 	border: 1px solid #b39d76;
 }
 
-.ui-widget.ui-widget-content,.ui-widget-content {
-	border:0;
+.ui-widget.ui-widget-content, .ui-widget-content {
+	border: 0;
 }
 
 .card-header {
 	background-color: #c5b497;
 }
 
-select.form-control{
-	width:70px;
+select.form-control {
+	width: 70px;
 }
 
 p {
 	margin-bottom: 0.5rem;
 }
-
 </style>
 </head>
 <body>
@@ -119,24 +121,27 @@ p {
 					<div class="list-group">
 						<div class="list-group-item">
 							<div class="row">
-								<jsp:useBean id="sesSvc" scope="page" class="com.session.model.SesService" />
-								<jsp:useBean id="movSvc" scope="page" class="com.movie.model.MovService" />
-
+								<jsp:useBean id="sesSvc" scope="request" class="com.session.model.SesService" />
+								<jsp:useBean id="movSvc" scope="request" class="com.movie.model.MovService" />
+								<c:set var="sesVO" value="${sesSvc.getOneSes(param.sesNo)}" scope="request" />
+								<c:set var="movVO" value="${movSvc.getOneMov(sesVO.movNo)}" scope="request" />
 								<div class="col-2">
 									<div id="grade" class="text-center">
 										<div id="grade-number"></div>
-										<div id="grade-word">${movSvc.getOneMov(sesSvc.getOneSes(param.sesNo).movNo).movrating}</div>
+										<div id="grade-word">${movVO.movrating}</div>
 									</div>
 								</div>
 								<div class="col-7">
-									<h3>(${movSvc.getOneMov(sesSvc.getOneSes(param.sesNo).movNo).movver}${movSvc.getOneMov(sesSvc.getOneSes(param.sesNo).movNo).movlan})${movSvc.getOneMov(sesSvc.getOneSes(param.sesNo).movNo).movname}</h3>
+									<h3>(${movVO.movver}${movVO.movlan})${movVO.movname}</h3>
 								</div>
 								<div class="col-3">
 									<p>
-										<img src="<%=request.getContextPath()%>/resource/images/ordMasIcons/sesTime.png"><span> </span>${sesSvc.getOneSes(param.sesNo).sesDate} <fmt:formatDate value="${sesSvc.getOneSes(param.sesNo).sesTime}" pattern="HH:mm"/> 
+										<img src="<%=request.getContextPath()%>/resource/images/ordMasIcons/sesTime.png">
+										<span></span>${sesVO.sesDate} <fmt:formatDate value="${sesVO.sesTime}" pattern="HH:mm" />
 									</p>
 									<p>
-										<img src="<%=request.getContextPath()%>/resource/images/ordMasIcons/theater.png"><span> </span>第${sesSvc.getOneSes(param.sesNo).theNo}廳
+										<img src="<%=request.getContextPath()%>/resource/images/ordMasIcons/theater.png">
+										<span></span>第${sesVO.theNo}廳
 									</p>
 								</div>
 							</div>
@@ -151,35 +156,35 @@ p {
 						</div>
 						<form method="post" action="<%=request.getContextPath()%>/ordMas/ordMas.do" id="form">
 							<div class="list-group-item">
-											<table class="table">
-												<thead>
-													<tr id="table-secondary">
-														<th>票種</th>
-														<th>票價</th>
-														<th>數量</th>
-														<th>小計</th>
-													</tr>
-												</thead>
-												<tbody>
-													<jsp:useBean id="ticTypSvc" scope="page" class="com.ticket_type.model.TicTypService" />
-													<jsp:useBean id="ideSvc" scope="page" class="com.identity.model.IdeService" />
-													<jsp:useBean id="theSvc" scope="page" class="com.theater.model.TheService" />
-													<c:forEach var="ticTypVO" items="${ticTypSvc.getTicTypsByMovVerNo(theSvc.getOneTheater(sesSvc.getOneSes(param.sesNo).theNo).movver_no)}">
-														<tr>
-															<td class="ticketName">${ideSvc.getOneDept(ticTypVO.ide_no).ide_name}</td>
-															<td>$<span class="ticketPrice">${ticTypVO.tictyp_price}</span></td>
-															<td>
-																<select class="form-control ticketCount" name="ticTypNo${ticTypVO.tictyp_no}">
-																	<c:forEach varStatus="i" begin="0" end="10">
-																		<option value="${i.index}">${i.index}
-																	</c:forEach>
-																</select>
-															</td>
-															<td>0</td>
-														</tr>
-													</c:forEach>
-												</tbody>
-											</table>
+								<table class="table">
+									<thead>
+										<tr id="table-secondary">
+											<th>票種</th>
+											<th>票價</th>
+											<th>數量</th>
+											<th>小計</th>
+										</tr>
+									</thead>
+									<tbody>
+										<jsp:useBean id="ticTypSvc" scope="request" class="com.ticket_type.model.TicTypService" />
+										<jsp:useBean id="ideSvc" scope="request" class="com.identity.model.IdeService" />
+										<jsp:useBean id="theSvc" scope="request" class="com.theater.model.TheService" />
+										<c:forEach var="ticTypVO" items="${ticTypSvc.getTicTypsByMovVerNo(theSvc.getOneTheater(sesVO.theNo).movver_no)}">
+											<tr>
+												<td class="ticketName">${ideSvc.getOneDept(ticTypVO.ide_no).ide_name}</td>
+												<td>$<span class="ticketPrice">${ticTypVO.tictyp_price}</span></td>
+												<td>
+													<select class="form-control ticketCount" name="ticTypNo${ticTypVO.tictyp_no}">
+														<c:forEach varStatus="i" begin="0" end="10">
+															<option value="${i.index}">${i.index}
+														</c:forEach>
+													</select>
+												</td>
+												<td>0</td>
+											</tr>
+										</c:forEach>
+									</tbody>
+								</table>
 							</div>
 							<div class="list-group-item info">
 								<div class="row">
@@ -191,10 +196,8 @@ p {
 							</div>
 							<div id="tabs_item" class="list-group-item">
 								<div id="tabs">
-									<jsp:useBean id="fooCatSvc" scope="page"
-										class="com.food_cate.model.FooCatService" />
-									<jsp:useBean id="fooSvc" scope="page"
-										class="com.food.model.FooService" />
+									<jsp:useBean id="fooCatSvc" scope="request" class="com.food_cate.model.FooCatService" />
+									<jsp:useBean id="fooSvc" scope="request" class="com.food.model.FooService" />
 
 									<ul>
 										<c:forEach var="fooCatVO" items="${fooCatSvc.all}">
@@ -206,27 +209,27 @@ p {
 										<div id="tabs-${fooCatVO.fooCatNo}">
 											<div class="row">
 												<c:forEach var="fooVO" items="${fooCatSvc.getFoosByFooCatNo(fooCatVO.fooCatNo)}">
-												<c:if test="${fooVO.fooStatus==0}">
-													<div class="col-4">
-														<div class="card">
-														<div class="foodImg">
-															<img src="<%=request.getContextPath()%>/util/imgReader${fooVO.fooImgParam}" class="card-img-top">
-															</div>
-															<div class="card-body">
-																<h5 class="card-title foodName">${fooVO.fooName}</h5>
-																<p class="card-text">
-																	$
-																	<span class="foodPrice">${fooVO.fooPrice}</span>
-																</p>
-																<select name="fooNo${fooVO.fooNo}" class="form-control foodCount">
-																	<c:forEach varStatus="index" begin="0" end="10">
-																		<option value="${index.index}">${index.index}
-																	</c:forEach>
-																</select>
+													<c:if test="${fooVO.fooStatus==0}">
+														<div class="col-4">
+															<div class="card">
+																<div class="foodImg">
+																	<img
+																		src="<%=request.getContextPath()%>/util/imgReader${fooVO.fooImgParam}" class="card-img-top">
+																</div>
+																<div class="card-body">
+																	<h5 class="card-title foodName">${fooVO.fooName}</h5>
+																	<p class="card-text">
+																		$ <span class="foodPrice">${fooVO.fooPrice}</span>
+																	</p>
+																	<select name="fooNo${fooVO.fooNo}" class="form-control foodCount">
+																		<c:forEach varStatus="index" begin="0" end="10">
+																			<option value="${index.index}">${index.index}
+																		</c:forEach>
+																	</select>
+																</div>
 															</div>
 														</div>
-													</div>
-												</c:if>
+													</c:if>
 												</c:forEach>
 											</div>
 										</div>
@@ -268,7 +271,7 @@ p {
 		<!-- PUT HERE End -->
 
 		<!-- Book Tickets Start -->
-<%-- 		<%@ include file="/front-end/files/frontend_bookTicketsTamplate.file"%> --%>
+		<%-- 		<%@ include file="/front-end/files/frontend_bookTicketsTamplate.file"%> --%>
 		<!-- Book Tickets End -->
 
 		<!-- Footer Start -->
@@ -292,117 +295,137 @@ p {
 
 		function getGradeNumber(gradeWord) {
 			if ("普遍級" === gradeWord) {
-				$("#grade-number").css("background-color","#00A600");
+				$("#grade-number").css("background-color", "#00A600");
 				return "0+";
 			} else if ("保護級" === gradeWord) {
-				$("#grade-number").css("background-color","#2894FF");
+				$("#grade-number").css("background-color", "#2894FF");
 				return "6+";
 			} else if ("輔導級" === gradeWord) {
-				$("#grade-number").css("background-color","#FFE153");
+				$("#grade-number").css("background-color", "#FFE153");
 				return "12+";
 			} else {
-				$("#grade-number").css("background-color","#EA0000");
+				$("#grade-number").css("background-color", "#EA0000");
 				return "18+";
 			}
 		}
-		
- 
-        
-        $(".ticketCount").change(function() {
-        	//計算此票種的小計
-            $(this).parent().next().text($(this).parent().prev().children("span.ticketPrice").text() * $(this).val());
-        	
-            let ticketCountDoms = $(".ticketCount");
-        	//判斷是否有選票
-        	let counts = 0;
-        	for (let i = 0; i < ticketCountDoms.length; i++) {
-        		counts += parseInt($(ticketCountDoms[i]).val());
-        	}
-        	if (counts !== 0) {
-        		$("#nextStep").text("繼續");
-        		$("#nextStep").prop("disabled",false);
-        	} else {
-        		$("#nextStep").text("請至少選一張票");
-        		$("#nextStep").prop("disabled",true);
-        	}
-        	
-        	//判斷還能選多少張票
-        	let countDiff = 10 - counts;
-        	for (let i = 0; i < ticketCountDoms.length; i++) {
-        		let nowSelect = parseInt($(ticketCountDoms[i]).val());
-        		$(ticketCountDoms[i]).empty();
-        		for (let j = 0; j <= (countDiff + nowSelect); j++) {
-                    if (nowSelect === j) 
-                        $(ticketCountDoms[i]).append("<option value=" + j + " selected>" + j + "</option>");
-                    else 
-                        $(ticketCountDoms[i]).append("<option value=" + j + ">" + j + "</option>");
-                }
-        	}
-        });
-        
-        $(".ticketCount").change(function() {
-        	let productPrice = $(this).parent().prev().children("span.ticketPrice").text();
-        	let productCount = parseInt($(this).val());
-        	let productName = $(this).parent().prev().prev().text();
-        	let tableStructure = "";
-        	
-        	let idName = "#" + productName;
-        	if (productCount !== 0) {
-        		if ($(idName)) {
-        			$(idName).remove();
-        		}
-        		
-        		tableStructure += "<tr id='"+productName +"'><td>";
-        		tableStructure += "<p>"+ productName +"</p>";
-        		tableStructure += "<p class='text-right'>$";
-        		tableStructure += "<span style='margin:3px;'>" + productPrice + "</span>X";
-        		tableStructure += "<span style='margin:3px;'>" + productCount + "</span>=";
-        		tableStructure += "<span class='subtotal' style='margin:3px;'>"+ (productPrice * productCount) +"</span>";
-        		tableStructure += "</p></td></tr>";
-        	} else {
-        		$(idName).remove();
-        	}
-        	$("#addhere").before(tableStructure);
-        	
-        });
-        
-        $(".foodCount").change(function() {
-        	let productPrice = $(this).prev().children("span.foodPrice").text();
-        	let productCount = parseInt($(this).val());
-        	let productName = $(this).prev().prev().text();
-        	let tableStructure = "";
-        	
-        	let target = $(this).attr("name");
-        	let idName = "#" + target;
-        	if (productCount !== 0) {
-        		if ($(idName)) {
-        			$(idName).remove();
-        		}
-        		
-        		tableStructure += "<tr id='"+target +"'><td>";
-        		tableStructure += "<p>"+ productName +"</p>";
-        		tableStructure += "<p class='text-right'>$";
-        		tableStructure += "<span style='margin:3px;'>" + productPrice + "</span>X";
-        		tableStructure += "<span style='margin:3px;'>" + productCount + "</span>=";
-        		tableStructure += "<span class='subtotal' style='margin:3px;'>"+ (productPrice * productCount) +"</span>";
-        		tableStructure += "</p></td></tr>";
-        		
-        	} else {
-        		$(idName).remove();
-        	}
-        	$("#addhere").before(tableStructure);
-        });
-        
-        $(".ticketCount,.foodCount").change(function() {
-        	let orderList = $(".subtotal");
-        	let totalPrice = 0;
-        	
-        	for (let i = 0; i < orderList.length; i++) {
-        		totalPrice += parseInt($(orderList[i]).text());
-        	}
-        	$("#orderTotal").text(totalPrice);
-        })
-		
+
+		$(".ticketCount").change(
+				function() {
+					//計算此票種的小計
+					$(this).parent().next().text(
+							$(this).parent().prev()
+									.children("span.ticketPrice").text()
+									* $(this).val());
+
+					let ticketCountDoms = $(".ticketCount");
+					//判斷是否有選票
+					let counts = 0;
+					for (let i = 0; i < ticketCountDoms.length; i++) {
+						counts += parseInt($(ticketCountDoms[i]).val());
+					}
+					if (counts !== 0) {
+						$("#nextStep").text("繼續");
+						$("#nextStep").prop("disabled", false);
+					} else {
+						$("#nextStep").text("請至少選一張票");
+						$("#nextStep").prop("disabled", true);
+					}
+
+					//判斷還能選多少張票
+					let countDiff = 10 - counts;
+					for (let i = 0; i < ticketCountDoms.length; i++) {
+						let nowSelect = parseInt($(ticketCountDoms[i]).val());
+						$(ticketCountDoms[i]).empty();
+						for (let j = 0; j <= (countDiff + nowSelect); j++) {
+							if (nowSelect === j)
+								$(ticketCountDoms[i]).append(
+										"<option value=" + j + " selected>" + j
+												+ "</option>");
+							else
+								$(ticketCountDoms[i]).append(
+										"<option value=" + j + ">" + j
+												+ "</option>");
+						}
+					}
+				});
+
+		$(".ticketCount")
+				.change(
+						function() {
+							let productPrice = $(this).parent().prev()
+									.children("span.ticketPrice").text();
+							let productCount = parseInt($(this).val());
+							let productName = $(this).parent().prev().prev()
+									.text();
+							let tableStructure = "";
+
+							let idName = "#" + productName;
+							if (productCount !== 0) {
+								if ($(idName)) {
+									$(idName).remove();
+								}
+
+								tableStructure += "<tr id='"+productName +"'><td>";
+								tableStructure += "<p>" + productName + "</p>";
+								tableStructure += "<p class='text-right'>$";
+								tableStructure += "<span style='margin:3px;'>"
+										+ productPrice + "</span>X";
+								tableStructure += "<span style='margin:3px;'>"
+										+ productCount + "</span>=";
+								tableStructure += "<span class='subtotal' style='margin:3px;'>"
+										+ (productPrice * productCount)
+										+ "</span>";
+								tableStructure += "</p></td></tr>";
+							} else {
+								$(idName).remove();
+							}
+							$("#addhere").before(tableStructure);
+
+						});
+
+		$(".foodCount")
+				.change(
+						function() {
+							let productPrice = $(this).prev().children(
+									"span.foodPrice").text();
+							let productCount = parseInt($(this).val());
+							let productName = $(this).prev().prev().text();
+							let tableStructure = "";
+
+							let target = $(this).attr("name");
+							let idName = "#" + target;
+							if (productCount !== 0) {
+								if ($(idName)) {
+									$(idName).remove();
+								}
+
+								tableStructure += "<tr id='"+target +"'><td>";
+								tableStructure += "<p>" + productName + "</p>";
+								tableStructure += "<p class='text-right'>$";
+								tableStructure += "<span style='margin:3px;'>"
+										+ productPrice + "</span>X";
+								tableStructure += "<span style='margin:3px;'>"
+										+ productCount + "</span>=";
+								tableStructure += "<span class='subtotal' style='margin:3px;'>"
+										+ (productPrice * productCount)
+										+ "</span>";
+								tableStructure += "</p></td></tr>";
+
+							} else {
+								$(idName).remove();
+							}
+							$("#addhere").before(tableStructure);
+						});
+
+		$(".ticketCount,.foodCount").change(function() {
+			let orderList = $(".subtotal");
+			let totalPrice = 0;
+
+			for (let i = 0; i < orderList.length; i++) {
+				totalPrice += parseInt($(orderList[i]).text());
+			}
+			$("#orderTotal").text(totalPrice);
+		})
 	</script>
 </body>
 </html>

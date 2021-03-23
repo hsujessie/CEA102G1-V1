@@ -1,4 +1,5 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+	pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
 
@@ -8,9 +9,12 @@
 <meta charset="UTF-8">
 <title>Front-End</title>
 <%@ include file="/front-end/files/frontend_importCss.file"%>
-<link href='https://fonts.googleapis.com/css?family=Lato:400,700' rel='stylesheet' type='text/css'>
-<link rel="stylesheet" type="text/css" href="<%=request.getContextPath()%>/resource/css/selectSeat/jquery.seat-charts.css">
-<link rel="stylesheet" type="text/css" href="<%=request.getContextPath()%>/resource/css/selectSeat/style.css">
+<link href='https://fonts.googleapis.com/css?family=Lato:400,700'
+	rel='stylesheet' type='text/css'>
+<link rel="stylesheet" type="text/css"
+	href="<%=request.getContextPath()%>/resource/css/selectSeat/jquery.seat-charts.css">
+<link rel="stylesheet" type="text/css"
+	href="<%=request.getContextPath()%>/resource/css/selectSeat/style.css">
 
 <style type="text/css">
 /* 修改座位的顏色 */
@@ -23,13 +27,14 @@ div.seatCharts-seat.selected.first-class {
 	color: white;
 	background-color: #7e6946;
 }
+
 div.seatCharts-seat.focused {
 	color: white;
 	background-color: #7e6946;
 }
 
 div.seatCharts-seat.available.first-class {
-	background-color:#cec0a7;
+	background-color: #cec0a7;
 	color: black;
 	/* background-color: white; */
 }
@@ -45,8 +50,6 @@ div.seatCharts-seat.unavailable {
 /* div.front-indicator {
             width: 100%;
         } */
-
-
 div.seatCharts-legend {
 	position: static;
 }
@@ -76,7 +79,7 @@ div>p>img {
 	color: white;
 }
 
-#grade-number,#grade-word {
+#grade-number, #grade-word {
 	padding-top: 15px;
 	height: 50px;
 }
@@ -84,7 +87,6 @@ div>p>img {
 .list-group-item, #tabs_item, .card {
 	border: 1px solid #aa9166;
 	margin-bottom: 10px;
-
 }
 
 .info {
@@ -105,8 +107,8 @@ div>p>img {
 	border: 1px solid #b39d76;
 }
 
-.ui-widget.ui-widget-content,.ui-widget-content {
-	border:0;
+.ui-widget.ui-widget-content, .ui-widget-content {
+	border: 0;
 }
 
 .card-header {
@@ -114,14 +116,17 @@ div>p>img {
 }
 
 .list-group-item+.list-group-item {
-	border:1px solid #aa9166;
+	border: 1px solid #aa9166;
 }
+
 ul.seatCharts-legendList {
 	text-align: center;
 }
+
 li.seatCharts-legendItem {
 	display: inline-block;
 }
+
 .front-indicator {
 	padding: 0px;
 	width: 608px;
@@ -134,151 +139,152 @@ li.seatCharts-legendItem {
 p {
 	margin-bottom: 0.5rem;
 }
-
 </style>
 </head>
 <body>
-	
-        <div class="wrapper">
-            <!-- Nav Bar Start -->
-			<c:set value="${pageContext.request.requestURI}" var="urlRecog"></c:set>
-            <%@ include file="/front-end/files/frontend_navbar.file"%>
-            <!-- Nav Bar End -->
+
+	<div class="wrapper">
+		<!-- Nav Bar Start -->
+		<c:set value="${pageContext.request.requestURI}" var="urlRecog"></c:set>
+		<%@ include file="/front-end/files/frontend_navbar.file"%>
+		<!-- Nav Bar End -->
 
 
-            <!-- Page Header Start --> <!-- 看自己需不需要標題 -->
-            
-            <!-- Page Header End -->
+		<!-- Page Header Start -->
+		<!-- 看自己需不需要標題 -->
+
+		<!-- Page Header End -->
 
 
-            <!-- PUT HERE Start -->
-            <div class="container">
-		<div class="row">
-			<div class="col-9">
-				<div class="list-group">
-					<div class="list-group-item">
-						<div class="row">
-							<jsp:useBean id="sesSvc" scope="page" class="com.session.model.SesService" />
-							<jsp:useBean id="movSvc" scope="page" class="com.movie.model.MovService" />
-
-							<div class="col-2">
-								<div id="grade" class="text-center">
-									<div id="grade-number"></div>
-									<div id="grade-word">${movSvc.getOneMov(sesSvc.getOneSes(param.sesNo).movNo).movrating}</div>
-								</div>
-							</div>
-							<div class="col-7">
-								<h3>(${movSvc.getOneMov(sesSvc.getOneSes(param.sesNo).movNo).movver}${movSvc.getOneMov(sesSvc.getOneSes(param.sesNo).movNo).movlan})${movSvc.getOneMov(sesSvc.getOneSes(param.sesNo).movNo).movname}</h3>
-							</div>
-							<div class="col-3">
-								<p>
-									<img src="<%=request.getContextPath()%>/resource/images/ordMasIcons/sesTime.png"><span></span>${sesSvc.getOneSes(param.sesNo).sesDate} <fmt:formatDate value="${sesSvc.getOneSes(param.sesNo).sesTime}" pattern="HH:mm"/>
-								</p>
-								<p>
-									<img src="<%=request.getContextPath()%>/resource/images/ordMasIcons/theater.png"><span></span>第${sesSvc.getOneSes(param.sesNo).theNo}廳
-								</p>
-							</div>
-						</div>
-					</div>
-					<div class="list-group-item info">
-						<div class="row">
-							<div class="col text-center">
-								<h2 class="title">選擇座位</h2>
-								<p>選擇您希望的購買的座位, 每筆交易最多可購買10張電影票</p>
-							</div>
-						</div>
-					</div>
-					<div class="list-group-item">
-						<form method="post" action="<%=request.getContextPath()%>/ordMas/ordMas.do" id="form">
+		<!-- PUT HERE Start -->
+		<div class="container">
+			<div class="row">
+				<div class="col-9">
+					<div class="list-group">
+						<div class="list-group-item">
 							<div class="row">
-								<div class="col">
-									<div id="seat-map">
-										<div id="legend"></div>
-										<div class="front-indicator">螢幕</div>
+								<jsp:useBean id="sesSvc" scope="request" class="com.session.model.SesService" />
+								<jsp:useBean id="movSvc" scope="request" class="com.movie.model.MovService" />
+								<c:set var="sesVO" value="${sesSvc.getOneSes(param.sesNo)}" scope="request" />
+								<c:set var="movVO" value="${movSvc.getOneMov(sesVO.movNo)}" scope="request" />
+								<div class="col-2">
+									<div id="grade" class="text-center">
+										<div id="grade-number"></div>
+										<div id="grade-word">${movVO.movrating}</div>
 									</div>
 								</div>
+								<div class="col-7">
+									<h3>(${movVO.movver}${movVO.movlan})${movVO.movname}</h3>
+								</div>
+								<div class="col-3">
+									<p>
+										<img src="<%=request.getContextPath()%>/resource/images/ordMasIcons/sesTime.png">
+										<span></span> ${sesVO.sesDate} <fmt:formatDate value="${sesVO.sesTime}" pattern="HH:mm" />
+									</p>
+									<p>
+										<img src="<%=request.getContextPath()%>/resource/images/ordMasIcons/theater.png"><span></span>第${sesVO.theNo}廳
+									</p>
+								</div>
 							</div>
-							<input type="hidden" name="sesNo" value="${param.sesNo}">
-							<input type="hidden" name="ticTypTotal" value="${ticTypTotal}">
-							<input type="hidden" name="chooseSeatNo" value="" id="chooseSeatNo">
-							<input type="hidden" name="action" value="confirm_order">
-						</form>
+						</div>
+						<div class="list-group-item info">
+							<div class="row">
+								<div class="col text-center">
+									<h2 class="title">選擇座位</h2>
+									<p>選擇您希望的購買的座位, 每筆交易最多可購買10張電影票</p>
+								</div>
+							</div>
+						</div>
+						<div class="list-group-item">
+							<form method="post" action="<%=request.getContextPath()%>/ordMas/ordMas.do" id="form">
+								<div class="row">
+									<div class="col">
+										<div id="seat-map">
+											<div id="legend"></div>
+											<div class="front-indicator">螢幕</div>
+										</div>
+									</div>
+								</div>
+								<input type="hidden" name="sesNo" value="${param.sesNo}">
+								<input type="hidden" name="ticTypTotal" value="${ticTypTotal}">
+								<input type="hidden" name="chooseSeatNo" value="" id="chooseSeatNo"> 
+								<input type="hidden" name="action" value="confirm_order">
+							</form>
+						</div>
 					</div>
 				</div>
-			</div>
 
-			<div class="col-3">
-				<div class="card mb-3">
-					<div class="card-header">會員專區</div>
-					<div class="card-body">嗨!${MemberVO.memName} 您好</div>
-				</div>
+				<div class="col-3">
+					<div class="card mb-3">
+						<div class="card-header">會員專區</div>
+						<div class="card-body">嗨!${MemberVO.memName} 您好</div>
+					</div>
 
-				<div class="card mb-3">
-					<div class="card-header">購物清單</div>
-					<div class="card-body">
-						<table class="table">
-							<tbody>
-								<jsp:useBean id="ideSvc" scope="page" class="com.identity.model.IdeService" />
-								<c:forEach var="ticTypCartVO" items="${ticTypCartSet}">
-								<c:if test="${check != ticTypCartVO.ideNo}">
-									<tr class="orderlist">
+					<div class="card mb-3">
+						<div class="card-header">購物清單</div>
+						<div class="card-body">
+							<table class="table">
+								<tbody>
+									<jsp:useBean id="ideSvc" scope="request" class="com.identity.model.IdeService" />
+									<c:forEach var="ticTypCartVO" items="${ticTypCartSet}">
+										<c:if test="${check != ticTypCartVO.ideNo}">
+											<tr class="orderlist">
+												<td>
+													<p>${ideSvc.getOneDept(ticTypCartVO.ideNo).ide_name}</p>
+													<p class="text-right">
+														$ 
+														<span>${ticTypCartVO.ticLisPrice}</span> 
+														X
+														<span>${ticTypCartVO.ticTypCount}</span>
+														= 
+														<span class="subtotal"></span>
+													</p>
+												</td>
+											</tr>
+										</c:if>
+										<c:set var="check" value="${ticTypCartVO.ideNo}"/>
+									</c:forEach>
+									<c:forEach var="fooCartVO" items="${fooCartSet}">
+										<tr class="orderlist">
+											<td>
+												<p>${fooCartVO.fooName}</p>
+												<p class="text-right">
+													$ 
+													<span>${fooCartVO.fooPrice}</span> 
+													X 
+													<span>${fooCartVO.fooCount}</span>
+													= 
+													<span class="subtotal"></span>
+												</p>
+											</td>
+										</tr>
+									</c:forEach>
+									<tr>
 										<td>
-											<p>${ideSvc.getOneDept(ticTypCartVO.ideNo).ide_name}</p>
 											<p class="text-right">
-												$
-												<span>${ticTypCartVO.ticLisPrice}</span>
-												X
-												<span>${ticTypCartVO.ticTypCount}</span>
-												=
-												<span class="subtotal"></span>
+												合計 <span id="orderTotal">0</span>
 											</p>
 										</td>
 									</tr>
-								</c:if>
-									<c:set var="check" value="${ticTypCartVO.ideNo}"/>
-								</c:forEach>
-								<c:forEach var="fooCartVO" items="${fooCartSet}">
-									<tr class="orderlist">
-										<td>
-											<p>${fooCartVO.fooName}</p>
-											<p class="text-right">
-												$
-												<span>${fooCartVO.fooPrice}</span>
-												X
-												<span>${fooCartVO.fooCount}</span>
-												=
-												<span class="subtotal"></span>
-											</p>
-										</td>
-									</tr>
-								</c:forEach>
-								<tr>
-									<td>
-										<p class="text-right">
-											合計
-											<span id="orderTotal">0</span>
-										</p>
-									</td>
-								</tr>
-							</tbody>
-						</table>
+								</tbody>
+							</table>
+						</div>
 					</div>
+					<button id="nextStep" class="btn combtn btn-lg" disabled>還有 ${ticTypTotal} 個座位待劃位</button>
 				</div>
-				<button id="nextStep" class="btn combtn btn-lg" disabled>還有 ${ticTypTotal} 個座位待劃位</button>
 			</div>
 		</div>
-	</div>
-            <!-- PUT HERE End -->
-            
-            <!-- Book Tickets Start -->
-<%--             <%@ include file="/front-end/files/frontend_bookTicketsTamplate.file"%> --%>
-            <!-- Book Tickets End -->
+		<!-- PUT HERE End -->
 
-            <!-- Footer Start -->
-            <%@ include file="/front-end/files/frontend_footer.file"%>
-            <!-- Footer End -->
-        </div>
-        <script>
+		<!-- Book Tickets Start -->
+		<%--             <%@ include file="/front-end/files/frontend_bookTicketsTamplate.file"%> --%>
+		<!-- Book Tickets End -->
+
+		<!-- Footer Start -->
+		<%@ include file="/front-end/files/frontend_footer.file"%>
+		<!-- Footer End -->
+	</div>
+	<script>
 		var ticTypTotal = ${ticTypTotal};
 		var sesSeatStatus = "${sesSeatStatus}";
 		var seatMap = [];
@@ -341,12 +347,15 @@ p {
 		}
 		
 	</script>
-        
+
 	<%@ include file="/front-end/files/frontend_importJs.file"%>
 	<script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
-	<script src="<%=request.getContextPath()%>/resource/js/selectSeat/jquery.seat-charts.min.js"></script>
-	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
-	<script src="<%=request.getContextPath()%>/resource/js/selectSeat/SelectSeatJS.js"></script>
+	<script
+		src="<%=request.getContextPath()%>/resource/js/selectSeat/jquery.seat-charts.min.js"></script>
+	<script
+		src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+	<script
+		src="<%=request.getContextPath()%>/resource/js/selectSeat/SelectSeatJS.js"></script>
 	<script>
 	$("#orderTotal").text(getTotalPrice());
 
