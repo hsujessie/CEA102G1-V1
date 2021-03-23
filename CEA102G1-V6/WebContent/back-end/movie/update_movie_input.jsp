@@ -38,7 +38,7 @@
   	margin-left: 10px;
   }
   .err-color{
-    text-shadow: 0 0 0.1em #f87, 0 0 0.1em #f87;
+    color: #A50203;
     font-size: 14px;
   }
   .xdsoft_datetimepicker.xdsoft_dark .xdsoft_calendar td, .xdsoft_datetimepicker.xdsoft_dark .xdsoft_calendar th {
