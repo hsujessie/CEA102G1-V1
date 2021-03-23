@@ -69,6 +69,7 @@
   .err-color{
     text-shadow: 0 0 0.1em #f87, 0 0 0.1em #f87;
     font-size: 14px;
+    margin-top: 5px;
   }
   .xdsoft_datetimepicker.xdsoft_dark .xdsoft_calendar td, .xdsoft_datetimepicker.xdsoft_dark .xdsoft_calendar th {
    	border-radius: 0px;
@@ -167,7 +168,7 @@
 									</span>
 									<c:if test="${not empty errorDateMsgs}">					
 										<span>		
-											<label class="err-color"><i class="far fa-hand-point-left" style="color:#bb9d52;"></i>${errorDateMsgs}</label>
+											<label class="err-color"><i class="far fa-hand-point-up" style="color:#bb9d52;"></i> ${errorDateMsgs}</label>
 										</span>
 									</c:if>	
 								</td>
