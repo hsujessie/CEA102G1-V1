@@ -206,6 +206,7 @@ p {
 										<div id="tabs-${fooCatVO.fooCatNo}">
 											<div class="row">
 												<c:forEach var="fooVO" items="${fooCatSvc.getFoosByFooCatNo(fooCatVO.fooCatNo)}">
+												<c:if test="${fooVO.fooStatus==0}">
 													<div class="col-4">
 														<div class="card">
 														<div class="foodImg">
@@ -225,6 +226,7 @@ p {
 															</div>
 														</div>
 													</div>
+												</c:if>
 												</c:forEach>
 											</div>
 										</div>

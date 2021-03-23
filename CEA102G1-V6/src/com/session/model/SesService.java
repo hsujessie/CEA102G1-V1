@@ -3,6 +3,7 @@ package com.session.model;
 import java.sql.Date;
 import java.sql.Time;
 import java.text.DateFormat;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -165,6 +166,36 @@ public class SesService {
 			if (orgSeatStatus.charAt(index) == '1') {
 				return true;
 			}
+		}
+		return false;
+	}
+	
+	public boolean checkOverdue(Integer sesNo, Integer checkwhat) {
+		SesVO sesVO = dao.findByPrimaryKey(sesNo);
+		
+		Date sesDate = sesVO.getSesDate();
+		Time sesTime = sesVO.getSesTime();
+		
+		try {
+			String str = sesDate + " " + sesTime;
+			DateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+			
+			long sesNow = df.parse(str).getTime();
+			long now = new java.util.Date().getTime();
+			
+			long diffsecond = (sesNow - now) / 1000;
+			switch (checkwhat) {
+				case 0:
+					if (diffsecond <= (30 * 60)) 
+						return true;
+				case 1:
+					if (diffsecond < 0)
+						return true;
+			}
+			
+			
+		} catch (ParseException e) {
+			throw new RuntimeException("ParseException error occured. " + e.getMessage());
 		}
 		return false;
 	}

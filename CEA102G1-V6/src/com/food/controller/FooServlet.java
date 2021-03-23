@@ -2,8 +2,10 @@ package com.food.controller;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.LinkedList;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
@@ -13,8 +15,11 @@ import javax.servlet.annotation.MultipartConfig;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import javax.servlet.http.Part;
 
+import com.admin.model.AdmService;
+import com.admin.model.AdmVO;
 import com.food.model.FooService;
 import com.food.model.FooVO;
 import com.food_cate.model.FooCatService;
@@ -88,11 +93,12 @@ public class FooServlet extends HttpServlet {
 			
 			/***************************2.開始新增資料***************************************/
 			FooService fooSvc = new FooService();
-			System.out.println("a");
 			fooSvc.addFoo(fooName, fooCatNo, fooImg, fooPrice);
-			System.out.println("b");
 			
 			/***************************3.新增完成,準備轉交(Send the Success view)***********/
+			String addSuccess = "【  " + fooName + " 】" + "新增成功";
+			req.setAttribute("addSuccess", addSuccess);	
+			
 			String url = "/back-end/foo/listAllFoo.jsp";
 			RequestDispatcher successView = req.getRequestDispatcher(url);
 			successView.forward(req, res);
@@ -101,64 +107,6 @@ public class FooServlet extends HttpServlet {
 				RequestDispatcher failureView = req.getRequestDispatcher("/back-end/foo/addFoo.jsp");
 				failureView.forward(req, res);
 			}
-		}
-		
-		if ("getOne_For_Display".equals(action)) {
-			LinkedList<String> errorMsgs = new LinkedList<String>();
-			req.setAttribute("errorMsgs", errorMsgs);
-			
-			try {
-				/***********************1.接收請求參數 - 輸入格式的錯誤處理*************************/
-				String str = req.getParameter("fooNo");
-				
-				if (str == null || str.trim().isEmpty()) {
-					errorMsgs.add("餐點編號不可為空白");
-				}
-				if (!errorMsgs.isEmpty()) {
-					RequestDispatcher failureView = req
-							.getRequestDispatcher("/back-end/foo/fooSelectPage.jsp");
-					failureView.forward(req, res);
-					return;//程式中斷
-				}
-				
-				Integer fooNo = null;
-				try {
-					fooNo = new Integer(str);
-				} catch (Exception e) {
-					errorMsgs.add("餐點編號格式不正確");
-				}
-				if (!errorMsgs.isEmpty()) {
-					RequestDispatcher failureView = req
-							.getRequestDispatcher("/back-end/foo/fooSelectPage.jsp");
-					failureView.forward(req, res);
-					return;//程式中斷
-				}
-				
-				/***************************2.開始新增資料***************************************/
-				FooService fooSvc = new FooService();
-				FooVO fooVO = fooSvc.getOneFoo(fooNo);
-				
-				if (fooVO == null) {
-					errorMsgs.add("查無資料");
-				}
-				if (!errorMsgs.isEmpty()) {
-					RequestDispatcher failureView = req
-							.getRequestDispatcher("/select_page.jsp");
-					failureView.forward(req, res);
-					return;//程式中斷
-				}
-				
-				/***************************3.新增完成,準備轉交(Send the Success view)***********/
-				req.setAttribute("fooVO", fooVO);
-				String url = "/back-end/foo/listOneFoo.jsp";
-				RequestDispatcher successView = req.getRequestDispatcher(url); // 新增成功後轉交listAllEmp.jsp
-				successView.forward(req, res);
-				} catch (Exception e) {
-					errorMsgs.add(e.getMessage());
-					RequestDispatcher failureView = req.getRequestDispatcher("/back-end/foo/addFoo.jsp");
-					failureView.forward(req, res);
-				}
-			
 		}
 		
 		if ("getOne_For_Update".equals(action)) {
@@ -260,36 +208,22 @@ public class FooServlet extends HttpServlet {
 					req.setAttribute("listFoos_ByFooStatus",fooSvc.getFoosByFooStatus(fooStatus));
 				}
 				
+				String updateSuccess = "【  " + fooName + " 】" + "修改成功";
+				req.setAttribute("updateSuccess", updateSuccess);
+				
+				if(requestURL.equals("/back-end/foo/listFood_ByCompositeQuery.jsp")){
+					HttpSession session = req.getSession();
+					Map<String, String[]> map = (Map<String, String[]>)session.getAttribute("map");
+					List<FooVO> list  = fooSvc.getAll(map);
+					req.setAttribute("listFoods_ByCompositeQuery",list); //  複合查詢, 資料庫取出的list物件,存入request
+				}
+				
 				
 				String url = requestURL;
 				RequestDispatcher successView = req.getRequestDispatcher(url); // 新增成功後轉交listAllFoo.jsp
 				successView.forward(req, res);
 				} catch (Exception e) {
 					errorMsgs.put("error",e.getMessage());
-					RequestDispatcher failureView = req.getRequestDispatcher("/back-end/foo/updateFoo.jsp");
-					failureView.forward(req, res);
-				}
-		}
-		
-		if ("listFoos_ByFooStatus".equals(action)) {
-			LinkedList<String> errorMsgs = new LinkedList<String>();
-			req.setAttribute("errorMsgs", errorMsgs);
-			try {
-				/***********************1.接收請求參數 - 輸入格式的錯誤處理*************************/
-				Integer fooStatus = new Integer(req.getParameter("fooStatus"));
-				
-				/***************************2.開始新增資料***************************************/
-				FooService fooSvc = new FooService();
-				Set<FooVO> set = fooSvc.getFoosByFooStatus(fooStatus);
-				/***************************3.新增完成,準備轉交(Send the Success view)***********/
-				req.setAttribute("listFoos_ByFooStatus", set);
-				
-				String url = "/back-end/foo/listFoosByFooStatus.jsp";
-				RequestDispatcher successView = req.getRequestDispatcher(url); // 新增成功後轉交listAllFoo.jsp
-				successView.forward(req, res);
-				
-				} catch (Exception e) {
-					errorMsgs.add(e.getMessage());
 					RequestDispatcher failureView = req.getRequestDispatcher("/back-end/foo/updateFoo.jsp");
 					failureView.forward(req, res);
 				}
@@ -311,11 +245,12 @@ public class FooServlet extends HttpServlet {
 				fooSvc.changeFooStatus(fooNo, fooVO.getFooStatus());
 				
 				/***************************3.新增完成,準備轉交(Send the Success view)***********/
-				FooCatService fooCatSvc = new FooCatService();
-				if(requestURL.equals("/back-end/fooCat/listFoosByFooCatNo.jsp") || requestURL.equals("/back-end/fooCat/listAllFooCat.jsp")) {
-					req.setAttribute("listFoos_ByFooCatNo",fooCatSvc.getFoosByFooCatNo(fooVO.getFooCatNo())); // 資料庫取出的Set物件,存入request
-				} else if (requestURL.equals("/back-end/foo/listFoosByFooStatus.jsp")){
-					req.setAttribute("listFoos_ByFooStatus",fooSvc.getFoosByFooStatus((fooVO.getFooStatus() == 0)? 1 : 0));
+				
+				if(requestURL.equals("/back-end/foo/listFood_ByCompositeQuery.jsp")){
+					HttpSession session = req.getSession();
+					Map<String, String[]> map = (Map<String, String[]>)session.getAttribute("map");
+					List<FooVO> list  = fooSvc.getAll(map);
+					req.setAttribute("listFoods_ByCompositeQuery",list); //  複合查詢, 資料庫取出的list物件,存入request
 				}
 				
 				
@@ -329,7 +264,37 @@ public class FooServlet extends HttpServlet {
 				}
 		}
 		
-		
+		if ("listFoods_ByCompositeQuery".equals(action)) {
+			Map<String, String> errorMsgs = new LinkedHashMap<String, String>();
+			req.setAttribute("errorMsgs", errorMsgs);
+			
+			try {
+				
+				/*************************** 1.接收請求參數 - 輸入格式的錯誤處理 **********************************/ 
+				HttpSession session = req.getSession();
+				Map<String, String[]> map = (Map<String,String[]>)session.getAttribute("map");
+				if(req.getParameter("whichPage") == null) {
+					HashMap<String, String[]> map1 = new HashMap<String, String[]>(req.getParameterMap());
+					
+					session.setAttribute("map",map1);
+					map = map1;
+				}
+				
+				/*************************** 2.開始查詢資料 ***************************************/
+				FooService fooSvc = new FooService();
+				List<FooVO> list = fooSvc.getAll(map);
+				
+				/***************************3.查詢完成,準備轉交(Send the Success view)************/
+				req.setAttribute("listFoods_ByCompositeQuery", list);
+				RequestDispatcher successView = req.getRequestDispatcher("/back-end/foo/listFood_ByCompositeQuery.jsp");
+				successView.forward(req, res);
+				
+			} catch (Exception e) {
+				errorMsgs.put("error",e.getMessage());
+				RequestDispatcher failureView = req.getRequestDispatcher("/back-end/admin/listAllFoo.jsp");
+				failureView.forward(req, res);
+			}
+		}
 	}
 
 }

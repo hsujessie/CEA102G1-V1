@@ -59,6 +59,10 @@ td {
 	position: absolute;
 	right: 0%;
 }
+
+#status {
+	margin-left:180px;
+}
 </style>
 </head>
 <body>
@@ -85,7 +89,7 @@ td {
 					class="com.movie.model.MovService" />
 				<div class="col-8">
 					<h3 class="h3-style listOne-h3-pos">訂單詳情</h3>
-					<h2 id="status" style="margin-left:180px;">${ordMasVO.ordMasStatus == "0"?"未取票":(ordMasVO.ordMasStatus == "1")?"已取票" :"已取消"}</h2>
+					<h2 id="status" >${(ordMasVO.ordMasStatus == "0")?"未取票":(ordMasVO.ordMasStatus == "1")?"已取票" :"已取消"}</h2>
 					<table>
 						<tr>
 							<th>取票二維碼</th>
@@ -169,10 +173,14 @@ td {
 	<%@ include file="/front-end/files/frontend_importJs.file"%>
 	<script>
 		let status = "${ordMasVO.ordMasStatus}";
-		
+		let result = "${sesSvc.checkOverdue(ordMasVO.sesNo, 1)}";
 		switch(status) {
 			case '0':
-				$("#status").css("color","blue");
+				if (result === "true") 
+					$("#status").css("color","red");
+				else 
+					$("#status").css("color","blue");
+				
 				break;
 			case '1':
 				$("#status").css("color","green");

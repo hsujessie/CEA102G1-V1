@@ -2,11 +2,11 @@
 	pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ page import="java.util.*"%>
-<%@ page import="com.admin.model.*"%>
+<%@ page import="com.food.model.*"%>
 
 <html>
 <head>
-<title>Admins Management</title>
+<title>Foods Management</title>
 <%@ include file="/back-end/files/sb_head.file"%>
 
 <style>
@@ -53,7 +53,7 @@ table {
 			<main>
 				<div class="container-fluid">
 					<!-- error message Start -->
-					<h3 class="h3-style" style="display: inline-block;">員工列表</h3>
+					<h3 class="h3-style" style="display: inline-block;">餐點列表</h3>
 					<c:if test="${addSuccess != null}">
 						<span class="success-span"> ${addSuccess} <i
 							class="fa fa-hand-peace-o"></i>
@@ -70,16 +70,23 @@ table {
 					<div class="row " style="margin: -60px 0 20px 0;">
 						<div class="col-2"></div>
 						<div class="col-10">
-							<FORM class="form-sty" METHOD="post" ACTION="<%=request.getContextPath()%>/adm/adm.do">
-								<b>在職狀態</b> <select name="adm_status" style="width: 80px;" class="form-control">
+							<FORM class="form-sty" METHOD="post" ACTION="<%=request.getContextPath()%>/foo/foo.do">
+								<b>上架狀態</b> <select name="foo_status" style="width: 80px;" class="form-control">
+									<option value="">全部
 									<c:forEach varStatus="i" begin="0" end="1">
-										<option value="${i.index}">${i.index==0?"在職":"離職"}
+										<option value="${i.index}">${i.index==0?"上架":"下架"}
 									</c:forEach>
-									<option value="">兩者
+								</select>
+								<jsp:useBean id="fooCatSvc" class="com.food_cate.model.FooCatService"/>
+								<b>商品類別</b>
+								<select name="foocat_no" style="width: 120px;" class="form-control">
+										<option value="">全部
+									<c:forEach var="fooCatVO" items="${fooCatSvc.all}">
+										<option value="${fooCatVO.fooCatNo}">${fooCatVO.fooCatName}
+									</c:forEach> 
 								</select> 
-								<b>員工姓名</b> <input name="adm_name" class="form-control"/>
-								<b>員工帳號</b> <input name="adm_account" class="form-control"/>
-								<input type="hidden" name="action" value="listAdmins_ByCompositeQuery"> 
+								<b>商品名稱</b> <input name="foo_name" class="form-control" style="width: 160px;"/>
+								<input type="hidden" name="action" value="listFoods_ByCompositeQuery"> 
 								<a
 									class="btn btn-light btn-brd grd1 effect-1"> <input
 									type="submit" value="搜尋" class="input-pos">
@@ -107,34 +114,38 @@ table {
 								</thead>
 
 								<tbody>
-								<jsp:useBean id="listAdmins_ByCompositeQuery" scope="request" type="java.util.List<AdmVO>"/>
-								<%@ include file="/back-end/admin/pages/page1_ByCompositeQuery.file"%> 
-									<c:forEach var="admVO" items="${listAdmins_ByCompositeQuery}" varStatus="no" begin="<%=pageIndex%>" end="<%=pageIndex+rowsPerPage-1%>">
+								<jsp:useBean id="listFoods_ByCompositeQuery" scope="request" type="java.util.List<FooVO>"/>
+								<%@ include file="/back-end/foo/pages/page1_ByCompositeQuery.file"%> 
+									<c:forEach var="fooVO" items="${listFoods_ByCompositeQuery}" varStatus="no" begin="<%=pageIndex%>" end="<%=pageIndex+rowsPerPage-1%>">
 										<tr class="sty-height" valign='middle'
-											${(admVO.admNo==param.admNo) ? 'style="background-color:#bb9d52; color:#fff;"':''}>
+											${(fooVO.fooNo==param.fooNo) ? 'style="background-color:#bb9d52; color:#fff;"':''}>
 											<td>${no.index+1}</td>
-											<td>${admVO.admName}</td>
+											<td>${fooVO.fooName}</td>
+											<td>${fooCatSvc.getOneFooCat(fooVO.fooCatNo).fooCatName}</td>
 											<td><img
-												src="<%=request.getContextPath()%>/util/imgReader${admVO.admImgParam}"></td>
-											<td>${admVO.admAccount}</td>
-											<td>${admVO.admMail}</td>
+												src="<%=request.getContextPath()%>/util/imgReader${fooVO.fooImgParam}"></td>
+											<td>$ ${fooVO.fooPrice}</td>
 											<td
-												${admVO.admStatus=="0" ?"style='color:blue;'":"style='color:red;'"}>${admVO.admStatus=="0" ?"在職中":"已離職"}</td>
+												${fooVO.fooStatus=="0" ?"style='color:blue;'":"style='color:red;'"}>${fooVO.fooStatus=="0" ?"上架中":"已下架"}</td>
 											<td>
-												<a class="btn btn-light btn-brd grd1 effect-1">
-													<input class="input-pos look" type="button" value="查看" data-toggle="modal" data-target="#exampleModal">
-													<input type="hidden" name="admNo" value="${admVO.admNo}"/>
-												</a>
-											</td>
-											<td>
-												<form method="post"
-													action="<%=request.getContextPath()%>/adm/adm.do">
+												<form method="post" action="<%=request.getContextPath()%>/foo/foo.do">
 													<a class="btn btn-light btn-brd grd1 effect-1"> 
-														<input type="hidden" name="admNo" value="${admVO.admNo}"/>
-														<input type="hidden" name="action" value="getOne_for_update"/>
+														<input type="hidden" name="fooNo" value="${fooVO.fooNo}"/>
+														<input type="hidden" name="action" value="getOne_For_Update"/> 
 														<input type="hidden" name="requestURL" value="<%=request.getServletPath()%>"/> 
 														<input type="hidden" name="whichPage" value="${param.whichPage}"/> 
 														<input type="submit" value="修改" class="input-pos"/>
+													</a>
+												</form>
+											</td>
+											<td>
+												<form method="post" action="<%=request.getContextPath()%>/foo/foo.do">
+													<a class="btn btn-light btn-brd grd1 effect-1"> 
+														<input type="hidden" name="action" value="change_Status"/> 
+														<input type="hidden" name="fooNo" value="${fooVO.fooNo}"/>
+														<input type="hidden" name="requestURL" value="<%=request.getServletPath()%>"/> 
+														<input type="hidden" name="whichPage" value="${param.whichPage}"/> 
+														<input type="submit" value=${(fooVO.fooStatus)==0?"下架":"上架"} class="input-pos"/>
 													</a>
 												</form>
 											</td>
@@ -142,7 +153,7 @@ table {
 									</c:forEach>
 								</tbody>
 							</table>
-							<%@ include file="/back-end/admin/pages/page2_ByCompositeQuery.file" %>
+							<%@ include file="/back-end/foo/pages/page2_ByCompositeQuery.file" %>
 						</div>
 					</div>
 					<!-- listAllMovie End -->

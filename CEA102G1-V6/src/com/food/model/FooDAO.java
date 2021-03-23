@@ -16,6 +16,11 @@ import javax.naming.InitialContext;
 import javax.naming.NamingException;
 import javax.sql.DataSource;
 
+import com.admin.model.AdmVO;
+
+import jdbc.util.CompositeQuery.jdbcUtil_CompositeQuery_Admin;
+import jdbc.util.CompositeQuery.jdbcUtil_CompositeQuery_Food;
+
 public class FooDAO implements FooDAO_interface {
 	private static DataSource ds;
 	
@@ -418,6 +423,64 @@ public class FooDAO implements FooDAO_interface {
 		}
 		
 		return fooCartSet;
+	}
+
+	@Override
+	public List<FooVO> getAll(Map<String, String[]> map) {
+		List<FooVO> list = new ArrayList<FooVO>();
+		FooVO fooVO = new FooVO();
+		
+		Connection con = null;
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+		
+		try {
+			con = ds.getConnection();
+			
+			String finalSQL = "select * from food "+ jdbcUtil_CompositeQuery_Food.get_WhereCondition(map) + "order by foo_no desc";
+			
+			pstmt = con.prepareStatement(finalSQL);
+			rs = pstmt.executeQuery();
+			
+			while (rs.next()) {
+				fooVO = new FooVO();
+				
+				fooVO.setFooNo(rs.getInt("FOO_NO"));
+				fooVO.setFooName(rs.getString("FOO_NAME"));
+				fooVO.setFooCatNo(rs.getInt("FOOCAT_NO"));
+				fooVO.setFooPrice(rs.getInt("FOO_PRICE"));
+				fooVO.setFooStatus(rs.getInt("FOO_STATUS"));
+				list.add(fooVO);
+			}
+			
+		} catch (SQLException se) {
+			throw new RuntimeException("A database error occured. " + se.getMessage());
+		} finally {
+			if (rs != null) {
+				try {
+					rs.close();
+				} catch (SQLException se) {
+					se.printStackTrace(System.err);
+				}
+			}
+			
+			if (pstmt != null) {
+				try {
+					pstmt.close();
+				} catch (SQLException se) {
+					se.printStackTrace(System.err);
+				}
+			}
+			if (con != null) {
+				try {
+					con.close();
+				} catch (Exception e) {
+					e.printStackTrace(System.err);
+				}
+			}
+		}
+		
+		return list;
 	}
 
 }

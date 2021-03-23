@@ -78,12 +78,12 @@
 									<jsp:useBean id="movSvc" class="com.movie.model.MovService"></jsp:useBean>
 									<c:set var="count" value="1" />
 									<c:forEach var="ordMasVO" items="${ordMasSvc.getByMemNo(MemberVO.memNo)}">
-										<c:if test="${ordMasVO.ordMasStatus == 0}">
-											<c:set var="sesNo" value="${ordMasVO.sesNo}" />
+										<c:set var="sesVO" value="${sesSvc.getOneSes(ordMasVO.sesNo)}" />
+										<c:if test="${ordMasVO.ordMasStatus == 0 && !sesSvc.checkOverdue(sesVO.sesNo, 1)}">
 											<tr class="sty-height" valign='middle'>
 												<td>${count}</td>
-												<td>${movSvc.getOneMov(sesSvc.getOneSes(sesNo).movNo).movname}</td>
-												<td>${sesSvc.getOneSes(sesNo).sesDate} <fmt:formatDate value="${sesSvc.getOneSes(sesNo).sesTime}" pattern="HH:mm"/></td>
+												<td>${movSvc.getOneMov(sesVO.movNo).movname}</td>
+												<td>${sesVO.sesDate} <fmt:formatDate value="${sesVO.sesTime}" pattern="HH:mm"/></td>
 												<td style="color:blue">未取票</td>
 												<td><fmt:formatDate value="${ordMasVO.ordMasDate}" pattern="yyyy-MM-dd HH:mm"/></td>
 												<td>
@@ -99,7 +99,7 @@
 														<input type="hidden" name="action" value="change_status">
 														<input type="hidden" name="ordMasNo" value="${ordMasVO.ordMasNo}">
 													</form>
-													<button class="refund combtn">退票</button>
+													<button class="refund combtn" ${sesSvc.checkOverdue(sesVO.sesNo, 0)?"disabled":""}>退票</button>
 												</td>
 											</tr>
 											<c:set var="count" value="${count + 1}" />
@@ -123,13 +123,13 @@
 								<tbody>
 									<c:set var="count" value="1" />
 									<c:forEach var="ordMasVO" items="${ordMasSvc.getByMemNo(MemberVO.memNo)}">
-										<c:if test="${ordMasVO.ordMasStatus == 1 || ordMasVO.ordMasStatus == 2}">
-											<c:set var="sesNo" value="${ordMasVO.sesNo}" />
+										<c:set var="sesVO" value="${sesSvc.getOneSes(ordMasVO.sesNo)}" />
+										<c:if test="${ordMasVO.ordMasStatus == 1 || ordMasVO.ordMasStatus == 2 || sesSvc.checkOverdue(sesVO.sesNo, 1)}">
 											<tr class="sty-height" valign='middle'>
 												<td>${count}</td>
-												<td>${movSvc.getOneMov(sesSvc.getOneSes(sesNo).movNo).movname}</td>
-												<td>${sesSvc.getOneSes(sesNo).sesDate} <fmt:formatDate value="${sesSvc.getOneSes(sesNo).sesTime}" pattern="HH:mm"/></td>
-												<td ${ordMasVO.ordMasStatus == 1?"style='color:green'":"style='color:red'"}>${ordMasVO.ordMasStatus == 1?"已完成":"已取消"}</td>
+												<td>${movSvc.getOneMov(sesVO.movNo).movname}</td>
+												<td>${sesVO.sesDate} <fmt:formatDate value="${sesVO.sesTime}" pattern="HH:mm"/></td>
+												<td ${ordMasVO.ordMasStatus == 1?"style='color:green'":"style='color:red'"}>${ordMasVO.ordMasStatus == 1?"已完成":(ordMasVO.ordMasStatus == 2)?"已取消":"逾期未取票"}</td>
 												<td>
 																									<form method="post" action="<%=request.getContextPath()%>/ordMas/ordMas.do">
 																										<input type="hidden" name="ordMasNo" value="${ordMasVO.ordMasNo}" />
