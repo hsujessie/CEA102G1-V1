@@ -291,7 +291,7 @@ public class FooServlet extends HttpServlet {
 				
 			} catch (Exception e) {
 				errorMsgs.put("error",e.getMessage());
-				RequestDispatcher failureView = req.getRequestDispatcher("/back-end/admin/listAllFoo.jsp");
+				RequestDispatcher failureView = req.getRequestDispatcher("/back-end/foo/listAllFoo.jsp");
 				failureView.forward(req, res);
 			}
 		}

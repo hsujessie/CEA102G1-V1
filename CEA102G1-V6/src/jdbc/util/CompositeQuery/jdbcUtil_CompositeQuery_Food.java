@@ -15,7 +15,10 @@ public class jdbcUtil_CompositeQuery_Food {
 			aCondition = columnName + "=" + value;
 		else if ("foo_name".equals(columnName)) // 用於varchar
 			aCondition = columnName + " like '%" + value + "%'";
-
+		else if ("foo_price1".equals(columnName))
+			aCondition = "foo_price >= " + value;
+		else if ("foo_price2".equals(columnName))
+			aCondition = "foo_price <= " + value;
 		return aCondition + " ";
 	}
 
@@ -35,7 +38,6 @@ public class jdbcUtil_CompositeQuery_Food {
 					whereCondition.append(" and " + aCondition);
 			}
 		}
-		
 		return whereCondition.toString();
 	}
 	
