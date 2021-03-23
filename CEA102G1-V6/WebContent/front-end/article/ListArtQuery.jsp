@@ -159,7 +159,11 @@ function ListArtQuery(){
 						+'<div id="artTime"><div style="display: inline-block">修改時間：</div> <div style="display: inline-block">'+moment(item.artTime).locale('zh_TW').format('llll')+'</div></div>'
 						+'<div><div class="artContent" data-value="'+item.artNo+'">'+item.artContent+'</div></div><hr>')			
 						;
-				});			
+				});
+			//若無文章
+			if (artVO.length == 0){
+				$('#artListCenter').append('<div class="noArticle">尚無文章</div>');
+			}
 		},
 		error: function(){console.log("AJAX-ListArtQuery發生錯誤囉!")}
 	});
@@ -244,7 +248,7 @@ function ListArtTopThreeQuery(){
 			$('#Top3Article').append('<hr>');
 			//若無文章
 			if (artVO.length == 0){
-				$('#Top3Article').append('<div class="noArticle">尚無文章</div>');
+				$('#Top3Article').empty();
 			}
 		},
 		error: function(){console.log("AJAX-ListArtTopThreeQuery發生錯誤囉!")}

@@ -9,6 +9,7 @@ public interface ArtDAO_interface {
 	public Integer updateArtReplyno(ArtVO artVO);
 	public void delete(Integer artNo);
 	public ArtVO findByPrimaryKey(Integer artNo);
+	public List<String> getAllStatusEqualsOne();
 	public List<ArtVO> findByTitle(String artTitle);
 	public List<String> getAllMoveType();
 	public List<ArtVO> getAll();

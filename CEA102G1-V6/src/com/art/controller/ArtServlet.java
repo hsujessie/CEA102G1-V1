@@ -368,11 +368,23 @@ public class ArtServlet extends HttpServlet {
 			
 			if(artMovType == null || artMovType.trim().length() == 0) {
 				//查Top3
+				ArrayList<String> artNoList = (ArrayList<String>) artSvc.getAllStatusEqualsOne();
+				for(String artNo:artNoList) {
+					if(jedis.sismember("all:artNo", artNo)) {
+						jedis.srem("all:artNo", artNo);
+					}
+				}
 				resultArt = jedis.sort("all:artNo", new SortingParams().by("artNo:*->clickTimes").desc().limit(0, 3));
 				System.out.println("查Top3:"+resultArt);
 
 			}else {
 				//依電影分類查Top3
+				ArrayList<String> artNoList = (ArrayList<String>) artSvc.getAllStatusEqualsOne();
+				for(String artNo:artNoList) {
+					if(jedis.sismember("movType:"+artMovType, artNo)) {
+						jedis.srem("movType:"+artMovType, artNo);
+					}
+				}
 				resultArt = jedis.sort("movType:"+artMovType, new SortingParams().by("artNo:*->clickTimes").desc().limit(0, 3));
 				System.out.println("依電影分類查Top3:"+resultArt);
 			}

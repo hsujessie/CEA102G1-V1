@@ -109,6 +109,9 @@
                 width: 90%;
             }
         }
+        #artMovTypeList li:hover{
+        	cursor: pointer;
+        }
     </style>
 
     <script>
@@ -287,7 +290,7 @@
                     $(artVO).each(function (i, item) {
                         $('#artMovTypeList').append(
                             '<li id="' + item.movTypeIndex + '" class="nav-item" data-value="' +
-                            item.artMovType + '"><a class="nav-link" href="#">' + item
+                            item.artMovType + '"><a class="nav-link">' + item
                             .artMovType + '</a></li>'
                         );
                     });
@@ -331,6 +334,10 @@
                     });
                     clearListArtTopThreeQuery();
                     ListArtTopThreeQuery();
+        			//若無文章
+        			if (artVO.length == 0){
+        				$('#artListCenter').append('<div class="noArticle">尚無文章</div>');
+        			}
                 },
                 error: function () {
                     console.log('AJAX-findArtByCompositeQuery發生錯誤囉!')
