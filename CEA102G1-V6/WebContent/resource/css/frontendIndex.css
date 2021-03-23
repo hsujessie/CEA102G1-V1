@@ -129,7 +129,7 @@
 .movie {
     position: relative;
     width: 100%;
-    padding: 45px 0 15px 0;
+    margin-top: 8%;
 }
 
 .movie .movie-item {
@@ -222,7 +222,7 @@
 .about {
     position: relative;
     width: 100%;
-    padding: 45px 0;
+    margin-top: 8%;
 }
 
 .about .section-header {
@@ -281,7 +281,7 @@
 .forum {
     position: relative;
     width: 100%;
-    padding: 45px 0;
+    margin-top: 8%;
 }
 
 .forum .forum-carousel {
