@@ -66,6 +66,12 @@
     a:hover {
          color: #000;
     }
+    .artContent img{
+		width: 10%;
+		height: 10%;
+		display: block;
+    	margin-left: auto;
+	}
 </style>
 <title>Article Manage</title>
 
@@ -333,7 +339,7 @@ function addFavCompositeQueryData(e) {
 	}
 	// 	debugger;
 	if ($('#artFavTimeByCompositeQuery').val() != null || $('#artFavTimeByCompositeQuery').val() != 'null') {
-	    addArtDataAttr['artTime'] = $('#artFavTimeByCompositeQuery').val();
+	    addArtDataAttr['artFavTime'] = $('#artFavTimeByCompositeQuery').val();
 	}
 	return addArtDataAttr;
 };
@@ -409,13 +415,13 @@ function findArtRepByCompositeQuery(e) {
 	        $(artRepVO).each(function (i, item) {
 	             debugger;
 	            $('#artRepListCenter').append(
-		            '<div id="artTitle"><div style="display: inline-block;">留言文章：</div><div class="artTitle divHeight" style="display: inline-block;"><b>' + item.artTitle + '</b></div></div>' +
+		            '<div id="artTitle"><div style="display: inline-block;">留言文章：</div><div class="artTitle artContent divHeight" style="display: inline-block;"><b>' + item.artTitle + '</b></div></div>' +
 	                '<div id="movType" class="divWidth divHeight" style="display: inline-block"><div style="display: inline-block">電影類型：</div> <div style="display: inline-block">' +item.artMovType + '</div></div>' +
-	                '<div id="artRep" style="display: inline-block"><button class="artRepButton combtn" title="修改留言">修改留言</button></div>' +
+	                '<div id="artRep" style="display: inline-block"><button class="artRepButton combtn" title="刪除留言" data-value="'+item.artRepNo+'">刪除留言</button></div>' +
 	                '<div id="artRepTime"><div class="divHeight" style="display: inline-block">留言時間：</div> <div class="divHeight" style="display: inline-block">' +
-	                moment(item.artFavTime).locale('zh_TW').format('llll') +
+	                moment(item.artRepTime).locale('zh_TW').format('llll') +
 	                '</div></div>' +
-	                '<div><div class="artContent" data-value="' + item.artNo + '" style="font-size: 1.2rem; text-indent: 2rem;">' +
+	                '<div><div class="artRepContent" data-value="' + item.artNo + '" style="font-size: 1.2rem; text-indent: 2rem;">' +
 	                item.artRepContent + '</div></div><hr>');
 	            $('#artRepListCenter .artTitle').css({
 	                'cursor': 'pointer'
@@ -457,6 +463,24 @@ $('#v-pills-artRep-tab, #artRepTitleByCompositeQuery, #findArtRepTitleByButton, 
 	}
 });
 
+//刪除留言
+$('#artRepListCenter').on('click', '.artRepButton', function(e){
+	debugger;
+	$.ajax({
+		type: 'POST',
+		url: '<%=request.getContextPath()%>/art/artRep.do',
+		data: {'action':'changeArticleReportStatus', 'artRepNo':$(e.currentTarget).attr('data-value')},
+		dataType: 'json',
+		success: function (){
+					toastr['warning']('刪除留言', '成功');
+					debugger;
+					findArtRepByCompositeQuery('v-pills-artRep-tab');
+					
+		},
+		error: function(){console.log("AJAX-changeArtFav發生錯誤囉!")}
+	});
+});
+
 //進入查該會員全部文章
 debugger;
 findArtByCompositeQuery(this);
@@ -471,6 +495,7 @@ if ('${updateSuccess}' == 'updateSuccess') {
 
 //取消收藏文章
 $('#artFavListCenter').on('click', '.artFavButton', function (event){
+	debugger;
 	$.ajax({
 		type: 'POST',
 		url: '<%=request.getContextPath()%>/art/artFav.do',
@@ -488,7 +513,7 @@ $('#artFavListCenter').on('click', '.artFavButton', function (event){
 
 //單篇文章燈箱
 debugger;
-$('#artListCenter, #artFavListCenter').on('click', '.artContent', function (event) {
+$('#artListCenter, #artFavListCenter, #artRepListCenter').on('click', '.artContent', function (event) {
     console.log("artContent clicked:" + $(event.currentTarget).html());
     console.log("artNo:" + $(event.currentTarget).attr('data-value'));
     // debugger;

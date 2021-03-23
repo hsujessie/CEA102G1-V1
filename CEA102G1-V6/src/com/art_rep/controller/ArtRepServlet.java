@@ -157,19 +157,21 @@ public class ArtRepServlet extends HttpServlet {
 				JSONObject obj = new JSONObject();
 				MemberService memSvc = new MemberService();
 				ArtService artSvc = new ArtService();
-				
-				try {
-					obj.put("artNo", artRepVO.getArtNo());
-					obj.put("memNo", artRepVO.getMemNo());
-					obj.put("memName", memSvc.getOneMember((artRepVO.getMemNo())).getMemName());
-					obj.put("artRepTime", artRepVO.getArtRepTime());
-					obj.put("artTitle", artSvc.getOneArt(artRepVO.getArtNo()).getArtTitle());
-					obj.put("artRepContent", artRepVO.getArtRepContent());
-					obj.put("artMovType", artSvc.getOneArt(artRepVO.getArtNo()).getMovType());
-					
+
+				if(artRepVO.getArtRepStatus() == 0) {
+					try {
+						obj.put("artRepNo", artRepVO.getArtRepNo());
+						obj.put("artNo", artRepVO.getArtNo());
+						obj.put("memNo", artRepVO.getMemNo());
+						obj.put("memName", memSvc.getOneMember((artRepVO.getMemNo())).getMemName());
+						obj.put("artRepTime", artRepVO.getArtRepTime());
+						obj.put("artTitle", artSvc.getOneArt(artRepVO.getArtNo()).getArtTitle());
+						obj.put("artRepContent", artRepVO.getArtRepContent());
+						obj.put("artMovType", artSvc.getOneArt(artRepVO.getArtNo()).getMovType());
+					} catch (JSONException e) {
+						e.printStackTrace();
+					}
 					array.put(obj);
-				} catch (JSONException e) {
-					e.printStackTrace();
 				}
 			}
 			System.out.println("=================artFav_Show_By_CompositeQuery==============");
@@ -184,6 +186,29 @@ public class ArtRepServlet extends HttpServlet {
 			
 		}
 		
+		//articleManage.jsp呼叫，更新留言狀態
+		if("changeArticleReportStatus".equals(action)) {
+			JSONArray array = new JSONArray();
+			
+			/*====================請求參數===================*/
+			Integer artRepNo = Integer.parseInt(request.getParameter("artRepNo"));
+			System.out.println("artRepNo:"+artRepNo);
+			
+			/*====================修改資料===================*/
+			ArtRepService artRepSvc = new ArtRepService();
+//			artRepSvc.getOneArtRep(artRepNo).getArtRepStatus();
+			
+			artRepSvc.updateStatus(artRepNo, 1);
+			System.out.println("新的ArtRepStatus:"+artRepSvc.getOneArtRep(artRepNo).getArtRepStatus());
+			
+			/*==============傳回=============*/
+			response.setContentType("text/plain");
+			response.setCharacterEncoding("UTF-8");
+			PrintWriter out = response.getWriter();
+			out.write(array.toString());
+			out.flush();
+			out.close();
+		}
 	}
 
 }
