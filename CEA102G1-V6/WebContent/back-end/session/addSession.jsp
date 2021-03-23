@@ -508,14 +508,23 @@
 	/* =========================================================================================== */
 									/* Varify Inputs */
 	/* =========================================================================================== */
-	let theNoFir = $("input[name='theNo']")[0];
-	let theNoSec = $("input[name='theNo']")[1];
-	let theNoThi = $("input[name='theNo']")[2];
 	let movNoselect = $("select[name='movNo']")[0];
 	
-	theNoFir.addEventListener('change', isEmpty, false);
-	theNoSec.addEventListener('change', isEmpty, false);
-	theNoThi.addEventListener('change', isEmpty, false);
+	theNoZero.addEventListener('change', isEmpty, false);
+	theNoFirst.addEventListener('change', isEmpty, false);
+	theNoSecond.addEventListener('change', isEmpty, false);
+	theNothree.addEventListener('change', isEmpty, false);
+	theNoFour.addEventListener('change', isEmpty, false);
+	theNoFif.addEventListener('change', isEmpty, false);
+	theNoSix.addEventListener('change', isEmpty, false);
+	theNoSev.addEventListener('change', isEmpty, false);
+	theNoEig.addEventListener('change', isEmpty, false);	
+	theNoNin.addEventListener('change', isEmpty, false);
+	theNoTen.addEventListener('change', isEmpty, false);
+	theNoEle.addEventListener('change', isEmpty, false);
+	theNoTwe.addEventListener('change', isEmpty, false);
+	theNoThirt.addEventListener('change', isEmpty, false);
+	theNoFourt.addEventListener('change', isEmpty, false);
 	movNoselect.addEventListener('change', isEmpty, false);
 	addtime.addEventListener("click", isEmpty, false);
 	$('#sesdate_begin').change(isEmpty);
@@ -533,14 +542,22 @@
 	</c:if>
 	
 	function isEmpty(e){
-		if(!theNoFir.checked && !theNoSec.checked && !theNoThi.checked){
+		if(!theNoZero.checked && !theNoFirst.checked && !theNoSecond.checked && 
+		   !theNothree.checked && !theNoFour.checked && !theNoFif.checked &&
+		   !theNoSix.checked && !theNoSev.checked && !theNoEig.checked &&
+		   !theNoNin.checked && !theNoTen.checked && !theNoEle.checked &&
+		   !theNoTwe.checked && !theNoThirt.checked && !theNoFourt.checked){
 			$("#abled-btn").css('display','none');
 			$("#disabled-btn").css('display','block'); 
 			$("#theNo-errmsg").css('display','inline-block'); 
 			$("#theNo-errmsg-txt").text("請選擇影廳");
 		}
 		
-		if(theNoFir.checked || theNoSec.checked || theNoThi.checked){
+		if(theNoZero.checked || theNoFirst.checked || theNoSecond.checked ||
+		   theNothree.checked || theNoFour.checked || theNoFif.checked ||
+		   theNoSix.checked || theNoSev.checked || theNoEig.checked ||
+		   theNoNin.checked || theNoTen.checked || theNoEle.checked ||
+		   theNoTwe.checked || theNoThirt.checked || theNoFourt.checked){
 			$("#abled-btn").css('display','block');
 			$("#disabled-btn").css('display','none'); 
 			$("#theNo-errmsg").css('display','none'); 
