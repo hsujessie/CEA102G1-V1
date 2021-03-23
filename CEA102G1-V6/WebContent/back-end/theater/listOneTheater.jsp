@@ -44,25 +44,65 @@
   	margin-left: 10px;
   }
   #table2{
-	margin: 100px auto 5px auto;
+  margin: 0 auto;
   }
- #tbody1 tr td {
-/*  box-sizing:border-box; */
- 	width:30px;
- 	height:30px;
-/*  	background-color:#bb9d52; */
+ #tbody1 [data-seat] {
+ 	width:40px;
+ 	height:40px;
  	border:5px solid;
  	border-color:white;
+ 	border-radius:10px;
  }
  .s0{
- 	background-color:#6AD5D2;
+ 	background-color:#cec0a7;
  	}
  .s3{
- 	background-color:#D44444;
+ 	background-color:#FF9797;
  	}
  .s9{
- 	background-color:#103C3B;
+ 	background-color:#8E8E8E;
  	}
+ .selector{
+ 	width:40px;
+ 	height:40px;
+ 	border:5px solid;
+ 	border-color:white;
+ 	border-radius:100px;
+ 	background-color:#FCFCFC;
+ }
+
+.front-indicator {
+    padding: 0px;
+    width: 800px;
+    margin: 15px auto 15px auto;
+    background-color: #f6f6f6;
+    color: #adadad;
+    text-align: center;
+    padding: 3px;
+    border-radius: 5px;
+}
+#legend{
+margin:100px auto 0 auto;
+text-align: center;
+padding-left: 0px;
+list-style: none;
+}
+li .seatCharts-seat{
+display: inline-block;
+width:20px;
+height:20px;
+}
+li .seatCharts-legendDescription{
+display: inline-block;
+line-height: 30px;
+margin-left: 5px;
+}
+ul.seatCharts-legendList {
+	text-align: center;
+}
+li.seatCharts-legendItem {
+	display: inline-block;
+}
 </style>
 </head>
 <body class="sb-nav-fixed">
@@ -96,6 +136,20 @@
 			</td>
 						</tr>
                     </table>
+                                        <div id="legend" class="seatCharts-legend">
+                    <ul class="seatCharts-legendList">
+                                            <li class="seatCharts-legendItem">
+                                                <div class="s0 seatCharts-seat seatCharts-cell available first-class"></div><span class="seatCharts-legendDescription">座位</span>
+                                            </li>
+                                            <li class="seatCharts-legendItem">
+                                                <div class="s3 seatCharts-seat seatCharts-cell selected first-class"></div><span class="seatCharts-legendDescription">走道</span>
+                                            </li>
+                                            <li class="seatCharts-legendItem">
+                                                <div class="s9 seatCharts-seat seatCharts-cell unavailable"></div><span class="seatCharts-legendDescription">禁售</span>
+                                            </li>
+                                        </ul>
+                                        </div>
+                    <div class="front-indicator">螢幕</div>
                     <table id="table2">
 					    <tbody id="tbody1">
 					    </tbody>
@@ -115,7 +169,7 @@
 			let tableData="<tr><td></td>";
 			
 			for(i=0;i<20;i++){
-				tableData+="<td data-column="+(i+1)+">";
+				tableData+="<td  data-column="+(i+1)+">";
 			}
 			tableData+="</tr>"
 			for(i=0;i<20;i++){

@@ -33,7 +33,7 @@ public class FaqtypServlet {
 				FaqtypService faq_typeSvc = new FaqtypService();
 				Set<FaqVO> set = faq_typeSvc.getFaqsByFaqtyp_no(faqtyp_no);
 				
-				req.setAttribute("listTheaters_Bymovie_version", set);
+				req.setAttribute("listFaq_ByFaq_type", set);
 				
 				String url = null;
 				if("listFaq_ByFaq_type_A".equals(action))
