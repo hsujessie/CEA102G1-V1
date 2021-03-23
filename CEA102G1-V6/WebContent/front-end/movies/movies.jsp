@@ -38,9 +38,9 @@
                     <div class="row">
                         <div class="col-12">
                             <ul id="movies-flters">
-                                <li <c:if test="${empty nowShowing && empty commingSoon}">class="filter-active"</c:if> ><a href="${movies}">All</a></li>
-                                <li <c:if test="${not empty nowShowing}">class="filter-active"</c:if> ><a href="<%=request.getContextPath()%>/movie/mov.do?action=now_Showing">現正上映</a></li>
-                                <li <c:if test="${not empty commingSoon}">class="filter-active"</c:if> ><a href="<%=request.getContextPath()%>/movie/mov.do?action=comming_Soon">即將上映</a></li>
+                                <li <c:if test="${empty nowShowing && empty commingSoon}">class="filter-active"</c:if> ><a <c:if test="${not empty nowShowing || not empty commingSoon}">class="a-color"</c:if> href="${movies}">All</a></li>
+                                <li <c:if test="${not empty nowShowing}">class="filter-active"</c:if> ><a <c:if test="${empty nowShowing}">class="a-color"</c:if> href="<%=request.getContextPath()%>/movie/mov.do?action=now_Showing">現正上映</a></li>
+                                <li <c:if test="${not empty commingSoon}">class="filter-active"</c:if> ><a <c:if test="${empty commingSoon}">class="a-color"</c:if> href="<%=request.getContextPath()%>/movie/mov.do?action=comming_Soon">即將上映</a></li>
                             </ul>
                         </div>
                     </div>

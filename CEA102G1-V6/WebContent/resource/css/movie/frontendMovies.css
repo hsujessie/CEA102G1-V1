@@ -28,7 +28,6 @@
     display: inline-block;
     margin: 5px;
     padding: 8px 15px;
-    color: #aa9166;
     font-size: 14px;
     font-weight: 500;
     text-transform: uppercase;
@@ -38,16 +37,13 @@
     transition: .3s;
 }
 
-.movies #movies-flters li a{
+.a-color{
     color: #bb9d52;
 } 
 
 .movies #movies-flters li:hover{
-    background-color:#bb9d52;
-}
-
-.movies #movies-flters a:hover{
-    color: #454545!important;
+    /* background-color:#bb9d52; */
+    background-color: #fff;
 }
 
 .movies .movies-item {
