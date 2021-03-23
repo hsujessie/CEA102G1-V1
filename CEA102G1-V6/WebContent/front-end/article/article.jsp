@@ -83,9 +83,6 @@
 
         }
         @media (max-width: 991px) {
-        	#articleTop{
- 				position: sticky;      	
-        	}
             #artListLeft {
                 height: auto;
             }
