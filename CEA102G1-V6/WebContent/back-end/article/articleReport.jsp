@@ -27,7 +27,7 @@
 			text-overflow:ellipsis;
         }
         .bgGray:hover{
-            background-color: rgba(166, 166, 166, 0.5);
+            background-color: rgba(166, 166, 166, 0.3);
         }
 	</style>
 	<title>Back-End Management</title>
@@ -48,9 +48,9 @@
                     <br>
                     <br>
                     <!-- PUT HERE Start-->
-                    <div style="height: 10vh;">
+                    <div  class="form-group" style="height: 10vh;">
                     	<b>請選擇欲查看的檢舉分類：</b>
-                    	<select id="selectReportType">
+                    	<select id="selectReportType" class="form-control" style="width: 15vw; display: inline-block;">
                     		<option>請選擇</option>
                     		<option value="listAllArticleReport">文章檢舉列表</option>
                     		<option value="listAllArticleReplyReport">留言檢舉列表</option>
@@ -58,7 +58,7 @@
                     </div>
 
                     <h3 id="tableTitle" class="h3-style" style="display: inline-block;"></h3>
-					<hr>
+					<hr style="background-color:#bb9d52; height:1.5px;">
 		            <div id="listAllReport" style="font-size: 0px">
 
 					</div>
