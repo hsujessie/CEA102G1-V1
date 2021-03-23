@@ -124,7 +124,6 @@
             ListArtTopThreeQuery();
 
             //單篇文章燈箱
-            debugger;
             $('#artListCenter ,#Top3Article').on('click', '.artContent', function (event) {
                 console.log("artContent clicked:" + $(event.currentTarget).html());
                 console.log("artNo:" + $(event.currentTarget).attr('data-value'));
@@ -190,18 +189,15 @@
             $('#findArtByTitleButton ,#findArtByCompositeQueryButton, #artTitleByCompositeQuery, #artTimeForByCompositeQuery, #artAuthorForByCompositeQuery').on('click keypress', function (e) {
                     //  debugger;
                     if (e.which === 13 || e.currentTarget.id === 'findArtByCompositeQueryButton' || e.currentTarget.id === 'findArtByTitleButton') {
-                        debugger;
                     	findArtByCompositeQuery(e);
                     }
             });
 
             //依電影類型查詢
             $('#artMovTypeList').on('click', 'li', function (e) {
-                debugger;
                 $('.selectedMovType').removeClass('selectedMovType');
                 document.getElementById("artTitleByCompositeQuery").placeholder = '依' + $(this).data(
                     'value') + '查詢';
-                debugger;
               	//清空熱門文章列表
     			clearListArtTopThreeQuery();
               	
@@ -310,7 +306,6 @@
                 success: function (artVO) {
                     clearArtList();
                     $(artVO).each(function (i, item) {
-                        debugger;
                         $('#artListCenter').append(
                             '<div id="artAuthor" style="display: inline-block"><div style="display: inline-block">作者：</div> <div style="display: inline-block">' +
                             item.memName + '</div></div>' +
@@ -345,7 +340,6 @@
             var addArtDataAttr = {
                 'action': 'find_By_CompositeQuery_Use_AJAX'
             };
-            	debugger;
             addArtDataAttr['artMovType'] = $('.selectedMovType').attr('data-value');
             console.log('artMovType add ' + addArtDataAttr);
             // 	debugger;
@@ -370,14 +364,12 @@
         
         //複合查詢後熱門文章列表
         function movTypeHotArticle(data){
-        	debugger;
         	$.ajax({
         		type: 'POST',
         		url: '<%=request.getContextPath()%>/art/art.do',
         		data: {'action':'movTypeHotArticle', 'movType':data},
         		dataType: 'json',
         		success: function (artVO){
-        			debugger;
         			//清空熱門文章列表
         			clearListArtTopThreeQuery();
         			

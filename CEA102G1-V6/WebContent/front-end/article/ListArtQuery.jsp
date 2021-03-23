@@ -136,12 +136,6 @@
     	color: #808080;
     	text-align: center
     }
-/*     @media (min-width: 767px){ */
-/* 		.navbar-expand-lg .navbar-toggler { */
-/* 		    display: none; */
-/* 		}     */
-/*     } */
-
 </style>
 
 <script type="text/javascript">
@@ -332,7 +326,7 @@ function addArtRpt(){
 //新增回文
 function addArtRep(){
 	$('#artRepButton').click(function(){
-		debugger;
+// 		debugger;
 	if('${MemberVO}' == ''){
 		<%
 		session.setAttribute("location", request.getRequestURI());
