@@ -173,7 +173,7 @@
 	                            <div class="art-box">
 	                            	<p class="art-content">${artVO.artContent}</p>
 	                            </div>
-	                            <a class="btn" href="<%=request.getContextPath()%>/front-end/article/ArticleContent.jsp">Read More <i class="fa fa-angle-right"></i></a>
+	                            <a class="btn" href="<%=request.getContextPath()%>/front-end/article/article.jsp">Read More <i class="fa fa-angle-right"></i></a>
 	                        </div>
                         </c:forEach>
                         
