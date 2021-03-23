@@ -2,7 +2,9 @@ package com.art_rep.controller;
 
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -16,6 +18,8 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import com.art.model.ArtService;
+import com.art_fav.model.ArtFavService;
+import com.art_fav.model.ArtFavVO;
 import com.art_rep.model.ArtRepService;
 import com.art_rep.model.ArtRepVO;
 import com.art_rep_rpt.model.ArtRepRptService;
@@ -123,6 +127,61 @@ public class ArtRepServlet extends HttpServlet {
 			out.write(array.toString());
 			out.flush();
 			out.close();
+		}
+		
+		//留言複合查詢
+		if("find_By_CompositeQuery_Use_AJAX".equals(action)) {
+			JSONArray array = new JSONArray();
+			
+			/*====================請求參數===================*/
+			HttpSession session = request.getSession();
+			Map<String, String[]> map = (Map<String, String[]>) session.getAttribute("map");
+			System.out.println("request.getParameter(\"whichPage\"):"+request.getParameter("whichPage"));
+			if(request.getParameter("whichPage") == null) {
+				HashMap<String, String[]> hashMap = new HashMap<String, String[]>(request.getParameterMap());
+				session.setAttribute("map", hashMap);
+				map = hashMap;
+			}
+			System.out.println("artServlet_map:" + map);
+			
+			/*====================複合查詢===================*/	
+			ArtRepService artRepSvc = new ArtRepService();
+			System.out.println("artRepSvc.getAll(map):" + artRepSvc.getAll(map));
+			List<ArtRepVO> list = artRepSvc.getAll(map);
+			System.out.println("---over getAll(map) method---");
+			System.out.println("ArtRepServlet_List:" + list);
+			System.out.println("list.size()"+list.size());
+			
+			/*==============放入JSONObject==================*/
+			for (ArtRepVO artRepVO : list) {
+				JSONObject obj = new JSONObject();
+				MemberService memSvc = new MemberService();
+				ArtService artSvc = new ArtService();
+				
+				try {
+					obj.put("artNo", artRepVO.getArtNo());
+					obj.put("memNo", artRepVO.getMemNo());
+					obj.put("memName", memSvc.getOneMember((artRepVO.getMemNo())).getMemName());
+					obj.put("artRepTime", artRepVO.getArtRepTime());
+					obj.put("artTitle", artSvc.getOneArt(artRepVO.getArtNo()).getArtTitle());
+					obj.put("artRepContent", artRepVO.getArtRepContent());
+					obj.put("artMovType", artSvc.getOneArt(artRepVO.getArtNo()).getMovType());
+					
+					array.put(obj);
+				} catch (JSONException e) {
+					e.printStackTrace();
+				}
+			}
+			System.out.println("=================artFav_Show_By_CompositeQuery==============");
+			
+			/*==============傳回=============*/
+			response.setContentType("text/plain");
+			response.setCharacterEncoding("UTF-8");
+			PrintWriter out = response.getWriter();
+			out.write(array.toString());
+			out.flush();
+			out.close();
+			
 		}
 		
 	}

@@ -27,7 +27,7 @@
     	display: inline-block;
   	}
   	.divWidth{
-		width: 40vh;
+		width: 40vw;
 	}
 	.divHeight{
 		height: 5vh;
@@ -98,6 +98,8 @@
 			                    role="tab" aria-controls="v-pills-article" aria-selected="true">文章管理</a>
 			                <a class="nav-link" id="v-pills-artFav-tab" data-toggle="pill" href="#v-pills-artFav" role="tab"
 			                    aria-controls="v-pills-artFav" aria-selected="false">收藏管理</a>
+			                <a class="nav-link" id="v-pills-artRep-tab" data-toggle="pill" href="#v-pills-artRep" role="tab"
+			                    aria-controls="v-pills-artRep" aria-selected="false">留言管理</a>
 			            </div>
 			        </div>
 			        <div class="col-9">
@@ -151,6 +153,31 @@
 			                        </div>
 			                    </div>
 			                    <div id="artFavListCenter"></div>
+			                </div>
+			                <div class="tab-pane fade" id="v-pills-artRep" role="tabpanel" aria-labelledby="v-pills-artRep-tab">
+			                    <!-- 管理留言 -->
+			                    <div class="topDiv">
+			                        <div class="input-group mb-3">
+			                            <input type="text" id="artRepTitleByCompositeQuery" class="form-control"
+			                                placeholder="搜尋留言文章標題" aria-label="Recipient's username"
+			                                aria-describedby="findArtRepTitleByButton">
+			                            <div class="input-group-append">
+			                                <button class="btn btn-outline-secondary" type="button"
+			                                    id="findArtRepTitleByButton">查詢</button>
+			                            </div>
+			                        </div>
+			                    </div>
+			                    <div class="topDiv">
+			                        <div class="input-group mb-3">
+			                            <input type="date" id="artRepTimeByCompositeQuery" class="form-control" placeholder="依日期搜尋"
+			                                aria-label="Recipient's username" aria-describedby="findArtRepTimeByButton">
+			                            <div class="input-group-append">
+			                                <button class="btn btn-outline-secondary" type="button"
+			                                    id="findArtRepTimeByButton">查詢</button>
+			                            </div>
+			                        </div>
+			                    </div>
+			                    <div id="artRepListCenter"></div>
 			                </div>
 			            </div>
 			        </div>
@@ -228,6 +255,11 @@ function clearArtFavList(){
 	$('#artFavListCenter').empty();
 }
 
+//清空留言列表
+function clearArtRepList(){
+	$('#artRepListCenter').empty();
+}
+
 //清空燈箱
 function clearOneArticle(){
 	$('#oneArtContent').empty();
@@ -261,6 +293,7 @@ function findArtByCompositeQuery(e) {
         success: function (artVO) {
             clearArtList();
             clearArtFavList();
+            clearArtRepList();
             $(artVO).each(function (i, item) {
                  debugger;
                 $('#artListCenter').append(
@@ -316,6 +349,7 @@ function findArtFavByCompositeQuery(e) {
       success: function (artFavVO) {
     	  clearArtList();
     	  clearArtFavList();
+    	  clearArtRepList();
           $(artFavVO).each(function (i, item) {
                debugger;
               $('#artFavListCenter').append(
@@ -343,6 +377,57 @@ function findArtFavByCompositeQuery(e) {
   });
 };
 
+
+//留言複合查詢data
+function addRepCompositeQueryData(e) {
+	var addArtDataAttr = {
+	    'action': 'find_By_CompositeQuery_Use_AJAX', 'memNo':'${MemberVO.memNo}'
+	};
+		debugger;
+	if ($('#artRepTitleByCompositeQuery').val() != null) {
+	    addArtDataAttr['artTitle'] = $('#artRepTitleByCompositeQuery').val();
+	}
+	// 	debugger;
+	if ($('#artRepTimeByCompositeQuery').val() != null || $('#artRepTimeByCompositeQuery').val() != 'null') {
+	    addArtDataAttr['artRepTime'] = $('#artRepTimeByCompositeQuery').val();
+	}
+	return addArtDataAttr;
+};
+
+//留言複合查詢
+function findArtRepByCompositeQuery(e) {
+	debugger;
+	$.ajax({
+	    type: 'post',
+	    url: '<%=request.getContextPath()%>/art/artRep.do',
+	    data: addRepCompositeQueryData(e),
+	    dataType: 'json',
+	    success: function (artRepVO) {
+	    	clearArtList();
+	    	clearArtFavList();
+	    	clearArtRepList();
+	        $(artRepVO).each(function (i, item) {
+	             debugger;
+	            $('#artRepListCenter').append(
+		            '<div id="artTitle"><div style="display: inline-block;">留言文章：</div><div class="artTitle divHeight" style="display: inline-block;"><b>' + item.artTitle + '</b></div></div>' +
+	                '<div id="movType" class="divWidth divHeight" style="display: inline-block"><div style="display: inline-block">電影類型：</div> <div style="display: inline-block">' +item.artMovType + '</div></div>' +
+	                '<div id="artRep" style="display: inline-block"><button class="artRepButton combtn" title="修改留言">修改留言</button></div>' +
+	                '<div id="artRepTime"><div class="divHeight" style="display: inline-block">留言時間：</div> <div class="divHeight" style="display: inline-block">' +
+	                moment(item.artFavTime).locale('zh_TW').format('llll') +
+	                '</div></div>' +
+	                '<div><div class="artContent" data-value="' + item.artNo + '" style="font-size: 1.2rem; text-indent: 2rem;">' +
+	                item.artRepContent + '</div></div><hr>');
+	            $('#artRepListCenter .artTitle').css({
+	                'cursor': 'pointer'
+	            });
+	        });
+	    },
+	    error: function () {
+	        console.log('AJAX-findArtByCompositeQuery發生錯誤囉!')
+	    }
+	});
+};
+
 //觸發文章複合查詢
 $('#v-pills-article-tab, #findArtByTitleButton, #artTitleByCompositeQuery ,#findArtByTimeButton, #artTimeForByCompositeQuery').on('click keypress', function (e) {
         // debugger;
@@ -359,6 +444,16 @@ $('#v-pills-artFav-tab, #artFavTitleByCompositeQuery, #findArtFavTitleByButton, 
 		findArtFavByCompositeQuery(e);
 		$('#artFavTitleByCompositeQuery').val('');
 		$('#artFavTimeForByCompositeQuery').val('');
+	}
+});
+
+//觸發留言複合查詢
+$('#v-pills-artRep-tab, #artRepTitleByCompositeQuery, #findArtRepTitleByButton, #artRepTimeByCompositeQuery, #findArtRepTimeByButton').on('click keypress', function(e){
+	if(e.which === 13 || this.id === 'v-pills-artRep-tab' || this.id === 'findArtRepTitleByButton' || this.id === 'findArtRepTimeByButton'){
+		debugger;
+		findArtRepByCompositeQuery(e);
+		$('#artRepTitleByCompositeQuery').val('');
+		$('#artRepTimeForByCompositeQuery').val('');
 	}
 });
 
