@@ -266,6 +266,9 @@
             //呼叫檢舉留言
             addRepRpt();
             
+            //清空留言空值警告
+            clearArtRepEmptyAlert();
+            
         });
 // window load
         
