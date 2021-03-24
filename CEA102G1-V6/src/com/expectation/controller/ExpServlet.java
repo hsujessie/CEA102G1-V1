@@ -26,7 +26,6 @@ public class ExpServlet extends HttpServlet {
 	public void doPost(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException{
 		req.setCharacterEncoding("UTF-8");
 		String action = req.getParameter("action");
-		System.out.println("action:"+action);
 		
 
 		// 來自前台 movies_subpage.jsp的請求
@@ -40,10 +39,6 @@ public class ExpServlet extends HttpServlet {
 				Integer memNo = null;
 				movNo = new Integer(req.getParameter("movNo").trim());
 				memNo = new Integer(req.getParameter("memNo").trim());
-				
-				System.out.println("expRating= " + expRating);
-				System.out.println("movNo= " + movNo);
-				System.out.println("memNo= " + memNo);
                  
 				/***************************2.開始新增資料***************************************/				
 				ExpService expSvc = new ExpService();
