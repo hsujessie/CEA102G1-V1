@@ -72,10 +72,10 @@ table {
 						<div class="col-10">
 							<FORM class="form-sty" METHOD="post" ACTION="<%=request.getContextPath()%>/adm/adm.do">
 								<b>在職狀態</b> <select name="adm_status" style="width: 80px;" class="form-control">
+									<option value="">全部
 									<c:forEach varStatus="i" begin="0" end="1">
 										<option value="${i.index}">${i.index==0?"在職":"離職"}
 									</c:forEach>
-									<option value="">兩者
 								</select> 
 								<b>員工姓名</b> <input name="adm_name" class="form-control"/>
 								<b>員工帳號</b> <input name="adm_account" class="form-control"/>

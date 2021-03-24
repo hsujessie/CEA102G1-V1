@@ -172,7 +172,7 @@ public class AdmServlet extends HttpServlet {
 
 				// 有錯誤時，轉交回新增頁面
 				if (!errorMsgs.isEmpty()) {
-					req.setAttribute("updateAdmVO", admVO);
+					req.setAttribute("oneAdmVO", admVO);
 					RequestDispatcher failureView = req.getRequestDispatcher("/back-end/admin/updateAdmin.jsp");
 					failureView.forward(req, res);
 					return;

@@ -19,7 +19,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.sql.DataSource;
 
 public class ImgReader extends HttpServlet {
-	private Connection con;
+	private static DataSource ds;
 	
 
 	public void doGet(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException {
@@ -30,8 +30,10 @@ public class ImgReader extends HttpServlet {
 		
 		res.setContentType("image/gif");
 		ServletOutputStream out = res.getOutputStream();
+		Connection con = null;
 		
 		try {
+			con = ds.getConnection();
 			Statement stmt = con.createStatement();
 			
 			String columnName = req.getParameter("columnName");
@@ -79,6 +81,12 @@ public class ImgReader extends HttpServlet {
 			in.read(b);
 			out.write(b);
 			in.close();
+		} finally {
+			try {
+				con.close();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
 		}
 		
 	}
@@ -86,22 +94,11 @@ public class ImgReader extends HttpServlet {
 	public void init() throws ServletException {
 		try {
 			Context ctx = new InitialContext();
-			DataSource ds = (DataSource) ctx.lookup("java:comp/env/jdbc/Seenema");
-			con = ds.getConnection();
+			ds = (DataSource) ctx.lookup("java:comp/env/jdbc/Seenema");
+			
 		} catch (NamingException e) {
-			e.printStackTrace();
-		} catch (SQLException e) {
 			e.printStackTrace();
 		}
 	}
 	
-	public void destroy() {
-		if (con != null) {
-			try {
-				con.close();
-			} catch (SQLException e) {
-				e.printStackTrace();
-			}
-		}
-	}
 }

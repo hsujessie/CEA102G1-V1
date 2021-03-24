@@ -34,7 +34,11 @@ public class MemberLoginFilter implements Filter {
 		MemberVO memberVO = (MemberVO) session.getAttribute("MemberVO");
 		
 		if (memberVO == null) {
-			session.setAttribute("location", req.getRequestURI());
+			if (req.getRequestURI().equals(req.getContextPath() + "/front-end/ordMas/TicketOrder.jsp"))
+				session.setAttribute("location", req.getRequestURI() + "?" + req.getQueryString());
+			else 
+				session.setAttribute("location", req.getRequestURI());
+				
 			res.sendRedirect(req.getContextPath() + "/front-end/Member_Login/login.jsp");
 			return;
 		}
