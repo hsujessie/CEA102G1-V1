@@ -495,7 +495,6 @@ public class MemberServlet extends HttpServlet {
 					/* a attribute from frontend movies_subpage.jsp */
 					if (session.getAttribute("moviesSubpage") != null) {
 						Integer movno = (Integer) session.getAttribute("moviesSubpage");
-						System.out.println("movno= " + movno);
 						url = req.getContextPath() + "/movie/mov.do?action=getOne_For_Display&fromFrontend=true&movno=" + movno;
 					}
 					
