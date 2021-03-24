@@ -42,8 +42,7 @@ public class SesServlet extends HttpServlet {
 	public void doPost(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException{
 		req.setCharacterEncoding("UTF-8");
 		String action = req.getParameter("action");
-		System.out.println("action:"+action);
-
+		
 		
 		if("getOne_For_Display".equals(action)) { 
 			List<String> errorMsgs = new LinkedList<String>();
@@ -177,16 +176,13 @@ public class SesServlet extends HttpServlet {
 	            	                       錯誤驗證：場次時間間距，不可少於2小時
 	            	   =====================================================================*/
 	            	 if (sesTimeArr.length > 1) {
-						System.out.println("if= " + sesTimeArr.length);
 						for(int j = 0; j < sesTimeArr.length; j++) {
 							sesTimeList.add(java.time.LocalTime.parse(sesTimeArr[j]));	// 將時間陣列存進list
 						}
 						
 						for (int i = 1; i < sesTimeList.size(); i++) {	
-							System.out.println("i List: " + sesTimeList.get(i));
-							System.out.println("i-1  List: " + sesTimeList.get(i - 1));
 							diff = Duration.between(sesTimeList.get(i - 1),sesTimeList.get(i));  // 「get(i)」 minus 「get(i - 1)」的 difference 不能少於2
-							System.out.println("diff= " + diff.toHours()); 
+//							System.out.println("diff= " + diff.toHours()); 
 							if (diff.toHours() < 2) {
 								errorTimeMsgs = "間距不可少於2小時";  							
 							}
@@ -278,7 +274,6 @@ public class SesServlet extends HttpServlet {
 			try {
 				/***************************1.接收請求參數****************************************/
 				Integer sesNo = new Integer(req.getParameter("sesNo").trim());
-				System.out.println("sesNo= " + sesNo);
 				
 				/***************************2.開始查詢資料****************************************/
 				SesService sesSvc = new SesService();

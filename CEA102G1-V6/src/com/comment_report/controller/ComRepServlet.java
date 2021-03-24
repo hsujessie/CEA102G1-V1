@@ -26,7 +26,6 @@ public class ComRepServlet extends HttpServlet {
 	public void doPost(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException{
 		req.setCharacterEncoding("UTF-8");
 		String action = req.getParameter("action");
-		System.out.println("action: "+ action);
 		
 		// 來自前台 movies_subpage.jsp的請求
 		if ("insert".equals(action)) {			
@@ -47,16 +46,8 @@ public class ComRepServlet extends HttpServlet {
 				java.sql.Timestamp comRepTime = new Timestamp(System.currentTimeMillis());
 
 				Integer comRepStatus = 0; //0:未處理 
-				
 
 				Integer movNo = new Integer(req.getParameter("movNo").trim());
-
-				System.out.println("comNo= " + comNo);
-				System.out.println("movNo= " + movNo);
-				System.out.println("memNo= " + memNo);
-				System.out.println("comRepReason= " + comRepReason);
-				System.out.println("comRepTime= " + comRepTime);
-				System.out.println("comRepStatus= " + comRepStatus);
 				
 				/***************************2.開始新增資料***************************************/				
 				ComRepService comRepSvc = new ComRepService();
@@ -125,19 +116,16 @@ public class ComRepServlet extends HttpServlet {
 				Integer comRepStatus = new Integer(req.getParameter("comRepStatus").trim());
 				Integer comRepNo = new Integer(req.getParameter("comRepNo").trim());
 				Integer comNo = new Integer(req.getParameter("comNo").trim());
-				System.out.println("comRepStatus= " + comRepStatus);
-				System.out.println("comRepNo= " + comRepNo);	
-				System.out.println("comNo= " + comNo);
 				
 				if("1".equals(req.getParameter("comRepStatus").trim())) { //檢舉成功	
 					Integer comStatus = 1; //短評狀態不顯示		
 					ComService comSvc = new ComService();				
-					ComVO comVO = comSvc.updateCom(comStatus, comNo);
+					comSvc.updateCom(comStatus, comNo);
 				}
 				
 				/***************************2.開始修改資料*****************************************/		
 				ComRepService comRepSvc = new ComRepService();
-				ComRepVO comRepVO = comRepSvc.updateComRep(comRepStatus, comRepNo);
+				comRepSvc.updateComRep(comRepStatus, comRepNo);
 				
 				/***************************3.修改完成,準備轉交(Send the Success view)*************/	
 				String updateSuccess = "【 檢舉狀態 】" + "已審核";
