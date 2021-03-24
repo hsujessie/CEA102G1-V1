@@ -85,11 +85,13 @@ public class ArtRepRptServlet extends HttpServlet {
 					obj.put("artRepRptTime", artRepRptVO.getArtRepRptTime());
 					
 					if(artRepRptVO.getArtRepRptStatus() == 0) {
-						obj.put("artRepRptStatusButton", "確認檢舉");
+						obj.put("artRepRptStatusButton", "審核");
+						obj.put("artRepRptStatus", "未檢舉");
 					}else {
-						obj.put("artRepRptStatusButton", "已檢舉");
+						obj.put("artRepRptStatusButton", "已審核");
+						obj.put("artRepRptStatus", "已檢舉");
 					}
-					obj.put("artRepRptStatus", artRepRptVO.getArtRepRptStatus());
+					
 					obj.put("reportMemName", memSvc.getOneMember(artRepRptVO.getMemNo()).getMemName());
 					obj.put("artRepContent", artRepSvc.getOneArtRep(artRepRptVO.getArtRepNo()).getArtRepContent());
 				} catch (JSONException e) {

@@ -81,11 +81,13 @@ public class ArtRptServlet extends HttpServlet {
 					obj.put("artRptTime", artRptVO.getArtRptTime());
 					
 					if(artRptVO.getArtRptStatus() == 0) {
-						obj.put("artRptStatusButton", "確認檢舉");
+						obj.put("artRptStatusButton", "審核");
+						obj.put("artRptStatus", "未檢舉");
 					}else {
-						obj.put("artRptStatusButton", "已檢舉");
+						obj.put("artRptStatusButton", "已審核");
+						obj.put("artRptStatus", "已檢舉");
 					}
-					obj.put("artRptStatus", artRptVO.getArtRptStatus());
+					
 					obj.put("reportMemName", memSvc.getOneMember(artRptVO.getMemNo()).getMemName());
 					obj.put("artTitle", artDAO.findByPrimaryKey(artRptVO.getArtNo()).getArtTitle());
 				} catch (JSONException e) {
@@ -136,13 +138,13 @@ public class ArtRptServlet extends HttpServlet {
 				JSONObject obj = new JSONObject();
 				try { 
 					if(artRptSvc.getOneArtRpt(artRptNo).getArtRptStatus() == 0) {
-						obj.put("artRptStatusButton", "確認檢舉");
-						obj.put("artRptStatus", artRptSvc.getOneArtRpt(artRptNo).getArtRptStatus().toString());
-						System.out.println("artRptStatusButton: 確認檢舉");
+						obj.put("artRptStatusButton", "審核");
+						obj.put("artRptStatus", "未檢舉");
+						System.out.println("artRptStatusButton: 審核");
 					}else {
-						obj.put("artRptStatusButton", "已檢舉");
-						obj.put("artRptStatus", artRptSvc.getOneArtRpt(artRptNo).getArtRptStatus().toString());
-						System.out.println("artRptStatusButton: 已檢舉");
+						obj.put("artRptStatusButton", "已審核");
+						obj.put("artRptStatus", "已檢舉");
+						System.out.println("artRptStatusButton: 已審核");
 					}
 				} catch (JSONException e) {
 					e.printStackTrace();
