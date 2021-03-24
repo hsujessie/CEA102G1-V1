@@ -142,13 +142,13 @@ public class ArtRepRptServlet extends HttpServlet {
 				JSONObject obj = new JSONObject();
 				try { 
 					if(artRepRptSvc.getOneArtRepRpt(artRepRptNo).getArtRepRptStatus() == 0) {
-						obj.put("artRepRptStatusButton", "確認檢舉");
-						obj.put("artRepRptStatus", artRepRptSvc.getOneArtRepRpt(artRepRptNo).getArtRepRptStatus());
-						System.out.println("artRepRptStatusButton: 確認檢舉");
+						obj.put("artRepRptStatusButton", "審核");
+						obj.put("artRepRptStatus", "未檢舉");
+						System.out.println("artRepRptStatusButton: 審核");
 					}else {
-						obj.put("artRepRptStatusButton", "已檢舉");
-						obj.put("artRepRptStatus", artRepRptSvc.getOneArtRepRpt(artRepRptNo).getArtRepRptStatus());
-						System.out.println("artRepRptStatusButton: 已檢舉");
+						obj.put("artRepRptStatusButton", "未審核");
+						obj.put("artRepRptStatus", "已檢舉");
+						System.out.println("artRepRptStatusButton: 未審核");
 					}
 				} catch (JSONException e) {
 					e.printStackTrace();
