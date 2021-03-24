@@ -18,7 +18,7 @@ public class DepositDAO implements DepositDAO_interface{
 	static {
 		try {
 			Context ctx = new InitialContext();
-			ds = (DataSource) ctx.lookup("java:comp/env/jdbc/Seenem");
+			ds = (DataSource) ctx.lookup("java:comp/env/jdbc/Seenema");
 		} catch (NamingException e) {
 			e.printStackTrace();
 		}
