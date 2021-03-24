@@ -160,7 +160,7 @@ public class SesServlet extends HttpServlet {
 	             java.util.Date dateEnd = dateFormat.parse(sesDateEnd);
 	             
 	             if (dateBegin.before(parsedDate) || dateBegin.equals(parsedDate) || dateEnd.before(parsedDate) || dateBegin.equals(parsedDate)) {  // use 「 .before() 」the type should be java.util.Date
-	            	 errorDateMsgs = "場次日期有誤，不可小於當日";
+	            	 errorDateMsgs = "場次日期有誤，不可為當日，或於當日之前";
 	             }
 	             
 	                        	             
