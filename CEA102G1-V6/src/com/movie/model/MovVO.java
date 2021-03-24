@@ -135,7 +135,4 @@ public class MovVO implements java.io.Serializable{
 	public String getMovPosParam() {
 		return "?columnName=mov_pos&tableName=movie&fieldName=mov_no&fieldValue=" + movno;
 	}
-	public String getMovTraParam() {
-		return "?columnName=mov_tra&tableName=movie&fieldName=mov_no&fieldValue=" + movno;
-	}
 }

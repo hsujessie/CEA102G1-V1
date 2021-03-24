@@ -56,12 +56,13 @@
 		                        <div class="col-lg-3 col-md-4 col-sm-12 movies-item">
 		                            <div class="movies-wrap" onclick="sendData(this,${movVO.movno})" style="cursor:pointer;">		                               
 										
-										<c:if test="${not empty movVO.movpos}">						    
-		                                	<img src="<%=request.getContextPath()%>/movie/mov.do?movno=${movVO.movno}&img=movpos&action=get_One_MovPos" alt="Movies Image">		                                
-	                        			</c:if>	
+										<%-- <c:if test="${not empty movVO.movpos}">						    
+		                                	<img src="<%=request.getContextPath()%>/movie/mov.do?movno=${movVO.movno}&img=movpos&action=get_One_MovPos" alt="Movies Image">	 --%>
+		                                	<img src="<%=request.getContextPath()%>/util/imgReader${movVO.movPosParam}">	                                
+	                        			<%-- </c:if>	
 										<c:if test="${empty movVO.movpos}">											
 	                                        <img src="<%=request.getContextPath()%>/resource/images/film.jpg" alt="Movie Image">		                                	
-                        				</c:if>
+                        				</c:if> --%>
                         				
 		                                <figure>
 		                                    <p><img style="width:100%; max-width: 40px;" src="<%=request.getContextPath()%>/resource/images/logos/seenema_W.ico" alt="Logo"></p>
@@ -79,12 +80,14 @@
 						<c:forEach var="movVO" items="${nowShowing}" >				    
 	                        <div class="col-lg-3 col-md-4 col-sm-12 movies-item">
 	                            <div class="movies-wrap" onclick="sendData(this,${movVO.movno})" style="cursor:pointer;">
-	                                <c:if test="${not empty movVO.movpos}">
-	                                	<img src="<%=request.getContextPath()%>/movie/mov.do?movno=${movVO.movno}&img=movpos&action=get_One_MovPos" alt="Movies Image">
-	                                </c:if>
+	                                <%-- <c:if test="${not empty movVO.movpos}">
+	                                	<img src="<%=request.getContextPath()%>/movie/mov.do?movno=${movVO.movno}&img=movpos&action=get_One_MovPos" alt="Movies Image"> --%>
+	                                	<img src="<%=request.getContextPath()%>/util/imgReader${movVO.movPosParam}">
+	                                <%-- </c:if>
 									<c:if test="${empty movVO.movpos}">											
                                         <img src="<%=request.getContextPath()%>/resource/images/film.jpg" alt="Movie Image">		                                	
-                       				</c:if>
+                       				</c:if> --%>
+                       				
 	                                <figure>
 	                                    <p><img style="width:100%; max-width: 40px;" src="<%=request.getContextPath()%>/resource/images/logos/seenema_W.ico" alt="Logo"></p>
 	                                    <a href="<%=request.getContextPath()%>/movie/mov.do?action=getOne_For_Display&fromFrontend=true&movno=${movVO.movno}">${movVO.movname}</a>
@@ -100,12 +103,14 @@
 						<c:forEach var="movVO" items="${commingSoon}" >				    
 		                        <div class="col-lg-3 col-md-4 col-sm-12 movies-item">
 		                            <div class="movies-wrap" onclick="sendData(this,${movVO.movno})" style="cursor:pointer;">
-		                                <c:if test="${not empty movVO.movpos}">
-		                                	<img src="<%=request.getContextPath()%>/movie/mov.do?movno=${movVO.movno}&img=movpos&action=get_One_MovPos" alt="Movies Image">
-		                                </c:if>
+		                               <%--  <c:if test="${not empty movVO.movpos}">
+		                                	<img src="<%=request.getContextPath()%>/movie/mov.do?movno=${movVO.movno}&img=movpos&action=get_One_MovPos" alt="Movies Image"> --%>
+		                                	<img src="<%=request.getContextPath()%>/util/imgReader${movVO.movPosParam}">
+		                                <%-- </c:if>
 										<c:if test="${empty movVO.movpos}">											
 	                                        <img src="<%=request.getContextPath()%>/resource/images/film.jpg" alt="Movie Image">		                                	
-	                       				</c:if>
+	                       				</c:if> --%>
+	                       				
 		                                <figure>
 		                                    <p><img style="width:100%; max-width: 40px;" src="<%=request.getContextPath()%>/resource/images/logos/seenema_W.ico" alt="Logo"></p>
 		                                    <a href="<%=request.getContextPath()%>/movie/mov.do?action=getOne_For_Display&fromFrontend=true&movno=${movVO.movno}">${movVO.movname}</a>
