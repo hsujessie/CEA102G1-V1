@@ -121,21 +121,17 @@ public class ArtRepRptServlet extends HttpServlet {
 			
 			/*====================修改資料===================*/
 			ArtRepService artRepSvc = new ArtRepService();
-			Integer artRepStatus = artRepSvc.getOneArtRep(artRepNo).getArtRepStatus();
-			if(artRepStatus == 0) {
-				artRepSvc.updateStatus(artRepNo, 1);
-			}else {
-				artRepSvc.updateStatus(artRepNo, 0);
-			}
-			System.out.println("新的ArtRepStatus:"+artRepSvc.getOneArtRep(artRepNo).getArtRepStatus());
-			
+
 			ArtRepRptService artRepRptSvc = new ArtRepRptService();
 			Integer artRepRptStatus = artRepRptSvc.getOneArtRepRpt(artRepRptNo).getArtRepRptStatus();
 			if(artRepRptStatus == 0) {
+				artRepSvc.updateStatus(artRepNo, 1);
 				artRepRptSvc.updateArtRepRpt(artRepRptNo, 1);
 			}else {
+				artRepSvc.updateStatus(artRepNo, 0);
 				artRepRptSvc.updateArtRepRpt(artRepRptNo, 0);
 			}
+			System.out.println("新的ArtRepStatus:"+artRepSvc.getOneArtRep(artRepNo).getArtRepStatus());
 			System.out.println("新的ArtRepRptStatus"+artRepRptSvc.getOneArtRepRpt(artRepRptNo).getArtRepRptStatus());
 			
 			/*==============放入JSONObject==============*/
