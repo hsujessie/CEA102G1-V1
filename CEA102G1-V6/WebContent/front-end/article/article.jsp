@@ -8,19 +8,17 @@
 
 <!DOCTYPE html>
 <%		
-
-		if(session.getAttribute("MemberVO") != null){
-			MemberVO memberVO = (MemberVO)session.getAttribute("MemberVO");
-			session.setAttribute("memNo", memberVO.getMemNo());
-			session.getAttribute("memNo");			
-		}
-
+	if(session.getAttribute("MemberVO") != null){
+		MemberVO memberVO = (MemberVO)session.getAttribute("MemberVO");
+		session.setAttribute("memNo", memberVO.getMemNo());
+		session.getAttribute("memNo");			
+	}
 %>
 <html>
 
 <head>
     <meta charset="UTF-8">
-    <%@ include file="/front-end/files/frontend_importCss.file"%>
+
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
 <!--     datetimepicker -->
     <link rel="stylesheet" type="text/css"
@@ -33,9 +31,14 @@
     </script>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <%@ include file="/front-end/files/frontend_importCss.file"%>
     <!-- toastr v2.1.4 -->
     <link href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/2.1.4/toastr.min.css" rel="stylesheet" />
     <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/2.1.4/toastr.min.js"></script>
+<!--     moment -->
+    <script src="<%=request.getContextPath()%>/resource/js/moment-with-locales.min.js" ></script>
+<!-- 	fontawesome -->
+	<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.15.2/css/all.css" integrity="sha384-vSIIfh2YWi9wW0r9iZe7RJPrKwp6bG+s9QZMoITbCckVJqGCCRhc+ccxNcdpHuYu" crossorigin="anonymous">
 <!--     fronend_importJs -->
 	<script src="<%=request.getContextPath()%>/resource/easing/easing.min.js"></script>
 	<script src="<%=request.getContextPath()%>/resource/owlcarousel/owl.carousel.min.js"></script>
@@ -44,89 +47,66 @@
     <script>
         toastr.options = {
             // 參數設定
-            "closeButton": false, // 顯示關閉按鈕
-            "debug": false, // 除錯
-            "newestOnTop": false, // 最新一筆顯示在最上面
-            "progressBar": true, // 顯示隱藏時間進度條
-            "positionClass": "toast-top-right", // 位置的類別
-            "preventDuplicates": false, // 隱藏重覆訊息
-            "onclick": null, // 當點選提示訊息時，則執行此函式
-            "showDuration": "300", // 顯示時間(單位: 毫秒)
-            "hideDuration": "1000", // 隱藏時間(單位: 毫秒)
-            "timeOut": "5000", // 當超過此設定時間時，則隱藏提示訊息(單位: 毫秒)
-            "extendedTimeOut": "1000", // 當使用者觸碰到提示訊息時，離開後超過此設定時間則隱藏提示訊息(單位: 毫秒)
-            "showEasing": "swing", // 顯示動畫時間曲線
-            "hideEasing": "linear", // 隱藏動畫時間曲線
-            "showMethod": "fadeIn", // 顯示動畫效果
-            "hideMethod": "fadeOut" // 隱藏動畫效果
+            "closeButton": false,
+            "debug": false,
+            "newestOnTop": false,
+            "progressBar": true,
+            "positionClass": "toast-top-right",
+            "preventDuplicates": false,
+            "onclick": null,
+            "showDuration": "300",
+            "hideDuration": "1000",
+            "timeOut": "5000",
+            "extendedTimeOut": "1000",
+            "showEasing": "swing",
+            "hideEasing": "linear",
+            "showMethod": "fadeIn",
+            "hideMethod": "fadeOut"
         }
     </script>
     <style>
         * {
             box-sizing: border-box;
         }
-
         body {
             margin: 0;
         }
-
         img {
             max-width: 100%;
         }
-
-        /*   	div.container{   */
-        /*   		border: 1px solid blue;   */
-        /*   	}   */
-        /*   	div.col-3{   */
-        /*   		border: 1px solid red;   */
-        /*   	}   */
-        /*   	div.col-9{   */
-        /*   	    border: 1px solid black;   */
-        /*   	}   */
-        /*      #artListCenter{   */
-        /*        	border: 1px solid green;   */
-        /*       }   */
-
         #artListLeft {
             vertical-align: top;
             position: sticky;
             top: 90px;
             overflow-y: auto;
-            height: 100vh;
+            height: 80vh;
 
         }
-
-        @media (max-width: 767px) {
+        @media (max-width: 991px) {
         	#articleTop{
  				position: sticky;      	
         	}
             #artListLeft {
                 height: auto;
             }
-
             #artListLeft #newArt {
                 width: 54px;
                 max-width: 100%;
             }
         }
-
         #artListLeft a {
             color: #666666;
         }
-
         #artListLeft a:hover {
             cursor: pointer;
         }
-
         .selectedMovType {
             background-color: #AA9166;
         }
-
         #newArt {
             margin: 5px;
             width: 54px;
         }
-
         @media (max-width: 576px) {
             #newArt {
                 width: 90%;
@@ -135,16 +115,16 @@
     </style>
 
     <script>
+//     window.load
         $(document).ready(function () {
             //列出側邊欄電影類型
             showArtMoveType();
             
-          	//列出Top3點擊文章列表
-          	debugger;
-          	ListArtTopThreeQuery();
-            
             //列出全部文章列表
             ListArtQuery();
+            
+            //列出前三高點擊文章
+            ListArtTopThreeQuery();
 
             //單篇文章燈箱
             debugger;
@@ -210,13 +190,11 @@
             });
 
             //觸發複合查詢
-            $('#findArtByTitleButton ,#findArtByCompositeQueryButton, #artTitleByCompositeQuery, #artTimeForByCompositeQuery, #artAuthorForByCompositeQuery')
-                .on('click keypress', function (e) {
-                    //     	debugger;
-                    if (e.which === 13 || e.currentTarget.id === 'findArtByCompositeQueryButton' || e
-                        .currentTarget.id === 'findArtByTitleButton') {
-                        //         	debugger;
-                        findArtByCompositeQuery(e);
+            $('#findArtByTitleButton ,#findArtByCompositeQueryButton, #artTitleByCompositeQuery, #artTimeForByCompositeQuery, #artAuthorForByCompositeQuery').on('click keypress', function (e) {
+                    //  debugger;
+                    if (e.which === 13 || e.currentTarget.id === 'findArtByCompositeQueryButton' || e.currentTarget.id === 'findArtByTitleButton') {
+                        debugger;
+                    	findArtByCompositeQuery(e);
                     }
             });
 
@@ -227,12 +205,33 @@
                 document.getElementById("artTitleByCompositeQuery").placeholder = '依' + $(this).data(
                     'value') + '查詢';
                 debugger;
+              	//清空熱門文章列表
+    			clearListArtTopThreeQuery();
+              	
                 clearArtCompositeQuery();
                 $(this).addClass('selectedMovType');
                 findArtByCompositeQuery(e);
+            });
+            
+            //返回討論區首頁
+            $('#returnArticle').click(function(){
+                //清空文章列表
+                clearArtList();
                 
-              	//呼叫電影類型熱門文章
-                movTypeHotArticle($(this).data('value'));
+              	//清空熱門文章列表
+    			clearListArtTopThreeQuery();
+              	
+              	//清除選擇電影類型
+    			$('.selectedMovType').removeClass('selectedMovType');
+              	
+              	//reset find by title text
+              	document.getElementById("artTitleByCompositeQuery").placeholder = '搜尋標題';
+            	
+                //列出全部文章列表
+                ListArtQuery();
+                
+              	//列出前三高點擊文章
+                ListArtTopThreeQuery();
             });
             
             //時間月曆
@@ -247,19 +246,19 @@
             //修改成功訊息
             if ('${updateSuccess}' == 'updateSuccess') {
                 //      	debugger;
-                toastr['success']('修改成功！！', '成功'); 
                 <%
                 session.removeAttribute("updateSuccess"); 
                 %>
+                toastr['success']('修改成功！！', '成功'); 
             }
 
             //新增成功訊息
             if ('${addSuccess}' == 'addSuccess') {
                 //      	debugger;
-                toastr['success']('發文成功！！', '成功'); 
                 <%
                 session.removeAttribute("addSuccess"); 
                 %>
+                toastr['success']('發文成功！！', '成功'); 
             }
 
             //呼叫收藏
@@ -273,8 +272,10 @@
 
             //呼叫檢舉留言
             addRepRpt();
+            
         });
-
+// window load
+        
         //側邊欄電影類型
         function showArtMoveType() {
             $.ajax({
@@ -301,7 +302,7 @@
             });
         };
 
-        //複合查詢
+        //文章複合查詢
         function findArtByCompositeQuery(e) {
             // 	debugger;
             $.ajax({
@@ -312,7 +313,7 @@
                 success: function (artVO) {
                     clearArtList();
                     $(artVO).each(function (i, item) {
-                        //             	debugger;
+                        debugger;
                         $('#artListCenter').append(
                             '<div id="artAuthor" style="display: inline-block"><div style="display: inline-block">作者：</div> <div style="display: inline-block">' +
                             item.memName + '</div></div>' +
@@ -333,6 +334,8 @@
                             'cursor': 'pointer'
                         });
                     });
+                    clearListArtTopThreeQuery();
+                    ListArtTopThreeQuery();
                 },
                 error: function () {
                     console.log('AJAX-findArtByCompositeQuery發生錯誤囉!')
@@ -345,7 +348,7 @@
             var addArtDataAttr = {
                 'action': 'find_By_CompositeQuery_Use_AJAX'
             };
-            // 	debugger;
+            	debugger;
             addArtDataAttr['artMovType'] = $('.selectedMovType').attr('data-value');
             console.log('artMovType add ' + addArtDataAttr);
             // 	debugger;
@@ -421,7 +424,7 @@
         	$('#Top3Article').removeClass('HotArticleDiv');
         }
     </script>
-    <title>--SEENEMA ARTICLE--</title>
+    <title>SEENEMA ARTICLE</title>
 </head>
 
 <body>
@@ -435,7 +438,7 @@
 	    <div id="articleTop" class="container">
 	    
 	        <div class="row">
-	            <div class="col-12 col-md-3">
+	            <div class="col-12 col-lg-3">
 	                <!-- 左區塊開始 -->
 	                <div id="artListLeft">
 	                    <!-- 錯誤列表 -->
@@ -484,9 +487,7 @@
 	                                        <hr>
 	                                    </li>
 	                                    <li class="nav-item active ">
-	                                        <a class="nav-link"
-	                                            href="<%=request.getContextPath()%>/front-end/article/article.jsp">討論區首頁<span
-	                                                class="sr-only">(current)</span></a>
+	                                        <a id="returnArticle" class="nav-link">討論區首頁<span class="sr-only">(current)</span></a>
 	                                    </li>
 	                                    <li>
 	                                        <hr>
@@ -541,7 +542,7 @@
 	                </div>
 	                <!-- 左區塊結束 -->
 	            </div>
-	            <div class="col-12 col-md-9">
+	            <div class="col-12 col-lg-9">
 	                <!-- 中間區塊開始 -->
 	                    <!-- ====================include ListArtQuery.jsp==================== -->
 	                    <jsp:include page="/front-end/article/ListArtQuery.jsp"></jsp:include>

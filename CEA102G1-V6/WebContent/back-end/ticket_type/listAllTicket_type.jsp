@@ -1,5 +1,4 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8"
-    pageEncoding="BIG5"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ page import="java.util.*"%>
 <%@ page import="com.ticket_type.model.*"%>
@@ -15,72 +14,50 @@
 <!DOCTYPE html>
 <html>
 <head>
-<meta charset="BIG5">
-<title>²¼ºØ¸ê®Æ</title>
-
+<title>ç¥¨ç¨®è³‡æ–™</title>
+<%@ include file="/back-end/files/sb_head.file"%>
 <style>
-  table#table-1 {
-	background-color: #CCCCFF;
-    border: 2px solid black;
-    text-align: center;
-  }
-  table#table-1 h4 {
-    color: red;
-    display: block;
-    margin-bottom: 1px;
-  }
-  h4 {
-    color: blue;
-    display: inline;
-  }
+	.success-span{
+	    color: #bb9d52;
+		position: absolute;
+	    top: 10%;
+	    left: 19%;
+	    font-size: 16px;
+	}
+	.form-sty{
+		margin: 20px 0 0 30px;
+	}
+	.mr-botm{
+		margin-bottom: 5px;
+	}
 </style>
-
-<style>
-  table {
-	width: 800px;
-	background-color: white;
-	margin-top: 5px;
-	margin-bottom: 5px;
-  }
-  table, th, td {
-    border: 1px solid #CCCCFF;
-  }
-  th, td {
-    padding: 5px;
-    text-align: center;
-  }
-</style>
-
 </head>
-<body bgcolor='white'>
+<body class="sb-nav-fixed">
+		<%@ include file="/back-end/files/sb_navbar.file"%> <!-- å¼•å…¥navbar (ä¸Šæ–¹) -->
+        <div id="layoutSidenav">
+            <div id="layoutSidenav_nav">
+				<c:set value="${pageContext.request.requestURI}" var="urlRecog"></c:set> <!-- çµ¦sb_sidebar.fileçš„åƒæ•¸-Home -->
+				<%@ include file="/back-end/files/sb_sidebar.file"%> <!-- å¼•å…¥sidebar (å·¦æ–¹) -->
+            </div>
+            <div id="layoutSidenav_content">
+                <main>
+                    <div class="container-fluid">
+                    	
+                    	<h3 class="h3-style" style="display: inline-block;">ç¥¨åˆ¸åˆ—è¡¨</h3>
 
-<table id="table-1">
-	<tr><td>
-		 <h3>²¼ºØ¸ê®Æ</h3>
-		 <h4><a href="<%=request.getContextPath()%>/back-end/ticket_type/select_page.jsp">¦^­º­¶</a></h4>
-	</td></tr>
-</table>
-<c:if test="${not empty errorMsgs}">
-	<font style="color:red">½Ð­×¥¿¥H¤U¿ù»~:</font>
-	<ul>
-		<c:forEach var="message" items="${errorMsgs}">
-			<li style="color:red">${message}</li>
-		</c:forEach>
-	</ul>
-</c:if>
-
-<table>
-	<tr>
-		<th>²¼ºØ½s¸¹ </th>
-		<th>©ñ¬MºØÃþ½s¸¹ </th>
-		<th>¨­¤À¦WºÙ</th>
-		<th>²¼»ù</th>
-		<th>­×§ï</th>
-	</tr>
-	<%@ include file="/resource/pages/page1.file" %> 
-	<%  rowsPerPage = 4; %>
-	<c:forEach var="ticket_typeVO" items="${list}" begin="<%=pageIndex%>" end="<%=pageIndex+rowsPerPage-1%>">
-		<tr ${(ticket_typeVO.tictyp_no==param.tictyp_no) ? 'bgcolor=#CCCCFF':''}><!--±N­×§ïªº¨º¤@µ§¥[¤J¹ï¤ñ¦â¦Ó¤w-->
+			            <table class="table table-hover">
+							<thead>
+								<tr style="border-bottom: 3px solid #bb9d52;">
+									<th>ç¥¨ç¨®ç·¨è™Ÿ</th>
+									<th>æ”¾æ˜ ç¨®é¡ž</th>
+									<th>èº«åˆ†</th>
+									<th>ç¥¨åƒ¹</th>
+									<th>ä¿®æ”¹</th>
+								</tr>				
+							</thead>
+							<tbody>
+	<c:forEach var="ticket_typeVO" items="${list}" >
+		<tr class="sty-height" valign='middle' ${(ticket_typeVO.tictyp_no==param.tictyp_no) ? 'bgcolor=#bb9d52':''}><!--å°‡ä¿®æ”¹çš„é‚£ä¸€ç­†åŠ å…¥å°æ¯”è‰²è€Œå·²-->
 			<td>${ticket_typeVO.tictyp_no}</td>
 			<td><c:forEach var="movie_versionVO" items="${movie_versionSvc.all}">
                     <c:if test="${ticket_typeVO.movver_no==movie_versionVO.movver_no}">
@@ -97,16 +74,22 @@
 			<td>${ticket_typeVO.tictyp_price}</td>
 			<td>
 			  <FORM METHOD="post" ACTION="<%=request.getContextPath()%>/ticket_type/ticket_type.do" style="margin-bottom: 0px;">
-			     <input type="submit" value="­×§ï"> 
+			     										<a class="btn btn-light btn-brd grd1 effect-1" onclick="updateData(this,${movVO.movno})" >
+											<input type="submit" value="ä¿®æ”¹" class="input-pos">
+					        			 </a>
 			     <input type="hidden" name="tictyp_no"     value="${ticket_typeVO.tictyp_no}">
-			     <input type="hidden" name="requestURL"	value="<%=request.getServletPath()%>"><!--°e¥X¥»ºô­¶ªº¸ô®|µ¹Controller-->
-			     <input type="hidden" name="whichPage"	value="<%=whichPage%>">               <!--°e¥X·í«e¬O²Ä´X­¶µ¹Controller-->
+			     <input type="hidden" name="requestURL"	value="<%=request.getServletPath()%>"><!--é€å‡ºæœ¬ç¶²é çš„è·¯å¾‘çµ¦Controller-->
 			     <input type="hidden" name="action"	    value="getOne_For_Update"></FORM>
 			</td>
 
 		</tr>
 	</c:forEach>
 </table>
-<%@ include file="/resource/pages/page2.file" %>
+                    </div>
+                </main>
+                <%@ include file="/back-end/files/sb_footer.file"%>
+            </div>
+        </div>
+		<%@ include file="/back-end/files/sb_importJs.file"%> <!-- å¼•å…¥templateè¦ç”¨çš„js -->
 </body>
 </html>

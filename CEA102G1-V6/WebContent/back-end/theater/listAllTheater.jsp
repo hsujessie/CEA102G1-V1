@@ -14,6 +14,24 @@
 <head>
 	<title>Theater</title>
 	<%@ include file="/back-end/files/sb_head.file"%>
+	<style>
+		.success-span{
+	    color: #bb9d52;
+		position: absolute;
+	    top: 10%;
+	    left: 19%;
+	    font-size: 16px;
+	}
+	.th-adjust{
+		width: 120px;
+	}
+	.form-sty{
+		margin: 20px 0 0 30px;
+	}
+	.mr-botm{
+		margin-bottom: 5px;
+	}
+</style>
 </head>
 <body class="sb-nav-fixed">
 		<%@ include file="/back-end/files/sb_navbar.file"%> <!-- 引入navbar (上方) -->
@@ -28,40 +46,38 @@
                     
                     <!-- PUT HERE Start-->
                    	<h3 class="h3-style" style="display: inline-block;">廳院列表</h3>
-                    <table id="table-1">
-</table>
-<c:if test="${not empty errorMsgs}">
-	<font style="color:red">請修正以下錯誤:</font>
-	<ul>
-		<c:forEach var="message" items="${errorMsgs}">
-			<li style="color:red">${message}</li>
-		</c:forEach>
-	</ul>
-</c:if>
 
 			            <table class="table table-hover">
 							<thead>
 								<tr style="border-bottom: 3px solid #bb9d52;">
-		<th>廳院編號</th>
-		<th>影廳種類</th>
-	</tr>
-	<c:forEach var="theaterVO" items="${list}" >
-		<tr ${(theaterVO.the_no==param.the_no) ? 'bgcolor=#bb9d52':''}><!--將修改的那一筆加入對比色而已-->
-			<td>${theaterVO.the_no}</td>
-			<td><c:forEach var="movie_versionVO" items="${movie_versionSvc.all}">
-                    <c:if test="${theaterVO.movver_no==movie_versionVO.movver_no}">
-	                    ${movie_versionVO.movver_name}
-                    </c:if>
-                </c:forEach>
+									<th>廳院編號</th>
+									<th>影廳種類</th>
+									<th>查看</th>
+									<th>修改</th>		
+								</tr>
+							</thead>
+							<tbody>
+								<c:forEach var="theaterVO" items="${list}" >
+									<tr ${(theaterVO.the_no==param.the_no) ? 'bgcolor=#bb9d52':''}><!--將修改的那一筆加入對比色而已-->
+										<td>${theaterVO.the_no}</td>
+										<td><c:forEach var="movie_versionVO" items="${movie_versionSvc.all}">
+							                    <c:if test="${theaterVO.movver_no==movie_versionVO.movver_no}">
+								                    ${movie_versionVO.movver_name}
+							                    </c:if>
+							                </c:forEach>
 			</td>
 			<td>
-			    <a class="btn btn-light btn-brd grd1 effect-1 btn-pos" style="margin: 1% 0 1% 50%;" >
+			  <FORM METHOD="post" ACTION="<%=request.getContextPath()%>/theater/theater.do" style="margin-bottom: 0px;">
+			    <a class="btn btn-light btn-brd grd1 effect-1 btn-pos">
 				<input type="submit" value="查看" class="input-pos">
-				</a>	
-				</td>		
+				</a>
+			     <input type="hidden" name="the_no"     value="${theaterVO.the_no}">
+			     <input type="hidden" name="requestURL"	value="<%=request.getServletPath()%>"><!--送出本網頁的路徑給Controller-->
+			     <input type="hidden" name="action"	    value="getOne_For_Display"></FORM>
+			</td>
 			<td>
 			  <FORM METHOD="post" ACTION="<%=request.getContextPath()%>/theater/theater.do" style="margin-bottom: 0px;">
-			    <a class="btn btn-light btn-brd grd1 effect-1 btn-pos" style="margin: 1% 0 1% 50%;" >
+			    <a class="btn btn-light btn-brd grd1 effect-1 btn-pos">
 				<input type="submit" value="修改" class="input-pos">
 				</a>
 			     <input type="hidden" name="the_no"     value="${theaterVO.the_no}">
@@ -71,6 +87,7 @@
 
 		</tr>
 	</c:forEach>
+	</tbody>
 </table>
                     <!-- PUT HERE End-->
                     

@@ -47,12 +47,6 @@ public class FooServlet extends HttpServlet {
 			//餐點類別編號
 			Integer fooCatNo = new Integer(req.getParameter("fooCatNo"));
 			
-			//餐點簡介
-			String fooIntro = req.getParameter("fooIntro");
-			if (fooIntro == null || fooIntro.trim().isEmpty()) {
-				errorMsgs.add("餐點簡介不可為空白");
-			}
-			
 			//餐點圖片
 			Part part = req.getPart("fooImg");
 			byte[] fooImg = null;
@@ -76,7 +70,6 @@ public class FooServlet extends HttpServlet {
 			FooVO fooVO = new FooVO();
 			fooVO.setFooName(fooName);
 			fooVO.setFooCatNo(fooCatNo);
-			fooVO.setFooIntro(fooIntro);
 			fooVO.setFooImg(fooImg);
 			fooVO.setFooPrice(fooPrice);
 			
@@ -90,7 +83,7 @@ public class FooServlet extends HttpServlet {
 			
 			/***************************2.開始新增資料***************************************/
 			FooService fooSvc = new FooService();
-			fooSvc.addFoo(fooName, fooCatNo, fooIntro, fooImg, fooPrice);
+			fooSvc.addFoo(fooName, fooCatNo, fooImg, fooPrice);
 			
 			/***************************3.新增完成,準備轉交(Send the Success view)***********/
 			String url = "/back-end/foo/listAllFoo.jsp";
@@ -207,12 +200,6 @@ public class FooServlet extends HttpServlet {
 				//餐點類別編號
 				Integer fooCatNo = new Integer(req.getParameter("fooCatNo"));
 				
-				//餐點簡介
-				String fooIntro = req.getParameter("fooIntro");
-				if (fooIntro == null || fooIntro.trim().isEmpty()) {
-					errorMsgs.add("餐點簡介不可為空白");
-				}
-				
 				//餐點圖片
 				Part part = req.getPart("fooImg");
 				byte[] fooImg = null;
@@ -233,7 +220,6 @@ public class FooServlet extends HttpServlet {
 				FooVO fooVO = new FooVO();
 				fooVO.setFooName(fooName);
 				fooVO.setFooCatNo(fooCatNo);
-				fooVO.setFooIntro(fooIntro);
 				fooVO.setFooPrice(fooPrice);
 				fooVO.setFooNo(fooNo);
 				fooVO.setFooStatus(fooStatus);
@@ -253,9 +239,9 @@ public class FooServlet extends HttpServlet {
 					InputStream is = part.getInputStream();
 					fooImg = new byte[is.available()];
 					is.read(fooImg);
-					fooVO = fooSvc.updateFoo(fooNo, fooName, fooCatNo, fooIntro, fooImg, fooPrice, fooStatus);
+					fooVO = fooSvc.updateFoo(fooNo, fooName, fooCatNo, fooImg, fooPrice, fooStatus);
 				} else {
-					fooVO = fooSvc.updateFooNoImg(fooNo, fooName, fooCatNo, fooIntro, fooPrice, fooStatus);
+					fooVO = fooSvc.updateFooNoImg(fooNo, fooName, fooCatNo, fooPrice, fooStatus);
 				}
 				/***************************3.新增完成,準備轉交(Send the Success view)***********/
 				FooCatService fooCatSvc = new FooCatService();

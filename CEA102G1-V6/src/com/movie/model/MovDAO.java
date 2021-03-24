@@ -30,7 +30,7 @@ public class MovDAO implements MovDAO_interface{
 	private static final String INSERT_STMT =
 		"INSERT INTO MOVIE (mov_name,mov_ver,mov_type,mov_lan,mov_ondate,mov_offdate,mov_durat,mov_rating,mov_ditor,mov_cast,mov_des,mov_pos,mov_tra) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?)"; 
 	private static final String GET_ALL_STMT =
-		"SELECT mov_no,mov_name,mov_ver,mov_type,mov_lan,mov_ondate,mov_offdate,mov_durat,mov_rating,mov_ditor,mov_cast,mov_des,mov_pos,mov_tra,mov_satitotal,mov_satipers,mov_expetotal,mov_expepers FROM MOVIE ORDER BY mov_ondate";
+		"SELECT mov_no,mov_name,mov_ver,mov_type,mov_lan,mov_ondate,mov_offdate,mov_durat,mov_rating,mov_ditor,mov_cast,mov_des,mov_satitotal,mov_satipers,mov_expetotal,mov_expepers FROM MOVIE ORDER BY mov_ondate DESC";
 	private static final String GET_ONE_STMT =
 		"SELECT mov_no,mov_name,mov_ver,mov_type,mov_lan,mov_ondate,mov_offdate,mov_durat,mov_rating,mov_ditor,mov_cast,mov_des,mov_pos,mov_tra,mov_satitotal,mov_satipers,mov_expetotal,mov_expepers FROM MOVIE WHERE mov_no=?";
 	private static final String UPDATE =
@@ -225,8 +225,6 @@ public class MovDAO implements MovDAO_interface{
 				movVO.setMovditor(rs.getString("mov_ditor"));
 				movVO.setMovcast(rs.getString("mov_cast"));
 				movVO.setMovdes(rs.getString("mov_des"));
-				movVO.setMovpos(rs.getBytes("mov_pos"));
-				movVO.setMovtra(rs.getBytes("mov_tra"));
 				movVO.setMovsatitotal(rs.getInt("mov_satitotal"));
 				movVO.setMovsatipers(rs.getInt("mov_satipers"));
 				movVO.setMovexpetotal(rs.getInt("mov_expetotal"));
@@ -278,7 +276,6 @@ public class MovDAO implements MovDAO_interface{
 			          		   + jdbcUtil_CompositeQuery_Movie.get_WhereCondition(map)
 			          		   + " order by mov_ondate";
 			pstmt = con.prepareStatement(finalSQL);
-			System.out.println("●●finalSQL(by MovDAO) = "+finalSQL);
 			
 			rs = pstmt.executeQuery();
 			
@@ -296,8 +293,6 @@ public class MovDAO implements MovDAO_interface{
 				movVO.setMovditor(rs.getString("mov_ditor"));
 				movVO.setMovcast(rs.getString("mov_cast"));
 				movVO.setMovdes(rs.getString("mov_des"));
-				movVO.setMovpos(rs.getBytes("mov_pos"));
-				movVO.setMovtra(rs.getBytes("mov_tra"));
 				movVO.setMovsatitotal(rs.getInt("mov_satitotal"));
 				movVO.setMovsatipers(rs.getInt("mov_satipers"));
 				movVO.setMovexpetotal(rs.getInt("mov_expetotal"));

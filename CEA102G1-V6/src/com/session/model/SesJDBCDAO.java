@@ -6,6 +6,7 @@ import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Time;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -283,13 +284,7 @@ public class SesJDBCDAO implements SesDAO_interface{
 	}
 
 	@Override
-	public List<SesVO> findMoviesBySesDate(Date sesDate) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public List<SesVO> findDistinctSesDate() {
+	public List<SesVO> findMoviesByDate(Date date) {
 		// TODO Auto-generated method stub
 		return null;
 	}
@@ -298,5 +293,17 @@ public class SesJDBCDAO implements SesDAO_interface{
 	public void updateSeatStatus(Integer sesNo, String sesSeatStatus) {
 		// TODO Auto-generated method stub
 		
+	}
+
+	@Override
+	public List<SesVO> findSesTimeByMovNoAndDate(Integer movNo, Date sesDate) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public Integer findRepeatedSession(Integer theNo, Date sesDate, Time sesTime) {
+		// TODO Auto-generated method stub
+		return null;
 	}
 }

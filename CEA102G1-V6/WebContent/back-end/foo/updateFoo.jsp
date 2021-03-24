@@ -87,10 +87,6 @@
 		</select></td>
 	</tr>
 	<tr>
-		<td>餐點簡介:</td>
-		<td><input type="text" name="fooIntro" value="${fooVO.fooIntro}" ></td>
-	</tr>
-	<tr>
 		<td>餐點圖片:</td>
 		<td><input type="file" name="fooImg" size="45" /></td>
 	</tr>

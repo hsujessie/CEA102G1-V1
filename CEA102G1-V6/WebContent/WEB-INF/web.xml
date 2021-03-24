@@ -11,36 +11,57 @@
   </welcome-file-list>
   
 <!--   後臺登入濾器 -->
-<!--   <filter> -->
-<!--   	<filter-name>LoginFilter</filter-name> -->
-<!--   	<filter-class>com.admin.controller.LoginFilter</filter-class> -->
-<!--   </filter> -->
-<!--   <filter-mapping> -->
-<!--   	<filter-name>LoginFilter</filter-name> -->
-<!--   	<url-pattern>/back-end/admin/*</url-pattern> -->
-<!--   	<dispatcher>REQUEST</dispatcher> -->
-<!--     <dispatcher>FORWARD</dispatcher> -->
-<!--     <dispatcher>INCLUDE</dispatcher> -->
-<!--     <dispatcher>ERROR</dispatcher> -->
-<!--     <dispatcher>ASYNC</dispatcher> -->
-<!--   </filter-mapping> -->
+
+  <filter>
+  	<filter-name>LoginFilter</filter-name>
+  	<filter-class>com.admin.controller.LoginFilter</filter-class>
+  </filter>
+  <filter-mapping>
+  	<filter-name>LoginFilter</filter-name>
+  	<url-pattern>/back-end/admin/*</url-pattern>
+  	<url-pattern>/back-end/article/*</url-pattern>
+  	<url-pattern>/back-end/Board/*</url-pattern>
+  	<url-pattern>/back-end/BoardType/*</url-pattern>
+  	<url-pattern>/back-end/Client_service/*</url-pattern>
+  	<url-pattern>/back-end/Comment_report/*</url-pattern>
+  	<url-pattern>/back-end/faq/*</url-pattern>
+  	<url-pattern>/back-end/faqs/*</url-pattern>
+  	<url-pattern>/back-end/foo/*</url-pattern>
+  	<url-pattern>/back-end/fooCat/*</url-pattern>
+  	<url-pattern>/back-end/identity/*</url-pattern>
+  	<url-pattern>/back-end/Member/*</url-pattern>
+  	<url-pattern>/back-end/movie/*</url-pattern>
+  	<url-pattern>/back-end/movie_version/*</url-pattern>
+  	<url-pattern>/back-end/ordMas/*</url-pattern>
+  	<url-pattern>/back-end/session/*</url-pattern>
+  	<url-pattern>/back-end/theater/*</url-pattern>
+  	<url-pattern>/back-end/ticket_type/*</url-pattern>
+  	<url-pattern>/back-end/index.jsp</url-pattern>
+  	<dispatcher>REQUEST</dispatcher>
+    <dispatcher>FORWARD</dispatcher>
+    <dispatcher>INCLUDE</dispatcher>
+    <dispatcher>ERROR</dispatcher>
+    <dispatcher>ASYNC</dispatcher>
+  </filter-mapping>
 
 <!--   前臺登入濾器 -->
-<!--   <filter> -->
-<!--   	<filter-name>LoginFilter</filter-name> -->
-<!--   	<filter-class>com.member.controller.LoginFilter</filter-class> -->
-<!--   </filter> -->
-<!--   <filter-mapping> -->
-<!--   	<filter-name>LoginFilter</filter-name> -->
-
-<!--   	<url-pattern>/back-end/admin/*</url-pattern> -->
-<!--   	<dispatcher>REQUEST</dispatcher> -->
-<!--     <dispatcher>FORWARD</dispatcher> -->
-<!--     <dispatcher>INCLUDE</dispatcher> -->
-<!--     <dispatcher>ERROR</dispatcher> -->
-<!--     <dispatcher>ASYNC</dispatcher> -->
-<!--   </filter-mapping> -->
-  
+  <filter>
+  	<filter-name>MemberLoginFilter</filter-name>
+  	<filter-class>com.art.controller.MemberLoginFilter</filter-class>
+  </filter>
+  <filter-mapping>
+  	<filter-name>MemberLoginFilter</filter-name>
+  	<url-pattern>/front-end/article/articleManage.jsp</url-pattern>
+  	<url-pattern>/front-end/article/newArticle.jsp</url-pattern>
+  	<url-pattern>/front-end/article/updateArticle.jsp</url-pattern>
+  	<url-pattern>/front-end/Member_Login/front_listOneMember.jsp</url-pattern>
+  	<url-pattern>/front-end/ordMas/*</url-pattern>
+  	<dispatcher>REQUEST</dispatcher>
+    <dispatcher>FORWARD</dispatcher>
+    <dispatcher>INCLUDE</dispatcher>
+    <dispatcher>ERROR</dispatcher>
+    <dispatcher>ASYNC</dispatcher>
+  </filter-mapping>  
   
 <!--   11  -->
   <servlet>
@@ -86,6 +107,15 @@
   <servlet-mapping>
   	<servlet-name>AdmServlet</servlet-name>
   	<url-pattern>/adm/adm.do</url-pattern>
+  </servlet-mapping>  
+  
+  <servlet>
+  	<servlet-name>GenerateQRcode</servlet-name>
+  	<servlet-class>jdbc.util.read_img.GenerateQRcode</servlet-class>
+  </servlet>
+  <servlet-mapping>
+  	<servlet-name>GenerateQRcode</servlet-name>
+  	<url-pattern>/util/generateQRcode</url-pattern>
   </servlet-mapping>  
   
 <!--  05 -->
@@ -162,6 +192,14 @@
     <servlet-name>MemberServlet</servlet-name>
     <url-pattern>/Member/member.do</url-pattern>
   </servlet-mapping> 
+  <servlet>
+    <servlet-name>MemImgReader</servlet-name>
+    <servlet-class>com.member.controller.MemImgReader</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>MemImgReader</servlet-name>
+    <url-pattern>/Member/reader.do</url-pattern>
+  </servlet-mapping> 
 
 <!-- 28 -->
   <servlet>
@@ -195,6 +233,14 @@
   <servlet-mapping>
     <servlet-name>Ticket_typeServlet</servlet-name>
     <url-pattern>/ticket_type/ticket_type.do</url-pattern>
+  </servlet-mapping>
+  <servlet>
+    <servlet-name>FaqServlet</servlet-name>
+    <servlet-class>com.faq.controller.FaqServlet</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>FaqServlet</servlet-name>
+    <url-pattern>/faq/faq.do</url-pattern>
   </servlet-mapping>
 
 <!-- 31 -->

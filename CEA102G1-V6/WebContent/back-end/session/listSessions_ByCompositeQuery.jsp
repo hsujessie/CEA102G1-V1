@@ -12,7 +12,7 @@
 	<link rel="stylesheet" type="text/css" href="<%=request.getContextPath()%>/resource/datetimepicker/jquery.datetimepicker.css" />	
 <style>
 	.form-sty{
-		margin: 20px 0 0 0;
+		margin: 20px 0 0 2%;
 	}
 	.time-input-sty{
 		font-size: 14px;
@@ -61,33 +61,33 @@
 							</span>
 						</c:if>
                     	<!-- success message End -->
-                    	<!-- failure message Start -->
-						<c:if test="${errMsg != null}">
+                    	<!-- failure message Start 測試用 --> 
+					<%-- 	<c:if test="${errMsg != null}">
 							<span class="fail-span"> 
 								<i class="far fa-frown"></i>
 								${errMsg}
 							</span>
-						</c:if>
-                    	<!-- failure message End -->
+						</c:if> --%>
+                    	<!-- failure message End 測試用 -->
                     	
                     	<!-- search Start -->
                     	<div class="row " style="margin: -60px 0 20px 50px;">        
-			                <div class="col-2"></div>
-	                        <div class="col-10">          
+			                <div class="col-1"></div>
+	                        <div class="col-11">          
 		            			<jsp:useBean id="movSvcAll" scope="page" class="com.movie.model.MovService"/>                        
 	                           	<FORM class="form-sty" METHOD="post" ACTION="<%=request.getContextPath()%>/session/ses.do">				                        
 			                        <b>電影名稱</b>
-			                            <select name="movNo" style="width: 185px;">
+			                            <select name="movNo" style="width: 185px; margin-right:1%; vertical-align: middle;">
 			                                <option value=""></option>
 			                                <c:forEach var="movVO" items="${movSvcAll.all}" >
 			                                    <option value="${movVO.movno}">${movVO.movname}
 			                                </c:forEach>
-			                            </select>&ensp;&ensp;
+			                            </select>
 			                        <b>場次日期</b>
 			                        <input class="sty-input time-input-sty" name="sesDateBegin" id="sesdate_Begin" type="text" value=""> 
 			                        ~ <input class="sty-input time-input-sty" name="sesDateEnd" id="sesdate_End" type="text" value="">
 			                        
-			                        <input type="hidden" name="action" value="listSessions_ByCompositeQuery">
+			                        <input type="hidden" name="action" value="listSessions_ByCompositeQuery" style="margin-right:1.5%;">
 				        			<a class="btn btn-light btn-brd grd1 effect-1">
 										<input type="submit" value="搜尋" class="input-pos">
 				        			</a>
@@ -126,9 +126,24 @@
 									<td>${sesVO.theNo}廳 【${movVerObj.movver_name}】</td>
 									
 									<td>
-									   <a class="btn btn-light btn-brd grd1 effect-1" onclick="updateData(this,${sesVO.sesNo})" >
-										 <input type="button" value="修改" class="input-pos update-btn">
-					        		   </a>
+					        			<fmt:formatDate value="<%=new java.util.Date()%>" pattern="yyyy-MM-dd" var="today"/>
+										<jsp:useBean id="sesSvcMethod" scope="page" class="com.session.model.SesService"/>
+										<c:set value="${sesSvcMethod.isGreater(sesVO.sesDate)}" var="result"></c:set>
+									   	<c:if test="${result eq true}">
+											 <a class="btn btn-light btn-brd grd1 effect-1" onclick="updateData(this,${sesVO.sesNo})" >
+												<input type="submit" value="修改" class="input-pos">
+						        			 </a>
+									     </c:if>
+										 <c:if test="${result eq false}">
+											<c:choose>
+											    <c:when test="${sesVO.sesDate le today}">			
+												    已上映
+											    </c:when>
+											    <c:otherwise>
+											    	即將上映
+											    </c:otherwise>
+											</c:choose>	
+										 </c:if>
 									</td>
 								</tr>
 								</c:forEach>

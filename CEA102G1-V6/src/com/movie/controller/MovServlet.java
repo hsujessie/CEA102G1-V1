@@ -36,7 +36,6 @@ public class MovServlet extends HttpServlet{
 	public void doPost(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException{
 		req.setCharacterEncoding("UTF-8");
 		String action = req.getParameter("action");
-		System.out.println("action:"+action);
 		
 		// 來自select_page.jsp的請求
 		if("getOne_For_Display".equals(action)) { 
@@ -68,7 +67,7 @@ public class MovServlet extends HttpServlet{
 				
 				ExpService expSvc = new ExpService();
 				List<ExpVO> explist = expSvc.getAll();
-				System.out.print("movno= "+movno);
+				
 				Double expSum = explist.stream().filter(exp -> exp.getMovNo().equals(movno)).mapToDouble(exp -> exp.getExpRating()).sum();   //期待度總分	
 				Integer expPeo = (int) explist.stream().filter(exp -> exp.getMovNo().equals(movno)).mapToInt(exp -> exp.getMemNo()).count(); //期待度評價人數				
 				
@@ -166,7 +165,7 @@ public class MovServlet extends HttpServlet{
 					movondate = java.sql.Date.valueOf(req.getParameter("movondate").trim());
 				} catch (IllegalArgumentException e) {
 					movondate = new java.sql.Date(System.currentTimeMillis());				
-					errorMsgs.put("movondate"," 請輸入上映日期!");
+					errorMsgs.put("movondate"," 請輸入上映日期");
 				}
 
 				java.sql.Date movoffdate = null;
@@ -175,16 +174,11 @@ public class MovServlet extends HttpServlet{
 					
 				} catch (IllegalArgumentException e) {
 					movoffdate = new java.sql.Date(System.currentTimeMillis());
-					errorMsgs.put("movoffdate"," 請輸入下檔日期!");
+					errorMsgs.put("movoffdate"," 請輸入下檔日期");
 				}	
-				
-				Integer movdurat = null;
-				try {
-					movdurat = new Integer(req.getParameter("movdurat").trim());
-				}catch(NumberFormatException e) {
-					movdurat = 0;
-					errorMsgs.put("movdurat"," 片長請填數字!");
-				}
+
+				//單選下拉選單
+				Integer movdurat = new Integer(req.getParameter("movdurat").trim());
 				
 				//單選下拉選單
 				String movrating = req.getParameter("movrating").trim();
@@ -421,39 +415,9 @@ public class MovServlet extends HttpServlet{
 						req.setAttribute("movlanToken", movlanToken); 	
 					}
 				}
-
-                /* 以下有問題，傻眼，解開註解，前台就抓不到值??? */
-//				if (movondate.getTime() == movoffdate.getTime()) {
-//					errorMsgs.put("movondate","日期不正確，請重新輸入!		* 註:1.上映日期與下檔日期不可相等、2.上映日期不可於下檔日期之後、3.下檔日期不可於上映日期之前");
-//
-//					//先split字串，再把值送到update_movie_input.jsp
-//			        if (movverStr != null) {  
-//						movverToken = token(movverStrs, movverToken);
-//						req.setAttribute("movverToken", movverToken);	
-//					}
-//					if (movlanStr != null ) {
-//						movlanToken = token(movlanStrs, movlanToken);	  
-//						req.setAttribute("movlanToken", movlanToken); 	
-//					} 
-//				}
-
-				Integer movdurat = null;
-				try {
-					movdurat = new Integer(req.getParameter("movdurat").trim());
-				}catch(NumberFormatException e) {
-					movdurat = 0;
-					errorMsgs.put("movdurat"," 片長請填數字!");
-					
-					//先split字串，再把值送到update_movie_input.jsp
-			        if (movverStr != null) {  
-						movverToken = token(movverStrs, movverToken);
-						req.setAttribute("movverToken", movverToken);	
-					}
-					if (movlanStr != null ) {
-						movlanToken = token(movlanStrs, movlanToken);	  
-						req.setAttribute("movlanToken", movlanToken); 	
-					}
-				}
+				
+				//單選下拉選單
+				Integer movdurat = new Integer(req.getParameter("movdurat").trim());
 				
 				//單選下拉選單
 				String movrating = req.getParameter("movrating").trim();
@@ -631,8 +595,6 @@ public class MovServlet extends HttpServlet{
 				movObj = (MovVO)list.get(i);
 				if (movObj.getMovondate().before(date) || movObj.getMovondate().equals(date)) {
 					if(date.before(movObj.getMovoffdate())) {
-					    System.out.println("now_Showing ondate======" + movObj.getMovondate());
-					    System.out.println("now_Showing offdate======" + movObj.getMovoffdate());
 					    nowShowingList.add(movObj);
 					    req.setAttribute("nowShowing", nowShowingList);
 					}
@@ -651,7 +613,6 @@ public class MovServlet extends HttpServlet{
 			for(int i = 0; i < list.size(); i++) {
 				movObj = (MovVO)list.get(i);
 				if (movObj.getMovondate().after(date)) {
-				    System.out.println("comming_Soon======" + movObj.getMovondate());
 				    commingSoonList.add(movObj);
 				    req.setAttribute("commingSoon", commingSoonList);
 				}

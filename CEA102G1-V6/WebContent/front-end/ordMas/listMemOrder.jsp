@@ -1,5 +1,7 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+	pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
 
 <!DOCTYPE html>
 <html>
@@ -7,40 +9,191 @@
 <meta charset="UTF-8">
 <title>Front-End</title>
 <%@ include file="/front-end/files/frontend_importCss.file"%>
+<style>
+.success-span {
+	color: #bb9d52;
+	position: absolute;
+	top: 8%;
+	left: 17%;
+}
+
+.th-adjust {
+	width: 120px;
+}
+
+.form-sty {
+	margin: 20px 0 0 10px;
+}
+
+.nav-pills .nav-link.active, .nav-pills .show>.nav-link {
+	background-color:#aa9166;
+}
+</style>
 </head>
 <body>
-        <div class="wrapper">
-            <!-- Nav Bar Start -->
-			<c:set value="${pageContext.request.requestURI}" var="urlRecog"></c:set>
-            <%@ include file="/front-end/files/frontend_navbar.file"%>
-            <!-- Nav Bar End -->
+	<div class="wrapper">
+		<!-- Nav Bar Start -->
+		<c:set value="${pageContext.request.requestURI}" var="urlRecog"></c:set>
+		<%@ include file="/front-end/files/frontend_navbar.file"%>
+		<!-- Nav Bar End -->
 
 
-            <!-- Page Header Start --> <!-- 看自己需不需要標題 -->
-            <div class="page-header">
-                <div class="container">
-                    <div class="row">
-                        <div class="col-12">
-                            <h2>Front-End</h2> 
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <!-- Page Header End -->
+		<!-- Page Header Start -->
+		<!-- 看自己需不需要標題 -->
+		<!-- Page Header End -->
 
 
-            <!-- PUT HERE Start -->
-            <!-- PUT HERE End -->
-            
-            <!-- Book Tickets Start -->
-            <%@ include file="/front-end/files/frontend_bookTicketsTamplate.file"%>
-            <!-- Book Tickets End -->
+		<!-- PUT HERE Start -->
+		<div class="container">
+			<div class="row">
+				<div class="col-3">
+					<div class="nav flex-column nav-pills" id="v-pills-tab"
+						role="tablist" aria-orientation="vertical">
+						<a class="nav-link active" id="v-pills-home-tab"
+							data-toggle="pill" href="#v-pills-home">未取票</a> <a
+							class="nav-link" id="v-pills-profile-tab" data-toggle="pill"
+							href="#v-pills-profile">購票紀錄</a>
+					</div>
+				</div>
+				<div class="col-9">
+					<div class="tab-content" id="v-pills-tabContent">
+						<div class="tab-pane fade show active" id="v-pills-home">
+							<table class="table table-hover">
+								<thead>
+									<tr style="border-bottom: 3px solid #bb9d52;">
+										<th>列表編號</th>
+										<th class="th-adjust">電影</th>
+										<th>場次時間</th>
+										<th>訂單狀態</th>
+										<th>訂購時間</th>
+										<th>查看</th>
+										<th>退票</th>
+									</tr>
+								</thead>
 
-            <!-- Footer Start -->
-            <%@ include file="/front-end/files/frontend_footer.file"%>
-            <!-- Footer End -->
-        </div>
-        
-<%@ include file="/front-end/files/frontend_importJs.file"%>   
+								<tbody>
+									<jsp:useBean id="ordMasSvc"
+										class="com.order_master.model.OrdMasService"></jsp:useBean>
+									<jsp:useBean id="sesSvc" class="com.session.model.SesService"></jsp:useBean>
+									<jsp:useBean id="movSvc" class="com.movie.model.MovService"></jsp:useBean>
+									<c:set var="count" value="1" />
+									<c:forEach var="ordMasVO" items="${ordMasSvc.getByMemNo(MemberVO.memNo)}">
+										<c:if test="${ordMasVO.ordMasStatus == 0}">
+											<c:set var="sesNo" value="${ordMasVO.sesNo}" />
+											<tr class="sty-height" valign='middle'>
+												<td>${count}</td>
+												<td>${movSvc.getOneMov(sesSvc.getOneSes(sesNo).movNo).movname}</td>
+												<td>${sesSvc.getOneSes(sesNo).sesDate} <fmt:formatDate value="${sesSvc.getOneSes(sesNo).sesTime}" pattern="HH:mm"/></td>
+												<td style="color:blue">未取票</td>
+												<td><fmt:formatDate value="${ordMasVO.ordMasDate}" pattern="yyyy-MM-dd HH:mm"/></td>
+												<td>
+																									<form method="post" action="<%=request.getContextPath()%>/ordMas/ordMas.do">
+																										<input type="hidden" name="ordMasNo" value="${ordMasVO.ordMasNo}" />
+																										<input type="hidden" name="action" value="getOne_For_Display" />
+																										<input type="hidden" name="requestURL" value="<%=request.getServletPath()%>" />
+																										<input type="submit" value="查看詳情" class="input-pos combtn" />
+																									</form>
+												</td>
+												<td>
+													<form method="post" action="<%=request.getContextPath()%>/ordMas/ordMas.do" id="changeStatusForm">
+														<input type="hidden" name="action" value="change_status">
+														<input type="hidden" name="ordMasNo" value="${ordMasVO.ordMasNo}">
+													</form>
+													<button class="refund combtn">退票</button>
+												</td>
+											</tr>
+											<c:set var="count" value="${count + 1}" />
+										</c:if>
+									</c:forEach>
+								</tbody>
+							</table>
+						</div>
+						<div class="tab-pane fade" id="v-pills-profile">
+							<table class="table table-hover">
+								<thead>
+									<tr style="border-bottom: 3px solid #bb9d52;">
+										<th>列表編號</th>
+										<th class="th-adjust">電影</th>
+										<th>場次時間</th>
+										<th>訂單狀態</th>
+										<th>查看</th>
+									</tr>
+								</thead>
+
+								<tbody>
+									<c:set var="count" value="1" />
+									<c:forEach var="ordMasVO" items="${ordMasSvc.getByMemNo(MemberVO.memNo)}">
+										<c:if test="${ordMasVO.ordMasStatus == 1 || ordMasVO.ordMasStatus == 2}">
+											<c:set var="sesNo" value="${ordMasVO.sesNo}" />
+											<tr class="sty-height" valign='middle'>
+												<td>${count}</td>
+												<td>${movSvc.getOneMov(sesSvc.getOneSes(sesNo).movNo).movname}</td>
+												<td>${sesSvc.getOneSes(sesNo).sesDate} <fmt:formatDate value="${sesSvc.getOneSes(sesNo).sesTime}" pattern="HH:mm"/></td>
+												<td ${ordMasVO.ordMasStatus == 1?"style='color:green'":"style='color:red'"}>${ordMasVO.ordMasStatus == 1?"已完成":"已取消"}</td>
+												<td>
+																									<form method="post" action="<%=request.getContextPath()%>/ordMas/ordMas.do">
+																										<input type="hidden" name="ordMasNo" value="${ordMasVO.ordMasNo}" />
+																										<input type="hidden" name="action" value="getOne_For_Display" />
+																										<input type="hidden" name="requestURL" value="<%=request.getServletPath()%>" />
+																										<input type="submit" value="查看詳情" class="input-pos combtn" />
+																									</form>
+												</td>
+												
+											</tr>
+											<c:set var="count" value="${count + 1}" />
+										</c:if>
+									</c:forEach>
+								</tbody>
+							</table>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<!-- PUT HERE End -->
+
+		<!-- Book Tickets Start -->
+		<%-- 		<%@ include file="/front-end/files/frontend_bookTicketsTamplate.file"%> --%>
+		<!-- Book Tickets End -->
+
+		<!-- Footer Start -->
+		<%@ include file="/front-end/files/frontend_footer.file"%>
+		<!-- Footer End -->
+	</div>
+
+	<%@ include file="/front-end/files/frontend_importJs.file"%>
+	<script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+	<script>
+		$(".look-detail").click(function() {
+			
+		})
+		
+		$(".refund").click(function() {
+			swal({
+                icon: "warning",
+                title: "確定要退票嗎?",
+                buttons: {
+                    a: {
+                        text: "取消",
+                        value: "cancel",
+                        visible: true
+                    },
+                    danger: {
+                        text: "確定",
+                        value: "confirm",
+                        visible: true
+                    }
+                }
+            }).then((value) => {
+                if (value === "confirm") {
+                	$("#changeStatusForm").submit();
+//                     swal("退票成功!", "", "success", { button: "關閉" });
+                }
+            });
+		});
+		
+		
+		
+	</script>
 </body>
 </html>

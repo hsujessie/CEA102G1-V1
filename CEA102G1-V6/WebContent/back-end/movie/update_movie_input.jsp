@@ -38,7 +38,7 @@
   	margin-left: 10px;
   }
   .err-color{
-    text-shadow: 0 0 0.1em #f87, 0 0 0.1em #f87;
+    color: #A50203;
     font-size: 14px;
   }
   .xdsoft_datetimepicker.xdsoft_dark .xdsoft_calendar td, .xdsoft_datetimepicker.xdsoft_dark .xdsoft_calendar th {
@@ -122,12 +122,12 @@
 								<td><input class="sty-input mr-left mr-btm-normal" name="movoffdate" id="mov_offdate" type="text" value="<c:if test="${not empty movVO.movoffdate}">${movVO.movoffdate}</c:if>"></td>
 							</tr>
 							<tr>
-								<th>片長${movVO.movdurat}</th>
+								<th>片長</th>
 								<td class="fake-txt">
 									<select class="mr-left mr-btm-normal" name="movdurat">
-										<option value="1" ${movVO.movdurat eq 1 ? 'selected' : ''}>1小時</option>
-										<option value="2" ${movVO.movdurat eq 2 ? 'selected' : ''}>2小時</option>
-										<option value="3" ${movVO.movdurat eq 3 ? 'selected' : ''}>3小時</option>
+										<c:forEach var="mins" begin="60" end="240">
+											<option value="${mins}" <c:if test="${movVO.movdurat eq mins}">selected</c:if> >${mins}</option>
+										</c:forEach>
 									</select>
 								</td>
 							</tr>
@@ -183,7 +183,8 @@
 								<td id="show-poster">
 									<span id="fileImg">	
 									<c:if test="${not empty movVO.movpos}">
-										<img width="150px" class="img" src="<%=request.getContextPath()%>/movie/mov.do?movno=${movVO.movno}&img=movpos&action=get_One_MovPos">
+										<%-- <img width="150px" class="img" src="<%=request.getContextPath()%>/movie/mov.do?movno=${movVO.movno}&img=movpos&action=get_One_MovPos"> --%>
+										<img width="150px" class="img" src="<%=request.getContextPath()%>/util/imgReader${movVO.movPosParam}">										
 									</c:if>
 									</span>
 								</td>

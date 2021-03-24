@@ -32,7 +32,6 @@ public class MemImgReader extends HttpServlet{
 			Integer id = new Integer(req.getParameter("memNo").trim());
 			ResultSet rs = stmt.executeQuery(
 				"SELECT mem_Img FROM member WHERE mem_No = "+id );
-			System.out.println(id);
 
 			if (rs.next()) {
 				BufferedInputStream in = new BufferedInputStream(rs.getBinaryStream("mem_Img"));

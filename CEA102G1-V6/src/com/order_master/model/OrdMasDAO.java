@@ -37,11 +37,13 @@ public class OrdMasDAO implements OrdMasDAO_interface {
 	
 	private static final String INSERT_STMT = "INSERT INTO ORDER_MASTER(MEM_NO, SES_NO, ORDMAS_PRICE) VALUES(?,?,?)";
 	private static final String GET_ALL_STMT = "SELECT ORDMAS_NO, MEM_NO, SES_NO, ORDMAS_DATE, ORDMAS_PRICE, ORDMAS_STATUS FROM ORDER_MASTER ORDER BY ORDMAS_NO";
-	private static final String GET_BYMEMNO_STMT = "SELECT ORDMAS_NO, MEM_NO, SES_NO, ORDMAS_DATE, ORDMAS_PRICE, ORDMAS_STATUS FROM ORDER_MASTER WHERE MEM_NO=? ORDER BY ORDMAS_NO";
+	private static final String GET_BYMEMNO_STMT = "SELECT ORDMAS_NO, MEM_NO, SES_NO, ORDMAS_DATE, ORDMAS_PRICE, ORDMAS_STATUS FROM ORDER_MASTER WHERE MEM_NO=? ORDER BY ORDMAS_NO desc";
 	private static final String GET_ONE_STMT = "SELECT ORDMAS_NO, MEM_NO, SES_NO, ORDMAS_DATE, ORDMAS_PRICE, ORDMAS_STATUS FROM ORDER_MASTER WHERE ORDMAS_NO=?";
 	
+	private static final String UPDATE_STATUS_STMT="UPDATE ORDER_MASTER SET ORDMAS_STATUS=? WHERE ORDMAS_NO=?";
+	
 	@Override
-	public void insertWithDetail(OrdMasVO ordMasVO, Set<TicTypCartVO> ticTypCartSet, Set<FooCartVO> fooCartSet) {
+	public OrdMasVO insertWithDetail(OrdMasVO ordMasVO, List<TicTypCartVO> ticTypCartSet, Set<FooCartVO> fooCartSet) {
 		
 		Connection con = null;
 		PreparedStatement pstmt = null;
@@ -67,6 +69,8 @@ public class OrdMasDAO implements OrdMasDAO_interface {
 				throw new RuntimeException("未取得自增主鍵");
 			}
 			key.close();
+			ordMasVO.setOrdMasNo(ordMasNo);
+			
 			TicLisService ticLisSvc = new TicLisService();
 			for (TicTypCartVO  ticTypCartVO: ticTypCartSet) {
 				Integer ticTypNo = ticTypCartVO.getTicTypNo();
@@ -111,6 +115,7 @@ public class OrdMasDAO implements OrdMasDAO_interface {
 				}
 			}
 		}
+		return ordMasVO;
 	}
 
 	@Override
@@ -287,6 +292,40 @@ public class OrdMasDAO implements OrdMasDAO_interface {
 		
 		
 		return list;
+	}
+
+	@Override
+	public void changeStatus(Integer ordMasNo, Integer ordMasStatus) {
+		
+		Connection con = null;
+		PreparedStatement pstmt = null;
+		
+		try {
+			con = ds.getConnection();
+			pstmt = con.prepareStatement(UPDATE_STATUS_STMT);
+			
+			pstmt.setInt(1, ordMasStatus);
+			pstmt.setInt(2, ordMasNo);
+			pstmt.executeUpdate();
+			
+		} catch (SQLException se) {
+			throw new RuntimeException("A database error occured. " + se.getMessage());
+		} finally {
+			if (pstmt != null) {
+				try {
+					pstmt.close();
+				} catch (SQLException se) {
+					se.printStackTrace(System.err);
+				}
+			}
+			if (con != null) {
+				try {
+					con.close();
+				} catch (Exception e) {
+					e.printStackTrace(System.err);
+				}
+			}
+		}
 	}
 
 }

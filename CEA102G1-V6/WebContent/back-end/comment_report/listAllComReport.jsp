@@ -19,8 +19,8 @@
 	.success-span{
 	    color: #bb9d52;
 		position: absolute;
-	    top: 8%;
-	    left: 17%;
+	    top: 4%;
+    	left: 40%;
 	    font-size: 16px;
 	}
 </style>
@@ -46,12 +46,12 @@
                     	<!-- success message End -->
                     	
 						<!-- listComReport Start -->
-                    	<div class="row " style="margin: -50px 0 50px 0;">         
+                    	<div class="row " style="margin: -50px 0 0 0;">        
 			                <div class="col-8"></div>
 	                        <div class="col-4">                                 
 	                           	<FORM METHOD="post" ACTION="<%=request.getContextPath()%>/comment_report/comrep.do">	
 			                        <b>檢舉狀態</b>
-		                            <select name="comRepStatus">
+		                            <select name="comRepStatus" style="margin-right: 2.5%;">
 	                                	<option value="">全部</option>
 	                                    <option value="0">未處理 
 	                                    <option value="1">檢舉成功 

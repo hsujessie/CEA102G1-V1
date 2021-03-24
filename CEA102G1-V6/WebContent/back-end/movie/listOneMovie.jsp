@@ -84,7 +84,7 @@ MovVO movVO = (MovVO) request.getAttribute("movVO");
 							</tr>
 							<tr>
 								<th>片長</th>
-								<td><%=movVO.getMovdurat()%>小時</td>
+								<td><%=movVO.getMovdurat()%>分鐘</td>
 							</tr>
 							<tr>
 								<th>級數</th>
@@ -106,7 +106,8 @@ MovVO movVO = (MovVO) request.getAttribute("movVO");
 								<th>海報</th>
 								<td>				
 									<c:if test="${not empty movVO.movpos}">
-										<img width="150px" src="<%=request.getContextPath()%>/movie/mov.do?movno=${movVO.movno}&action=get_One_MovPos">
+										<%-- <img width="150px" src="<%=request.getContextPath()%>/movie/mov.do?movno=${movVO.movno}&action=get_One_MovPos"> --%>
+										<img width="150px" src="<%=request.getContextPath()%>/util/imgReader${movVO.movPosParam}">
 									</c:if>
 								</td>
 							</tr>

@@ -6,8 +6,10 @@ import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 public class SesService {
@@ -31,9 +33,8 @@ public class SesService {
 	}
 	
 	
-	public SesVO updateSes(Integer theNo, Date sesDate, Time sesTime, Integer sesNo) {
+	public SesVO updateSes(Date sesDate, Time sesTime, Integer sesNo) {
 		SesVO sesVO = new SesVO();
-		sesVO.setTheNo(theNo);
 		sesVO.setSesDate(sesDate);
 		sesVO.setSesTime(sesTime);
 		sesVO.setSesNo(sesNo);
@@ -54,44 +55,127 @@ public class SesService {
 		return dao.getAll(map);
 	}
 
-	public List<SesVO> getMoviesBySesDate(Date sesDate) {
-		return dao.findMoviesBySesDate(sesDate);
+	public List<SesVO> getMoviesByDate(Date date) {
+		return dao.findMoviesByDate(date);
 	}
 
-	public List<SesVO> getDistinctSesDate() {
-		List<SesVO> list = dao.findDistinctSesDate();
-		List<SesVO> seslist = new ArrayList<SesVO>();
-		SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");		
+
+	public List<SesVO> sesDateEqualsToday() {     	
 		java.util.Date now = new java.util.Date();
-		java.sql.Date today = new java.sql.Date(now.getTime());		
-		String strToday = dateFormat.format(today);      
+		java.sql.Date today = new java.sql.Date(now.getTime());
 		
-		for (SesVO sesDate: list){
-    		String strSesDate = dateFormat.format(sesDate.getSesDate());     
-    		if(strSesDate.equals(strToday)) {
-    			seslist.add(sesDate);
-    		}
-        }
-		return seslist;
+		return getMoviesByDate(today);
 	}
 	
-	public List<String> updateSeatStatus(String chooseSeatNo, Integer sesNo) {
-		SesVO sesVO = dao.findByPrimaryKey(sesNo);
+	public List<Integer> getDistinctMovNo() {     
+		List<SesVO> list = sesDateEqualsToday();
+		List<Integer> movNoList = new ArrayList<Integer>();
 		
+		for (SesVO sesLists : list){
+			movNoList.add(sesLists.getMovNo());
+	    }
+		
+		return movNoList.stream().distinct().collect(Collectors.toList());
+	}
+	
+	public List<Date> getDistinctSesDate() {     
+		List<SesVO> list = sesDateEqualsToday();
+		List<Date> sesDateList = new ArrayList<Date>();
+		
+		for (SesVO sesLists : list){
+			sesDateList.add(sesLists.getSesDate());
+	    }
+		return sesDateList.stream().distinct().collect(Collectors.toList());
+	}
+
+	
+	public List<Integer> getDistinctMovNoBySearchDate(Date sesDate) {     
+		List<SesVO> list = dao.findMoviesByDate(sesDate);
+		List<Integer> movNoList = new ArrayList<Integer>();
+		
+		for (SesVO sesLists : list){
+			movNoList.add(sesLists.getMovNo());
+	    }
+		
+		return movNoList.stream().distinct().collect(Collectors.toList());
+	}
+	
+	public List<Date> getDistinctSesDateBySearchDate(Date sesDate) {     
+		List<SesVO> list = dao.findMoviesByDate(sesDate);
+		List<Date> sesDateList = new ArrayList<Date>();
+		
+		for (SesVO sesLists : list){
+			sesDateList.add(sesLists.getSesDate());
+	    }
+		return sesDateList.stream().distinct().collect(Collectors.toList());
+	}
+	
+	public List<SesVO> getSesTimes(Integer movNo,Date sesDate) { 
+		return dao.findSesTimeByMovNoAndDate(movNo,sesDate);
+	}
+	
+	public Boolean isGreater(Date sesDate) {
+		Boolean result = false;	
+		java.util.Date today = new java.util.Date();
+		
+		long milis = 259200000;  //毫秒 = 3天
+		long diffDate = (sesDate.getTime() - today.getTime());
+		
+		if(diffDate > milis) {
+			result = true;
+		}
+		
+		return result;
+	}
+	
+	public List<String> updateSeatStatus(String chooseSeatNo, Integer sesNo, String whatAction) {
+		SesVO sesVO = dao.findByPrimaryKey(sesNo);
+
 		String orgSeatStatus = sesVO.getSesSeatStatus();
 		StringBuilder sb = new StringBuilder(orgSeatStatus);
 		String orgSeatNo = sesVO.getSesSeatNo();
-		
+
+
 		List<String> list = new ArrayList<String>();
+			for (int i = 0; i < chooseSeatNo.length() ; i +=3) {
+				String oneSeatNo = chooseSeatNo.substring(i, i + 3);
+				list.add(oneSeatNo);
+				int index = orgSeatNo.indexOf(oneSeatNo) / 3;
+
+				if ("lock_seat".equals(whatAction)) {
+					sb.setCharAt(index, '1');
+				} else {
+					sb.setCharAt(index, '0');
+				}
+			}
+		dao.updateSeatStatus(sesNo, sb.toString());
+
+		return list;
+	}
+
+	public boolean isAlreadyChoose(String chooseSeatNo, Integer sesNo) {
+		SesVO sesVO = dao.findByPrimaryKey(sesNo);
+		String orgSeatStatus = sesVO.getSesSeatStatus();
+		String orgSeatNo = sesVO.getSesSeatNo();
+
 		for (int i = 0; i < chooseSeatNo.length() ; i +=3) {
 			String oneSeatNo = chooseSeatNo.substring(i, i + 3);
-			list.add(oneSeatNo);
-			
 			int index = orgSeatNo.indexOf(oneSeatNo) / 3;
-			sb.setCharAt(index, '1');
+
+			if (orgSeatStatus.charAt(index) == '1') {
+				return true;
+			}
 		}
-		dao.updateSeatStatus(sesNo, sb.toString());
+		return false;
+	}
+	
+	public boolean isRepeatedSession(Integer theNo, Date sesDate, Time sesTime) {
+		Boolean result = true;
+		Integer sesNo = dao.findRepeatedSession(theNo, sesDate, sesTime);
 		
-		return list;
+		if(sesNo == null) {  // 資料庫無資料，代表無重複場次
+			result = false;
+		}
+		return result;
 	}
 }

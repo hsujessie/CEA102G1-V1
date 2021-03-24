@@ -1,6 +1,8 @@
 package com.art_fav.model;
 
 import java.util.List;
+import java.util.Map;
+
 
 public class ArtFavService {
 	
@@ -31,5 +33,9 @@ public class ArtFavService {
 	
 	public List<ArtFavVO> findByMenNo(Integer memNo){
 		return dao.findByMenNo(memNo);
+	}
+	public List<ArtFavVO> getAll(Map<String, String[]> map){
+		System.out.println("artSvc_map:" + map);
+		return dao.getAll(map);
 	}
 }

@@ -11,12 +11,11 @@ public class FooService {
 		dao = new FooDAO();
 	}
 	
-	public FooVO addFoo(String fooName, Integer fooCatNo, String fooIntro, byte[] fooImg, Integer fooPrice) {
+	public FooVO addFoo(String fooName, Integer fooCatNo, byte[] fooImg, Integer fooPrice) {
 		FooVO fooVO = new FooVO();
 		
 		fooVO.setFooName(fooName);
 		fooVO.setFooCatNo(fooCatNo);
-		fooVO.setFooIntro(fooIntro);
 		fooVO.setFooImg(fooImg);
 		fooVO.setFooPrice(fooPrice);
 		dao.insert(fooVO);
@@ -28,13 +27,12 @@ public class FooService {
 		return dao.getAll();
 	}
 	
-	public FooVO updateFoo(Integer fooNo, String fooName, Integer fooCatNo, String fooIntro, byte[] fooImg, Integer fooPrice, Integer fooStatus) {
+	public FooVO updateFoo(Integer fooNo, String fooName, Integer fooCatNo, byte[] fooImg, Integer fooPrice, Integer fooStatus) {
 		FooVO fooVO = new FooVO();
 		
 		fooVO.setFooNo(fooNo);
 		fooVO.setFooName(fooName);
 		fooVO.setFooCatNo(fooCatNo);
-		fooVO.setFooIntro(fooIntro);
 		fooVO.setFooImg(fooImg);
 		fooVO.setFooPrice(fooPrice);
 		fooVO.setFooStatus(fooStatus);
@@ -43,13 +41,12 @@ public class FooService {
 		return fooVO;
 	}
 	
-	public FooVO updateFooNoImg(Integer fooNo, String fooName, Integer fooCatNo, String fooIntro, Integer fooPrice, Integer fooStatus) {
+	public FooVO updateFooNoImg(Integer fooNo, String fooName, Integer fooCatNo, Integer fooPrice, Integer fooStatus) {
 		FooVO fooVO = new FooVO();
 		
 		fooVO.setFooNo(fooNo);
 		fooVO.setFooName(fooName);
 		fooVO.setFooCatNo(fooCatNo);
-		fooVO.setFooIntro(fooIntro);
 		fooVO.setFooPrice(fooPrice);
 		fooVO.setFooStatus(fooStatus);
 		dao.updateNoImg(fooVO);

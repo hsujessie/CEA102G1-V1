@@ -1,6 +1,7 @@
 package com.admin.model;
 
 import java.util.List;
+import java.util.Map;
 
 import com.admin_auth.model.AdmAutVO;
 
@@ -35,14 +36,13 @@ public class AdmService {
 		return admVO;
 	}
 
-	public AdmVO updateAdm(Integer admNo, String admName, byte[] admImg, String admAccount, String admPassword, String admMail, Integer admStatus, String[] funNoArray) {
+	public AdmVO updateAdm(Integer admNo, String admName, byte[] admImg, String admAccount, String admMail, Integer admStatus, String[] funNoArray) {
 		AdmVO admVO = new AdmVO();
 		
 		admVO.setAdmNo(admNo);
 		admVO.setAdmName(admName);
 		admVO.setAdmImg(admImg);
 		admVO.setAdmAccount(admAccount);
-		admVO.setAdmPassword(admPassword);
 		admVO.setAdmMail(admMail);
 		admVO.setAdmStatus(admStatus);
 		dao.update(admVO, funNoArray);
@@ -50,13 +50,12 @@ public class AdmService {
 		return admVO;
 	}
 	
-	public AdmVO updateAdmNoImg(Integer admNo, String admName, String admAccount, String admPassword, String admMail, Integer admStatus, String[] funNoArray) {
+	public AdmVO updateAdmNoImg(Integer admNo, String admName, String admAccount, String admMail, Integer admStatus, String[] funNoArray) {
 		AdmVO admVO = new AdmVO();
 		
 		admVO.setAdmNo(admNo);
 		admVO.setAdmName(admName);
 		admVO.setAdmAccount(admAccount);
-		admVO.setAdmPassword(admPassword);
 		admVO.setAdmMail(admMail);
 		admVO.setAdmStatus(admStatus);
 		dao.updateNoImg(admVO, funNoArray);
@@ -66,6 +65,10 @@ public class AdmService {
 	
 	public List<AdmVO> getAll() {
 		return dao.getAll();
+	}
+	
+	public List<AdmVO> getAll(Map<String, String[]> map) {
+		return dao.getAll(map);
 	}
 	
 	public AdmVO getOneAdm(Integer admNo) {

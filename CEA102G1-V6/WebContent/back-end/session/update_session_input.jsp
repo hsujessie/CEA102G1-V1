@@ -47,6 +47,10 @@
   #abled-btn{
     z-index: 0;
   }
+  .err-color{
+	color: #A50203;
+    font-size: 14px;
+  }
 </style>
 </head>
 <body class="sb-nav-fixed">
@@ -77,12 +81,13 @@
 							</tr>
 							<tr>
 								<th>廳院</th>
-								<td>
-									<!-- 多選checkbox -->			
-									<input class="mr-left mr-btm-sm" type="radio" name="theNo" value="1" <c:if test="${sesVO.theNo == 1}">checked</c:if> ><span class="ml-ten">A廳 【2D】</span><br>
-									<input class="mr-left mr-btm-sm" type="radio" name="theNo" value="2" <c:if test="${sesVO.theNo == 2}">checked</c:if> ><span class="ml-ten">B廳 【3D】</span><br>
-									<input class="mr-left mr-btm-sm" type="radio" name="theNo" value="3" <c:if test="${sesVO.theNo == 3}">checked</c:if> ><span class="ml-ten">C廳 【IMAX】</span><br>
-								</td>
+								<!-- 多選checkbox -->
+								<jsp:useBean id="theSvc" scope="page" class="com.theater.model.TheService"/>
+								<jsp:useBean id="movVerSvc" scope="page" class="com.movie_version.model.MovVerService"/>	
+								<c:set value="${theSvc.getOneTheater(sesVO.theNo)}" var="theObj"></c:set>
+								<c:set value="${movVerSvc.getOneMovie_version(theObj.movver_no)}" var="movVerObj"></c:set>
+								<td style="color: #bb9d52;">${sesVO.theNo}廳 【${movVerObj.movver_name}】</td>	
+									
 							</tr>
 							<tr>
 								<th>日期</th>
@@ -94,7 +99,11 @@
 								<th>時間</th>
 								<td>	
 								    <input class="sty-input" type="text" name="sesTime" value="${sesVO.sesTime}">
-								</td>
+									<span id="addtime-errmsg" style="display:none;">			
+										<i class="far fa-hand-point-left" style="color:#bb9d52;"></i>
+										<label id="addtime-errmsg-txt" class="err-color"></label>
+									</span>	
+								</td>	
 							</tr>
 						</table>
 						<br>
@@ -102,8 +111,12 @@
 						<input type="hidden" name="sesNo" value="${sesVO.sesNo}">
 						<input type="hidden" name="requestURL" value="<%=request.getParameter("requestURL")%>">
 						<input type="hidden" name="whichPage"  value="<%=request.getParameter("whichPage")%>">
-						<a id="abled-btn" class="btn btn-light btn-brd grd1 effect-1 btn-pos" style="margin: 1% 0 1% 50%;" >
+						
+						<a id="abled-btn" class="btn btn-light btn-brd grd1 effect-1 btn-pos" style="margin: 1% 0 1% 50%; display:block;" >
 							<input type="submit" value="送出" class="input-pos">
+						</a>
+						<a id="disabled-btn" class="btn btn-light btn-brd grd1 btn-pos" style="margin: 1% 0 1% 50%; background-color: #808080; border: 2px solid #808080!important; cursor: default;  display:none;" >
+							<input type="submit" value="送出" class="input-pos" style="background-color: #808080;" disabled>
 						</a>
 						</FORM>
                        <!-- update session End -->
@@ -127,6 +140,30 @@
 		dropdown: true,
 		scrollbar: false
 	});
+
+
+	/* =========================================================================================== */
+									/* Varify Inputs */
+	/* =========================================================================================== */
+	let sesTimeInput = document.querySelector('input[name="sesTime"]');
+	sesTimeInput.addEventListener('keyup', isEmpty, false);
+	sesTimeInput.addEventListener('focus', isEmpty, false);
+	
+	function isEmpty(){
+		console.log($('input[name="sesTime"]').val());
+		if($('input[name="sesTime"]').val() == ''){
+			$("#abled-btn").css('display','none');
+			$("#disabled-btn").css('display','block'); 
+			$("#addtime-errmsg").css('display','inline-block'); 
+			$("#addtime-errmsg-txt").text("請新增時間");
+		}else{
+			$("#abled-btn").css('display','block');
+			$("#disabled-btn").css('display','none'); 
+			$("#addtime-errmsg").css('display','none');
+			$("#addtime-errmsg-txt").text("");
+		}
+	}
+		
 </script>
 </body>
 </html>
