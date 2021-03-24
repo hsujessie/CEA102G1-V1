@@ -85,7 +85,7 @@ MemberVO memberVO = (MemberVO) request.getAttribute("MemberVO");
 									<td>${MemberVO.memAccount}</td>
 									<td>${MemberVO.memPassword}</td>
 									<td>${MemberVO.memMail}</td>
-									<td><img src="<%=request.getContextPath()%>/util/imgReader${MemberVO.memImg}"width="50" height="50"></td>
+									<td><img src="<%=request.getContextPath()%>/util/imgReader${MemberVO.memImgParam}" width="100" height="100"></td>
  									<td>${(MemberVO.memstatus==0)?"未啟動":(MemberVO.memstatus==1?"已啟動":"已停權")}</td>
 								</tr>
 							</tbody>

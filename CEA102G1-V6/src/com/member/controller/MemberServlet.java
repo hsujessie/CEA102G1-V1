@@ -36,8 +36,26 @@ public class MemberServlet extends HttpServlet {
 
 		req.setCharacterEncoding("UTF-8");
 		String action = req.getParameter("action");
+		
+/*************************** 開始 ***********************************/
+		if ("Login_out".equals(action)) {
+///***************************開始查詢資料 ***************************/
+			
+			    HttpSession session = req.getSession();
+			    if (session != null) {
+			      session.removeAttribute("MemberVO");
+			    }
 
-		/*************************** 開始 ***********************************/
+///****************查詢完成,準備轉交(Send the Success view)***************/
+			
+			String url = req.getContextPath()+"/front-end/index.jsp";
+			res.sendRedirect(url);
+//			RequestDispatcher successView = req.getRequestDispatcher(url);
+//			successView.forward(req, res);
+			return;
+		}		
+
+/*************************** 開始 ***********************************/
 		if ("getAll".equals(action)) {
 ///***************************開始查詢資料 ***************************/
 			MemberJNDIDAO dao = new MemberJNDIDAO();
@@ -420,6 +438,7 @@ public class MemberServlet extends HttpServlet {
 				if (strPassword == null || (strPassword.trim()).isEmpty()) {
 					errorMsgs.add("請輸入密碼");
 				}
+				
 
 				if (!errorMsgs.isEmpty()) {
 					RequestDispatcher failureView = req.getRequestDispatcher("/front-end/Member_Login/login.jsp");
@@ -448,11 +467,11 @@ public class MemberServlet extends HttpServlet {
 				}
 //				if(memberVO.getMemPassword().equals(memPassword)) {
 //					System.out.println(memberVO.getMemstatus());
-//					if (memberVO.getMemstatus() == 0) {
-//						errorMsgs.add("您的會員尚未啟動");
-//						} else if (memberVO.getMemstatus() == 2) {
-//						errorMsgs.add("您的會員已停權");
-//						 }
+				else if (memberVO.getMemstatus() == 0) {
+						errorMsgs.add("您的會員尚未啟動");
+						} else if (memberVO.getMemstatus() == 2) {
+						errorMsgs.add("您的會員已停權");
+						 }
 				if (!errorMsgs.isEmpty()) {
 					RequestDispatcher failureView = req.getRequestDispatcher("/front-end/Member_Login/login.jsp");
 					failureView.forward(req, res);

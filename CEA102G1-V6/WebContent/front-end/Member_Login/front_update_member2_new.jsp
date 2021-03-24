@@ -131,7 +131,7 @@ padding:
 					</tr>
 					<tr>
 						<th>會員大頭照:</th>
-						<td><img src="<%=request.getContextPath()%>/Member/reader.do?memNo=${memberVO.memNo}" width="100" height="100">
+						<td><img src="<%=request.getContextPath()%>/util/imgReader${MemberVO.memImgParam}" width="100" height="100">
 						<input class=img type="file" name="memImg" size="45"value="" /></td>
 					</tr>
 				</table>
