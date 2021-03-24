@@ -183,7 +183,8 @@
 								<td id="show-poster">
 									<span id="fileImg">	
 									<c:if test="${not empty movVO.movpos}">
-										<img width="150px" class="img" src="<%=request.getContextPath()%>/movie/mov.do?movno=${movVO.movno}&img=movpos&action=get_One_MovPos">
+										<%-- <img width="150px" class="img" src="<%=request.getContextPath()%>/movie/mov.do?movno=${movVO.movno}&img=movpos&action=get_One_MovPos"> --%>
+										<img width="150px" class="img" src="<%=request.getContextPath()%>/util/imgReader${movVO.movPosParam}">										
 									</c:if>
 									</span>
 								</td>
