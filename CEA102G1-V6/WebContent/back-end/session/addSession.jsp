@@ -106,14 +106,14 @@
 						<FORM method="post" action="<%=request.getContextPath()%>/session/ses.do" name="form_addSession"  enctype="multipart/form-data">
 						<h3 class="h3-style listOne-h3-pos">場次新增</h3>
                     	
-                    	<!-- exception failure message Start -->
+                    	<!-- failure message Start -->
 						<c:if test="${errorSessionMsgs != null}">
 							<span class="fail-span"> 
 								<i class="far fa-frown"></i>
 								${errorSessionMsgs}
 							</span>
 						</c:if>
-                    	<!-- exception failure message End -->
+                    	<!-- failure message End -->
                     	
 						<table>
 							<tr>
