@@ -192,14 +192,7 @@
     <servlet-name>MemberServlet</servlet-name>
     <url-pattern>/Member/member.do</url-pattern>
   </servlet-mapping> 
-  <servlet>
-    <servlet-name>MemImgReader</servlet-name>
-    <servlet-class>com.member.controller.MemImgReader</servlet-class>
-  </servlet>
-  <servlet-mapping>
-    <servlet-name>MemImgReader</servlet-name>
-    <url-pattern>/Member/reader.do</url-pattern>
-  </servlet-mapping> 
+  
 
 <!-- 28 -->
   <servlet>

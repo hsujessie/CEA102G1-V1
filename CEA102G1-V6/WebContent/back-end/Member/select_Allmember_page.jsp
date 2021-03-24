@@ -113,9 +113,7 @@
 									<td>${memberVO.memAccount}</td>
 									<td>${memberVO.memPassword}</td>
 									<td>${memberVO.memMail}</td>
-									<td><img
-										src="<%=request.getContextPath()%>/util/imgReader${memberVO.memImg}"
-										width="50" height="50"></td>
+									<td><img src="<%=request.getContextPath()%>/util/imgReader${MemberVO.memImgParam}" width="100" height="100"></td>
 									<td>${(memberVO.memstatus==0)?"未啟動":(memberVO.memstatus==1?"已啟動":"已停權")}</td>
 
 									<td>

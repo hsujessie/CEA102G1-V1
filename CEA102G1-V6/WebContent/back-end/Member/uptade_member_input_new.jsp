@@ -151,7 +151,7 @@ table td{
 											  </tr>
 											  <tr>
 											    <th>會員照片:</th>
-											    <td><img src="<%=request.getContextPath()%>/Member/reader.do?memNo=${memberVO.memNo}" width="100" height="100"></td>
+											    <td><img src="<%=request.getContextPath()%>/util/imgReader${MemberVO.memImgParam}" width="100" height="100"></td>
 											  </tr>
 										</table>
 									</div>

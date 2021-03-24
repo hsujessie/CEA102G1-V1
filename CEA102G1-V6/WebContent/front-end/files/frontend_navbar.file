@@ -52,16 +52,30 @@
 
                     
                 	<div class="nav-item dropdown">
-                        <a href="" class="nav-link dropdown-toggle <c:if test="${(urlRecog == members)|| (urlRecog == searchTickets) || (urlRecog == articlemanage)}">active</c:if>" data-toggle="dropdown"><i class="fa fa-user iconPos"></i>會員</a>
+                        <a href="" class="nav-link dropdown-toggle <c:if test="${(urlRecog == membersdata)|| (urlRecog == searchTickets) || (urlRecog == articlemanage)}">active</c:if>" data-toggle="dropdown"><i class="fa fa-user iconPos"></i>會員</a>
                         <div class="dropdown-menu">
-                            <a href="${membersdata}" class="dropdown-item">會員資料管理</a>
+                        <c:choose>
+						   <c:when test="${empty MemberVO}">
+						      <a href="${membersdata}" class="dropdown-item"style="display:none">會員資料管理</a>
+						   </c:when>
+						   <c:otherwise>
+						      <a href="${membersdata}" class="dropdown-item" >會員資料管理</a>
+						   </c:otherwise>
+						</c:choose>
                             <a href="${searchTickets}" class="dropdown-item">購票管理</a>
                             <a href="${articlemanage}" class="dropdown-item">文章管理</a>
 
                         </div>
                     </div>
                     
-                    <a href="${members}" class="nav-item nav-link loginPos <c:if test="${urlRecog == members}">active</c:if>">登入<i class="fas fa-user-circle"></i></a>
+                    	<c:choose>
+						   <c:when test="${empty MemberVO}">
+						      <a href="${members}" class="nav-item nav-link loginPos ">登入<i class="fas fa-user-circle"> </i></a>
+						   </c:when>
+						   <c:otherwise>
+						      <a href="<%=request.getContextPath() %>/Member/member.do?action=Login_out" class="nav-item nav-link loginPos "><img id="memIMG" src="<%=request.getContextPath()%>/util/imgReader${MemberVO.memImgParam}" style="border-radius: 50%; height: 5vh; width: 3vw;">${MemberVO.memName}您好,  登出</a>
+						   </c:otherwise>
+						</c:choose>
                 </div>
             </div>
         </nav>
