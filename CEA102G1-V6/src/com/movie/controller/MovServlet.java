@@ -201,7 +201,7 @@ public class MovServlet extends HttpServlet{
 
 				byte[] movpos = null;
 				Part movposPart = req.getPart("movpos");
-				/* 新增時，若沒寫以下判斷，沒有選圖片時，還是會寫入一個奇怪的東西，在修改時，會顯示一個怪小圖 */
+				/* 新增時，若沒寫以下判斷，沒有選圖片時，把瀏覽器預設的圖寫進db，在修改時，會顯示broken image */
 				if(movposPart.getContentType() != null && movposPart.getContentType().indexOf("image") >= 0) {  // movposPart.getContentType() 印出image/jpeg
 					 InputStream movposis = movposPart.getInputStream();
 					 movpos = new byte[movposis.available()];
