@@ -48,6 +48,9 @@ a:focus {
 /**********************************/
 /*********** Nav Bar CSS **********/
 /**********************************/
+.navbar-expand-lg .navbar-nav .dropdown-menu{
+	z-index: 100;
+}
 .iconPos{
     margin-right: 2px;
 }
@@ -100,10 +103,10 @@ a:focus {
     border: 0;
     border-radius: 0;
     background: #f8f9fa;
+    
 }
 .nav-bar .dropdown-menu a{
     color: #aa9166;
-    z-index: 100;
 }
 
 .nav-bar .logo  img{
