@@ -70,6 +70,7 @@
     color: #A50203;
     font-size: 14px;
     margin-top: 5px;
+    font-weight: normal;
   }
   .xdsoft_datetimepicker.xdsoft_dark .xdsoft_calendar td, .xdsoft_datetimepicker.xdsoft_dark .xdsoft_calendar th {
    	border-radius: 0px;
@@ -199,7 +200,7 @@
 								<th style="padding-left: 10px;">時間
 									<c:if test="${not empty errorTimeMsgs}">					
 										<span id="sesTime-errmsg">		
-											<label class="err-color"><i class="far fa-hand-point-down" style="color:#bb9d52;"></i>${errorTimeMsgs}</label>
+											<label class="err-color"><i class="far fa-hand-point-down" style="color:#bb9d52;"></i> ${errorTimeMsgs}</label>
 										</span>
 									</c:if>	
 								</th>								
