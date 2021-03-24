@@ -11,5 +11,5 @@ public interface ComRepDAO_interface {
     public ComRepVO findByPrimaryKey(Integer comRepNo);
     public List<ComRepVO> getAll();
     public List<ComRepVO> findComRepByComReStatus(Integer comReStatus);
-	public Integer findRepeatedComRep(Integer comNo, Integer memNo, Integer comRepReason);
+	public Integer findRepeatedComRep(Integer comNo, Integer memNo, String comRepReason);
 }

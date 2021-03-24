@@ -47,7 +47,7 @@ public class ComRepService {
 		return dao.findComRepByComReStatus(comRepStatus);
 	}
 	
-	public boolean isRepeatedComRep(Integer comNo, Integer memNo, Integer comRepReason) {
+	public boolean isRepeatedComRep(Integer comNo, Integer memNo, String comRepReason) {
 		Boolean result = true;
 		Integer comrepNo = dao.findRepeatedComRep(comNo, memNo, comRepReason);
 		

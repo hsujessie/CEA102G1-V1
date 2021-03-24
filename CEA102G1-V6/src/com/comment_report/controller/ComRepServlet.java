@@ -47,11 +47,16 @@ public class ComRepServlet extends HttpServlet {
 
 				Integer comRepStatus = 0; //0:未處理 
 
-				Integer movNo = new Integer(req.getParameter("movNo").trim());
-				
-				/***************************2.開始新增資料***************************************/				
+				Integer movNo = new Integer(req.getParameter("movNo").trim());	
+
+	         /* ===========================================================================
+    	              錯誤驗證：檢舉是否重複  //短評編號comNo、會員memNo、檢舉原因comRepReason
+    	        =========================================================================== */
 				ComRepService comRepSvc = new ComRepService();
-				comRepSvc.addComRep(comNo, memNo, comRepReason, comRepTime, comRepStatus);
+				Boolean result = comRepSvc.isRepeatedComRep(comNo, memNo, comRepReason);
+				if(result == false) { /* 檢舉無重複，才可寫入db */
+					comRepSvc.addComRep(comNo, memNo, comRepReason, comRepTime, comRepStatus);
+				}
 				
 				ComService comSvc = new ComService();
 				ComVO comVO = comSvc.getOneCom(comNo);

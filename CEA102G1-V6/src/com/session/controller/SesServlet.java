@@ -207,7 +207,7 @@ public class SesServlet extends HttpServlet {
 					theNoList.add(new Integer(theNoArr[k]));
 				 }
 		      /* =====================================================================
-        	                   場次是否重複，錯誤驗證  //theNo、sesDate、sesTime
+        	              錯誤驗證：場次是否重複  //廳院theNo、日期sesDate、時間sesTime
         	     ===================================================================== */
 				 Boolean result = true;
 				 for (int i = 0; i < sesDateArr.length; i++) {
@@ -390,8 +390,8 @@ public class SesServlet extends HttpServlet {
 				/***************************1.接收請求參數 - 輸入格式的錯誤處理**********************/
                  String sesDateStr = req.getParameter("sesDate").trim();     
 	             java.sql.Date sesDate = null;
-	             sesDate = Date.valueOf(sesDateStr);    
-                 System.out.println(sesDate); 
+	             sesDate = Date.valueOf(sesDateStr);  
+	             
 	    	    /***************************2.開始修改資料*****************************************/ 
  	            SesService sesSvc = new SesService();
 				List<SesVO> list  =  sesSvc.getMoviesByDate(sesDate);

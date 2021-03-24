@@ -228,7 +228,6 @@ public class ComRepDAO implements ComRepDAO_interface{
 			con = ds.getConnection();
 			
 			String getComRepByComReStatus = "SELECT * FROM COMMENT_REPORT WHERE comrep_status= " + comReStatus;
-			System.out.println(getComRepByComReStatus);
 			
 			pstmt = con.prepareStatement(getComRepByComReStatus);
 			rs = pstmt.executeQuery();			
@@ -274,7 +273,7 @@ public class ComRepDAO implements ComRepDAO_interface{
 	}
 
 	@Override
-	public Integer findRepeatedComRep(Integer comNo, Integer memNo, Integer comRepReason) {
+	public Integer findRepeatedComRep(Integer comNo, Integer memNo, String comRepReason) {
 		Integer comrepNoResult = null;
 		
 		Connection con = null;
@@ -285,7 +284,6 @@ public class ComRepDAO implements ComRepDAO_interface{
 			con = ds.getConnection();
 			String findRepeatedComRep = "select comrep_no from comment_report where com_no = " + comNo + " AND mem_no = '"
 	          		   + memNo + "' AND comrep_reason = '" + comRepReason + "'";
-			System.out.println(findRepeatedComRep);
 			
 			pstmt = con.prepareStatement(findRepeatedComRep);
 			
