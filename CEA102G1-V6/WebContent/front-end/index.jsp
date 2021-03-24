@@ -100,12 +100,13 @@
 		                        <div class="col-lg-10 col-md-12">
 		                            <div class="movie-item">
 			                            <div class="movie-img">
-											<c:if test="${not empty movVO.movpos}">
-			                                	<img src="<%=request.getContextPath()%>/movie/mov.do?movno=${movVO.movno}&img=movpos&action=get_One_MovPos" alt="Movie Image">
-	                        				</c:if>
+											<%-- <c:if test="${not empty movVO.movpos}"> --%>
+			                                	<%-- <img src="<%=request.getContextPath()%>/movie/mov.do?movno=${movVO.movno}&img=movpos&action=get_One_MovPos"> --%>
+			                                	<img src="<%=request.getContextPath()%>/util/imgReader${movVO.movPosParam}">
+	  <%--                       				</c:if>
 											<c:if test="${empty movVO.movpos}">											
-		                                        <a href="<%=request.getContextPath()%>/movie/mov.do?action=getOne_For_Display&requestURL=<%=request.getServletPath()%>&movno=${movVO.movno}&fromFrontend=true"><img src="<%=request.getContextPath()%>/resource/images/film.jpg" alt="Movie Image"></a>			                                	
-	                        				</c:if>
+		                                        <a href="<%=request.getContextPath()%>/movie/mov.do?action=getOne_For_Display&requestURL=<%=request.getServletPath()%>&movno=${movVO.movno}&fromFrontend=true"><img src="<%=request.getContextPath()%>/resource/images/film.jpg"></a>			                                	
+	                        				</c:if> --%>
 	                        				
 	                        			</div>
 		                                <div class="movie-text">
@@ -160,7 +161,6 @@
                     
 						<c:forEach var="artVO" items="${artSvc.all}" >
 	                        <div class="forum-item">
-	                            <!-- <img src="" alt="Forum Image"> -->
 	                            <h3>${artVO.artTitle}</h3>
 	                            <div class="meta">
 	                                <i class="fas fa-user-edit"></i>																				
