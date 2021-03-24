@@ -3,7 +3,7 @@
 
 <html>
 <head>
-	<title>Back-End Management</title>
+	<title>Client_Service</title>
 	<%@ include file="/back-end/files/sb_head.file"%>
 	  <link rel="stylesheet" href="<%=request.getContextPath()%>/resource/css/chatbox/cliSerForBac.css" >
 

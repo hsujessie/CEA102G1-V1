@@ -7,7 +7,7 @@
 <c:set var="movies" value="${pageContext.request.contextPath}/front-end/movies/movies.jsp"/>
 <c:set var="forum" value="${pageContext.request.contextPath}/front-end/article/article.jsp"/>
 <c:set var="notices" value="${pageContext.request.contextPath}/front-end/notices.jsp"/>
-<c:set var="faqs" value="${pageContext.request.contextPath}/front-end/faqs.jsp"/>
+<c:set var="faqs" value="${pageContext.request.contextPath}/front-end/faq/faq.jsp"/>
 <c:set var="articlemanage" value="${pageContext.request.contextPath}/front-end/article/articleManage.jsp"/>
 <c:set var="members" value="${pageContext.request.contextPath}/front-end/Member_Login/login.jsp"/>
 <c:set var="membersdata" value="${pageContext.request.contextPath}/front-end/Member_Login/front_update_member2_new.jsp"/>
@@ -77,7 +77,7 @@
 <div class="chat-box">
     <div class="chat-box-header">
       		線上客服
-      <span class="chat-box-toggle"></span>
+      <span class="chat-box-toggle"><i class="fas fa-minus"></i></span>
     </div>
     <div class="chat-box-body">
       <div class="chat-box-overlay">   

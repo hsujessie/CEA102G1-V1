@@ -6,7 +6,7 @@
 %>
 <html>
 <head>
-	<title>Back-End Management</title>
+	<title>影廳新增</title>
 	<%@ include file="/back-end/files/sb_head.file"%>
 	<style>
   #table1 {
@@ -197,7 +197,6 @@ li.seatCharts-legendItem {
 		
 			  //現在tableData已經生成好了，把他賦值給上面的tbody
 			  $("#tbody1").html(tableData)
-		console.log($("[data-seat]"));
  		$("[data-seat]").on("click",function(){
  			if($(this).attr("class")==="s0"){
  			$(this).attr("class","s3");

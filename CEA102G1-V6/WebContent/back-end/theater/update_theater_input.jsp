@@ -6,7 +6,7 @@
 %>
 <html>
 <head>
-	<title>Back-End Management</title>
+	<title>影廳修改</title>
 	<%@ include file="/back-end/files/sb_head.file"%>
 	<style>
   #table1 {
