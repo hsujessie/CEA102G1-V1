@@ -5,6 +5,7 @@ import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Time;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -436,6 +437,61 @@ public class SesDAO implements SesDAO_interface{
 		}
 		
 		return list;
+	}
+
+	@Override
+	public Integer findRepeatedSession(Integer theNo, Date sesDate, Time sesTime) {	
+		Integer sesNoResult = null;
+		
+		Connection con = null;
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+		
+		try {
+			con = ds.getConnection();
+			String findRepeatedSession = "select ses_no from session where the_no = " + theNo + " AND ses_date = '"
+	          		   + sesDate + "' AND ses_time = '" + sesTime + "'";
+			System.out.println(findRepeatedSession);
+			
+			pstmt = con.prepareStatement(findRepeatedSession);
+			
+			rs = pstmt.executeQuery();			
+			while(rs.next()){
+				Integer sesNo = rs.getInt("ses_no");  // only get session numbers
+				if(sesNo != null) {           /*======= 注意注意 ======= 這邊沒有判斷，會有 java.lang.NullPointerException */ //指標到了下一列，才知道撈到的資料是null					
+					sesNoResult = sesNo;
+				}
+			}
+			
+		} catch(SQLException se) {
+			throw new RuntimeException("SesDAO findRepeatedSession A database error occured. " + se.getMessage());	
+		} finally {
+			if(rs != null) {
+				try {
+					rs.close();
+				}catch(SQLException se) {
+					se.printStackTrace(System.err);
+				}
+			}
+			
+			if(pstmt != null) {
+				try {
+					pstmt.close();
+				}catch(SQLException se) {
+					se.printStackTrace(System.err);
+				}
+			}
+			
+			if(con != null) {
+				try {
+					con.close();
+				}catch(Exception e) {
+					e.printStackTrace(System.err);
+				}
+			}
+		}
+		
+		return sesNoResult;
 	}
 	
 	

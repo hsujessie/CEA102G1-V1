@@ -67,8 +67,10 @@
     font-size: 14px;
   }
   .err-color{
-    text-shadow: 0 0 0.1em #f87, 0 0 0.1em #f87;
+    color: #A50203;
     font-size: 14px;
+    margin-top: 5px;
+    font-weight: normal;
   }
   .xdsoft_datetimepicker.xdsoft_dark .xdsoft_calendar td, .xdsoft_datetimepicker.xdsoft_dark .xdsoft_calendar th {
    	border-radius: 0px;
@@ -85,6 +87,7 @@
   .fail-span{
     color: #A50203;
     font-size: 16px;
+    margin-left: 10px;
   }
 </style>
 </head>
@@ -102,6 +105,15 @@
                        <!-- addSession Start -->  
 						<FORM method="post" action="<%=request.getContextPath()%>/session/ses.do" name="form_addSession"  enctype="multipart/form-data">
 						<h3 class="h3-style listOne-h3-pos">場次新增</h3>
+                    	
+                    	<!-- exception failure message Start -->
+						<c:if test="${errorSessionMsgs != null}">
+							<span class="fail-span"> 
+								<i class="far fa-frown"></i>
+								${errorSessionMsgs}
+							</span>
+						</c:if>
+                    	<!-- exception failure message End -->
                     	
 						<table>
 							<tr>
@@ -167,7 +179,7 @@
 									</span>
 									<c:if test="${not empty errorDateMsgs}">					
 										<span>		
-											<label class="err-color"><i class="far fa-hand-point-left" style="color:#bb9d52;"></i>${errorDateMsgs}</label>
+											<label class="err-color"><i class="far fa-hand-point-up" style="color:#bb9d52;"></i> ${errorDateMsgs}</label>
 										</span>
 									</c:if>	
 								</td>
@@ -188,7 +200,7 @@
 								<th style="padding-left: 10px;">時間
 									<c:if test="${not empty errorTimeMsgs}">					
 										<span id="sesTime-errmsg">		
-											<label class="err-color"><i class="far fa-hand-point-down" style="color:#bb9d52;"></i>${errorTimeMsgs}</label>
+											<label class="err-color"><i class="far fa-hand-point-down" style="color:#bb9d52;"></i> ${errorTimeMsgs}</label>
 										</span>
 									</c:if>	
 								</th>								
@@ -446,7 +458,7 @@
 	
 	 
 	/* =========================================================================================== */
-									/* 新增時間 */
+									/* 新增時間 */ 
 	/* =========================================================================================== */	
 	<c:if test="${empty sesTimeList}">
 	let addtime = document.getElementById("addtime");
@@ -457,9 +469,17 @@
 		count+=1;
 		let timetb = document.getElementById("timetb");
 		timetb.style.display="block";
-
-		let tag = `<tr><th>${'${count}'}</th><td><input type="text" name="sesTime" value="${'${timeCount}'}:00"></td>
-				   <td><input type=button value="刪除" id="delete" class="delete-btn-sty" onclick='removeTr(this)'></td></tr>`;
+		
+		/* ${'$'} 用EL，把 js ES6的$符號包起來，避免語法衝突。 */
+		let tag = `<tr>
+						<th>${'${count}'}</th>
+						<td>                                      
+							<input type="text" name="sesTime" value="${'$'}{timeCount}:00">
+						</td>
+				   		<td>
+				   			<input type=button value="刪除" id="delete" class="delete-btn-sty" onclick='removeTr(this)'>
+				   		</td>
+				   	</tr>`;
 		timetb.innerHTML += tag;
 		
 		
@@ -489,14 +509,23 @@
 	/* =========================================================================================== */
 									/* Varify Inputs */
 	/* =========================================================================================== */
-	let theNoFir = $("input[name='theNo']")[0];
-	let theNoSec = $("input[name='theNo']")[1];
-	let theNoThi = $("input[name='theNo']")[2];
 	let movNoselect = $("select[name='movNo']")[0];
 	
-	theNoFir.addEventListener('change', isEmpty, false);
-	theNoSec.addEventListener('change', isEmpty, false);
-	theNoThi.addEventListener('change', isEmpty, false);
+	theNoZero.addEventListener('change', isEmpty, false);
+	theNoFirst.addEventListener('change', isEmpty, false);
+	theNoSecond.addEventListener('change', isEmpty, false);
+	theNothree.addEventListener('change', isEmpty, false);
+	theNoFour.addEventListener('change', isEmpty, false);
+	theNoFif.addEventListener('change', isEmpty, false);
+	theNoSix.addEventListener('change', isEmpty, false);
+	theNoSev.addEventListener('change', isEmpty, false);
+	theNoEig.addEventListener('change', isEmpty, false);	
+	theNoNin.addEventListener('change', isEmpty, false);
+	theNoTen.addEventListener('change', isEmpty, false);
+	theNoEle.addEventListener('change', isEmpty, false);
+	theNoTwe.addEventListener('change', isEmpty, false);
+	theNoThirt.addEventListener('change', isEmpty, false);
+	theNoFourt.addEventListener('change', isEmpty, false);
 	movNoselect.addEventListener('change', isEmpty, false);
 	addtime.addEventListener("click", isEmpty, false);
 	$('#sesdate_begin').change(isEmpty);
@@ -514,14 +543,22 @@
 	</c:if>
 	
 	function isEmpty(e){
-		if(!theNoFir.checked && !theNoSec.checked && !theNoThi.checked){
+		if(!theNoZero.checked && !theNoFirst.checked && !theNoSecond.checked && 
+		   !theNothree.checked && !theNoFour.checked && !theNoFif.checked &&
+		   !theNoSix.checked && !theNoSev.checked && !theNoEig.checked &&
+		   !theNoNin.checked && !theNoTen.checked && !theNoEle.checked &&
+		   !theNoTwe.checked && !theNoThirt.checked && !theNoFourt.checked){
 			$("#abled-btn").css('display','none');
 			$("#disabled-btn").css('display','block'); 
 			$("#theNo-errmsg").css('display','inline-block'); 
 			$("#theNo-errmsg-txt").text("請選擇影廳");
 		}
 		
-		if(theNoFir.checked || theNoSec.checked || theNoThi.checked){
+		if(theNoZero.checked || theNoFirst.checked || theNoSecond.checked ||
+		   theNothree.checked || theNoFour.checked || theNoFif.checked ||
+		   theNoSix.checked || theNoSev.checked || theNoEig.checked ||
+		   theNoNin.checked || theNoTen.checked || theNoEle.checked ||
+		   theNoTwe.checked || theNoThirt.checked || theNoFourt.checked){
 			$("#abled-btn").css('display','block');
 			$("#disabled-btn").css('display','none'); 
 			$("#theNo-errmsg").css('display','none'); 

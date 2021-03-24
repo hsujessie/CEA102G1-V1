@@ -168,4 +168,14 @@ public class SesService {
 		}
 		return false;
 	}
+	
+	public boolean isRepeatedSession(Integer theNo, Date sesDate, Time sesTime) {
+		Boolean result = true;
+		Integer sesNo = dao.findRepeatedSession(theNo, sesDate, sesTime);
+		
+		if(sesNo == null) {  // 資料庫無資料，代表無重複場次
+			result = false;
+		}
+		return result;
+	}
 }

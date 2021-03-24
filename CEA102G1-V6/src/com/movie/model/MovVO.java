@@ -132,4 +132,7 @@ public class MovVO implements java.io.Serializable{
 	public void setMovexpepers(Integer movexpepers) {
 		this.movexpepers = movexpepers;
 	}
+	public String getMovPosParam() {
+		return "?columnName=mov_pos&tableName=movie&fieldName=mov_no&fieldValue=" + movno;
+	}
 }
