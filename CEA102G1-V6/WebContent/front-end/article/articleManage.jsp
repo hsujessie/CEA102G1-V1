@@ -415,13 +415,13 @@ function findArtRepByCompositeQuery(e) {
 	        $(artRepVO).each(function (i, item) {
 	             debugger;
 	            $('#artRepListCenter').append(
-		            '<div id="artTitle"><div style="display: inline-block;">留言文章：</div><div class="artTitle artContent divHeight" style="display: inline-block;"><b>' + item.artTitle + '</b></div></div>' +
+		            '<div id="artTitle"><div style="display: inline-block;">留言文章：</div><div class="artTitle artContent divHeight" style="display: inline-block;" data-value="' + item.artNo + '"><b>' + item.artTitle + '</b></div></div>' +
 	                '<div id="movType" class="divWidth divHeight" style="display: inline-block"><div style="display: inline-block">電影類型：</div> <div style="display: inline-block">' +item.artMovType + '</div></div>' +
 	                '<div id="artRep" style="display: inline-block"><button class="artRepButton combtn" title="刪除留言" data-value="'+item.artRepNo+'">刪除留言</button></div>' +
 	                '<div id="artRepTime"><div class="divHeight" style="display: inline-block">留言時間：</div> <div class="divHeight" style="display: inline-block">' +
 	                moment(item.artRepTime).locale('zh_TW').format('llll') +
 	                '</div></div>' +
-	                '<div><div class="artRepContent" data-value="' + item.artNo + '" style="font-size: 1.2rem; text-indent: 2rem;">' +
+	                '<div><div class="artRepContent" style="font-size: 1.2rem; text-indent: 2rem;">' +
 	                item.artRepContent + '</div></div><hr>');
 	            $('#artRepListCenter .artTitle').css({
 	                'cursor': 'pointer'
