@@ -106,39 +106,32 @@ p {
 					<div class="list-group">
 						<div class="list-group-item">
 							<div class="row">
-								<jsp:useBean id="sesSvc" scope="page"
-									class="com.session.model.SesService" />
-								<jsp:useBean id="movSvc" scope="page"
-									class="com.movie.model.MovService" />
-
+								<jsp:useBean id="sesSvc" scope="request" class="com.session.model.SesService" />
+								<jsp:useBean id="movSvc" scope="request" class="com.movie.model.MovService" />
+								<c:set var="sesVO" value="${sesSvc.getOneSes(param.sesNo)}" scope="request" />
+								<c:set var="movVO" value="${movSvc.getOneMov(sesVO.movNo)}" scope="request" />
 
 								<div class="col-2">
 									<div id="grade" class="text-center">
 										<div id="grade-number"></div>
-										<div id="grade-word">${movSvc.getOneMov(sesSvc.getOneSes(param.sesNo).movNo).movrating}</div>
+										<div id="grade-word">${movVO.movrating}</div>
 									</div>
 								</div>
 								<div class="col-7">
-									<h3>(${movSvc.getOneMov(sesSvc.getOneSes(param.sesNo).movNo).movver}${movSvc.getOneMov(sesSvc.getOneSes(param.sesNo).movNo).movlan})${movSvc.getOneMov(sesSvc.getOneSes(param.sesNo).movNo).movname}</h3>
+									<h3>(${movVO.movver}${movVO.movlan})${movVO.movname}</h3>
 								</div>
 								<div class="col-3">
 									<p>
-										<img
-											src="<%=request.getContextPath()%>/resource/images/ordMasIcons/sesTime.png"><span>
-										</span>${sesSvc.getOneSes(param.sesNo).sesDate}
-										<fmt:formatDate
-											value="${sesSvc.getOneSes(param.sesNo).sesTime}"
-											pattern="HH:mm" />
+										<img src="<%=request.getContextPath()%>/resource/images/ordMasIcons/sesTime.png">
+										<span></span> ${sesVO.sesDate} <fmt:formatDate value="${sesVO.sesTime}" pattern="HH:mm" />
 									</p>
 									<p>
-										<img
-											src="<%=request.getContextPath()%>/resource/images/ordMasIcons/theater.png"><span>
-										</span>第${sesSvc.getOneSes(param.sesNo).theNo}廳
+										<img src="<%=request.getContextPath()%>/resource/images/ordMasIcons/theater.png">
+										<span></span>第${sesVO.theNo}廳
 									</p>
 									<p>
-										<img
-											src="<%=request.getContextPath()%>/resource/images/ordMasIcons/seatNo.png"><span>
-										</span><span id="chooseSeatNo"></span>
+										<img src="<%=request.getContextPath()%>/resource/images/ordMasIcons/seatNo.png">
+										<span></span><span id="chooseSeatNo"></span>
 									</p>
 								</div>
 							</div>
@@ -153,9 +146,7 @@ p {
 						</div>
 
 						<div class="list-group-item">
-							<form method="post"
-								action="<%=request.getContextPath()%>/ordMas/ordMas.do"
-								id="form">
+							<form method="post" action="<%=request.getContextPath()%>/ordMas/ordMas.do" id="form">
 								<table class="table">
 									<thead>
 										<tr id="table-secondary">
@@ -166,14 +157,10 @@ p {
 										</tr>
 									</thead>
 									<tbody>
-
-
-										<jsp:useBean id="theSvc" scope="page"
-											class="com.theater.model.TheService" />
-										<jsp:useBean id="ticTypSvc" scope="page"
-											class="com.ticket_type.model.TicTypService" />
-										<jsp:useBean id="ideSvc" scope="page"
-											class="com.identity.model.IdeService" />
+									
+										<jsp:useBean id="theSvc" scope="request" class="com.theater.model.TheService" />
+										<jsp:useBean id="ticTypSvc" scope="request" class="com.ticket_type.model.TicTypService" />
+										<jsp:useBean id="ideSvc" scope="request" class="com.identity.model.IdeService" />
 
 										<c:forEach var="ticTypCartVO" items="${ticTypCartSet}">
 											<c:if test="${check != ticTypCartVO.ideNo}">
@@ -206,10 +193,9 @@ p {
 									</tbody>
 								</table>
 
-
-								<input type="hidden" name="memNo" value="${MemberVO.memNo}"> <input
-									type="hidden" name="sesNo" value="${param.sesNo}"> <input
-									type="hidden" name="chooseSeatNo" value="${param.chooseSeatNo}">
+								<input type="hidden" name="memNo" value="${MemberVO.memNo}">
+								<input type="hidden" name="sesNo" value="${param.sesNo}">
+								<input type="hidden" name="chooseSeatNo" value="${param.chooseSeatNo}"> 
 								<input type="hidden" name="action" value="check_out">
 							</form>
 						</div>
@@ -229,22 +215,19 @@ p {
 									<table class="table">
 										<tr>
 											<td>持卡人姓名</td>
-											<td><input type="text" name="first-name" placeholder="Name" class="form-control"/></td>
+											<td><input type="text" name="first-name" placeholder="Name" class="form-control" /></td>
 										</tr>
 										<tr>
 											<td>卡號</td>
-											<td><input type="text" name="number"
-												placeholder="Card Number" class="form-control"/></td>
+											<td><input type="text" name="number" placeholder="Card Number" class="form-control" /></td>
 										</tr>
 										<tr>
 											<td>到期日</td>
-											<td><input type="text" name="expiry"
-												placeholder="MM / YY" class="form-control"/></td>
+											<td><input type="text" name="expiry" placeholder="MM / YY" class="form-control" /></td>
 										</tr>
 										<tr>
 											<td>CVV</td>
-											<td><input type="text" name="cvc" placeholder="CCV" class="form-control"/>
-											</td>
+											<td><input type="text" name="cvc" placeholder="CCV" class="form-control" /></td>
 										</tr>
 									</table>
 								</div>
@@ -321,7 +304,7 @@ p {
 			for (let i = 0; i < chooseSeatNo.length; i += 3) {
 				let subStr = chooseSeatNo.substring(i, i + 3);
 				if (i + 3 !== chooseSeatNo.length) {
-					result = result + subStr + " ,";
+					result = result + subStr + ", ";
 				} else {
 					result = result + subStr;
 				}
@@ -350,9 +333,11 @@ p {
 			sec -= 1;
 		}, 1000)
 
-		        setTimeout(function() {
-		            window.location.replace("${pageContext.request.contextPath}/front-end/index.jsp");
-		        }, sec * 1000);
+		setTimeout(
+				function() {
+					window.location
+							.replace("${pageContext.request.contextPath}/front-end/index.jsp");
+				}, sec * 1000);
 
 		function timeFormat(second) {
 			let minute = parseInt(second / 60);

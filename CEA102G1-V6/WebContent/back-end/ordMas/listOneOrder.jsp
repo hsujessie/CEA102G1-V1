@@ -154,7 +154,7 @@ td {
 							
 							<a class="btn btn-light btn-brd grd1 effect-1"
 								href="<%=request.getContextPath()%>/back-end/index.jsp"
-								style="margin: 10px 0 0 300px;">回訂單列表</a>
+								style="margin: 10px 0 0 300px;width:13%;">回首頁</a>
 						</div>
 						<div class="col-2"></div>
 						<!-- listOneMovie End -->

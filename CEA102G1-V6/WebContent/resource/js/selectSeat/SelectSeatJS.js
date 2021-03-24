@@ -51,20 +51,25 @@
                             var nowChoose = sc.find('selected').length;
                             if (nowChoose < maxChoose) {
                                 //let's create a new <li> which we'll add to the cart items
-                                $('<li>' + this.data().category + ' Seat # ' + this.settings.label + ': <b>$' + this.data().price + '</b> <a href="#" class="cancel-cart-item">[cancel]</a></li>')
-                                    .attr('id', 'cart-item-' + this.settings.id)
-                                    .data('seatId', this.settings.id)
-                                    .appendTo($cart);
+                            	if (checkSpace(this.settings.id)) {
+                            		swal("請重新選擇", "您所選的位置之間不能有空位", "error", {button: "關閉"});
+                            		return 'available';
+                            	} else {
+                            		$('<li>' + this.data().category + ' Seat # ' + this.settings.label + ': <b>$' + this.data().price + '</b> <a href="#" class="cancel-cart-item">[cancel]</a></li>')
+                            			.attr('id', 'cart-item-' + this.settings.id)
+                            			.data('seatId', this.settings.id)
+                            			.appendTo($cart);
 
-                                /*
-                                 * Lets update the counter and total
-                                 *
-                                 * .find function will not find the current seat, because it will change its stauts only after return
-                                 * 'selected'. This is why we have to add 1 to the length and the current seat price to the total.
-                                 */
-                                $counter.text(sc.find('selected').length + 1);
+                            		/*
+                            		 * Lets update the counter and total
+                            		 *
+                                 	* .find function will not find the current seat, because it will change its stauts only after return
+                                 	* 'selected'. This is why we have to add 1 to the length and the current seat price to the total.
+                                 	*/
+                            		$counter.text(sc.find('selected').length + 1);
 
-                                return 'selected';
+                            		return 'selected';
+                            	}
                             } else {
                             	let content = "最多只能選 " + ticTypTotal + " 個位置"
                             	swal("不能再選了", content, "error", {button: "關閉"});
@@ -112,5 +117,46 @@
      			$("#chooseSeatNo").val(str);
      			$("#form").submit();
     		});
+            
+            function checkSpace(thisID) {
+            	let id = "#" + thisID;
+            	prevClass = $(id).prev().attr("class");
+            	nextClass = $(id).next().attr("class");
+            	
+            	if (prevClass) { //看下一格是不是在邊邊
+            		let index = prevClass.indexOf("space");
+            		if (index === -1) { // -1  上一格不是走道
+            			if ($(id).prev().prev().attr("class")) {//看下下格式不是在邊邊
+            				let index = $(id).prev().prev().attr("class").indexOf("selected");
+            				let index2 = $(id).prev().attr("class").indexOf("selected");
+            				if (index2 === -1) { //下一格不是被選
+            					if (index !== -1) { //  下下一格是被選
+                					return true;
+                				}
+            				}
+            			} 
+            		}
+            			
+            		
+            		
+            	}
+            	if (nextClass) {
+            		let index = nextClass.indexOf("space");
+            		if (index === -1) { // -1  上一格不是走道
+            			if ($(id).next().next().attr("class")) {//看下下格式不是在邊邊
+            				let index = $(id).next().next().attr("class").indexOf("selected");
+            				let index2 = $(id).next().attr("class").indexOf("selected");
+            				if (index2 === -1) { //下一格不是被選
+            					if (index !== -1) { //  下下一格是被選
+                					return true;
+                				}
+            				}
+            			} 
+            				
+            		}
+            		
+            	}
+            	return false;
+            }
 
         

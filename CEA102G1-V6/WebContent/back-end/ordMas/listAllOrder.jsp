@@ -1,11 +1,11 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
 <%@ page import="java.util.*"%>
-<%@ page import="com.movie.model.*"%>
 
 <html>
 <head>
-	<title>Movies Management</title>
+	<title>Order Management</title>
 	<%@ include file="/back-end/files/sb_head.file"%>
 
 <style>
@@ -39,19 +39,7 @@
                     <div class="container-fluid">
                     	
                     	<!-- error message Start -->
-                    	<h3 class="h3-style" style="display: inline-block;">訂單列表</h3>
-						<c:if test="${addSuccess != null}">
-							<span class="success-span"> 
-								${addSuccess}
-								<i class="fa fa-hand-peace-o"></i>
-							</span>
-						</c:if>
-						<c:if test="${updateSuccess != null }">
-							<span class="success-span"> 
-								${updateSuccess}
-								<i class="far fa-laugh-wink"></i>
-							</span>
-						</c:if>
+                    	
                     	<!-- error message End -->
 						
                     	<!-- search Start -->
@@ -106,8 +94,9 @@
 							<thead>
 								<tr style="border-bottom: 3px solid #bb9d52;">
 									<th>列表編號</th>
-									<th class="th-adjust">會員編號</th>
-									<th>場次編號</th>
+									<th class="th-adjust">會員姓名</th>
+									<th class="th-adjust">電影名稱</th>
+									<th>場次時間</th>
 									<th>訂單日期</th>
 									<th>訂單總金額</th>
 									<th>訂單狀態</th>
@@ -116,26 +105,22 @@
 							</thead>
 									
 							<tbody>
+								<jsp:useBean id="movSvc" class="com.movie.model.MovService"/>
+								<jsp:useBean id="sesSvc" class="com.session.model.SesService"/>
+								<jsp:useBean id="memSvc" class="com.member.model.MemberService"/>
 								<c:forEach var="ordMasVO" items="${ordMasSvc.all}" varStatus="index">					
 								<tr class="sty-height" valign='middle' ${(ordMasVO.ordMasNo==param.ordMasNo) ? 'style="background-color:#bb9d52; color:#fff;"':''}>
 									<td>${index.count}</td>
-									<td>${ordMasVO.memNo}</td>
-									<td>${ordMasVO.sesNo}</td>
-									<td>${ordMasVO.ordMasDate}</td>
+									<td>${memSvc.getOneMember(ordMasVO.memNo).memName}</td>
+									<td>${movSvc.getOneMov(sesSvc.getOneSes(ordMasVO.sesNo).movNo).movname}</td>
+									<td>${sesSvc.getOneSes(ordMasVO.sesNo).sesDate} <fmt:formatDate value="${sesSvc.getOneSes(ordMasVO.sesNo).sesTime}" pattern="HH:mm" /></td>
+									<td><fmt:formatDate value="${ordMasVO.ordMasDate}" pattern="yyyy-MM-dd HH:mm" /></td>
 									<td>
 										$
 										<span>${ordMasVO.ordMasPrice}</span>
 									</td>
-									<td>${ordMasVO.ordMasStatus == "0" ? "未取票" : "已取票"}</td>
-									<td>
-										<form method="post" action="<%=request.getContextPath()%>/ordMas/ordMas.do">
-											<a class="btn btn-light btn-brd grd1 effect-1">
-												<input type="hidden" name="ordMasNo" value="${ordMasVO.ordMasNo}">
-												<input type="hidden" name="action" value="getOne_for_update">
-												<input type="submit" value="修改" class="input-pos">
-					        				 </a>
-					        			 </form>
-									</td>
+									<td>${ordMasVO.ordMasStatus == "0" ? "未取票" :(ordMasVO.ordMasStatus == "1") ? "已取票" : "已取消"}</td>
+									
 								</tr>
 								</c:forEach>
 							</tbody>

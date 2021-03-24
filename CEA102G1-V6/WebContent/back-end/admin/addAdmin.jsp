@@ -43,6 +43,11 @@
   	height: 150px;
   	width: 150px;
   }
+  
+    input.form-control,select.form-control {
+  	width:50%;
+  	display:inline-block;
+  }
 </style>
 </head>
 <body class="sb-nav-fixed">
@@ -63,7 +68,7 @@
 						<table>
 							<tr>
 								<th>姓名</th>
-								<td><input class="sty-input mr-left mr-btm-normal" type="text" name="admName" value="${addAdmVO.admName}" required/>${errorMsgs.admName}</td>		
+								<td><input class="sty-input mr-left mr-btm-normal form-control" type="text" name="admName" value="${addAdmVO.admName}" required/>${errorMsgs.admName}</td>		
 							</tr>
 							<tr>
 								<th>照片</th>
@@ -76,13 +81,13 @@
 							<tr>
 								<th>帳號</th>
 								<td>
-									<input class="sty-input mr-left mr-btm-normal" type="text" name="admAccount" value="${addAdmVO.admAccount}" required/>${errorMsgs.admAccount}
+									<input class="sty-input mr-left mr-btm-normal form-control" type="text" name="admAccount" value="${addAdmVO.admAccount}" required/>${errorMsgs.admAccount}
 								</td>
 							</tr>
 							
 							<tr>
 								<th>信箱</th>
-								<td><input class="sty-input mr-left mr-btm-normal" name="admMail" type="email" value="${addAdmVO.admMail}" required>${errorMsgs.admMail}</td>
+								<td><input class="sty-input mr-left mr-btm-normal form-control" name="admMail" type="email" value="${addAdmVO.admMail}" required>${errorMsgs.admMail}</td>
 							</tr>
 							
 							<tr>
@@ -93,7 +98,7 @@
 										<div class="col-12" style="color:red;font-size:20px;">${errorMsgs.funNo}</div>
 										<c:forEach var="funVO" items="${funSvc.all}">
 											
-											<div class="col-4"><label><input type="checkbox" name="funNo" value="${funVO.funNo}">${funVO.funName}</label></div>
+											<div class="col-4"><label><input type="checkbox" name="funNo" value="${funVO.funNo}" class="form-check-input">${funVO.funName}</label></div>
 										</c:forEach>
 									</div>
 								</td>

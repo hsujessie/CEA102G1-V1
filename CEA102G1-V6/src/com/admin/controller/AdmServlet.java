@@ -271,7 +271,7 @@ public class AdmServlet extends HttpServlet {
 				session.setAttribute("admVO", admVO);
 				session.setAttribute("funList", funList);
 				
-				String url = (String) session.getAttribute("location");
+				String url = (String) session.getAttribute("back_end_location");
 				if (url == null) {
 					url = req.getContextPath() + "/back-end/index.jsp";
 				}

@@ -11,6 +11,7 @@ public interface FooDAO_interface {
 	public void changeStatus(Integer fooNo, Integer fooStatus);
 	
 	public List<FooVO> getAll();
+	public List<FooVO> getAll(Map<String, String[]> map);
 	public FooVO findByprimaryKey(Integer fooNo);
 	public Set<FooVO> getFoosByFooStatus(Integer fooStatus);
 	

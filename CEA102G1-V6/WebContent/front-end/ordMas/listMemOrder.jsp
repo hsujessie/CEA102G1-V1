@@ -26,7 +26,7 @@
 }
 
 .nav-pills .nav-link.active, .nav-pills .show>.nav-link {
-	background-color:#aa9166;
+	background-color: #aa9166;
 }
 </style>
 </head>
@@ -47,12 +47,9 @@
 		<div class="container">
 			<div class="row">
 				<div class="col-3">
-					<div class="nav flex-column nav-pills" id="v-pills-tab"
-						role="tablist" aria-orientation="vertical">
-						<a class="nav-link active" id="v-pills-home-tab"
-							data-toggle="pill" href="#v-pills-home">未取票</a> <a
-							class="nav-link" id="v-pills-profile-tab" data-toggle="pill"
-							href="#v-pills-profile">購票紀錄</a>
+					<div class="nav flex-column nav-pills" id="v-pills-tab" role="tablist" aria-orientation="vertical">
+						<a class="nav-link active" id="v-pills-home-tab" data-toggle="pill" href="#v-pills-home">未取票</a> 
+						<a class="nav-link" id="v-pills-profile-tab" data-toggle="pill" href="#v-pills-profile">購票紀錄</a>
 					</div>
 				</div>
 				<div class="col-9">
@@ -72,34 +69,34 @@
 								</thead>
 
 								<tbody>
-									<jsp:useBean id="ordMasSvc"
-										class="com.order_master.model.OrdMasService"></jsp:useBean>
-									<jsp:useBean id="sesSvc" class="com.session.model.SesService"></jsp:useBean>
-									<jsp:useBean id="movSvc" class="com.movie.model.MovService"></jsp:useBean>
+									<jsp:useBean id="ordMasSvc" class="com.order_master.model.OrdMasService"></jsp:useBean>
+									<jsp:useBean id="sesSvc" class="com.session.model.SesService" scope="request"></jsp:useBean>
+									<jsp:useBean id="movSvc" class="com.movie.model.MovService" scope="request"></jsp:useBean>
 									<c:set var="count" value="1" />
-									<c:forEach var="ordMasVO" items="${ordMasSvc.getByMemNo(MemberVO.memNo)}">
-										<c:if test="${ordMasVO.ordMasStatus == 0}">
-											<c:set var="sesNo" value="${ordMasVO.sesNo}" />
+									<c:set var="ordMaslist" value="${ordMasSvc.getByMemNo(MemberVO.memNo)}" />
+									<c:forEach var="ordMasVO" items="${ordMaslist}">
+										<c:set var="sesVO" value="${sesSvc.getOneSes(ordMasVO.sesNo)}" />
+										<c:if test="${ordMasVO.ordMasStatus == 0 && !sesSvc.checkOverdue(sesVO.sesNo, 1)}">
 											<tr class="sty-height" valign='middle'>
 												<td>${count}</td>
-												<td>${movSvc.getOneMov(sesSvc.getOneSes(sesNo).movNo).movname}</td>
-												<td>${sesSvc.getOneSes(sesNo).sesDate} <fmt:formatDate value="${sesSvc.getOneSes(sesNo).sesTime}" pattern="HH:mm"/></td>
-												<td style="color:blue">未取票</td>
-												<td><fmt:formatDate value="${ordMasVO.ordMasDate}" pattern="yyyy-MM-dd HH:mm"/></td>
+												<td>${movSvc.getOneMov(sesVO.movNo).movname}</td>
+												<td>${sesVO.sesDate} <fmt:formatDate value="${sesVO.sesTime}" pattern="HH:mm" /></td>
+												<td style="color: blue">未取票</td>
+												<td><fmt:formatDate value="${ordMasVO.ordMasDate}" pattern="yyyy-MM-dd HH:mm" /></td>
 												<td>
-																									<form method="post" action="<%=request.getContextPath()%>/ordMas/ordMas.do">
-																										<input type="hidden" name="ordMasNo" value="${ordMasVO.ordMasNo}" />
-																										<input type="hidden" name="action" value="getOne_For_Display" />
-																										<input type="hidden" name="requestURL" value="<%=request.getServletPath()%>" />
-																										<input type="submit" value="查看詳情" class="input-pos combtn" />
-																									</form>
+													<form method="post" action="<%=request.getContextPath()%>/ordMas/ordMas.do">
+														<input type="hidden" name="ordMasNo" value="${ordMasVO.ordMasNo}" /> 
+														<input type="hidden" name="action" value="getOne_For_Display" /> 
+														<input type="hidden" name="requestURL" value="<%=request.getServletPath()%>" /> 
+														<input type="submit" value="查看詳情" class="input-pos combtn" />
+													</form>
 												</td>
 												<td>
 													<form method="post" action="<%=request.getContextPath()%>/ordMas/ordMas.do" id="changeStatusForm">
 														<input type="hidden" name="action" value="change_status">
 														<input type="hidden" name="ordMasNo" value="${ordMasVO.ordMasNo}">
 													</form>
-													<button class="refund combtn">退票</button>
+													<button class="refund combtn" ${sesSvc.checkOverdue(sesVO.sesNo, 0)?"disabled":""}>退票</button>
 												</td>
 											</tr>
 											<c:set var="count" value="${count + 1}" />
@@ -122,23 +119,24 @@
 
 								<tbody>
 									<c:set var="count" value="1" />
-									<c:forEach var="ordMasVO" items="${ordMasSvc.getByMemNo(MemberVO.memNo)}">
-										<c:if test="${ordMasVO.ordMasStatus == 1 || ordMasVO.ordMasStatus == 2}">
-											<c:set var="sesNo" value="${ordMasVO.sesNo}" />
+									<c:forEach var="ordMasVO" items="${ordMaslist}">
+										<c:set var="sesVO" value="${sesSvc.getOneSes(ordMasVO.sesNo)}" />
+										<c:if test="${ordMasVO.ordMasStatus == 1 || ordMasVO.ordMasStatus == 2 || sesSvc.checkOverdue(sesVO.sesNo, 1)}">
 											<tr class="sty-height" valign='middle'>
 												<td>${count}</td>
-												<td>${movSvc.getOneMov(sesSvc.getOneSes(sesNo).movNo).movname}</td>
-												<td>${sesSvc.getOneSes(sesNo).sesDate} <fmt:formatDate value="${sesSvc.getOneSes(sesNo).sesTime}" pattern="HH:mm"/></td>
-												<td ${ordMasVO.ordMasStatus == 1?"style='color:green'":"style='color:red'"}>${ordMasVO.ordMasStatus == 1?"已完成":"已取消"}</td>
+												<td>${movSvc.getOneMov(sesVO.movNo).movname}</td>
+												<td>${sesVO.sesDate} <fmt:formatDate value="${sesVO.sesTime}" pattern="HH:mm" /></td>
+												<td
+													${ordMasVO.ordMasStatus == 1?"style='color:green'":"style='color:red'"}>${ordMasVO.ordMasStatus == 1?"已完成":(ordMasVO.ordMasStatus == 2)?"已取消":"逾期未取票"}</td>
 												<td>
-																									<form method="post" action="<%=request.getContextPath()%>/ordMas/ordMas.do">
-																										<input type="hidden" name="ordMasNo" value="${ordMasVO.ordMasNo}" />
-																										<input type="hidden" name="action" value="getOne_For_Display" />
-																										<input type="hidden" name="requestURL" value="<%=request.getServletPath()%>" />
-																										<input type="submit" value="查看詳情" class="input-pos combtn" />
-																									</form>
+													<form method="post" action="<%=request.getContextPath()%>/ordMas/ordMas.do">
+														<input type="hidden" name="ordMasNo" value="${ordMasVO.ordMasNo}" /> 
+														<input type="hidden" name="action" value="getOne_For_Display" /> 
+														<input type="hidden" name="requestURL" value="<%=request.getServletPath()%>" /> 
+														<input type="submit" value="查看詳情" class="input-pos combtn" />
+													</form>
 												</td>
-												
+
 											</tr>
 											<c:set var="count" value="${count + 1}" />
 										</c:if>

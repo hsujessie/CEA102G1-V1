@@ -69,4 +69,8 @@ public class FooService {
 	public Set<FooCartVO> getFooCart(Map<Integer, Integer> foodMap) {
 		return dao.getFooCart(foodMap);
 	}
+	
+	public List<FooVO> getAll(Map<String, String[]> map) {
+		return dao.getAll(map);
+	}
 }

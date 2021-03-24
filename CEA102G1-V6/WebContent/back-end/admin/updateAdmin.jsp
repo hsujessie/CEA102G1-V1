@@ -42,6 +42,10 @@
   	width: 150px;
   }
   
+    input.form-control,select.form-control {
+  	width:50%;
+  	display:inline-block;
+  }
 </style>
 </head>
 <body class="sb-nav-fixed">
@@ -62,7 +66,7 @@
 						<table>
 							<tr>
 								<th>姓名</th>
-								<td><input class="sty-input mr-left mr-btm-normal" type="text" name="admName" value="${oneAdmVO.admName}" required/>${errorMsgs.admName}</td>		
+								<td><input class="sty-input mr-left mr-btm-normal form-control" type="text" name="admName" value="${oneAdmVO.admName}" required/>${errorMsgs.admName}</td>		
 							</tr>
 							<tr>
 								<th>照片</th>
@@ -75,17 +79,17 @@
 							<tr>
 								<th>帳號</th>
 								<td>
-									<input class="sty-input mr-left mr-btm-normal" type="text" name="admAccount" value="${oneAdmVO.admAccount}" required/>${errorMsgs.admAccount}
+									<input class="sty-input mr-left mr-btm-normal form-control" type="text" name="admAccount" value="${oneAdmVO.admAccount}" required/>${errorMsgs.admAccount}
 								</td>
 							</tr>
 							<tr>
 								<th>信箱</th>
-								<td><input class="sty-input mr-left mr-btm-normal" name="admMail" type="email" value="${oneAdmVO.admMail}" required />${errorMsgs.email}</td>
+								<td><input class="sty-input mr-left mr-btm-normal form-control" name="admMail" type="email" value="${oneAdmVO.admMail}" required />${errorMsgs.email}</td>
 							</tr>
 							<tr>
 								<th>狀態</th>
 								<td>
-									<select name="admStatus">
+									<select name="admStatus" class="form-control">
 										<c:forEach varStatus="i" begin="0" end="1">
 											<option value="${i.index}" ${i.index==oneAdmVO.admStatus ? "selected" :""}>${i.index=="0" ? "在職" : "離職"}
 										</c:forEach>
@@ -101,7 +105,7 @@
 									<div class="row">
 									<div class="col-12" style="color:red;font-size:20px;">${errorMsgs.funNo}</div>
 										<c:forEach var="funVO" items="${funSvc.all}">
-												<div class="col-4"><label><input type="checkbox" name="funNo" value="${funVO.funNo}" ${admAutSvc.checkAdmAut(oneAdmVO.admNo, funVO.funNo)? "checked" :""}>${funVO.funName}</label></div>
+												<div class="col-4"><label><input type="checkbox" name="funNo" value="${funVO.funNo}" ${admAutSvc.checkAdmAut(oneAdmVO.admNo, funVO.funNo)? "checked" :""} class="form-check-input">${funVO.funName}</label></div>
 										</c:forEach>
 									</div>
 								</td>

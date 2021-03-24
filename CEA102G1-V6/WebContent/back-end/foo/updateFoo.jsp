@@ -1,120 +1,144 @@
-<%@ page contentType="text/html; charset=UTF-8" pageEncoding="Big5"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
-<%@ page import="com.food.model.*"%>
-
-<%
-	FooVO fooVO = (FooVO) request.getAttribute("fooVO"); //fooServlet.java (Controller) ¦s¤JreqªºfooVOª«¥ó (¥]¬AÀ°¦£¨ú¥XªºfooVO, ¤]¥]¬A¿é¤J¸ê®Æ¿ù»~®ÉªºfooVOª«¥ó)
-%>
 
 <html>
 <head>
-<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1"/>
-<title>À\ÂI¸ê®Æ­×§ï - updateFoo.jsp</title>
-
-<style>
-  table#table-1 {
-	background-color: #CCCCFF;
-    border: 2px solid black;
-    text-align: center;
-  }
-  table#table-1 h4 {
-    color: red;
-    display: block;
-    margin-bottom: 1px;
-  }
-  h4 {
-    color: blue;
-    display: inline;
-  }
-</style>
+	<title>é¤é»ä¿®æ”¹</title>	
+	<%@ include file="/back-end/files/sb_head.file"%>
 
 <style>
   table {
-	width: 450px;
-	background-color: white;
-	margin-top: 1px;
-	margin-bottom: 1px;
+	width: 750px;
+	margin: 5px auto 5px auto;
+    background-color: rgb(255,255,255);
+    border-radius: 10px;
+	-webkit-box-shadow: 0px 3px 5px rgb(8,8,8, 0.3);
+	-moz-box-shadow: 0px 3px 5px rgb(8,8,8, 0.3);
+	box-shadow: 0px 3px 5px rgb(8,8,8, 0.3);
   }
-  table, th, td {
-    border: 0px solid #CCCCFF;
+  th,td{
+  	box-sizing:border-box;
+    border-radius: 10px;
   }
-  th, td {
-    padding: 1px;
+  th{
+  	width: 200px;
+  	padding: 10px 0px 10px 70px;
   }
+  td{
+  	width: 250px;
+  	padding: 10px 20px 10px 30px;
+    border-bottom: 2px dotted #bb9d52;
+  }
+  .listOne-h3-pos{
+  	display: inline-block;	
+  	margin-left: 45%;
+  }
+  .ml-ten{
+  	margin-left: 10px;
+  }
+    #myImg {
+  	height: 150px;
+  	width: 150px;
+  }
+  
+    input.form-control,select.form-control {
+  	width:50%;
+  	display:inline-block;
+  }
+  
 </style>
-
 </head>
-<body bgcolor='white'>
-
-<table id="table-1">
-	<tr><td>
-		 <h3>À\ÂI¸ê®Æ­×§ï - updateFoo.jsp</h3>
-		 <h4><a href="<%=request.getContextPath()%>/back-end/foo/fooSelectPage.jsp">¦^­º­¶</a></h4>
-	</td></tr>
-</table>
-
-<h3>¸ê®Æ­×§ï:</h3>
-
-<%-- ¿ù»~ªí¦C --%>
-<c:if test="${not empty errorMsgs}">
-	<font style="color:red">½Ğ­×¥¿¥H¤U¿ù»~:</font>
-	<ul>
-		<c:forEach var="message" items="${errorMsgs}">
-			<li style="color:red">${message}</li>
-		</c:forEach>
-	</ul>
-</c:if>
-
-<FORM METHOD="post" ACTION="<%= request.getContextPath() %>/foo/foo.do" enctype="multipart/form-data">
-<table>
-	<tr>
-		<td>À\ÂI½s¸¹:<font color=red><b>*</b></font></td>
-		<td>${fooVO.fooNo}</td>
-	</tr>
-	<tr>
-		<td>À\ÂI¦WºÙ:</td>
-		<td><input type="TEXT" name="fooName" size="45" value="${fooVO.fooName}" /></td>
-	</tr>
-	
-	<jsp:useBean id="fooCatSvc" scope="page" class="com.food_cate.model.FooCatService" />
-	
-	<tr>
-		<td>À\ÂIÃş§O:</td>
-		<td><select size="1" name="fooCatNo">
-			<c:forEach var="fooCatVO" items="${fooCatSvc.all}">
-				<option value="${fooCatVO.fooCatNo}" ${(fooVO.fooCatNo==fooCatVO.fooCatNo)?'selected':'' } >${fooCatVO.fooCatName}
-			</c:forEach>
-		</select></td>
-	</tr>
-	<tr>
-		<td>À\ÂI¹Ï¤ù:</td>
-		<td><input type="file" name="fooImg" size="45" /></td>
-	</tr>
-	<tr>
-		<td>À\ÂI°â»ù:</td>
-		<td><input type="TEXT" name="fooPrice" size="45" value="${fooVO.fooPrice}" /></td>
-	</tr>
-
-	<tr>
-		<td>À\ÂIª¬ºA:</td>
-		<td><select size="1" name="fooStatus">
-				<% for (int i = 0; i <= 1; i++) {%>
-				<option value="<%=i%>" <%=(fooVO.getFooStatus()==i) ?"selected":"" %> ><%=(i==0)?"¤W¬[":"¤U¬["%>
-				<% } %>
-		</select></td>
-	</tr>
-
-</table>
-<br>
-<input type="hidden" name="action" value="update">
-<input type="hidden" name="fooNo"  value="${fooVO.fooNo}">
-<input type="hidden" name="requestURL" value="<%=request.getParameter("requestURL")%>"> <!--±µ¦¬­ì°e¥X­×§ïªº¨Ó·½ºô­¶¸ô®|«á,¦A°eµ¹Controller·Ç³ÆÂà¥æ¤§¥Î-->
-<input type="hidden" name="whichPage"  value="<%=request.getParameter("whichPage")%>">  <!--¥u¥Î©ó:istAllEmp.jsp-->
-<input type="submit" value="°e¥X­×§ï"></FORM>
-
-<br>°e¥X­×§ïªº¨Ó·½ºô­¶¸ô®|:<br><b>
-   <font color=blue>request.getParameter("requestURL"):</font> <%=request.getParameter("requestURL")%><br>
-   <font color=blue>request.getParameter("whichPage"): </font> <%=request.getParameter("whichPage")%> (¦¹½d¨Ò¥Ø«e¥u¥Î©ó:istAllEmp.jsp))</b>
+<body class="sb-nav-fixed">
+		<%@ include file="/back-end/files/sb_navbar.file"%> <!-- å¼•å…¥navbar (ä¸Šæ–¹) -->
+        <div id="layoutSidenav">
+            <div id="layoutSidenav_nav">
+            	<c:set value="movieAdd" var="urlRecog"></c:set> <!-- çµ¦sb_sidebar.fileçš„åƒæ•¸-Add -->
+				<%@ include file="/back-end/files/sb_sidebar.file"%> <!-- å¼•å…¥sidebar (å·¦æ–¹) -->
+            </div>
+            <div id="layoutSidenav_content">
+                <main>
+                    <div class="container-fluid">
+                    
+                       <!-- addMovie Start -->  
+                       
+						<FORM method="post" action="<%=request.getContextPath()%>/foo/foo.do" enctype="multipart/form-data">
+						<h3 class="h3-style listOne-h3-pos">é¤é»ä¿®æ”¹</h3>
+						<table>
+							<tr>
+								<th>é¤é»åç¨±</th>
+								<td><input class="sty-input mr-left mr-btm-normal form-control" type="text" name="fooName" value="${fooVO.fooName}" required/>${errorMsgs.fooName}</td>		
+							</tr>
+							<tr>
+							<jsp:useBean id="fooCatSvc" scope="page" class="com.food_cate.model.FooCatService" />
+								<th>é¤é»é¡åˆ¥</th>
+								<td>
+									<select size="1" name="fooCatNo" class="form-control">
+										<c:forEach var="fooCatVO" items="${fooCatSvc.all}">
+											<option value="${fooCatVO.fooCatNo}" ${(fooVO.fooCatNo==fooCatVO.fooCatNo)?'selected':'' } >${fooCatVO.fooCatName}
+										</c:forEach>
+									</select>
+								</td>
+							</tr>
+							<tr>
+								<th>é¤é»åœ–ç‰‡</th>
+								<td>
+									<input id="myfile" type="file" name="fooImg">${errorMsgs.fooImg}
+									<img id="myImg" src="<%=request.getContextPath()%>/util/imgReader${fooVO.fooImgParam}">
+								</td>
+							</tr>
+							<tr>
+								<th>é¤é»å”®åƒ¹</th>
+								<td style="color:red;"><input class="sty-input mr-left mr-btm-normal form-control" name="fooPrice" type="text" value="${fooVO.fooPrice}" required />${errorMsgs.fooPrice}</td>
+							</tr>
+							<tr>
+								<th>ç‹€æ…‹</th>
+								<td>
+									<select name="fooStatus" class="form-control">
+										<c:forEach varStatus="i" begin="0" end="1">
+											<option value="${i.index}" ${i.index==oneAdmVO.admStatus ? "selected" :""}>${i.index=="0" ? "ä¸Šæ¶" : "ä¸‹æ¶"}
+										</c:forEach>
+									</select>
+								</td>
+							</tr>
+						</table>
+						<br>
+						<input type="hidden" name="fooNo" value="${fooVO.fooNo}">
+						<input type="hidden" name="action" value="update">
+						<input type="hidden" name="requestURL" value="${param.requestURL}">
+						<input type="hidden" name="whichPage" value="${param.whichPage}">
+						<a class="btn btn-light btn-brd grd1 effect-1 btn-pos" style="margin: 1% 0 1% 50%;" >
+							<input type="submit" value="é€å‡º" class="input-pos">
+						</a>
+						</FORM>
+                       <!-- addMovie End -->
+                    
+                    </div>
+                </main>
+                <%@ include file="/back-end/files/sb_footer.file"%>
+            </div>
+        </div>
+		<%@ include file="/back-end/files/sb_importJs.file"%> <!-- å¼•å…¥templateè¦ç”¨çš„js -->
+		<script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+		<script>
+                	$("#myfile").change(function(e) {
+                		let files = e.target.files;
+                		let file = files[0];
+                		let reader = new FileReader();
+                        reader.readAsDataURL(file);
+                        
+                        if (file.type.indexOf("image") > -1) {
+                        	reader.addEventListener("load", function(e) {
+                            	let result = e.target.result;
+                            	$("#myImg").css("display","block");
+                            	$("#myImg").attr("src", result);
+                       	 	});
+                        } else {
+                        	swal("è«‹ä¸Šå‚³åœ–ç‰‡", "æ‰€é¸çš„æª”æ¡ˆä¸æ˜¯åœ–ç‰‡,è«‹é‡æ–°ç¢ºèª", "warning", {button: "ç¢ºå®š"});
+                        }
+                	});
+                </script>
 </body>
+
+
 
 </html>

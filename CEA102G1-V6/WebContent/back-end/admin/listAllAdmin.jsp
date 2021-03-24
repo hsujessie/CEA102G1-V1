@@ -12,7 +12,7 @@
 
 <html>
 <head>
-<title>Movies Management</title>
+<title>Admins Management</title>
 <%@ include file="/back-end/files/sb_head.file"%>
 
 <style>
