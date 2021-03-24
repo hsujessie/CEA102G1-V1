@@ -42,8 +42,7 @@ public class SesServlet extends HttpServlet {
 	public void doPost(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException{
 		req.setCharacterEncoding("UTF-8");
 		String action = req.getParameter("action");
-		System.out.println("action:"+action);
-
+		
 		
 		if("getOne_For_Display".equals(action)) { 
 			List<String> errorMsgs = new LinkedList<String>();
@@ -150,18 +149,26 @@ public class SesServlet extends HttpServlet {
 	 	           
 	 	           
 	          /* =====================================================================
-                 				           錯誤驗證：場次日期不可小於當日
+                 				   錯誤驗證：場次日期不可為當日5天(含)內之日期
 				 =====================================================================*/	
+	             SesService sesSvc = new SesService();
 	             DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
-	             java.util.Date date = new java.util.Date();
-	             String strDate= dateFormat.format(date);  // 先把 java.util.Date format轉字串，才能parse，因為 parse(裡面要放字串)
-	             java.util.Date parsedDate = dateFormat.parse(strDate);      // 要parse new Date()的格式，去除時間秒數，因為只要比日期而已。 若把秒數也比進去，即使同一天，也會是false，因為new Date帶有秒數，永遠比前台來的值還大。
+//	             java.util.Date date = new java.util.Date();
+//	             String strDate= dateFormat.format(date);  // 先把 java.util.Date format轉字串，才能parse，因為 parse(裡面要放字串)
+//	             java.util.Date parsedDate = dateFormat.parse(strDate);      // 要parse new Date()的格式，去除時間秒數，因為只要比日期而已。 若把秒數也比進去，即使同一天，也會是false，因為new Date帶有秒數，永遠比前台來的值還大。
 	             java.util.Date dateBegin = dateFormat.parse(sesDateBegin);  // parse(String) to java.util.Date
 	             java.util.Date dateEnd = dateFormat.parse(sesDateEnd);
 	             
-	             if (dateBegin.before(parsedDate) || dateBegin.equals(parsedDate) || dateEnd.before(parsedDate) || dateBegin.equals(parsedDate)) {  // use 「 .before() 」the type should be java.util.Date
-	            	 errorDateMsgs = "場次日期有誤，不可為當日，或於當日之前";
-	             }
+	             java.sql.Date sqlDateBegin = new java.sql.Date(dateBegin.getTime());
+	             java.sql.Date sqlDateEnd = new java.sql.Date(dateEnd.getTime());
+	             Boolean beginResult = sesSvc.isGreater(sqlDateBegin);
+	             Boolean endResult = sesSvc.isGreater(sqlDateEnd);
+//	             if (dateBegin.before(parsedDate) || dateBegin.equals(parsedDate) || dateEnd.before(parsedDate) || dateBegin.equals(parsedDate)) {  // use 「 .before() 」the type should be java.util.Date	            
+//		             errorDateMsgs = "場次日期有誤，不可為當日，或於當日之前";	
+//	             }
+	             if(beginResult == false || endResult == false) {
+	            	 errorDateMsgs = "場次日期有誤，不可為當日5天(含)內之日期";
+            	 }
 	             
 	                        	             
 	             Time sesTime = null;   
@@ -177,16 +184,13 @@ public class SesServlet extends HttpServlet {
 	            	                       錯誤驗證：場次時間間距，不可少於2小時
 	            	   =====================================================================*/
 	            	 if (sesTimeArr.length > 1) {
-						System.out.println("if= " + sesTimeArr.length);
 						for(int j = 0; j < sesTimeArr.length; j++) {
 							sesTimeList.add(java.time.LocalTime.parse(sesTimeArr[j]));	// 將時間陣列存進list
 						}
 						
 						for (int i = 1; i < sesTimeList.size(); i++) {	
-							System.out.println("i List: " + sesTimeList.get(i));
-							System.out.println("i-1  List: " + sesTimeList.get(i - 1));
 							diff = Duration.between(sesTimeList.get(i - 1),sesTimeList.get(i));  // 「get(i)」 minus 「get(i - 1)」的 difference 不能少於2
-							System.out.println("diff= " + diff.toHours()); 
+//							System.out.println("diff= " + diff.toHours()); 
 							if (diff.toHours() < 2) {
 								errorTimeMsgs = "間距不可少於2小時";  							
 							}
@@ -197,14 +201,13 @@ public class SesServlet extends HttpServlet {
 	             }
 
 	             
-	             SesService sesSvc = new SesService();
 		         TheService theSvc = new TheService();
 				 List<Integer> theNoList = new ArrayList<Integer>();
 				 for (int k = 0; k < theNoArr.length; k++) {
 					theNoList.add(new Integer(theNoArr[k]));
 				 }
 		      /* =====================================================================
-        	                   場次是否重複，錯誤驗證  //theNo、sesDate、sesTime
+        	              錯誤驗證：場次是否重複  //廳院theNo、日期sesDate、時間sesTime
         	     ===================================================================== */
 				 Boolean result = true;
 				 for (int i = 0; i < sesDateArr.length; i++) {
@@ -278,7 +281,6 @@ public class SesServlet extends HttpServlet {
 			try {
 				/***************************1.接收請求參數****************************************/
 				Integer sesNo = new Integer(req.getParameter("sesNo").trim());
-				System.out.println("sesNo= " + sesNo);
 				
 				/***************************2.開始查詢資料****************************************/
 				SesService sesSvc = new SesService();
@@ -388,8 +390,8 @@ public class SesServlet extends HttpServlet {
 				/***************************1.接收請求參數 - 輸入格式的錯誤處理**********************/
                  String sesDateStr = req.getParameter("sesDate").trim();     
 	             java.sql.Date sesDate = null;
-	             sesDate = Date.valueOf(sesDateStr);    
-                 System.out.println(sesDate); 
+	             sesDate = Date.valueOf(sesDateStr);  
+	             
 	    	    /***************************2.開始修改資料*****************************************/ 
  	            SesService sesSvc = new SesService();
 				List<SesVO> list  =  sesSvc.getMoviesByDate(sesDate);
