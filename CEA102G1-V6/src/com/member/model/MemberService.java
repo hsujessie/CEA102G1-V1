@@ -1,6 +1,7 @@
 package com.member.model;
 
 import java.util.List;
+import java.util.Map;
 
 import com.member.model.*;
 
@@ -9,14 +10,12 @@ public class MemberService {
 	private MemberDAO_infterface dao;
 
 	public MemberService() {
-		dao = new MemberJDBCDAO();
+		dao = new MemberJNDIDAO();
 	}
 	
 	public MemberVO addMember(String memName, String memAccount,String memPassword,String memMail,byte[] memImg) {
-//		,Integer memWallet,Integer memstatus,byte[] memImg
-		MemberVO memberVO = new MemberVO();
 
-		
+		MemberVO memberVO = new MemberVO();
 		memberVO.setMemName(memName);
 		memberVO.setMemAccount(memAccount);
 		memberVO.setMemPassword(memPassword);
@@ -30,8 +29,8 @@ public class MemberService {
 		return memberVO;
 	}
 
-	public MemberVO updateMember(Integer memNo,String memName, String memAccount,String memPassword,String memMail,Integer memWallet,Integer memstatus,byte[] memImg) {
-//		
+	public MemberVO updateMember(Integer memNo,String memName, String memAccount,String memPassword,String memMail,Integer memWallet,Integer memstatus,byte[] memImg ) {
+
 		MemberVO memberVO = new MemberVO();
 		memberVO.setMemNo(memNo);
 		memberVO.setMemName(memName);
@@ -47,6 +46,21 @@ public class MemberService {
 		return memberVO;
 		
 	}
+	public MemberVO updateMember2(Integer memNo,String memName, String memAccount,String memPassword,String memMail,Integer memWallet,Integer memstatus) {
+		MemberVO memberVO = new MemberVO();
+		memberVO.setMemNo(memNo);
+		memberVO.setMemName(memName);
+		memberVO.setMemAccount(memAccount);
+		memberVO.setMemPassword(memPassword);
+		memberVO.setMemMail(memMail);
+		memberVO.setMemWallet(memWallet);
+		memberVO.setMemstatus(memstatus);
+		
+		
+		 dao.update2(memberVO);
+		return memberVO;
+		
+	}
 
 	public void deleteBoard(Integer memNo) {
 		dao.delete(memNo);
@@ -56,6 +70,10 @@ public class MemberService {
 		
 		return dao.findByPrimaryKey(memNo);
 	}
+//	public MemberVO getOneMember2(Integer memNo) {
+//		
+//		return dao.findByPrimaryKey3(memNo);
+//	}
 	public MemberVO getOneAccount(String memAccount, String memPassword) {
 		return dao.findByMemAccount(memAccount,memPassword);
 	}
@@ -96,6 +114,10 @@ public void updateStatus(MemberVO memberVO) {
 		
 		dao.updateStatus(memberVO);		
 	}
+
+public void changeMemStatus(Integer memNo, Integer memstatus) {
+	dao.changeStatus(memNo, memstatus);
+}
 	
 public MemberVO updateUuid(MemberVO memberVO) {
 	dao.updateUuid(memberVO);
@@ -103,7 +125,9 @@ public MemberVO updateUuid(MemberVO memberVO) {
 	return memberVO;
 }
 	
-	
+public List<MemberVO> getAll(Map<String, String[]> map) {
+	return dao.getAll(map);
+}
 	
 	
 	

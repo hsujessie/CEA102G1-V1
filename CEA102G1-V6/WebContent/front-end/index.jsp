@@ -11,7 +11,7 @@
 <%@ include file="/front-end/files/frontend_importCss.file"%>
 <link rel="stylesheet" href="<%=request.getContextPath()%>/resource/css/frontendIndex.css">
 
-<link rel="stylesheet" href="<%=request.getContextPath()%>/resource/css/chatbox/chatbox.css">
+<%-- <link rel="stylesheet" href="<%=request.getContextPath()%>/resource/css/chatbox/chatbox.css"> --%>
 
 
 <style>
@@ -32,27 +32,27 @@
 </head>
 <body>
 <!-- chatbox -->
-<div id="chat-circle" class="btn btn-raised">
-        <div id="chat-overlay"></div>
-        <i class="fas fa-comment-alt"></i>
-</div>
-<div class="chat-box">
-    <div class="chat-box-header">
-      		線上客服
-      <span class="chat-box-toggle"></span>
-    </div>
-    <div class="chat-box-body">
-      <div class="chat-box-overlay">   
-      </div>
-      <div class="chat-logs">
+<!-- <div id="chat-circle" class="btn btn-raised"> -->
+<!--         <div id="chat-overlay"></div> -->
+<!--         <i class="fas fa-comment-alt"></i> -->
+<!-- </div> -->
+<!-- <div class="chat-box"> -->
+<!--     <div class="chat-box-header"> -->
+<!--       		線上客服 -->
+<!--       <span class="chat-box-toggle"></span> -->
+<!--     </div> -->
+<!--     <div class="chat-box-body"> -->
+<!--       <div class="chat-box-overlay">    -->
+<!--       </div> -->
+<!--       <div class="chat-logs"> -->
        
-      </div><!--chat-log -->
-    </div>
-    <div class="chat-input">      
-      <input type="text" id="chat-input" placeholder="Send a message..." onkeydown="if (event.keyCode == 13) sendMessage();"/>
-      <button class="chat-submit" id="chat-submit"><i class="fas fa-paper-plane"></i></button>
-    </div>
-  </div>
+<!--       </div>chat-log -->
+<!--     </div> -->
+<!--     <div class="chat-input">       -->
+<!--       <input type="text" id="chat-input" placeholder="Send a message..." onkeydown="if (event.keyCode == 13) sendMessage();"/> -->
+<!--       <button class="chat-submit" id="chat-submit"><i class="fas fa-paper-plane"></i></button> -->
+<!--     </div> -->
+<!--   </div> -->
 <!-- chatbox -->
         <div class="wrapper">
             <!-- Nav Bar Start -->

@@ -10,7 +10,7 @@ List<BoardVO> list = boardSvc.getAll();
 pageContext.setAttribute("list",list);
 %>
 
-
+listAllBoard_new.jsp
 <html>
 <head>
 <title>所有公告資料 - listAllBoard.jsp</title>
@@ -104,6 +104,8 @@ pageContext.setAttribute("list",list);
  		</c:forEach> 
 </table>
 <%@ include file="/resource/pages/page2.file" %>
-
+<br>本網頁的路徑:<br><b>
+   <font color=blue>request.getServletPath():</font> <%=request.getServletPath()%><br>
+   <font color=blue>request.getRequestURI(): </font> <%=request.getRequestURI()%> </b>
 </body>
 </html>

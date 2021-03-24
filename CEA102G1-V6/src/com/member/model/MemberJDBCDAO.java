@@ -6,6 +6,8 @@ import com.board.model.BoardJDBCDAO;
 import com.board.model.BoardVO;
 import com.member.model.*;
 
+import jdbc.util.CompositeQuery.jdbcUtil_CompositeQuery_Member;
+
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.LinkedList;
@@ -32,6 +34,7 @@ public class MemberJDBCDAO implements MemberDAO_infterface{
 			"UPDATE member set mem_Name=?, mem_Account=?, mem_Password=? ,mem_Mail=? ,mem_Wallet=?, mem_Status=? ,mem_img=? ,mem_uuid=? where mem_No = ?";
 	private static final String UPDATE2 =
 			"UPDATE member set  mem_uuid=? where mem_Account=? and mem_Mail=?";
+	private static final String UPDATE_STATUS = "UPDATE member SET mem_Status=? WHERE mem_No=?";
 	
 	private static final String GET_ALL_STMT = 
 			"SELECT  mem_No, mem_Name, mem_Account, mem_Password, mem_Mail, mem_Wallet, mem_Status, mem_Img  FROM member";
@@ -563,6 +566,7 @@ public class MemberJDBCDAO implements MemberDAO_infterface{
 				memberVO.setMemWallet(rs.getInt("mem_wallet"));
 				memberVO.setMemstatus(rs.getInt("mem_status"));
 				memberVO.setMemImg(rs.getBytes("mem_img"));
+				memberVO.setMemuuid(rs.getString("mem_uuid"));
 			
 			}
 
@@ -752,6 +756,121 @@ public class MemberJDBCDAO implements MemberDAO_infterface{
 
 	}
 	
+	@Override
+	public void changeStatus(Integer memNo, Integer memstatus) {
+		Connection con = null;
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+		
+		try {
+			Class.forName(driver);
+			con = DriverManager.getConnection(url, userid, passwd);
+			pstmt = con.prepareStatement(UPDATE_STATUS);
+			
+			
+			switch(memstatus) {
+				case 0 :
+					pstmt.setInt(1, 1);
+					break;
+				case 1 :
+					pstmt.setInt(1, 0);
+					break;
+			}
+			pstmt.setInt(2, memNo);
+			
+			pstmt.executeUpdate();
+		}catch (ClassNotFoundException e) {
+			throw new RuntimeException("Couldn't load database driver. "
+			+ e.getMessage());
+
+
+		}catch (SQLException se) {
+			throw new RuntimeException("A database error occured. "
+					+ se.getMessage());
+		} finally {
+			if (pstmt != null) {
+				try {
+					pstmt.close();
+				} catch (SQLException se) {
+					se.printStackTrace(System.err);
+				}
+			}
+			if (con != null) {
+				try {
+					con.close();
+				} catch (Exception e) {
+					e.printStackTrace(System.err);
+				}
+			}
+		}
+	}
+	
+	@Override
+	public List<MemberVO> getAll(Map<String, String[]> map) {
+		List<MemberVO> list = new ArrayList<MemberVO>();
+		MemberVO memberVO = null;
+	
+		Connection con = null;
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+	
+		try {
+			
+			Class.forName(driver);
+			con = DriverManager.getConnection(url, userid, passwd);
+			
+			String finalSQL = "select * from member "
+		          + jdbcUtil_CompositeQuery_Member.get_WhereCondition(map)
+		          + "order by mem_No";
+			pstmt = con.prepareStatement(finalSQL);
+			System.out.println("●●finalSQL(by DAO) = "+finalSQL);
+			rs = pstmt.executeQuery();
+	
+			while (rs.next()) {
+				memberVO = new MemberVO();
+				memberVO.setMemNo(rs.getInt("mem_No"));
+				memberVO.setMemName(rs.getString("mem_Name"));
+				memberVO.setMemAccount(rs.getString("mem_Account"));
+				memberVO.setMemPassword(rs.getString("mem_Password"));
+				memberVO.setMemMail(rs.getString("mem_Mail"));
+				memberVO.setMemWallet(rs.getInt("mem_Wallet"));
+				memberVO.setMemstatus(rs.getInt("mem_Status"));
+				memberVO.setMemImg(rs.getBytes("mem_Img"));;
+				list.add(memberVO); 
+			}
+		} catch (ClassNotFoundException e) {
+			throw new RuntimeException("Couldn't load database driver. "
+			+ e.getMessage());
+
+
+		}catch (SQLException se) {
+			throw new RuntimeException("A database error occured. "
+					+ se.getMessage());
+		} finally {
+			if (rs != null) {
+				try {
+					rs.close();
+				} catch (SQLException se) {
+					se.printStackTrace(System.err);
+				}
+			}
+			if (pstmt != null) {
+				try {
+					pstmt.close();
+				} catch (SQLException se) {
+					se.printStackTrace(System.err);
+				}
+			}
+			if (con != null) {
+				try {
+					con.close();
+				} catch (Exception e) {
+					e.printStackTrace(System.err);
+				}
+			}
+		}
+		return list;
+	}
 	
 	
 	
@@ -787,70 +906,7 @@ public class MemberJDBCDAO implements MemberDAO_infterface{
 	
 	
 	
-	
-	
-	
-//	
-//	@Override    
-//	public List<MemberVO> getAll(Map<String, String[]> map) {
-//		List<MemberVO> list = new ArrayList<MemberVO>();
-//		MemberVO memberVO = null;
-//		Connection con = null;
-//		PreparedStatement pstmt = null;
-//		ResultSet rs = null;
-//	
-//	try {
-//			Class.forName(driver);
-//			con = DriverManager.getConnection(url, userid, passwd);
-//			String finalSQL = "select * from member "
-//		          + jdbcUtil_CompositeQuery_member.get_WhereCondition(map)
-//		          + "order by empno";
-//			pstmt = con.prepareStatement(finalSQL);
-//			System.out.println("●●finalSQL(by DAO) = "+finalSQL);
-//			rs = pstmt.executeQuery();
-//	
-//			while (rs.next()) {
-//				empVO = new EmpVO();
-//				empVO.setEmpno(rs.getInt("empno"));
-//				empVO.setEname(rs.getString("ename"));
-//				empVO.setJob(rs.getString("job"));
-//				empVO.setHiredate(rs.getDate("hiredate"));
-//				empVO.setSal(rs.getDouble("sal"));
-//				empVO.setComm(rs.getDouble("comm"));
-//				empVO.setDeptno(rs.getInt("deptno"));
-//				list.add(empVO); // Store the row in the List
-//			}
-//	
-//			// Handle any SQL errors
-//		} catch (SQLException se) {
-//			throw new RuntimeException("A database error occured. "
-//					+ se.getMessage());
-//		} finally {
-//			if (rs != null) {
-//				try {
-//					rs.close();
-//				} catch (SQLException se) {
-//					se.printStackTrace(System.err);
-//				}
-//			}
-//			if (pstmt != null) {
-//				try {
-//					pstmt.close();
-//				} catch (SQLException se) {
-//					se.printStackTrace(System.err);
-//				}
-//			}
-//			if (con != null) {
-//				try {
-//					con.close();
-//				} catch (Exception e) {
-//					e.printStackTrace(System.err);
-//				}
-//			}
-//		}
-//		return list;
-//	}
-//}
+
 	
 	
 	
