@@ -154,7 +154,7 @@
          
          <c:if test='${funList.contains("餐點管理")}'>            
              <a class="nav-link collapsed <c:if test="${urlRecog == foodSub}">active</c:if>" href="${food}" data-toggle="collapse" data-target="#food" aria-expanded="false" aria-controls="food">                        
-                <div class="sb-nav-link-icon"><i class="far fa-clock"></i></div>
+                <div class="sb-nav-link-icon"><i class="fas fa-hamburger"></i></div>
                 餐點管理
                 <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
             </a>
