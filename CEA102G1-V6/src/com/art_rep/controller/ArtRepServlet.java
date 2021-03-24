@@ -113,6 +113,7 @@ public class ArtRepServlet extends HttpServlet {
 						obj.put("artRepNo", artRepVO.getArtRepNo());
 						obj.put("artRepContent", "已經刪除的內容就像下架的電影一樣，錯過是無法再相見的！");
 						obj.put("artRepTime", artRepVO.getArtRepTime());
+						obj.put("artRepStatus", artRepVO.getArtRepStatus());
 					} catch (JSONException e) {
 						e.printStackTrace();
 					}					
