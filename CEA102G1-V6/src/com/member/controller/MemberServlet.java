@@ -44,6 +44,7 @@ public class MemberServlet extends HttpServlet {
 			    HttpSession session = req.getSession();
 			    if (session != null) {
 			      session.removeAttribute("MemberVO");
+			      session.removeAttribute("moviesSubpage");
 			    }
 
 ///****************查詢完成,準備轉交(Send the Success view)***************/
@@ -492,8 +493,8 @@ public class MemberServlet extends HttpServlet {
 					String url = location;
 					
 					/* a attribute from frontend movies_subpage.jsp */
-					if (session.getAttribute("movno") != null) {
-						Integer movno = (Integer) session.getAttribute("movno");
+					if (session.getAttribute("moviesSubpage") != null) {
+						Integer movno = (Integer) session.getAttribute("moviesSubpage");
 						System.out.println("movno= " + movno);
 						url = req.getContextPath() + "/movie/mov.do?action=getOne_For_Display&fromFrontend=true&movno=" + movno;
 					}
