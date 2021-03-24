@@ -149,18 +149,26 @@ public class SesServlet extends HttpServlet {
 	 	           
 	 	           
 	          /* =====================================================================
-                 				           錯誤驗證：場次日期不可小於當日
+                 				   錯誤驗證：場次日期不可為當日5天(含)內之日期
 				 =====================================================================*/	
+	             SesService sesSvc = new SesService();
 	             DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
-	             java.util.Date date = new java.util.Date();
-	             String strDate= dateFormat.format(date);  // 先把 java.util.Date format轉字串，才能parse，因為 parse(裡面要放字串)
-	             java.util.Date parsedDate = dateFormat.parse(strDate);      // 要parse new Date()的格式，去除時間秒數，因為只要比日期而已。 若把秒數也比進去，即使同一天，也會是false，因為new Date帶有秒數，永遠比前台來的值還大。
+//	             java.util.Date date = new java.util.Date();
+//	             String strDate= dateFormat.format(date);  // 先把 java.util.Date format轉字串，才能parse，因為 parse(裡面要放字串)
+//	             java.util.Date parsedDate = dateFormat.parse(strDate);      // 要parse new Date()的格式，去除時間秒數，因為只要比日期而已。 若把秒數也比進去，即使同一天，也會是false，因為new Date帶有秒數，永遠比前台來的值還大。
 	             java.util.Date dateBegin = dateFormat.parse(sesDateBegin);  // parse(String) to java.util.Date
 	             java.util.Date dateEnd = dateFormat.parse(sesDateEnd);
 	             
-	             if (dateBegin.before(parsedDate) || dateBegin.equals(parsedDate) || dateEnd.before(parsedDate) || dateBegin.equals(parsedDate)) {  // use 「 .before() 」the type should be java.util.Date
-	            	 errorDateMsgs = "場次日期有誤，不可為當日，或於當日之前";
-	             }
+	             java.sql.Date sqlDateBegin = new java.sql.Date(dateBegin.getTime());
+	             java.sql.Date sqlDateEnd = new java.sql.Date(dateEnd.getTime());
+	             Boolean beginResult = sesSvc.isGreater(sqlDateBegin);
+	             Boolean endResult = sesSvc.isGreater(sqlDateEnd);
+//	             if (dateBegin.before(parsedDate) || dateBegin.equals(parsedDate) || dateEnd.before(parsedDate) || dateBegin.equals(parsedDate)) {  // use 「 .before() 」the type should be java.util.Date	            
+//		             errorDateMsgs = "場次日期有誤，不可為當日，或於當日之前";	
+//	             }
+	             if(beginResult == false || endResult == false) {
+	            	 errorDateMsgs = "場次日期有誤，不可為當日5天(含)內之日期";
+            	 }
 	             
 	                        	             
 	             Time sesTime = null;   
@@ -193,7 +201,6 @@ public class SesServlet extends HttpServlet {
 	             }
 
 	             
-	             SesService sesSvc = new SesService();
 		         TheService theSvc = new TheService();
 				 List<Integer> theNoList = new ArrayList<Integer>();
 				 for (int k = 0; k < theNoArr.length; k++) {
