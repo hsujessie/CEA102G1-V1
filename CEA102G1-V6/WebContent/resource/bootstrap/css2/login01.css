@@ -6,17 +6,24 @@
   margin: 0px auto;
   padding: 0px;
   text-align: center;
+  font-family: 'Open Sans', sans-serif;
 }
-
+.Nav Bar{
+	position: absolute;
+	border-color:yellow;
+	border-style:solid;
+	border-width:3px 6px;
+	padding:5px;
+}
 .cotn_principal {
   position: absolute;
   width: 100%;
   height: 100vh;
 /* Permalink - use to edit and share this gradient: http://colorzilla.com/gradient-editor/#cfd8dc+0,607d8b+100,b0bec5+100 */
 /*background: #cfd8dc; /* Old browsers */
-/*background: -moz-linear-gradient(-45deg,  #cfd8dc 0%, #607d8b 100%, #b0bec5 100%);  FF3.6-15 */
-/* background: -webkit-linear-gradient(-45deg,  #cfd8dc 0%,#607d8b 100%,#b0bec5 100%); Chrome10-25,Safari5.1-6  */
-background: linear-gradient(135deg,  #cfd8dc 0%,#aa9166 80%,#aa9166 100%);
+/*background: -moz-linear-gradient(-45deg,  #cfd8dc 0%, #607d8b 100%, #b0bec5 100%);  FF3.6-15 
+background: -webkit-linear-gradient(-45deg,  #cfd8dc 0%,#607d8b 100%,#b0bec5 100%);*/ /* Chrome10-25,Safari5.1-6 */
+background: linear-gradient(135deg,  #cfd8dc 0%,#aa9166 80%,#aa9166 100%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
 filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#cfd8dc', endColorstr='#b0bec5',GradientType=1 ); /* IE6-9 fallback on horizontal gradient */
 
 }
@@ -207,8 +214,8 @@ background text
   background-color: rgba(120, 144, 156, 0.55);
   width: 80%;
   border-radius:3px ;
-margin-top: 40px;
-padding: 15px 0px;
+  margin-top: 25px;
+  padding: 15px 0px;
 }
 
 .btn_sign_up { 
@@ -313,48 +320,38 @@ transition: all 0.5s;
 text-align: left;
   padding: 10px 5px;
 margin-left: 10px;
-margin-top: 5px;
+margin-top: 10px;
   width: 260px;
 border: none;
     color: #757575;
 }
 
 .cont_form_sign_up > h2 {
-margin-top: 30px; 
-margin-right: 80px;
+margin-top: 50px; 
 font-weight: 400;
   color: #757575;
 }
 
 
-.login-input-sty {
-  padding: 15px 5px;
+.cont_form_login > input {
+  padding: 10px 5px;
 margin-left: 10px;
-margin-top: 30px;
+margin-top: 20px;
   width: 260px;
 border: none;
 text-align: left;
   color: #757575;
 }
 
-
-.login-sty{
-  margin-top: 70px; 
-  font-weight: 400;
+.cont_form_login > h2 {
+margin-top: 70px; 
+font-weight: 400;
   color: #757575;
 }
-
-.login-a-sty{
-    color: #757575;
-    position: absolute;
-    float: left;
-	top: 10px;
-	left: 30px;
-}
-.cont_form_sign_up > a  {
+.cont_form_login > a,.cont_form_sign_up > a  {
   color: #757575;
     position: relative;
     float: left;
     margin: 10px;
-	margin-left: 30px;
+margin-left: 30px;
 }

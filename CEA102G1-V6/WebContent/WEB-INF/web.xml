@@ -11,6 +11,7 @@
   </welcome-file-list>
   
 <!--   後臺登入濾器 -->
+
   <filter>
   	<filter-name>LoginFilter</filter-name>
   	<filter-class>com.admin.controller.LoginFilter</filter-class>
@@ -164,6 +165,7 @@
   </servlet-mapping>   
 
 <!-- 24 -->
+
   <servlet>
     <servlet-name>BoardServlet</servlet-name>
     <servlet-class>com.board.controller.BoardServlet</servlet-class>
