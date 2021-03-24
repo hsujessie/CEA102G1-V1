@@ -285,7 +285,14 @@
 		                         <div class="reviews-container">
 		                            <div class="reviews-content">
 		                                <c:set var="satObj" value="${satSvc.getOneSat(comVO.movNo,comVO.memNo)}"></c:set>                            
-		                                <h2><span>Ratings</span><c:forEach var="i" begin="0" end="${satObj.satRating}"><i class="fa fa-star" aria-hidden="true"></i></c:forEach></h2>	                                
+		                                <h2>
+		                                	<span>Ratings</span>
+		                                	<c:if test="${satObj.movNo == movVO.movno}">
+				                                <c:forEach var="i" begin="0" end="${satObj.satRating}">
+				                                		<i class="fa fa-star" aria-hidden="true"></i>
+				                                </c:forEach>
+			                                </c:if>
+		                                </h2>	                                
 		                                <p>${comVO.comContent}</p>
 		                                																														
 										<jsp:useBean id="memSvc" scope="page" class="com.member.model.MemberService"/>
