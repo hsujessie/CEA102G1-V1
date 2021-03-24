@@ -99,7 +99,7 @@ public class MemberServlet extends HttpServlet {
 		}
 ///***************************完成一個流程*****************************/		
 //					
-		if ("update".equals(action)) { // 前台修改
+		if ("update".equals(action)) { // 後端修改
 			List<String> errorMsgs = new LinkedList<String>();
 			req.setAttribute("errorMsgs", errorMsgs);
 			try {
@@ -176,7 +176,7 @@ public class MemberServlet extends HttpServlet {
 		}
 ///***************************完成一個流程*****************************/
 
-		if ("updateFront".equals(action)) { // 忘記密碼修改
+		if ("Forgot_updateFront".equals(action)) { // 忘記密碼修改
 
 			List<String> errorMsgs = new LinkedList<String>();
 			req.setAttribute("errorMsgs", errorMsgs);
@@ -238,7 +238,95 @@ public class MemberServlet extends HttpServlet {
 				if (!errorMsgs.isEmpty()) {
 					req.setAttribute("MemberVO", memberVO);
 					RequestDispatcher failureView = req
-							.getRequestDispatcher("/back-end/Member/uptate_member_input_new.jsp");
+							.getRequestDispatcher("/front-end/Member-Login/front_forgot_Memupdate_new.jsp");
+					failureView.forward(req, res);
+					return;
+				}
+///***************************2.開始修改資料******************************/
+
+				memberSvc.updateMember(memNo, memName, memAccount, memPassword, memMail, memWallet, memstatus, memImg);
+
+				memberVO = memberSvc.getOneMember(memNo);
+
+///***************************3.修改完成,準備轉交(Send the Success view)*******/
+				req.setAttribute("MemberVO", memberVO);
+
+				String url = "/front-end/Member_Login/front_listOneMember_new.jsp";
+				RequestDispatcher successView = req.getRequestDispatcher(url); // 修改成功後,轉交listOneEmp.jsp
+				successView.forward(req, res);
+
+///***************************其他可能的錯誤處理****************************/
+			} catch (Exception e) {
+				errorMsgs.add("修改資料失敗:" + e.getMessage());
+				RequestDispatcher failureView = req
+						.getRequestDispatcher("/front-end/Member-Login/front_forgot_Memupdate_new.jsp");
+				failureView.forward(req, res);
+			}
+		}
+///***************************完成一個流程*****************************/
+		if ("updateFront".equals(action)) { // 前端密碼修改
+
+			List<String> errorMsgs = new LinkedList<String>();
+			req.setAttribute("errorMsgs", errorMsgs);
+
+			try {
+///***************************1.接收請求參數 - 輸入格式的錯誤處理************/
+//													<還需要加判斷>
+				Integer memNo = new Integer(req.getParameter("memNo").trim());
+
+				String memName = req.getParameter("memName").trim();
+				String memNameReg = "^[(\u4e00-\u9fa5)(a-zA-Z0-9_)]{2,10}$";
+				if (memName == null || memName.trim().isEmpty()) {
+					errorMsgs.add("會員姓名: 請勿空白");
+				} else if (!memName.trim().matches(memNameReg)) { // 以下練習正則(規)表示式(regular-expression)
+					errorMsgs.add("會員姓名: 只能是中、英文字母、數字和_ , 且長度必需在2到10之間");
+				}
+				String memAccount = req.getParameter("memAccount").trim();
+
+				String memPassword = req.getParameter("memPassword").trim();
+				String memPasswordReg = "^[(a-zA-Z0-9)]{2,12}$";
+				if (memPassword == null || memPassword.trim().isEmpty()) {
+					errorMsgs.add("會員密碼請勿空白");
+				} else if (!memPassword.trim().matches(memPasswordReg)) {
+					errorMsgs.add("會員密碼: 只能是英文字母、數字 , 且長度必需在2到10之間");
+				}
+				String memMail = req.getParameter("memMail").trim();
+				String memMailReg = "^[(a-zA-Z0-9@_)]{2,10}$";
+				if (memPassword == null || memPassword.trim().isEmpty()) {
+					errorMsgs.add("會員信箱請勿空白");
+				} else if (!memPassword.trim().matches(memPasswordReg)) {
+					errorMsgs.add("會員信箱: 只能是英文字母、數字和@_ , 且長度必需在2到10之間");
+				}
+				Integer memWallet = new Integer(req.getParameter("memWallet").trim());
+				Integer memstatus = new Integer(req.getParameter("memstatus").trim());
+				MemberService memberSvc = new MemberService();
+				byte[] memImg = null;
+				Part part = req.getPart("memImg");
+				if (part.getSize() != 0) {
+					InputStream is = part.getInputStream();
+					memImg = new byte[is.available()];
+					is.read(memImg);
+					is.close();
+				} else {
+					MemberVO memberVO = memberSvc.getOneMember(memNo);
+					memImg = memberVO.getMemImg();
+					memberVO.setMemImg(memImg);
+				}
+
+				MemberVO memberVO = new MemberVO();
+				memberVO.setMemNo(memNo);
+				memberVO.setMemName(memName);
+				memberVO.setMemAccount(memAccount);
+				memberVO.setMemPassword(memPassword);
+				memberVO.setMemMail(memMail);
+				memberVO.setMemWallet(memWallet);
+				memberVO.setMemstatus(memstatus);
+				memberVO.setMemImg(memImg);
+
+				if (!errorMsgs.isEmpty()) {
+					req.setAttribute("MemberVO", memberVO);
+					RequestDispatcher failureView = req
+							.getRequestDispatcher("/front-end/Member-Login/uptate_member_input_new.jsp");
 					failureView.forward(req, res);
 					return;
 				}
@@ -263,7 +351,7 @@ public class MemberServlet extends HttpServlet {
 				failureView.forward(req, res);
 			}
 		}
-///***************************完成一個流程*****************************/							
+///***************************完成一個流程*****************************/
 
 		if ("delete".equals(action)) {
 
@@ -723,6 +811,7 @@ public class MemberServlet extends HttpServlet {
 		}
 /*************************** 完成一個流程 ****************************/
 		if ("forgot_update".equals(action)) {
+			
 			List<String> errorMsgs = new LinkedList<String>();
 			req.setAttribute("errorMsgs", errorMsgs);
 
@@ -734,15 +823,16 @@ public class MemberServlet extends HttpServlet {
 				MemberService memberSvc = new MemberService();
 				MemberVO memberVO = new MemberVO();
 				memberVO = memberSvc.getAllForUuid(memuuid);
+
 				req.setAttribute("MemberVO", memberVO);
-//								<測試>
+//				<測試>
 				HttpSession session = req.getSession();
 				session.setAttribute("MemberVO", memberVO);
 
 				MemberJNDIDAO memberJNDIDAO = new MemberJNDIDAO();
 				memberVO.setMemuuid(null);
 				memberJNDIDAO.update(memberVO);
-//								
+						
 
 /*************************** 3.新增完成,準備轉交(Send the Success view) ***********/
 
