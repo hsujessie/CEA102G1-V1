@@ -11,9 +11,6 @@
 <%@ include file="/front-end/files/frontend_importCss.file"%>
 <link rel="stylesheet" href="<%=request.getContextPath()%>/resource/css/frontendIndex.css">
 
-<%-- <link rel="stylesheet" href="<%=request.getContextPath()%>/resource/css/chatbox/chatbox.css"> --%>
-
-
 <style>
 .art-box {
 	width: 230px;
