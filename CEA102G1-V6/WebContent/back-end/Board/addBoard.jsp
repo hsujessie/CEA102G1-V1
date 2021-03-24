@@ -95,6 +95,12 @@
 	<br> 
 	<input type="hidden" name="action" value="insert">
 	<input type="submit" value="送出新增"></FORM>
+	
+	
+<br>本網頁的路徑:<br><b>
+   <font color=blue>request.getServletPath():</font> <%=request.getServletPath()%><br>
+   <font color=blue>request.getRequestURI(): </font> <%=request.getRequestURI()%> </b>	
+	
 </body>
 
 <script>

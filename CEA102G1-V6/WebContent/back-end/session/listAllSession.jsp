@@ -21,7 +21,7 @@
 	    color: #bb9d52;
 		position: absolute;
 	    top: 8%;
-	    left: 20%;
+	    left: 17%;
 	    font-size: 16px;
 	}
 	.form-sty{

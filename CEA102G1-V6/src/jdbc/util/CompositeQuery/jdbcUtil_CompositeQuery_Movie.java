@@ -7,8 +7,6 @@ import java.util.TreeMap;
 public class jdbcUtil_CompositeQuery_Movie {
 	public static String get_aCondition_For_MySql(String columnName, String value) {
 		String aCondition = null;
-		System.out.println("columnName: " + columnName);
-		System.out.println("value: " + value);
 		
 		if("mov_no".equals(columnName)) {
 			aCondition = columnName + "=" + value;

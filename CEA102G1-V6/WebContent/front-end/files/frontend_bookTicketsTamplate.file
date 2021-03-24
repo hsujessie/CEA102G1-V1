@@ -6,7 +6,7 @@
         </div>
         <div class="form">
             <div class="form-control">
-                <button class="combtn">let's  go</button>
+                <button class="combtn"><a id="tic-link" href="<%=request.getContextPath()%>/front-end/ordMas/TicketOrder.jsp">let's  go</a></button>
             </div>
         </div>
     </div>

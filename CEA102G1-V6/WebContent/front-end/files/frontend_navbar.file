@@ -1,7 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 
 <!-- HomePage -->
-
 <c:set var="home" value="${pageContext.request.contextPath}/front-end/index.jsp"/>
 <c:set var="searchTickets" value="${pageContext.request.contextPath}/front-end/ordMas/listMemOrder.jsp"/>
 <c:set var="sessions" value="${pageContext.request.contextPath}/front-end/sessions/sessions.jsp"/>
@@ -11,6 +10,7 @@
 <c:set var="faqs" value="${pageContext.request.contextPath}/front-end/faqs.jsp"/>
 <c:set var="articlemanage" value="${pageContext.request.contextPath}/front-end/article/articleManage.jsp"/>
 <c:set var="members" value="${pageContext.request.contextPath}/front-end/Member_Login/login.jsp"/>
+<c:set var="membersdata" value="${pageContext.request.contextPath}/front-end/Member_Login/front_update_member2_new.jsp"/>
 
 
 <!-- SubPage -->
@@ -38,7 +38,7 @@
                     <a href="${home}" class="nav-item nav-link <c:if test="${urlRecog == home}">active</c:if>"><i class="fa fa-home iconPos"></i>首頁</a>
 
                     <div class="nav-item dropdown">
-                        <a href="" class="nav-link dropdown-toggle <c:if test="${(urlRecog == tickets) || (urlRecog == searchTickets) || (urlRecog == sessions) }">active</c:if>" data-toggle="dropdown"><i class="fas fa-ticket-alt iconPos"></i>訂票</a>
+                        <a href="" class="nav-link dropdown-toggle <c:if test="${(urlRecog == searchTickets) || (urlRecog == sessions)}">active</c:if>" data-toggle="dropdown"><i class="fas fa-ticket-alt iconPos"></i>訂票</a>
                         <div class="dropdown-menu">
                             <a href="${sessions}" class="dropdown-item">查看場次</a>
                             <a href="${searchTickets}" class="dropdown-item">查詢訂票</a>
@@ -49,13 +49,15 @@
                     <a href="${forum}"   class="nav-item nav-link <c:if test="${urlRecog == forum}">active</c:if>"><i class="fa fa-users iconPos"></i>討論區</a>
                     <a href="${notices}" class="nav-item nav-link <c:if test="${urlRecog == notices}">active</c:if>"><i class="fa fa-bullhorn iconPos"></i>公告</a>
                     <a href="${faqs}"    class="nav-item nav-link <c:if test="${urlRecog == faqs}">active</c:if>"><i class="fas fa-question-circle iconPos"></i></i>FAQs</a>
+
                     
                 	<div class="nav-item dropdown">
-                        <a href="" class="nav-link dropdown-toggle <c:if test="${(urlRecog == members) || (urlRecog == articalmanage)}">active</c:if>" data-toggle="dropdown"><i class="fa fa-user iconPos"></i>會員</a>
+                        <a href="" class="nav-link dropdown-toggle <c:if test="${(urlRecog == members)|| (urlRecog == searchTickets) || (urlRecog == articlemanage)}">active</c:if>" data-toggle="dropdown"><i class="fa fa-user iconPos"></i>會員</a>
                         <div class="dropdown-menu">
-                            <a href="${members}" class="dropdown-item">會員資料管理</a>
+                            <a href="${membersdata}" class="dropdown-item">會員資料管理</a>
                             <a href="${searchTickets}" class="dropdown-item">購票管理</a>
                             <a href="${articlemanage}" class="dropdown-item">文章管理</a>
+
                         </div>
                     </div>
                     

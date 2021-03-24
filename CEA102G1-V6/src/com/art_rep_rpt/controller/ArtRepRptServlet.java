@@ -14,7 +14,7 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import com.art.model.ArtDAO;
+import com.art.model.ArtService;
 import com.art_rep.model.ArtRepService;
 import com.art_rep_rpt.model.ArtRepRptService;
 import com.art_rep_rpt.model.ArtRepRptVO;
@@ -66,7 +66,7 @@ public class ArtRepRptServlet extends HttpServlet {
 		if("listAllArticleReplyReport".equals(action)) {
 			JSONArray array = new JSONArray();
 			
-			ArtDAO artDAO = new ArtDAO();
+			ArtService artSvc = new ArtService();
 			ArtRepService artRepSvc = new ArtRepService();
 			ArtRepRptService artRepRptSvc = new ArtRepRptService();
 			MemberService memSvc = new MemberService();
@@ -78,7 +78,8 @@ public class ArtRepRptServlet extends HttpServlet {
 				JSONObject obj = new JSONObject();
 				try { 
 					obj.put("artRepNo", artRepRptVO.getArtRepNo());
-					obj.put("memName", memSvc.getOneMember(artDAO.findByPrimaryKey(artRepRptVO.getArtRepNo()).getMemNo()).getMemName());
+					obj.put("artTitle", artSvc.getOneArt(artRepRptVO.getArtRepNo()).getArtTitle());
+					obj.put("memName", memSvc.getOneMember(artSvc.getOneArt(artRepRptVO.getArtRepNo()).getMemNo()).getMemName());
 					obj.put("artRepRptNo", artRepRptVO.getArtRepRptNo());
 					obj.put("artRepRptReson", artRepRptVO.getArtRepRptReson());
 					obj.put("artRepRptTime", artRepRptVO.getArtRepRptTime());

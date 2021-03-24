@@ -13,6 +13,8 @@ import javax.naming.InitialContext;
 import javax.naming.NamingException;
 import javax.sql.DataSource;
 
+import jdbc.util.CompositeQuery.jdbcUtil_CompositeQuery_ArtRep;
+
 public class ArtRepDAO implements ArtRepDAO_interface{
 	
 	private static DataSource ds = null;
@@ -224,7 +226,9 @@ public class ArtRepDAO implements ArtRepDAO_interface{
 		
 		try {
 			con = ds.getConnection();
-			String compositeQuerySQL = "SELECT * FROM ARTICLE_REPLY ORDER BY ARTREP_NO";
+			String compositeQuerySQL = "select * from article, MEMBER, article_reply where article.MEM_NO = member.MEM_NO and ARTICLE.ART_NO = article_reply.ART_NO and ART_STATUS=0 "+
+										jdbcUtil_CompositeQuery_ArtRep.get_WhereCondition(map)+
+										"order by article_Reply.ARTREP_NO DESC";
 			pstmt = con.prepareStatement(compositeQuerySQL);
 			System.out.println("ArtRepDAO_compositeQuerySQL:" + compositeQuerySQL ); //印出最後的SQL
 			rs = pstmt.executeQuery();

@@ -4,7 +4,6 @@
 <c:set var="loginUrl" value="${pageContext.request.contextPath}/front-end/Member_Login/login.jsp" scope="page"/>
 <c:set var="location" value="${pageContext.request.requestURI}" scope="session"/> <!-- 若沒登入，無法對該電影評分+短評，here have tp set a session attribute for the login page to get the origin url -->
 <c:set var="testMemNo" value="1" scope="page"/> <!-- 測試用 -->
-<c:set var="testMemAccount" value="abc" scope="page"/> <!-- 測試用 -->
 
 <!DOCTYPE html>
 <html>
@@ -118,6 +117,7 @@
     	box-sizing: border-box;
     	padding: 1% 0 1% 4%;
     	font-size: 16px;
+    	margin: 0 auto;
 	}
 	.writeComment:hover{
 		box-shadow: 5px 5px 5px #121518;
@@ -320,15 +320,14 @@
                         </div>
                     </div>
 
-                    <%-- <div class="row align-items-center" ${not empty MemberVO.memAccount ? '':'style="display:none;"'}> --%>
-                    <div class="row align-items-center">
+                    <div class="row align-items-center" ${empty MemberVO.memAccount ? 'style="display:none;"':''}>
                         <div class="col-lg-12 col-md-12">
                             <form method="post" action="<%=request.getContextPath()%>/comment/com.do">
                                 <textarea name="comContent" cols="30" rows="5" style="width: 100%; margin: 20px 0 5px 0;" placeholder="Write something here..."></textarea>                          
                                 
   								<input type="hidden" name="movNo" value="${movVO.movno}" />
-  								<%-- <input type="hidden" name="memNo" value="${MemberVO.memNo}" /> --%>
-  								<input type="hidden" name="memNo" value="${testMemNo}" /> <!-- 測試用 -->
+  								<input type="hidden" name="memNo" value="${MemberVO.memNo}" />
+  								<%-- <input type="hidden" name="memNo" value="${testMemNo}" /> --%> <!-- 測試用 -->
   								
 								<input type="hidden" name="action" value="insert">
                             	<input class="combtn" type="submit" value="送出">
@@ -336,13 +335,13 @@
                         </div>
                     </div>
 
-<%--                     <div class="row align-items-center" ${not empty MemberVO.memAccount ? 'style="display:none;"':''}>
+                    <div class="row align-items-center" ${empty MemberVO.memAccount ? 'style="display:block;"':''}>
                         <div class="col-lg-45 col-md-5"></div>
                         <div class="col-lg-2 col-md-2 writeComment">
                             <a href="${loginUrl}">點我寫短評 <i class="fas fa-pencil-alt" style="color:#aa9166;"></i></a>
                         </div>
                         <div class="col-lg-5 col-md-5"></div>
-                    </div> --%>
+                    </div>
                 </div>
             </div>
             <!-- Comment End -->

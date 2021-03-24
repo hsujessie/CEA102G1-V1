@@ -48,7 +48,7 @@
     z-index: 0;
   }
   .err-color{
-    text-shadow: 0 0 0.1em #f87, 0 0 0.1em #f87;
+	color: #A50203;
     font-size: 14px;
   }
 </style>
@@ -86,7 +86,7 @@
 								<jsp:useBean id="movVerSvc" scope="page" class="com.movie_version.model.MovVerService"/>	
 								<c:set value="${theSvc.getOneTheater(sesVO.theNo)}" var="theObj"></c:set>
 								<c:set value="${movVerSvc.getOneMovie_version(theObj.movver_no)}" var="movVerObj"></c:set>
-								<td>${sesVO.theNo}廳 【${movVerObj.movver_name}】</td>	
+								<td style="color: #bb9d52;">${sesVO.theNo}廳 【${movVerObj.movver_name}】</td>	
 									
 							</tr>
 							<tr>
@@ -146,7 +146,6 @@
 									/* Varify Inputs */
 	/* =========================================================================================== */
 	let sesTimeInput = document.querySelector('input[name="sesTime"]');
-	sesTimeInput.addEventListener('change', isEmpty, false);
 	sesTimeInput.addEventListener('keyup', isEmpty, false);
 	sesTimeInput.addEventListener('focus', isEmpty, false);
 	

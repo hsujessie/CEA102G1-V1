@@ -83,9 +83,6 @@
 
         }
         @media (max-width: 991px) {
-        	#articleTop{
- 				position: sticky;      	
-        	}
             #artListLeft {
                 height: auto;
             }
@@ -112,6 +109,9 @@
                 width: 90%;
             }
         }
+        #artMovTypeList li:hover{
+        	cursor: pointer;
+        }
     </style>
 
     <script>
@@ -127,7 +127,6 @@
             ListArtTopThreeQuery();
 
             //單篇文章燈箱
-            debugger;
             $('#artListCenter ,#Top3Article').on('click', '.artContent', function (event) {
                 console.log("artContent clicked:" + $(event.currentTarget).html());
                 console.log("artNo:" + $(event.currentTarget).attr('data-value'));
@@ -193,18 +192,15 @@
             $('#findArtByTitleButton ,#findArtByCompositeQueryButton, #artTitleByCompositeQuery, #artTimeForByCompositeQuery, #artAuthorForByCompositeQuery').on('click keypress', function (e) {
                     //  debugger;
                     if (e.which === 13 || e.currentTarget.id === 'findArtByCompositeQueryButton' || e.currentTarget.id === 'findArtByTitleButton') {
-                        debugger;
                     	findArtByCompositeQuery(e);
                     }
             });
 
             //依電影類型查詢
             $('#artMovTypeList').on('click', 'li', function (e) {
-                debugger;
                 $('.selectedMovType').removeClass('selectedMovType');
                 document.getElementById("artTitleByCompositeQuery").placeholder = '依' + $(this).data(
                     'value') + '查詢';
-                debugger;
               	//清空熱門文章列表
     			clearListArtTopThreeQuery();
               	
@@ -273,6 +269,9 @@
             //呼叫檢舉留言
             addRepRpt();
             
+            //清空留言空值警告
+            clearArtRepEmptyAlert();
+            
         });
 // window load
         
@@ -291,7 +290,7 @@
                     $(artVO).each(function (i, item) {
                         $('#artMovTypeList').append(
                             '<li id="' + item.movTypeIndex + '" class="nav-item" data-value="' +
-                            item.artMovType + '"><a class="nav-link" href="#">' + item
+                            item.artMovType + '"><a class="nav-link">' + item
                             .artMovType + '</a></li>'
                         );
                     });
@@ -313,7 +312,6 @@
                 success: function (artVO) {
                     clearArtList();
                     $(artVO).each(function (i, item) {
-                        debugger;
                         $('#artListCenter').append(
                             '<div id="artAuthor" style="display: inline-block"><div style="display: inline-block">作者：</div> <div style="display: inline-block">' +
                             item.memName + '</div></div>' +
@@ -336,6 +334,10 @@
                     });
                     clearListArtTopThreeQuery();
                     ListArtTopThreeQuery();
+        			//若無文章
+        			if (artVO.length == 0){
+        				$('#artListCenter').append('<div class="noArticle">尚無文章</div>');
+        			}
                 },
                 error: function () {
                     console.log('AJAX-findArtByCompositeQuery發生錯誤囉!')
@@ -348,7 +350,6 @@
             var addArtDataAttr = {
                 'action': 'find_By_CompositeQuery_Use_AJAX'
             };
-            	debugger;
             addArtDataAttr['artMovType'] = $('.selectedMovType').attr('data-value');
             console.log('artMovType add ' + addArtDataAttr);
             // 	debugger;
@@ -373,14 +374,12 @@
         
         //複合查詢後熱門文章列表
         function movTypeHotArticle(data){
-        	debugger;
         	$.ajax({
         		type: 'POST',
         		url: '<%=request.getContextPath()%>/art/art.do',
         		data: {'action':'movTypeHotArticle', 'movType':data},
         		dataType: 'json',
         		success: function (artVO){
-        			debugger;
         			//清空熱門文章列表
         			clearListArtTopThreeQuery();
         			

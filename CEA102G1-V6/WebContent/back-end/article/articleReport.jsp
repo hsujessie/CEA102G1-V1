@@ -25,9 +25,10 @@
         	white-space:nowrap;
 			overflow:hidden;
 			text-overflow:ellipsis;
+			padding: 0px 5px;
         }
         .bgGray:hover{
-            background-color: rgba(166, 166, 166, 0.5);
+            background-color: rgba(166, 166, 166, 0.3);
         }
 	</style>
 	<title>Back-End Management</title>
@@ -48,9 +49,9 @@
                     <br>
                     <br>
                     <!-- PUT HERE Start-->
-                    <div style="height: 10vh;">
+                    <div  class="form-group" style="height: 10vh;">
                     	<b>請選擇欲查看的檢舉分類：</b>
-                    	<select id="selectReportType">
+                    	<select id="selectReportType" class="form-control" style="width: 15vw; display: inline-block;">
                     		<option>請選擇</option>
                     		<option value="listAllArticleReport">文章檢舉列表</option>
                     		<option value="listAllArticleReplyReport">留言檢舉列表</option>
@@ -58,7 +59,7 @@
                     </div>
 
                     <h3 id="tableTitle" class="h3-style" style="display: inline-block;"></h3>
-					<hr>
+					<hr style="background-color:#bb9d52; height:1.5px;">
 		            <div id="listAllReport" style="font-size: 0px">
 
 					</div>
@@ -110,11 +111,11 @@
 						data: {'action':$(this).val()},
 						dataType: 'json',
 						success: function(artRepRptVO){
-							$('#listAllReport').append('<div><div class="inlineBlockLongDIV">檢舉編號</div><div class="inlineBlockDIV">留言人</div><div class="inlineBlockLongDIV">留言內容</div><div class="inlineBlockLongDIV">檢舉時間</div><div class="inlineBlockLongDIV">檢舉人</div><div class="inlineBlockLongDIV">檢舉理由</div><div class="inlineBlockDIV">狀態</div><div class="inlineBlockLongDIV">確認/取消</div></div>');
+							$('#listAllReport').append('<div><div class="inlineBlockLongDIV">檢舉編號</div><div class="inlineBlockLongDIV">留言文章</div><div class="inlineBlockLongDIV">留言內容</div><div class="inlineBlockLongDIV">檢舉時間</div><div class="inlineBlockLongDIV">檢舉人</div><div class="inlineBlockLongDIV">檢舉理由</div><div class="inlineBlockDIV">狀態</div><div class="inlineBlockLongDIV">確認/取消</div></div>');
 							$('#listAllReport').show();
 							$('#tableTitle').append("留言檢舉列表");
 							$(artRepRptVO).each(function(i, item){
-								$('#listAllReport').append('<div class="bgGray"><div class="artRepRptNo inlineBlockLongDIV" data-value='+item.artRepRptNo+'>'+item.artRepRptNo+'</div><div class="inlineBlockDIV longText">'+item.memName+'</div><div class="inlineBlockLongDIV">'+item.artRepContent+'</div><div class="inlineBlockLongDIV">'+moment(item.artRepRptTime).locale('zh_TW').format('LL')+'</div><div class="inlineBlockLongDIV longText">'+item.reportMemName+'</div><div class="inlineBlockLongDIV">'+item.artRepRptReson+'</div><div class="artRepRptStatus inlineBlockDIV">'+item.artRepRptStatus+'</div><div class="inlineBlockLongDIV"><button class="checkedReplyButton btn-light btn-brd grd1 effect-1" style="color: #fff" data-value="'+item.artRepNo+'">'+item.artRepRptStatusButton+'</button></div></div>');					
+								$('#listAllReport').append('<div class="bgGray"><div class="artRepRptNo inlineBlockLongDIV" data-value='+item.artRepRptNo+'>'+item.artRepRptNo+'</div><div class="inlineBlockLongDIV longText">'+item.artTitle+'</div><div class="inlineBlockLongDIV">'+item.artRepContent+'</div><div class="inlineBlockLongDIV">'+moment(item.artRepRptTime).locale('zh_TW').format('LL')+'</div><div class="inlineBlockLongDIV longText">'+item.reportMemName+'</div><div class="inlineBlockLongDIV">'+item.artRepRptReson+'</div><div class="artRepRptStatus inlineBlockDIV">'+item.artRepRptStatus+'</div><div class="inlineBlockLongDIV"><button class="checkedReplyButton btn-light btn-brd grd1 effect-1" style="color: #fff" data-value="'+item.artRepNo+'">'+item.artRepRptStatusButton+'</button></div></div>');					
 							});						
 						},
 		                error: function () {
