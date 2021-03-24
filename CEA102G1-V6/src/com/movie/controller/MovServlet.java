@@ -218,8 +218,8 @@ public class MovServlet extends HttpServlet{
 					movtrais.close();				
 				}
 				
-
-	            // Here're parameters for sending back to the front page, if there were errors   
+				
+				// Here're parameters for sending back to the front page, if there were errors   
 				MovVO movVO = new MovVO();
 				movVO.setMovname(movname);
 				movVO.setMovver(movver);
@@ -234,12 +234,16 @@ public class MovServlet extends HttpServlet{
 				movVO.setMovdes(movdes);
 				movVO.setMovpos(movpos);
 				movVO.setMovtra(movtra);
-
+				
 				// Send the use back to the form, if there were errors
 				if (!errorMsgs.isEmpty()) {
-					System.out.println("There's something wrong when " + action + ".");
+					System.out.println("errorMsgs= " + errorMsgs);
+					req.setAttribute("movVO", movVO);        
+					RequestDispatcher failureView = req.getRequestDispatcher("back-end/movie/addMovie.jsp");
+					failureView.forward(req, res);
 					return;
 				}
+				
 				
 				/***************************2.開始新增資料***************************************/				
 				MovService movSvc = new MovService();
@@ -516,8 +520,7 @@ public class MovServlet extends HttpServlet{
 				
 				// Send the use back to the form, if there were errors
 				if (!errorMsgs.isEmpty()) {
-					System.out.println("There's something wrong when " + action + ".");
-					
+					System.out.println("errorMsgs= " + errorMsgs);
 					req.setAttribute("movVO", movVO);        
 					RequestDispatcher failureView = req.getRequestDispatcher(requestURL);
 					failureView.forward(req, res);
