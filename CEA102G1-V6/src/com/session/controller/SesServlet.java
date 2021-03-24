@@ -121,10 +121,10 @@ public class SesServlet extends HttpServlet {
 	
 	
 		if ("insert".equals(action)) {
-            String errorMsgs = "";
-            String errorDateMsgs = "";
-            String errorTimeMsgs = "";
-            String errorSessionMsgs = "";
+            String errorMsgs = null;
+            String errorDateMsgs = null;
+            String errorTimeMsgs = null;
+            String errorSessionMsgs = null;
             try {
                 /***********************1.接收請求參數 - 輸入格式的錯誤處理*************************/
                  Integer movNo = new Integer(req.getParameter("movNo").trim());
@@ -223,7 +223,7 @@ public class SesServlet extends HttpServlet {
  	              	             
  	           
 	           // Send the use back to the form, if there were errors   
-	           if (errorMsgs != "" || errorDateMsgs!= "" || errorTimeMsgs != "" || errorSessionMsgs!="") {
+	           if (errorMsgs != null || errorDateMsgs!= null || errorTimeMsgs != null || errorSessionMsgs != null) {
 					req.setAttribute("movNo", movNo);
 					req.setAttribute("sesDateBegin", sesDateBegin);
 					req.setAttribute("sesDateEnd", sesDateEnd);
