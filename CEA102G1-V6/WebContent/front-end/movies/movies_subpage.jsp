@@ -187,10 +187,10 @@
 										<c:set var="movNo" value="${movVO.movno}"/>
 										<c:set var="expOne" value="${expSvc.getOneExp(movNo,expMemNo)}"/>
 									</c:forEach>
-									<c:if test="${expOne.memNo == MemberVO.memNo}"> <!-- 此會員已給期待度 -->
+									<c:if test="${expOne.memNo == MemberVO.memNo and expOne.movNo == movVO.movno}"> <!-- 此會員已給期待度 -->
 										<label style="font-size: 14px;">【已評分】</label>
 									</c:if>
-									<c:if test="${expOne.memNo != MemberVO.memNo}"> <!-- 此會員未期待度 -->
+									<c:if test="${expOne.memNo != MemberVO.memNo and expOne.movNo != movVO.movno }"> <!-- 此會員未期待度 -->
 	  									<input type="hidden" name="memNo" value="${MemberVO.memNo}" />
 	                            		<input class="combtn" type="submit" value="送出" style="margin-left: 5%; padding: 2px 10px;">
 									</c:if>
@@ -215,7 +215,7 @@
                             <p style="color:#aa9166;">滿意度</p>
                         </div>
                         <div class="col-lg-11 col-md-9">                    							    <!-- 已上映 - 上映日小於等於當日-->          					    <!-- 已下檔 - 下檔日大於當日 -->                   
-                            <form method="post" action="<%=request.getContextPath()%>/satisfaction/sat.do" <c:if test="${today le movOndate}">style="display:none;"</c:if> <c:if test="${today ge movOffdate}">style="display:none;"</c:if> >        	
+                            <form method="post" action="<%=request.getContextPath()%>/satisfaction/sat.do" <c:if test="${today lt movOndate}">style="display:none;"</c:if> <c:if test="${today ge movOffdate}">style="display:none;"</c:if> >        	
                             	<label><input type="checkbox" name="satRating" value="1" style="display:none;" /><i class="fa fa-star" aria-hidden="true"></i></label>
                             	<label><input type="checkbox" name="satRating" value="1" style="display:none;" /><i class="fa fa-star" aria-hidden="true"></i></label>
                             	<label><input type="checkbox" name="satRating" value="1" style="display:none;" /><i class="fa fa-star" aria-hidden="true"></i></label>
@@ -226,19 +226,14 @@
 								<input type="hidden" name="action" value="insert">
 								
 	                    		<c:if test="${not empty MemberVO.memAccount}"> <!-- 已登入 Start --> 
-									<c:forEach var="satList" items="${satSvc.all}" >
-										<c:set var="satMemNo" value="${satList.memNo}"/>
-										<c:set var="movNo" value="${movVO.movno}"/>
-										<c:set var="satOne" value="${satSvc.getOneSat(movNo,satMemNo)}"/>
-									</c:forEach>
-									<c:if test="${satOne.memNo == MemberVO.memNo}">
-										<label style="font-size: 14px;">【已評分】</label> <!-- 此會員已給滿意度 -->
+									<c:set var="satOne" value="${satSvc.getOneSat(movVO.movno,MemberVO.memNo)}"/>
+									<c:if test="${satOne != null}"> <!-- 此會員已給滿意度 -->
+										<label style="font-size: 14px;">【已評分】</label>
 									</c:if>
-									<c:if test="${satOne.memNo != MemberVO.memNo}"> <!-- 此會員未給滿意度 -->
+									<c:if test="${satOne == null}"> <!-- 此會員未給滿意度 -->
 	  									<input type="hidden" name="memNo" value="${MemberVO.memNo}" />
 		                            	<input class="combtn" type="submit" value="送出" style="margin-left: 13.4%; padding: 2px 10px;">
 									</c:if>
-	                            
 	                            </c:if> <!-- 已登入 End --> 
 	                    		
 	                    		<c:if test="${empty MemberVO.memAccount}"> <!-- 未登入 Start --> 
@@ -246,7 +241,7 @@
 	                            </c:if> <!-- 未登入 End --> 
                             </form>
                             
-                        	<c:if test="${today le movOndate}"> <!-- 已上映 --> 
+                        	<c:if test="${today lt movOndate}"> <!-- 已上映 --> 
 	                        	<label style="font-size: 14px;">【電影未上映,投票尚未開始】</label>
 	                        </c:if>
 	                        <c:if test="${today ge movOffdate}"> <!-- 已下檔 --> 
@@ -283,8 +278,8 @@
                 <div class="container">
                     <div class="section-header">
                         <h2>Reviews</h2>
-                    </div>                                                                    <!-- 已上映 才有reviews --> 
-                    <div class="reviews-start" ${today le movOndate ? 'style="display:none;"':'style="display:block;"'} >
+                    </div>                                                                  
+                    <div class="reviews-start" >
                     	<c:forEach var="comVO" items="${comSvc.all}">
                     		<c:if test="${(comVO.movNo == movVO.movno) and (comVO.comStatus == 0)}">
 		                         <div class="reviews-container">
@@ -305,7 +300,7 @@
 	                    </c:forEach>
                     </div> 
                         
-	                <label style="font-size: 14px; margin-left: 45%;  ${today le movOndate ? 'display:block;':'display:none;'}">【電影尚未上映】</label>              
+	                <label style="font-size: 14px; margin-left: 45%;  ${today lt movOndate ? 'display:block;':'display:none;'}">【電影尚未上映】</label>              
                 </div>
             </div>
             <!-- Reviews End -->
@@ -323,7 +318,7 @@
                     </div>
 
                     <div class="row align-items-center" ${empty MemberVO.memAccount ? 'style="display:none;"':'style="display:block;"'}>
-                        <div class="col-lg-12 col-md-12">
+                        <div class="col-lg-12 col-md-12" ${today lt movOndate ? 'style="display:none;':'style="display:;block"'}> <!-- 電影尚未上映 隱藏短評 -->
                             <form method="post" action="<%=request.getContextPath()%>/comment/com.do">
                                 <textarea name="comContent" cols="30" rows="5" style="width: 100%; margin: 20px 0 5px 0;" placeholder="Write something here..."></textarea>                          
                                 
@@ -335,14 +330,15 @@
                             	<input class="combtn" type="submit" value="送出">
                             </form>
                         </div>
+                        <label style="font-size: 14px; margin-left: 45%;  ${today lt movOndate ? 'display:block;':'display:none;'}">【電影尚未上映】</label>
                     </div>
 
                     <div class="row align-items-center" ${empty MemberVO.memAccount ? 'style="display:block;"':'style="display:none;"'}>
                         <div class="col-lg-45 col-md-5"></div>
-                        <div class="col-lg-2 col-md-2 writeComment" ${today le movOndate ? 'style="display:none;':'style="display:;block"'}>
+                        <div class="col-lg-2 col-md-2 writeComment" ${today lt movOndate ? 'style="display:none;':'style="display:;block"'}>  <!-- 電影尚未上映 隱藏點我寫短評按鈕 -->
                             <a href="${loginUrl}">點我寫短評 <i class="fas fa-pencil-alt" style="color:#aa9166;"></i></a>
                         </div>
-                        <label style="font-size: 14px; margin-left: 45%;  ${today le movOndate ? 'display:block;':'display:none;'}">【電影尚未上映】</label>
+                        <label style="font-size: 14px; margin-left: 45%;  ${today lt movOndate ? 'display:block;':'display:none;'}">【電影尚未上映】</label>
                         <div class="col-lg-5 col-md-5"></div>
                     </div>
                 </div>  

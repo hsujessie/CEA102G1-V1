@@ -121,9 +121,17 @@ public class SatDAO implements SatDAO_interface{
 			
 			while(rs.next()) {
 				satVO = new SatVO();
-				satVO.setMovNo(rs.getInt("mov_no"));
-				satVO.setMemNo(rs.getInt("mem_no"));
-				satVO.setSatRating(rs.getInt("sat_rating"));
+				Integer mov_no = rs.getInt("mov_no");
+				Integer mem_no = rs.getInt("mem_no");
+				Integer sat_rating = rs.getInt("sat_rating");
+				if(mov_no != null && mem_no!= null && sat_rating!= null) {
+					satVO.setMovNo(mov_no);
+					satVO.setMemNo(mem_no);
+					satVO.setSatRating(sat_rating);
+				}else {
+					satVO = null;
+				}
+				
 			}		
 			
 		} catch(SQLException se) {
