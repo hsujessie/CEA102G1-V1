@@ -142,49 +142,7 @@ public class MemberJDBCDAO implements MemberDAO_infterface{
 		}
 	}
 	
-	@Override
-	public void updateFront(MemberVO memberVO) {
-		Connection con = null;
-		PreparedStatement pstmt = null;
-		try {
-			Class.forName(driver);
-			con = DriverManager.getConnection(url, userid, passwd);
-			pstmt = con.prepareStatement(UPDATE);
-
-			pstmt.setString(1, memberVO.getMemName());
-			pstmt.setString(2, memberVO.getMemAccount());
-			pstmt.setString(3, memberVO.getMemPassword());
-			pstmt.setString(4, memberVO.getMemMail());
-			pstmt.setInt(5, memberVO.getMemWallet());
-			pstmt.setInt(6, memberVO.getMemstatus());
-			pstmt.setBytes(7, memberVO.getMemImg());
-			pstmt.setString(8, memberVO.getMemuuid());
-			pstmt.setInt(9, memberVO.getMemNo());
-			pstmt.executeUpdate();
-
-		} catch (ClassNotFoundException e) {
-			throw new RuntimeException("Couldn't load database driver. "
-					+ e.getMessage());
-		} catch (SQLException se) {
-			throw new RuntimeException("A database error occured. "
-					+ se.getMessage());
-		} finally {
-			if (pstmt != null) {
-				try {
-					pstmt.close();
-				} catch (SQLException se) {
-					se.printStackTrace(System.err);
-				}
-			}
-			if (con != null) {
-				try {
-					con.close();
-				} catch (Exception e) {
-					e.printStackTrace(System.err);
-				}
-			}
-		}
-	}
+	
 	
 	@Override
 	public void updateUuid(MemberVO memberVO) {
@@ -340,72 +298,7 @@ public class MemberJDBCDAO implements MemberDAO_infterface{
 	}
 	
 	
-	@Override
-	public MemberVO findByPrimaryKey2(Integer memNo) {
-
-		MemberVO memberVO = null;
-		Connection con = null;
-		PreparedStatement pstmt = null;
-		ResultSet rs = null;
-
-		try {
-
-			Class.forName(driver);
-			con = DriverManager.getConnection(url, userid, passwd);
-			pstmt = con.prepareStatement(GET_ONE_FRONT_STMT);
-
-			pstmt.setInt(1, memNo);
-
-
-			rs = pstmt.executeQuery();
-
-			while (rs.next()) {
-
-				memberVO = new MemberVO();
-				memberVO.setMemNo(rs.getInt("mem_No"));
-				memberVO.setMemName(rs.getString("mem_Name"));
-				memberVO.setMemAccount(rs.getString("mem_Account"));
-				memberVO.setMemPassword(rs.getString("mem_Password"));
-				memberVO.setMemMail(rs.getString("mem_Mail"));
-				memberVO.setMemWallet(rs.getInt("mem_Wallet"));
-				memberVO.setMemImg(rs.getBytes("mem_Img"));
-
-				
-				
-			}
-
-
-		} catch (ClassNotFoundException e) {
-			throw new RuntimeException("Couldn't load database driver. "
-					+ e.getMessage());
-		} catch (SQLException se) {
-			throw new RuntimeException("A database error occured. "
-					+ se.getMessage());
-		} finally {
-			if (rs != null) {
-				try {
-					rs.close();
-				} catch (SQLException se) {
-					se.printStackTrace(System.err);
-				}
-			}
-			if (pstmt != null) {
-				try {
-					pstmt.close();
-				} catch (SQLException se) {
-					se.printStackTrace(System.err);
-				}
-			}
-			if (con != null) {
-				try {
-					con.close();
-				} catch (Exception e) {
-					e.printStackTrace(System.err);
-				}
-			}
-		}
-		return memberVO;
-	}
+	
 	
 	@Override
 	public MemberVO findByMemAccount(String memAccount,String memPassword) {
@@ -976,6 +869,12 @@ public class MemberJDBCDAO implements MemberDAO_infterface{
 				
 				
 			}
+
+	@Override
+	public void update2(MemberVO memberVO) {
+		// TODO Auto-generated method stub
+		
+	}
 	
 }
 

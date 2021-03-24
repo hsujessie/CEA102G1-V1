@@ -194,11 +194,13 @@ public class SesService {
 						return true;
 			}
 			
+			return false;
 			
 		} catch (ParseException e) {
 			throw new RuntimeException("ParseException error occured. " + e.getMessage());
 		}
-		return false;
+	}
+		
 
 	public boolean isRepeatedSession(Integer theNo, Date sesDate, Time sesTime) {
 		Boolean result = true;
