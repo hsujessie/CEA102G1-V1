@@ -75,7 +75,6 @@ public class MovServlet extends HttpServlet{
 				req.setAttribute("movVO", movVO);
 				req.setAttribute("satSum", satSum);
 				req.setAttribute("satPeo", satPeo);
-				req.setAttribute("movVO", movVO);
 				req.setAttribute("expSum", expSum);
 				req.setAttribute("expPeo", expPeo);
 				String url = "/back-end/movie/listOneMovie.jsp";
