@@ -288,7 +288,7 @@
 		                                <h2>
 		                                	<span>Ratings</span>
 		                                	<c:if test="${satObj.movNo == movVO.movno}">
-				                                <c:forEach var="i" begin="0" end="${satObj.satRating}">
+				                                <c:forEach var="i" begin="1" end="${satObj.satRating}">
 				                                		<i class="fa fa-star" aria-hidden="true"></i>
 				                                </c:forEach>
 			                                </c:if>
@@ -392,7 +392,6 @@
 	let faStars = document.getElementsByClassName("fa-star");
 	
 	satRatingZer.onclick = function(){
-		console.log("0");
 		if ($(this).prop('checked')) { 
 			$(this).next().addClass('str-color');
 		}
@@ -409,7 +408,6 @@
 	}	
 	
 	satRatingOne.onclick = function(){
-		console.log("1");
 		if ($(this).prop('checked')) { 
 			$(this).next().addClass('str-color');
 
@@ -429,7 +427,6 @@
 	}
 	
 	satRatingTwo.onclick = function(){
-		console.log("2");
 		if ($(this).prop('checked')) { 
 			$(this).next().addClass('str-color');
 			
@@ -449,7 +446,6 @@
 	}
 
 	satRatingThr.onclick = function(){
-		console.log("3");
 		if ($(this).prop('checked')) { 
 			$(this).next().addClass('str-color');
 			
@@ -467,7 +463,6 @@
 		}	
 	}
 	satRatingFou.onclick = function(){
-		console.log("4");
 		$(this).next().addClass('str-color');
 		if ($(this).prop('checked')) { 
 
