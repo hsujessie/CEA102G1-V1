@@ -2,8 +2,7 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <c:set var="loginUrl" value="${pageContext.request.contextPath}/front-end/Member_Login/login.jsp" scope="page"/>
-<c:set var="location" value="${pageContext.request.requestURI}" scope="session"/> <!-- 若沒登入，無法對該電影評分+短評，here have tp set a session attribute for the login page to get the origin url -->
-<c:set var="testMemNo" value="1" scope="page"/> <!-- 測試用 -->
+<c:set var="location" value="${pageContext.request.requestURI}" scope="session"/> <!-- 若沒登入，無法對該電影評分+短評，here have to set a session attribute for the login page to get the origin url -->
 
 <!DOCTYPE html>
 <html>
@@ -331,7 +330,6 @@
                                 
   								<input type="hidden" name="movNo" value="${movVO.movno}" />
   								<input type="hidden" name="memNo" value="${MemberVO.memNo}" />
-  								<%-- <input type="hidden" name="memNo" value="${testMemNo}" /> --%> <!-- 測試用 -->
   								
 								<input type="hidden" name="action" value="insert">
                             	<input class="combtn" type="submit" value="送出">

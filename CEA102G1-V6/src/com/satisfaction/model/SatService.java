@@ -32,9 +32,7 @@ public class SatService {
 	}
 	
 	public SatVO getOneSat(Integer movNo, Integer memNo) {
-		SatVO satObj =  dao.findByPrimaryKey(movNo,memNo);
-		System.out.println("satObj= " +  satObj);
-		return satObj;
+		return dao.findByPrimaryKey(movNo,memNo);
 	}
 	
 	public List<SatVO> getAll(){
