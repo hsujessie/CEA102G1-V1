@@ -80,7 +80,8 @@
                        				<c:if test="${(not empty movVO.movpos)}">
 		                                <div class="col-5 pd-bottom"> <!-- col-5 Start -->
 		                                    <div class="session-icon">
-		                                        <img onclick="sendData(this,${distinctMovNo})"  style="height: 100%; cursor: pointer; border: 2px solid #aa9166;" src="<%=request.getContextPath()%>/movie/mov.do?movno=${distinctMovNo}&img=movpos&action=get_One_MovPos" alt="Movies Image">				                                    	
+		                                       <%--  <img onclick="sendData(this,${distinctMovNo})"  style="height: 100%; cursor: pointer; border: 2px solid #aa9166;" src="<%=request.getContextPath()%>/movie/mov.do?movno=${distinctMovNo}&img=movpos&action=get_One_MovPos" alt="Movies Image">	 --%>
+		                                        <img onclick="sendData(this,${distinctMovNo})"  style="height: 100%; cursor: pointer; border: 2px solid #aa9166;" src="<%=request.getContextPath()%>/util/imgReader${movVO.movPosParam}">				                                    			                                        		                                        
 		                                    </div>
 		                                </div> <!-- col-5 End -->
                                 	</c:if>	
@@ -112,7 +113,8 @@
 		                       				<c:if test="${(not empty movVO.movpos)}">
 				                                <div class="col-5 pd-bottom"> <!-- col-5 Start -->
 				                                    <div class="session-icon">
-				                                        <img onclick="sendData(this,${distinctMovNo})"  style="height: 100%; cursor: pointer; border: 2px solid #aa9166;" src="<%=request.getContextPath()%>/movie/mov.do?movno=${distinctMovNo}&img=movpos&action=get_One_MovPos" alt="Movies Image">				                                    	
+				                                        <%-- <img onclick="sendData(this,${distinctMovNo})"  style="height: 100%; cursor: pointer; border: 2px solid #aa9166;" src="<%=request.getContextPath()%>/movie/mov.do?movno=${distinctMovNo}&img=movpos&action=get_One_MovPos" alt="Movies Image"> --%>					                                        
+		                                        		<img onclick="sendData(this,${distinctMovNo})"  style="height: 100%; cursor: pointer; border: 2px solid #aa9166;" src="<%=request.getContextPath()%>/util/imgReader${movVO.movPosParam}">				             			                                    	
 				                                    </div>
 				                                </div> <!-- col-5 End -->
 		                                	</c:if>	
