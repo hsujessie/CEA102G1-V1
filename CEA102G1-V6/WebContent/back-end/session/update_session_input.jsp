@@ -51,6 +51,11 @@
 	color: #A50203;
     font-size: 14px;
   }
+  .fail-span{
+    color: #A50203;
+    font-size: 16px;
+    margin-left: 10px;
+  }
 </style>
 </head>
 <body class="sb-nav-fixed">
@@ -67,6 +72,15 @@
                        <!-- update session Start -->  
 					   <FORM method="post" action="<%=request.getContextPath()%>/session/ses.do" name="form_updateSession" enctype="multipart/form-data">	                 	
                        <h3 class="h3-style listOne-h3-pos">場次修改</h3>
+                    	
+                    	<!-- failure message Start -->
+						<c:if test="${errorSessionMsgs != null}">
+							<span class="fail-span"> 
+								<i class="far fa-frown"></i>
+								${errorSessionMsgs}
+							</span>
+						</c:if>
+                    	<!-- failure message End -->
 						
 			            <table>
 							<tr>	
@@ -109,6 +123,8 @@
 						<br>
 						<input type="hidden" name="action" value="update">
 						<input type="hidden" name="sesNo" value="${sesVO.sesNo}">
+						<input type="hidden" name="theNo" value="${sesVO.theNo}">
+						<input type="hidden" name="movNo" value="${sesVO.movNo}">
 						<input type="hidden" name="requestURL" value="<%=request.getParameter("requestURL")%>">
 						<input type="hidden" name="whichPage"  value="<%=request.getParameter("whichPage")%>">
 						

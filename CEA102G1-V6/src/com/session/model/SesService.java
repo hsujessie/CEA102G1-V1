@@ -119,7 +119,7 @@ public class SesService {
 		Boolean result = false;	
 		java.util.Date today = new java.util.Date();
 		
-		long milis = 259200000;  //毫秒 = 3天
+		long milis = 432000000;  //毫秒 = 5天
 		long diffDate = (sesDate.getTime() - today.getTime());
 		
 		if(diffDate > milis) {

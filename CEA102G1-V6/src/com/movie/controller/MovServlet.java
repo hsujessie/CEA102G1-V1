@@ -75,7 +75,6 @@ public class MovServlet extends HttpServlet{
 				req.setAttribute("movVO", movVO);
 				req.setAttribute("satSum", satSum);
 				req.setAttribute("satPeo", satPeo);
-				req.setAttribute("movVO", movVO);
 				req.setAttribute("expSum", expSum);
 				req.setAttribute("expPeo", expPeo);
 				String url = "/back-end/movie/listOneMovie.jsp";
@@ -201,20 +200,25 @@ public class MovServlet extends HttpServlet{
 
 				byte[] movpos = null;
 				Part movposPart = req.getPart("movpos");
-				InputStream movposis = movposPart.getInputStream();
-				movpos = new byte[movposis.available()];
-				movposis.read(movpos);
-				movposis.close();
+				/* 新增時，若沒寫以下判斷，沒有選圖片時，把瀏覽器預設的圖寫進db，在修改時，會顯示broken image */
+				if(movposPart.getContentType() != null && movposPart.getContentType().indexOf("image") >= 0) {  // movposPart.getContentType() 印出image/jpeg
+					 InputStream movposis = movposPart.getInputStream();
+					 movpos = new byte[movposis.available()];
+					 movposis.read(movpos);
+					 movposis.close();
+				}
 
 				byte[] movtra = null;
 				Part movtraPart = req.getPart("movtra");
-				InputStream movtrais = movtraPart.getInputStream();
-				movtra = new byte[movtrais.available()];
-				movtrais.read(movtra);
-				movtrais.close();
+				if(movtraPart.getContentType() != null && movtraPart.getContentType().indexOf("video") >= 0) {	// movtraPart.getContentType() 印出video/mp4	
+					InputStream movtrais = movtraPart.getInputStream();
+					movtra = new byte[movtrais.available()];
+					movtrais.read(movtra);
+					movtrais.close();				
+				}
 				
-
-	            // Here're parameters for sending back to the front page, if there were errors   
+				
+				// Here're parameters for sending back to the front page, if there were errors   
 				MovVO movVO = new MovVO();
 				movVO.setMovname(movname);
 				movVO.setMovver(movver);
@@ -229,12 +233,16 @@ public class MovServlet extends HttpServlet{
 				movVO.setMovdes(movdes);
 				movVO.setMovpos(movpos);
 				movVO.setMovtra(movtra);
-
+				
 				// Send the use back to the form, if there were errors
 				if (!errorMsgs.isEmpty()) {
-					System.out.println("There's something wrong when " + action + ".");
+					System.out.println("errorMsgs= " + errorMsgs);
+					req.setAttribute("movVO", movVO);        
+					RequestDispatcher failureView = req.getRequestDispatcher("back-end/movie/addMovie.jsp");
+					failureView.forward(req, res);
 					return;
 				}
+				
 				
 				/***************************2.開始新增資料***************************************/				
 				MovService movSvc = new MovService();
@@ -511,8 +519,7 @@ public class MovServlet extends HttpServlet{
 				
 				// Send the use back to the form, if there were errors
 				if (!errorMsgs.isEmpty()) {
-					System.out.println("There's something wrong when " + action + ".");
-					
+					System.out.println("errorMsgs= " + errorMsgs);
 					req.setAttribute("movVO", movVO);        
 					RequestDispatcher failureView = req.getRequestDispatcher(requestURL);
 					failureView.forward(req, res);

@@ -106,14 +106,14 @@
 						<FORM method="post" action="<%=request.getContextPath()%>/session/ses.do" name="form_addSession"  enctype="multipart/form-data">
 						<h3 class="h3-style listOne-h3-pos">場次新增</h3>
                     	
-                    	<!-- exception failure message Start -->
+                    	<!-- failure message Start -->
 						<c:if test="${errorSessionMsgs != null}">
 							<span class="fail-span"> 
 								<i class="far fa-frown"></i>
 								${errorSessionMsgs}
 							</span>
 						</c:if>
-                    	<!-- exception failure message End -->
+                    	<!-- failure message End -->
                     	
 						<table>
 							<tr>
@@ -459,8 +459,7 @@
 	 
 	/* =========================================================================================== */
 									/* 新增時間 */ 
-	/* =========================================================================================== */	
-	<c:if test="${empty sesTimeList}">
+	/* =========================================================================================== */
 	let addtime = document.getElementById("addtime");
 	let count = 0;
 	let timeCount = 10;   // 預設 10'o clock
@@ -481,7 +480,6 @@
 				   		</td>
 				   	</tr>`;
 		timetb.innerHTML += tag;
-		
 		
 		/* =========================================================================================== */
 		  						/* timepicker */
@@ -505,7 +503,6 @@
 		count--;
 		e.closest('tr').remove();
 	}
-	</c:if>
 	/* =========================================================================================== */
 									/* Varify Inputs */
 	/* =========================================================================================== */

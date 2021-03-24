@@ -3,7 +3,7 @@
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <c:set var="loginUrl" value="${pageContext.request.contextPath}/front-end/Member_Login/login.jsp" scope="page"/>
 <c:set var="location" value="${pageContext.request.requestURI}" scope="session"/> <!-- 若沒登入，無法對該電影評分+短評，here have to set a session attribute for the login page to get the origin url -->
-
+<c:set var="movno" value="${movVO.movno}" scope="session"/> <!-- 若沒登入，無法對該電影評分+短評，here have to set a session attribute for the login page，把值給MemberServlet.java，再把值帶到MovServlet.java，再倒回這一頁，這樣頁面的資料才不會不見。 -->
 <!DOCTYPE html>
 <html>
 <head>
@@ -187,7 +187,7 @@
 										<c:set var="expOne" value="${expSvc.getOneExp(movNo,expMemNo)}"/>
 									</c:forEach>
 									<c:if test="${expOne.memNo == MemberVO.memNo and expOne.movNo == movVO.movno}"> <!-- 此會員已給期待度 -->
-										<label style="font-size: 14px;">【已評分】</label>
+										<label style="font-size: 14px; color:#aa9166;">【已評分】</label>
 									</c:if>
 									<c:if test="${expOne.memNo != MemberVO.memNo and expOne.movNo != movVO.movno }"> <!-- 此會員未期待度 -->
 	  									<input type="hidden" name="memNo" value="${MemberVO.memNo}" />
@@ -227,7 +227,7 @@
 	                    		<c:if test="${not empty MemberVO.memAccount}"> <!-- 已登入 Start --> 
 									<c:set var="satOne" value="${satSvc.getOneSat(movVO.movno,MemberVO.memNo)}"/>
 									<c:if test="${satOne != null}"> <!-- 此會員已給滿意度 -->
-										<label style="font-size: 14px;">【已評分】</label>
+										<label style="font-size: 14px; color:#aa9166;">【已評分】</label>
 									</c:if>
 									<c:if test="${satOne == null}"> <!-- 此會員未給滿意度 -->
 	  									<input type="hidden" name="memNo" value="${MemberVO.memNo}" />

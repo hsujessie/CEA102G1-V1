@@ -315,8 +315,9 @@ public class SesServlet extends HttpServlet {
 			try {
 				/***************************1.接收請求參數 - 輸入格式的錯誤處理**********************/
 				Integer sesNo = new Integer(req.getParameter("sesNo").trim());
-	            System.out.println("sesNo= " + sesNo);
-                
+				Integer theNo = new Integer(req.getParameter("theNo").trim());
+				Integer movNo = new Integer(req.getParameter("movNo").trim());
+				
                 String sesDateStr = req.getParameter("sesDate").trim();
 	            java.sql.Date sesDate = null;
                 sesDate = Date.valueOf(sesDateStr);  
@@ -324,9 +325,39 @@ public class SesServlet extends HttpServlet {
 	            Time sesTime = null;
                 String sesTimeStr = req.getParameter("sesTime").trim();  
                 sesTime = Time.valueOf(java.time.LocalTime.parse(convertTimes(sesTimeStr))); //取到的時間格式為"10:00AM"，需轉為24小時制格式 
-                       
+                
+
+				// Here're parameters for sending back to the front page, if there were errors   
+                SesVO sesVO = new SesVO();
+                sesVO.setSesNo(sesNo);
+                sesVO.setMovNo(movNo);
+                sesVO.setTheNo(theNo);
+                sesVO.setSesDate(sesDate);
+                sesVO.setSesTime(sesTime);
+                
+             /* =====================================================================
+                				場次是否重複，錯誤驗證  //theNo、sesDate、sesTime
+			    ===================================================================== */
+ 	            SesService sesSvc = new SesService(); 
+ 	            String errorSessionMsgs = null;
+                Boolean result = true;
+				result = sesSvc.isRepeatedSession(theNo, sesDate, sesTime); 
+				if(result != false) {  // 資料庫有資料，代表有重複場次
+					errorSessionMsgs = "場次重複";  	
+				}
+			    	             
+			 
+				// Send the use back to the form, if there were errors   
+				if (errorSessionMsgs != null) {
+					req.setAttribute("errorSessionMsgs",errorSessionMsgs);
+					req.setAttribute("sesVO",sesVO);
+					 
+					RequestDispatcher failureView = req.getRequestDispatcher("/back-end/session/update_session_input.jsp");
+					failureView.forward(req, res);
+					return;
+				}
+				
 	    	    /***************************2.開始修改資料*****************************************/ 
- 	            SesService sesSvc = new SesService();
 	            sesSvc.updateSes(sesDate, sesTime, sesNo);
 	            
 				/***************************3.修改完成,準備轉交(Send the Success view)*************/	
@@ -376,8 +407,7 @@ public class SesServlet extends HttpServlet {
 			}		
 		}
 		
-		
-		
+				
 	}
 	
 	/*=======================================================================
