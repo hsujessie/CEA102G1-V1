@@ -4,7 +4,7 @@ import java.util.Map;
 import java.util.Set;
 
 
-public class jdbcUtil_CompositeQuery_ArtFav {
+public class jdbcUtil_CompositeQuery_ArtRep {
 	
 
 	public static String get_aCondition_From_Art(String columnName, String value) {
@@ -13,14 +13,14 @@ public class jdbcUtil_CompositeQuery_ArtFav {
 		//串接指令
 		if("artTitle".equals(columnName)) {			
 			aCondition = "ART_TITLE" + " like " + "'%" + value + "%'";
-		}else if ("artFavTime".equals(columnName)) {
-			aCondition = "ARTFAV_TIME" + " like " + "'" + value + "%'";
+		}else if ("artRepTime".equals(columnName)) {
+			aCondition = "ARTREP_TIME" + " like " + "'" + value + "%'";
 		}else if ("artAuthor".equals(columnName)) {
 			aCondition = "MEM_NAME like "+"'%"+ value +"%'";
 		}else if ("artMovType".equals(columnName)) {
 			aCondition = "MOV_TYPE = "+"'"+ value +"'";
 		}else if ("memNo".equals(columnName)) {
-			aCondition = "article_favorite.MEM_NO = "+"'"+ value +"'";
+			aCondition = "article_reply.MEM_NO = "+"'"+ value +"'";
 		}
 		
 		return aCondition + " ";

@@ -77,4 +77,7 @@ public class ArtService {
 	public List<String> getAllMoveType(){
 		return dao.getAllMoveType();
 	}
+	public List<String> getAllStatusEqualsOne(){
+		return dao.getAllStatusEqualsOne();
+	}
 }

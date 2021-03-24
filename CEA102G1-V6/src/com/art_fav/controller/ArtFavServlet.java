@@ -17,7 +17,6 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import com.art.model.ArtService;
-import com.art.model.ArtVO;
 import com.art_fav.model.ArtFavService;
 import com.art_fav.model.ArtFavVO;
 import com.member.model.MemberService;

@@ -2,9 +2,7 @@ package com.art.controller;
 
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.sql.Date;
 import java.util.ArrayList;
-import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
@@ -25,8 +23,6 @@ import com.art.model.ArtService;
 import com.art.model.ArtVO;
 import com.member.model.MemberService;
 
-import oracle.net.aso.a;
-import oracle.net.aso.e;
 import redis.JedisUtil;
 import redis.clients.jedis.Jedis;
 import redis.clients.jedis.JedisPool;
@@ -67,7 +63,7 @@ public class ArtServlet extends HttpServlet {
 				RequestDispatcher newArticle = request.getRequestDispatcher(url);			
 				newArticle.forward(request, response);				
 			}else {
-				session.setAttribute("location", request.getRequestURI());
+				session.setAttribute("location", request.getContextPath()+"/front-end/article/article.jsp");
 				String location = (String) session.getAttribute("location");
 				String url = request.getContextPath()+"/front-end/Member_Login/login.jsp";
 				response.sendRedirect(url);
@@ -368,11 +364,23 @@ public class ArtServlet extends HttpServlet {
 			
 			if(artMovType == null || artMovType.trim().length() == 0) {
 				//查Top3
+				ArrayList<String> artNoList = (ArrayList<String>) artSvc.getAllStatusEqualsOne();
+				for(String artNo:artNoList) {
+					if(jedis.sismember("all:artNo", artNo)) {
+						jedis.srem("all:artNo", artNo);
+					}
+				}
 				resultArt = jedis.sort("all:artNo", new SortingParams().by("artNo:*->clickTimes").desc().limit(0, 3));
 				System.out.println("查Top3:"+resultArt);
 
 			}else {
 				//依電影分類查Top3
+				ArrayList<String> artNoList = (ArrayList<String>) artSvc.getAllStatusEqualsOne();
+				for(String artNo:artNoList) {
+					if(jedis.sismember("movType:"+artMovType, artNo)) {
+						jedis.srem("movType:"+artMovType, artNo);
+					}
+				}
 				resultArt = jedis.sort("movType:"+artMovType, new SortingParams().by("artNo:*->clickTimes").desc().limit(0, 3));
 				System.out.println("依電影分類查Top3:"+resultArt);
 			}

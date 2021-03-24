@@ -402,4 +402,10 @@ public class ArtJDBCDAO implements ArtDAO_interface{
 		return null;
 	}
 
+	@Override
+	public List<String> getAllStatusEqualsOne() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
 }

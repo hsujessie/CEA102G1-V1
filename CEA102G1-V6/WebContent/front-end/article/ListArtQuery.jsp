@@ -136,12 +136,6 @@
     	color: #808080;
     	text-align: center
     }
-/*     @media (min-width: 767px){ */
-/* 		.navbar-expand-lg .navbar-toggler { */
-/* 		    display: none; */
-/* 		}     */
-/*     } */
-
 </style>
 
 <script type="text/javascript">
@@ -165,7 +159,11 @@ function ListArtQuery(){
 						+'<div id="artTime"><div style="display: inline-block">修改時間：</div> <div style="display: inline-block">'+moment(item.artTime).locale('zh_TW').format('llll')+'</div></div>'
 						+'<div><div class="artContent" data-value="'+item.artNo+'">'+item.artContent+'</div></div><hr>')			
 						;
-				});			
+				});
+			//若無文章
+			if (artVO.length == 0){
+				$('#artListCenter').append('<div class="noArticle">尚無文章</div>');
+			}
 		},
 		error: function(){console.log("AJAX-ListArtQuery發生錯誤囉!")}
 	});
@@ -250,7 +248,7 @@ function ListArtTopThreeQuery(){
 			$('#Top3Article').append('<hr>');
 			//若無文章
 			if (artVO.length == 0){
-				$('#Top3Article').append('<div class="noArticle">尚無文章</div>');
+				$('#Top3Article').empty();
 			}
 		},
 		error: function(){console.log("AJAX-ListArtTopThreeQuery發生錯誤囉!")}
@@ -314,18 +312,22 @@ function changeArtFav(){
 //新增檢舉
 function addArtRpt(){
 	$('#artRptButton').click(function(){
-// 		debugger;
-		$.ajax({
-			type: 'POST',
-			url: '<%=request.getContextPath()%>/art/artRpt.do',
-			data: {'action':'addArtRpt', 'artNo':$('#artRptButton').attr('data-value'), 'artRptReson':$('#artRptReson').val()},
-			dataType: 'json',
-			success: function(){
-				clearArtRptText();
-				toastr['warning']('檢舉文章', '成功');
-			},
-			error: function(){console.log("AJAX-addArtRpe發生錯誤囉!")}
-		});
+		debugger;
+		if($('#artRptReson').val().trim().length == 0){
+			toastr['error']('檢舉原因不能空白！', '失敗');
+		}else{
+			$.ajax({
+				type: 'POST',
+				url: '<%=request.getContextPath()%>/art/artRpt.do',
+				data: {'action':'addArtRpt', 'artNo':$('#artRptButton').attr('data-value'), 'artRptReson':$('#artRptReson').val()},
+				dataType: 'json',
+				success: function(){
+					clearArtRptText();
+					toastr['warning']('檢舉文章', '成功');
+				},
+				error: function(){console.log("AJAX-addArtRpe發生錯誤囉!")}
+			});
+		}
 	});
 };
 
@@ -339,27 +341,38 @@ function addArtRep(){
 		%>
 		window.location.href = "<%=request.getContextPath()%>/front-end/Member_Login/login.jsp"
 	}else{
-		$.ajax({
-			type: 'POST',
-			url: '<%=request.getContextPath()%>/art/artRep.do',
-			data: {'action':'addArtRep', 'artNo':$('#myModalLabel').attr('data-value'), 'artRepContent':$('#artRepContent').val()},
-			dataType: 'json',
-			success: function(artRepVO){
-				clearArtRepContent();
-				clearArtReplyno();
-				listAllArtRepByArtNo();
-				toastr['success']('回覆成功', '成功');
-				$(artRepVO).each(function(i, item){
-					$('#artReplyno').append('回應數量 '+item.artReplyno);
-				});
+		if($('#artRepContent').val().trim().length == 0){
+			$('.artRepAlertDanger').html('<div class="alert alert-danger alert-dismissible fade show" role="alert">留言內容不能空白，請輸入內容！<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button></div>');
+		}else{
+			$.ajax({
+				type: 'POST',
+				url: '<%=request.getContextPath()%>/art/artRep.do',
+				data: {'action':'addArtRep', 'artNo':$('#myModalLabel').attr('data-value'), 'artRepContent':$('#artRepContent').val()},
+				dataType: 'json',
+				success: function(artRepVO){
+					clearArtRepContent();
+					clearArtReplyno();
+					listAllArtRepByArtNo();
+					toastr['success']('回覆成功', '成功');
+					$(artRepVO).each(function(i, item){
+						$('#artReplyno').append('回應數量 '+item.artReplyno);
+					});
 
-			},
-			error: function(){console.log("AJAX-addArtRpe發生錯誤囉!")}
-		});		
+				},
+				error: function(){console.log("AJAX-addArtRpe發生錯誤囉!")}
+			});
+		}
 	}
 
 	});
 };
+
+//清除留言為空值警告
+function clearArtRepEmptyAlert(){
+	$('#artRepContent').click(function(){
+		$('.artRepAlertDanger').empty();
+	});
+}
 
 //列全部回文
 function listAllArtRepByArtNo(){
@@ -372,12 +385,25 @@ function listAllArtRepByArtNo(){
 		success: function(artRepVO){
 			//加入回覆內容
 			clearArtRepList();
+			debugger;
 			if(artRepVO.length == 0){
 				$('#artRep').append('<div style="font-size: 3rem; color: #808080">尚無回文</div>');
 			}else{
-				$(artRepVO).each(function(i, item){
-					$('#artRep').append('<div style="line-height: 300%"><div id="memName" style="display:inline-block; width: 20%;">'+item.memName+'</div><div id="artRepTime" style="display:inline-block; color: #6C6C6C; width: 60%">'+moment(item.artRepTime).locale('zh_TW').format('llll')+'</div><c:if test="${memNo != null}"><i id="artRepRpt_icon" class="fas fa-exclamation-circle dropdown-toggle dropdown" data-toggle="dropdown" title="檢舉留言" style="font-size: 1.5rem; color: #94B8D5;"></i></c:if><div class="dropdown-menu"><div class="form-group" data-value='+item.artRepNo+'>檢舉留言<input type="text" class="form-control artRepRptReson" placeholder="輸入原因" style="width: 100%;"></div><button class="btn btn-outline-secondary artRepRptButton">確定</button></div><div class="artRepContentList" style="text-indent: 2em;">'+item.artRepContent+'</div><hr>');				
-				});					
+		        $(artRepVO).each(function (i, item) {
+		            $('#artRep').append(
+		                '<div style="line-height: 300%"><div id="memName" style="display:inline-block; width: 20%;">' +
+		                item.memName +
+		                '</div><div id="artRepTime" style="display:inline-block; color: #6C6C6C; width: 60%">' +
+		                moment(item.artRepTime).locale('zh_TW').format('llll') +
+		                '</div><c:if test="${memNo != null}"><i id="artRepRpt_icon'+item.artRepNo+'" class="fas fa-exclamation-circle dropdown-toggle dropdown" data-toggle="dropdown" title="檢舉留言" style="font-size: 1.5rem; color: #94B8D5;"></i></c:if><div class="dropdown-menu"><div class="form-group" data-value=' +
+		                item.artRepNo +
+		                '>檢舉留言<input type="text" class="form-control artRepRptReson" placeholder="輸入原因" style="width: 100%;"></div><button class="btn btn-outline-secondary artRepRptButton">確定</button></div><div class="artRepContentList" style="text-indent: 2em;">' +
+		                item.artRepContent + '</div><hr>');
+		            
+		            	if(item.artRepStatus == 1){
+		            		$('#artRepRpt_icon'+item.artRepNo).hide();
+		            	}
+		        });					
 			}
 
 		},
@@ -388,18 +414,22 @@ function listAllArtRepByArtNo(){
 //檢舉回文
 function addRepRpt(){
 	$('#artRep').on('click', '.artRepRptButton', function(event){
-// 		debugger;
-		$.ajax({
-			type: 'POST',
-			url: '<%=request.getContextPath()%>/art/artRepRpt.do',
-			data: {'action':'addRepRpt', 'artRepNo':$(event.currentTarget).prev('.form-group').attr('data-value') , 'artRepRptReson':$(event.currentTarget).prev('.form-group').find('.artRepRptReson').val()},
-			dataType: 'json',
-			success: function(){
-				clearRepRptReson();
-				toastr['warning']('檢舉留言', '成功');
-			},
-			error: function(){console.log("AJAX-addRepRpt發生錯誤囉!")}
-		});
+		debugger;
+		if($(event.currentTarget).prev('.form-group').find('.artRepRptReson').val().trim().length == 0){
+			toastr['error']('檢舉原因不能空白！', '失敗');
+		}else{
+			$.ajax({
+				type: 'POST',
+				url: '<%=request.getContextPath()%>/art/artRepRpt.do',
+				data: {'action':'addRepRpt', 'artRepNo':$(event.currentTarget).prev('.form-group').attr('data-value') , 'artRepRptReson':$(event.currentTarget).prev('.form-group').find('.artRepRptReson').val()},
+				dataType: 'json',
+				success: function(){
+					clearRepRptReson();
+					toastr['warning']('檢舉留言', '成功');
+				},
+				error: function(){console.log("AJAX-addRepRpt發生錯誤囉!")}
+			});
+		}
 	});
 };
 
@@ -469,6 +499,7 @@ function clearRepRptReson(){
 						    <div class="dropdown-menu">
 						         <div class="form-group">
 						              <label for="artRptReson">檢舉文章</label>
+						              <div id="artRptAlert"></div>
 						              <input type="text" class="form-control" id="artRptReson" placeholder="輸入原因" style="width: 100%;">
 						         </div>
 						         <button id="artRptButton" class="btn btn-outline-secondary">確定</button>
@@ -498,6 +529,7 @@ function clearRepRptReson(){
 
 			<div id="art_modal-footer" class="modal-footer" style="padding: 0px">
 				<div id="artRepDiv">
+					<div class="artRepAlertDanger"></div>
 					<textarea id="artRepContent" placeholder="輸入留言"></textarea>
 	            	<i id="artRepButton" class="fas fa-reply-all" title="回覆"></i>
             	</div>
