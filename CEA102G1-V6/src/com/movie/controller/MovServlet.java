@@ -201,17 +201,22 @@ public class MovServlet extends HttpServlet{
 
 				byte[] movpos = null;
 				Part movposPart = req.getPart("movpos");
-				InputStream movposis = movposPart.getInputStream();
-				movpos = new byte[movposis.available()];
-				movposis.read(movpos);
-				movposis.close();
+				/* 新增時，若沒寫以下判斷，沒有選圖片時，還是會寫入一個奇怪的東西，在修改時，會顯示一個怪小圖 */
+				if(movposPart.getContentType() != null && movposPart.getContentType().indexOf("image") >= 0) {  // movposPart.getContentType() 印出image/jpeg
+					 InputStream movposis = movposPart.getInputStream();
+					 movpos = new byte[movposis.available()];
+					 movposis.read(movpos);
+					 movposis.close();
+				}
 
 				byte[] movtra = null;
 				Part movtraPart = req.getPart("movtra");
-				InputStream movtrais = movtraPart.getInputStream();
-				movtra = new byte[movtrais.available()];
-				movtrais.read(movtra);
-				movtrais.close();
+				if(movtraPart.getContentType() != null && movtraPart.getContentType().indexOf("video") >= 0) {	// movtraPart.getContentType() 印出video/mp4	
+					InputStream movtrais = movtraPart.getInputStream();
+					movtra = new byte[movtrais.available()];
+					movtrais.read(movtra);
+					movtrais.close();				
+				}
 				
 
 	            // Here're parameters for sending back to the front page, if there were errors   
