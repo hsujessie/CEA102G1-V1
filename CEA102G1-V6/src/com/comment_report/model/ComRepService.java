@@ -1,5 +1,7 @@
 package com.comment_report.model;
 
+import java.sql.Date;
+import java.sql.Time;
 import java.sql.Timestamp;
 import java.util.List;
 
@@ -44,4 +46,17 @@ public class ComRepService {
 	public List<ComRepVO> findComRepByComReStatus(Integer comRepStatus) {
 		return dao.findComRepByComReStatus(comRepStatus);
 	}
+	
+	public boolean isRepeatedComRep(Integer comNo, Integer memNo, Integer comRepReason) {
+		Boolean result = true;
+		Integer comrepNo = dao.findRepeatedComRep(comNo, memNo, comRepReason);
+		
+		if(comrepNo == null) {  // 資料庫無資料，代表無重複場次
+			result = false;
+		}
+		
+		return result;
+	}
+	
+	
 }

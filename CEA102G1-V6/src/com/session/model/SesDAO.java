@@ -451,10 +451,8 @@ public class SesDAO implements SesDAO_interface{
 			con = ds.getConnection();
 			String findRepeatedSession = "select ses_no from session where the_no = " + theNo + " AND ses_date = '"
 	          		   + sesDate + "' AND ses_time = '" + sesTime + "'";
-			System.out.println(findRepeatedSession);
 			
 			pstmt = con.prepareStatement(findRepeatedSession);
-			
 			rs = pstmt.executeQuery();			
 			while(rs.next()){
 				Integer sesNo = rs.getInt("ses_no");  // only get session numbers

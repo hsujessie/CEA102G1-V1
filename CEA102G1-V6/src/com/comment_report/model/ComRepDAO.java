@@ -272,4 +272,59 @@ public class ComRepDAO implements ComRepDAO_interface{
 		}	
 		return list;
 	}
+
+	@Override
+	public Integer findRepeatedComRep(Integer comNo, Integer memNo, Integer comRepReason) {
+		Integer comrepNoResult = null;
+		
+		Connection con = null;
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+		
+		try {
+			con = ds.getConnection();
+			String findRepeatedComRep = "select comrep_no from comment_report where com_no = " + comNo + " AND mem_no = '"
+	          		   + memNo + "' AND comrep_reason = '" + comRepReason + "'";
+			System.out.println(findRepeatedComRep);
+			
+			pstmt = con.prepareStatement(findRepeatedComRep);
+			
+			rs = pstmt.executeQuery();			
+			while(rs.next()){
+				Integer comrepNo = rs.getInt("comrep_no");  // only get comrep_no
+				if(comrepNo != null) {           /*======= 注意注意 ======= 這邊沒有判斷，會有 java.lang.NullPointerException */ //指標到了下一列，才知道撈到的資料是null					
+					comrepNoResult = comrepNo;
+				}
+			}
+			
+		} catch(SQLException se) {
+			throw new RuntimeException("ComRepDAO findRepeatedComRep A database error occured. " + se.getMessage());	
+		} finally {
+			if(rs != null) {
+				try {
+					rs.close();
+				}catch(SQLException se) {
+					se.printStackTrace(System.err);
+				}
+			}
+			
+			if(pstmt != null) {
+				try {
+					pstmt.close();
+				}catch(SQLException se) {
+					se.printStackTrace(System.err);
+				}
+			}
+			
+			if(con != null) {
+				try {
+					con.close();
+				}catch(Exception e) {
+					e.printStackTrace(System.err);
+				}
+			}
+		}
+		
+		return comrepNoResult;
+	}
 }
