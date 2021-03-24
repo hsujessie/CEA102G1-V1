@@ -283,8 +283,8 @@
                 <div class="container">
                     <div class="section-header">
                         <h2>Reviews</h2>
-                    </div>
-                    <div class="reviews-start">
+                    </div>                                                                    <!-- 已上映 才有reviews --> 
+                    <div class="reviews-start" ${today le movOndate ? 'style="display:none;"':'style="display:block;"'} >
                     	<c:forEach var="comVO" items="${comSvc.all}">
                     		<c:if test="${(comVO.movNo == movVO.movno) and (comVO.comStatus == 0)}">
 		                         <div class="reviews-container">
@@ -303,7 +303,9 @@
 		                        </div>
 		                      </c:if>                 
 	                    </c:forEach>
-                    </div>                   
+                    </div> 
+                        
+	                <label style="font-size: 14px; margin-left: 45%;  ${today le movOndate ? 'display:block;':'display:none;'}">【電影尚未上映】</label>              
                 </div>
             </div>
             <!-- Reviews End -->
@@ -320,7 +322,7 @@
                         </div>
                     </div>
 
-                    <div class="row align-items-center" ${empty MemberVO.memAccount ? 'style="display:none;"':''}>
+                    <div class="row align-items-center" ${empty MemberVO.memAccount ? 'style="display:none;"':'style="display:block;"'}>
                         <div class="col-lg-12 col-md-12">
                             <form method="post" action="<%=request.getContextPath()%>/comment/com.do">
                                 <textarea name="comContent" cols="30" rows="5" style="width: 100%; margin: 20px 0 5px 0;" placeholder="Write something here..."></textarea>                          
@@ -335,14 +337,15 @@
                         </div>
                     </div>
 
-                    <div class="row align-items-center" ${empty MemberVO.memAccount ? 'style="display:block;"':''}>
+                    <div class="row align-items-center" ${empty MemberVO.memAccount ? 'style="display:block;"':'style="display:none;"'}>
                         <div class="col-lg-45 col-md-5"></div>
-                        <div class="col-lg-2 col-md-2 writeComment">
+                        <div class="col-lg-2 col-md-2 writeComment" ${today le movOndate ? 'style="display:none;':'style="display:;block"'}>
                             <a href="${loginUrl}">點我寫短評 <i class="fas fa-pencil-alt" style="color:#aa9166;"></i></a>
                         </div>
+                        <label style="font-size: 14px; margin-left: 45%;  ${today le movOndate ? 'display:block;':'display:none;'}">【電影尚未上映】</label>
                         <div class="col-lg-5 col-md-5"></div>
                     </div>
-                </div>
+                </div>  
             </div>
             <!-- Comment End -->
             
