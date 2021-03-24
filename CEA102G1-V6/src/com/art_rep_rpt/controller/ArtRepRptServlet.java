@@ -14,7 +14,6 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import com.art.model.ArtDAO;
 import com.art.model.ArtService;
 import com.art_rep.model.ArtRepService;
 import com.art_rep_rpt.model.ArtRepRptService;

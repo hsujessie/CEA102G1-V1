@@ -6,7 +6,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -18,11 +17,8 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import com.art.model.ArtService;
-import com.art_fav.model.ArtFavService;
-import com.art_fav.model.ArtFavVO;
 import com.art_rep.model.ArtRepService;
 import com.art_rep.model.ArtRepVO;
-import com.art_rep_rpt.model.ArtRepRptService;
 import com.member.model.MemberService;
 
 public class ArtRepServlet extends HttpServlet {
