@@ -22,7 +22,7 @@
 <style>	
 	.topDiv{
 		margin: 0 auto 5vh auto;
-    	width: 23vw;
+    	width: 20vw;
     	height: 10vh;
     	display: inline-block;
   	}
@@ -133,6 +133,8 @@
 			                            </div>
 			                        </div>
 			                    </div>
+				                    <div id="articleItems" class="topDiv">
+				                    </div>
 			                    <div id="artListCenter"></div>
 			                </div>
 			                <div class="tab-pane fade" id="v-pills-artFav" role="tabpanel" aria-labelledby="v-pills-artFav-tab">
@@ -158,6 +160,8 @@
 			                            </div>
 			                        </div>
 			                    </div>
+				                <div id="artFavItems" class="topDiv">
+				                </div>			                    
 			                    <div id="artFavListCenter"></div>
 			                </div>
 			                <div class="tab-pane fade" id="v-pills-artRep" role="tabpanel" aria-labelledby="v-pills-artRep-tab">
@@ -183,6 +187,8 @@
 			                            </div>
 			                        </div>
 			                    </div>
+			                    <div id="artRepItems" class="topDiv">
+				                </div>
 			                    <div id="artRepListCenter"></div>
 			                </div>
 			            </div>
@@ -320,6 +326,7 @@ function findArtByCompositeQuery(e) {
                     'cursor': 'pointer'
                 });
             });
+            $('#articleItems').html('<div class="inlineBlockDIV" style="text-align: center!important;"><b>共<font style="color:#bb9d52;">'+artVO.length+'</font>筆</b></div>');
         },
         error: function () {
             console.log('AJAX-findArtByCompositeQuery發生錯誤囉!')
@@ -376,6 +383,7 @@ function findArtFavByCompositeQuery(e) {
                   'cursor': 'pointer'
               });
           });
+          $('#artFavItems').html('<div class="inlineBlockDIV" style="text-align: center!important;"><b>共<font style="color:#bb9d52;">'+artFavVO.length+'</font>筆</b></div>');
       },
       error: function () {
           console.log('AJAX-findArtByCompositeQuery發生錯誤囉!')
@@ -427,6 +435,7 @@ function findArtRepByCompositeQuery(e) {
 	                'cursor': 'pointer'
 	            });
 	        });
+	        $('#artRepItems').html('<div class="inlineBlockDIV" style="text-align: center!important;"><b>共<font style="color:#bb9d52;">'+artRepVO.length+'</font>筆</b></div>');
 	    },
 	    error: function () {
 	        console.log('AJAX-findArtByCompositeQuery發生錯誤囉!')

@@ -30,6 +30,15 @@
         .bgGray:hover{
             background-color: rgba(166, 166, 166, 0.3);
         }
+        .textAlignCenter{
+        	text-align: center;
+        }
+        .report{
+        	border-radius: .3rem;
+        }
+        .colorwhite{
+        	color: #fff!important;
+        }
 	</style>
 	<title>Back-End Management</title>
 	<%@ include file="/back-end/files/sb_head.file"%>
@@ -51,14 +60,14 @@
                     <!-- PUT HERE Start-->
                     <div  class="form-group" style="height: 10vh;">
                     	<b>請選擇欲查看的檢舉分類：</b>
-                    	<select id="selectReportType" class="form-control" style="width: 15vw; display: inline-block;">
+                    	<select id="selectReportType" class="custom-select" style="width: 15vw; display: inline-block;">
                     		<option>請選擇</option>
                     		<option value="listAllArticleReport">文章檢舉列表</option>
                     		<option value="listAllArticleReplyReport">留言檢舉列表</option>
                     	</select>
                     </div>
 
-                    <h3 id="tableTitle" class="h3-style" style="display: inline-block;"></h3>
+                    <h3 id="tableTitle" class="h3-style" style="display: inline-block; width: 50vw;"></h3>
 					<hr style="background-color:#bb9d52; height:1.5px;">
 		            <div id="listAllReport" style="font-size: 0px">
 
@@ -78,24 +87,33 @@
 		<script>
 		$(document).ready(function(){
 			$('#listAllReport').hide();
+			$('#selectReportStatusDIV').hide();
 			
 			$('#selectReportType').change(function(){
 				if($(this).val() == "listAllArticleReport"){
 					//全部文章檢舉
 					debugger;
 					clearListAllReport();
+					clearTableTitle();
 					$.ajax({
 						type: 'POST',
 						url: '<%=request.getContextPath()%>/art/artRpt.do',
 						data: {'action':$(this).val()},
 						dataType: 'json',
 						success: function(artRptVO){
-							$('#listAllReport').append('<div><div class="inlineBlockLongDIV">檢舉編號</div><div class="inlineBlockDIV">作者</div><div class="inlineBlockLongDIV">文章標題</div><div class="inlineBlockLongDIV">檢舉時間</div><div class="inlineBlockLongDIV">檢舉人</div><div class="inlineBlockLongDIV">檢舉理由</div><div class="inlineBlockDIV">狀態</div><div class="inlineBlockLongDIV">確認/取消</div></div>');
+							debugger;
+							$('#listAllReport').append('<div><div class="inlineBlockLongDIV">檢舉編號</div><div class="inlineBlockDIV">作者</div><div class="inlineBlockLongDIV">文章標題</div><div class="inlineBlockLongDIV">檢舉時間</div><div class="inlineBlockLongDIV">檢舉人</div><div class="inlineBlockLongDIV">檢舉理由</div><div class="inlineBlockDIV">狀態</div><div class="inlineBlockLongDIV textAlignCenter">審核狀態</div></div>');
 							$('#tableTitle').append("文章檢舉列表");
 							$('#listAllReport').show();
+							$('#selectReportStatusDIV').show();
 							$(artRptVO).each(function(i, item){
-								$('#listAllReport').append('<div class="bgGray"><div class="artRptNo inlineBlockLongDIV" data-value='+item.artRptNo+'>'+item.artRptNo+'</div><div class="inlineBlockDIV longText">'+item.memName+'</div><div class="inlineBlockLongDIV longText">'+item.artTitle+'</div><div class="inlineBlockLongDIV">'+moment(item.artRptTime).locale('zh_TW').format('LL')+'</div><div class="inlineBlockLongDIV longText">'+item.reportMemName+'</div><div class="inlineBlockLongDIV">'+item.artRptContent+'</div><div class="artRptStatus inlineBlockDIV">'+item.artRptStatus+'</div><div class="inlineBlockLongDIV"><button class="checkedButton btn-light btn-brd grd1 effect-1" style="color: #fff" data-value="'+item.artNo+'">'+item.artRptStatusButton+'</button></div></div>');					
-							});						
+								if(item.artRptStatusButton == '已審核'){
+									$('#listAllReport').append('<div class="bgGray"><div class="artRptNo inlineBlockLongDIV" data-value='+item.artRptNo+'>'+item.artRptNo+'</div><div class="inlineBlockDIV longText">'+item.memName+'</div><div class="inlineBlockLongDIV longText">'+item.artTitle+'</div><div class="inlineBlockLongDIV">'+moment(item.artRptTime).locale('zh_TW').format('LL')+'</div><div class="inlineBlockLongDIV longText">'+item.reportMemName+'</div><div class="inlineBlockLongDIV">'+item.artRptContent+'</div><div class="artRptStatus inlineBlockDIV">'+item.artRptStatus+'</div><div class="inlineBlockLongDIV textAlignCenter"><button class="checkedButton report" data-value="'+item.artNo+'" disabled=disabled>'+item.artRptStatusButton+'</button></div></div>');
+								}else{
+									$('#listAllReport').append('<div class="bgGray"><div class="artRptNo inlineBlockLongDIV" data-value='+item.artRptNo+'>'+item.artRptNo+'</div><div class="inlineBlockDIV longText">'+item.memName+'</div><div class="inlineBlockLongDIV longText">'+item.artTitle+'</div><div class="inlineBlockLongDIV">'+moment(item.artRptTime).locale('zh_TW').format('LL')+'</div><div class="inlineBlockLongDIV longText">'+item.reportMemName+'</div><div class="inlineBlockLongDIV">'+item.artRptContent+'</div><div class="artRptStatus inlineBlockDIV">'+item.artRptStatus+'</div><div class="inlineBlockLongDIV textAlignCenter"><button class="checkedButton btn-light btn-brd grd1 effect-1 colorwhite" data-value="'+item.artNo+'">'+item.artRptStatusButton+'</button></div></div>');
+								}
+							});
+							$('#listAllReport').append('<div class="inlineBlockDIV"><b>共<font style="color:#bb9d52;">'+artRptVO.length+'</font>筆</b></div>');
 						},
 		                error: function () {
 		                    console.log("AJAX-listAllArticleReport發生錯誤囉!")
@@ -105,32 +123,38 @@
 					//列出全部留言檢舉
 					debugger;
 					clearListAllReport();
+					clearTableTitle();
 					$.ajax({
 						type: 'POST',
 						url: '<%=request.getContextPath()%>/art/artRepRpt.do',
 						data: {'action':$(this).val()},
 						dataType: 'json',
 						success: function(artRepRptVO){
-							$('#listAllReport').append('<div><div class="inlineBlockLongDIV">檢舉編號</div><div class="inlineBlockLongDIV">留言文章</div><div class="inlineBlockLongDIV">留言內容</div><div class="inlineBlockLongDIV">檢舉時間</div><div class="inlineBlockLongDIV">檢舉人</div><div class="inlineBlockLongDIV">檢舉理由</div><div class="inlineBlockDIV">狀態</div><div class="inlineBlockLongDIV">確認/取消</div></div>');
+							$('#listAllReport').append('<div><div class="inlineBlockLongDIV">檢舉編號</div><div class="inlineBlockLongDIV">留言文章</div><div class="inlineBlockLongDIV">留言內容</div><div class="inlineBlockLongDIV">檢舉時間</div><div class="inlineBlockLongDIV">檢舉人</div><div class="inlineBlockLongDIV">檢舉理由</div><div class="inlineBlockDIV">狀態</div><div class="inlineBlockLongDIV textAlignCenter">審核狀態</div></div>');
 							$('#listAllReport').show();
 							$('#tableTitle').append("留言檢舉列表");
+							$('#selectReportStatusDIV').show();
 							$(artRepRptVO).each(function(i, item){
-								$('#listAllReport').append('<div class="bgGray"><div class="artRepRptNo inlineBlockLongDIV" data-value='+item.artRepRptNo+'>'+item.artRepRptNo+'</div><div class="inlineBlockLongDIV longText">'+item.artTitle+'</div><div class="inlineBlockLongDIV">'+item.artRepContent+'</div><div class="inlineBlockLongDIV">'+moment(item.artRepRptTime).locale('zh_TW').format('LL')+'</div><div class="inlineBlockLongDIV longText">'+item.reportMemName+'</div><div class="inlineBlockLongDIV">'+item.artRepRptReson+'</div><div class="artRepRptStatus inlineBlockDIV">'+item.artRepRptStatus+'</div><div class="inlineBlockLongDIV"><button class="checkedReplyButton btn-light btn-brd grd1 effect-1" style="color: #fff" data-value="'+item.artRepNo+'">'+item.artRepRptStatusButton+'</button></div></div>');					
-							});						
+								if(item.artRepRptStatusButton == '已審核'){
+									$('#listAllReport').append('<div class="bgGray"><div class="artRepRptNo inlineBlockLongDIV" data-value='+item.artRepRptNo+'>'+item.artRepRptNo+'</div><div class="inlineBlockLongDIV longText">'+item.artTitle+'</div><div class="inlineBlockLongDIV">'+item.artRepContent+'</div><div class="inlineBlockLongDIV">'+moment(item.artRepRptTime).locale('zh_TW').format('LL')+'</div><div class="inlineBlockLongDIV longText">'+item.reportMemName+'</div><div class="inlineBlockLongDIV">'+item.artRepRptReson+'</div><div class="artRepRptStatus inlineBlockDIV">'+item.artRepRptStatus+'</div><div class="inlineBlockLongDIV textAlignCenter"><button class="checkedReplyButton report" data-value="'+item.artRepNo+'" disabled=disabled>'+item.artRepRptStatusButton+'</button></div></div>');					
+								}else{
+									$('#listAllReport').append('<div class="bgGray"><div class="artRepRptNo inlineBlockLongDIV" data-value='+item.artRepRptNo+'>'+item.artRepRptNo+'</div><div class="inlineBlockLongDIV longText">'+item.artTitle+'</div><div class="inlineBlockLongDIV">'+item.artRepContent+'</div><div class="inlineBlockLongDIV">'+moment(item.artRepRptTime).locale('zh_TW').format('LL')+'</div><div class="inlineBlockLongDIV longText">'+item.reportMemName+'</div><div class="inlineBlockLongDIV">'+item.artRepRptReson+'</div><div class="artRepRptStatus inlineBlockDIV">'+item.artRepRptStatus+'</div><div class="inlineBlockLongDIV textAlignCenter"><button class="checkedReplyButton btn-light btn-brd grd1 effect-1 colorwhite" data-value="'+item.artRepNo+'">'+item.artRepRptStatusButton+'</button></div></div>');					
+								}
+							});
+							$('#listAllReport').append('<div class="inlineBlockDIV"><b>共<font style="color:#bb9d52;">'+artRepRptVO.length+'</font>筆</b></div>');
 						},
 		                error: function () {
 		                    console.log("AJAX-listAllArticleReplyReport發生錯誤囉!")
 		                }
 					});
 				}
-			});				
-
+			});
+			
 			//更新文章檢舉狀態
 			changeArticleReport();
 			
 			//更新留言檢舉狀態
-			changeArticleReplyReport();
-						
+			changeArticleReplyReport();		
 		});
 
 		
@@ -149,6 +173,9 @@
 						$(artRptVO).each(function(i, item){
 							$(event.currentTarget).text(item.artRptStatusButton);
 							$(event.currentTarget).parent('div').siblings('.artRptStatus').text(item.artRptStatus);
+							$(event.currentTarget).removeClass('btn-light btn-brd grd1 effect-1 colorwhite');
+							$(event.currentTarget).addClass('report');
+							$(event.currentTarget).attr('disabled', true);
 						});
 					},
 	                error: function () {
@@ -173,6 +200,9 @@
 						$(artRepRptVO).each(function(i, item){
 							$(event.currentTarget).text(item.artRepRptStatusButton);
 							$(event.currentTarget).parent('div').siblings('.artRepRptStatus').text(item.artRepRptStatus);
+							$(event.currentTarget).removeClass('btn-light btn-brd grd1 effect-1 colorwhite');
+							$(event.currentTarget).addClass('report');
+							$(event.currentTarget).attr('disabled', true);
 						});
 					},
 	                error: function () {
@@ -185,8 +215,11 @@
 		//清除檢舉列表
 		function clearListAllReport(){
 			$('#listAllReport').empty();
-			$('#tableTitle').empty();
 		};
+		//清空title
+		function clearTableTitle(){
+			$('#tableTitle').empty();
+		}
 		</script>
     </body>
 </html>
