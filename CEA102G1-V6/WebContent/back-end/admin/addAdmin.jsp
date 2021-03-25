@@ -67,7 +67,7 @@
 						<h3 class="h3-style listOne-h3-pos">員工新增</h3>
 						<table>
 							<tr>
-								<th>姓名</th>
+								<th style="color:red;">姓名</th>
 								<td><input class="sty-input mr-left mr-btm-normal form-control" type="text" name="admName" value="${addAdmVO.admName}" required/>${errorMsgs.admName}</td>		
 							</tr>
 							<tr>
@@ -80,7 +80,7 @@
 							</tr>
 							<tr>
 								<th>帳號</th>
-								<td>
+								<td style="color:red;">
 									<input class="sty-input mr-left mr-btm-normal form-control" type="text" name="admAccount" value="${addAdmVO.admAccount}" required/>${errorMsgs.admAccount}
 								</td>
 							</tr>

@@ -83,4 +83,8 @@ public class AdmService {
 		
 		return dao.allowAdmin(admAccount, Password.passwordEncoder(admPassword));
 	}
+	
+	public boolean checkRepeat(String admAccount) {
+		return dao.checkRepeat(admAccount);
+	}
 }
