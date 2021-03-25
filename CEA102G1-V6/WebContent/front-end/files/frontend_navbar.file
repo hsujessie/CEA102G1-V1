@@ -70,7 +70,7 @@
                     
                     	<c:choose>
 						   <c:when test="${empty MemberVO}">
-						      <a href="${members}" class="nav-item nav-link loginPos ">登入<i class="fas fa-user-circle"> </i></a>
+						      <a href="${members}" class="nav-item nav-link loginPos ">登入註冊<i class="fas fa-user-circle"> </i></a>
 						   </c:when>
 						   <c:otherwise>
 						      <a href="<%=request.getContextPath() %>/Member/member.do?action=Login_out" class="nav-item nav-link loginPos "><img id="memIMG" src="<%=request.getContextPath()%>/util/imgReader${MemberVO.memImgParam}" style="border-radius: 50%; height: 5vh; width: 3vw;">${MemberVO.memName}您好,  登出</a>

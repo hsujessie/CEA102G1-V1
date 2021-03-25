@@ -1,6 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+<c:set var="location" value="${pageContext.request.requestURI}" scope="session"/> <!-- here have to set a session attribute for the login page to get the origin url -->
 
 <!DOCTYPE html>
 <html>

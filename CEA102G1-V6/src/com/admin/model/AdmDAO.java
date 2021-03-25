@@ -35,6 +35,7 @@ public class AdmDAO implements AdmDAO_interface{
 	private static final String INSERT_STMT = "INSERT INTO ADMINISTRATOR (ADM_NAME, ADM_IMG, ADM_ACCOUNT, ADM_PASSWORD, ADM_MAIL) VALUES(?,?,?,?,?)";
 	
 	private static final String GET_ALL_STMT = "SELECT ADM_NO, ADM_NAME, ADM_ACCOUNT, ADM_PASSWORD, ADM_MAIL, ADM_STATUS FROM ADMINISTRATOR ORDER BY ADM_NO";
+	private static final String GET_ALL_ACCOUNT_STMT = "SELECT ADM_ACCOUNT FROM ADMINISTRATOR";
 	private static final String GET_ONE_STMT = "SELECT ADM_NO, ADM_NAME, ADM_ACCOUNT, ADM_PASSWORD, ADM_MAIL, ADM_STATUS FROM ADMINISTRATOR WHERE ADM_NO=?";
 	private static final String GET_AUTHS_BYADMNO_STMT = "SELECT ADM_NO, FUN_NO FROM ADMIN_AUTHORITY WHERE ADM_NO=?";
 	private static final String LOGIN_STMT = "SELECT ADM_NO, ADM_NAME, ADM_ACCOUNT, ADM_PASSWORD, ADM_MAIL, ADM_STATUS FROM ADMINISTRATOR WHERE ADM_ACCOUNT=? AND ADM_PASSWORD=?";
@@ -513,6 +514,53 @@ public class AdmDAO implements AdmDAO_interface{
 		}
 		
 		return list;
+	}
+
+	@Override
+	public boolean checkRepeat(String admAccount) {
+		
+		Connection con = null;
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+		
+		try {
+			con = ds.getConnection();
+			pstmt = con.prepareStatement(GET_ALL_ACCOUNT_STMT);
+			rs = pstmt.executeQuery();
+			
+			while (rs.next()) {
+				if (admAccount.equals(rs.getString("ADM_ACCOUNT")))
+					return true;
+			}
+			
+		} catch (SQLException se) {
+			throw new RuntimeException("A database error occured. " + se.getMessage());
+		} finally {
+			if (rs != null) {
+				try {
+					rs.close();
+				} catch (SQLException se) {
+					se.printStackTrace(System.err);
+				}
+			}
+			
+			if (pstmt != null) {
+				try {
+					pstmt.close();
+				} catch (SQLException se) {
+					se.printStackTrace(System.err);
+				}
+			}
+			if (con != null) {
+				try {
+					con.close();
+				} catch (Exception e) {
+					e.printStackTrace(System.err);
+				}
+			}
+		}
+		
+		return false;
 	}
 	
 	

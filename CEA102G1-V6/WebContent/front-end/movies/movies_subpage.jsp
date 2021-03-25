@@ -3,7 +3,7 @@
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <c:set var="loginUrl" value="${pageContext.request.contextPath}/front-end/Member_Login/login.jsp" scope="page"/>
 <c:set var="location" value="${pageContext.request.requestURI}" scope="session"/> <!-- 若沒登入，無法對該電影評分+短評，here have to set a session attribute for the login page to get the origin url -->
-<c:set var="movno" value="${movVO.movno}" scope="session"/> <!-- 若沒登入，無法對該電影評分+短評，here have to set a session attribute for the login page，把值給MemberServlet.java，再把值帶到MovServlet.java，再倒回這一頁，這樣頁面的資料才不會不見。 -->
+<c:set var="moviesSubpage" value="${movVO.movno}" scope="session"/> <!-- 若沒登入，無法對該電影評分+短評，here have to set a session attribute for the login page，把值給MemberServlet.java，再把值帶到MovServlet.java，再導回這一頁，這樣頁面的資料才不會不見。 -->
 <!DOCTYPE html>
 <html>
 <head>

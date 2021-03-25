@@ -1,12 +1,10 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
-<%@ page import="com.board.model.*"%>
-<%@ page import="com.member.model.MemberVO"%>
+<%@ page import="com.member.model.*"%>
 <%@ page import="java.util.*"%>
 <%
-// 	MemberVO memberVO = (MemberVO) request.getAttribute("MemberVO");
-	MemberVO memberVO = (MemberVO) session.getAttribute("MemberVO");
-	pageContext.setAttribute("memberVO",memberVO);
+MemberVO memberVO = (MemberVO) request.getAttribute("MemberVO"); 
+List<MemberVO> memberVOList = (List<MemberVO>)request.getAttribute("list");
 %>
 <!DOCTYPE html>
 <html>
@@ -15,6 +13,10 @@
 <title>Front-End</title>
 <%@ include file="/front-end/files/frontend_importCss.file"%>
 <link rel="stylesheet" type="text/css" href="<%=request.getContextPath()%>/resource/datetimepicker/jquery.datetimepicker.css" />
+<link rel="stylesheet" href="<%=request.getContextPath()%>/resource/bootstrap/css/bootstrap.min.css">
+<script src="<%=request.getContextPath()%>/resource/jquery/jquery-3.5.1.min.js"></script>
+<script src="<%=request.getContextPath()%>/resource/popper/popper.min.js"></script>
+<script src="<%=request.getContextPath()%>/resource/bootstrap/js/bootstrap.min.js"></script>
 </head>
 <style>
 /* 	================================== */
@@ -76,6 +78,17 @@ padding:
      right:50%; 
      } 
 
+body{
+/*   border: 1px solid red; */
+  margin: 0 auto;  
+}
+div.container{
+text-align: center; 
+}
+form{
+margin: 0  auto;
+}
+
 
 /* 	================================== */
 
@@ -87,6 +100,7 @@ padding:
 			<c:set value="${pageContext.request.requestURI}" var="urlRecog"></c:set>
             <%@ include file="/front-end/files/frontend_navbar.file"%>
             <!-- Nav Bar End -->
+            
 				<c:if test="${not empty errorMsgs}">
 					<font style="color:red">請修正以下錯誤:</font>
 						<ul>
@@ -107,43 +121,26 @@ padding:
                 </div>
             </div>
             <!-- Page Header End -->
-			<FORM METHOD="post" ACTION="<%=request.getContextPath()%>/Member/member.do" name="form1" enctype="multipart/form-data">
-					<table>
-							<input type="hidden" name="memNo" value="<%=memberVO.getMemNo()%>" />
-								<tr>
-									<th>會員姓名:</th>
-									<td><input type="TEXT" name="memName" size="45"	value="<%=memberVO.getMemName()%>" /></td>
-								</tr>
-								<tr>
-									<th>會員帳號:<font color=red><b>*</b></font></th>
-									<td><%=memberVO.getMemAccount()%></td>
-								</tr>  
-								<tr>
-									<th>會員密碼:</th>
-									<td><input type="TEXT" name="memPassword" size="45"	value="<%=memberVO.getMemPassword()%>" /></td>
-								</tr>
-								<tr>
-									<th>會員mail:<font color=red><b>*</b></font></td>
-									<td><%=memberVO.getMemMail()%></td>
-								</tr>
-								<tr>
-									<th>會員大頭照:</th>
-									<td><img src="<%=request.getContextPath()%>/util/imgReader${MemberVO.memImgParam}" width="100" height="100">
-									<input class=img type="file" name="memImg" size="45"value="" /></td>
-								</tr>
-					</table>
-		
-								<br>
-								<input type="hidden" name="action" value="Forgot_updateFront">
-								<input type="hidden" name="memNo" value="<%=memberVO.getMemNo()%>">
-								<input type="hidden" name="memAccount" value="<%=memberVO.getMemAccount()%>">
-								<input type="hidden" name="memMail" value="<%=memberVO.getMemMail()%>">
-								<input type="hidden" name="memWallet" value="<%=memberVO.getMemWallet()%>" />
-								<input type="hidden" name="memstatus" value="<%=memberVO.getMemstatus()%>" />
-								<a class="btn btn-light btn-brd grd1 effect-1 btn-pos">
-								<input type="submit" value="送出修改" class="input-pos">
-								</a>	
-		 	</FORM>
+            <div class="container">
+						<h1>找回密碼</h1>				
+						<p><a href="login.jsp">
+						<img src="<%=request.getContextPath()%>/resource/images/forgot.jpg" width="100" height="100" border="0">回登陸頁面</a></p>
+			</div>
+			<FORM METHOD="post" ACTION="<%=request.getContextPath()%>/Member/member.do" name="form"  style="width: 450px;">
+
+					<div class="form-group">
+						<label for="exampleInputAccount">請輸入帳號:</label> 
+						<input class="form-control" type="TEXT" name="memAccount" size="45" value="" />
+					</div>
+					<div class="form-group">
+						<label for="exampleInputmail">請輸入信箱:</label> 
+						<input class="form-control" type="TEXT" name="memMail" size="45" value="" />
+					</div>
+					<br>
+					<input class="form-control" type="hidden" name="action" value="forgot_password">
+					<button type="submit" class="btn btn-primary">送出驗證</button>
+					<br>
+			</Form>	
 
             <!-- PUT HERE Start -->
             
@@ -162,6 +159,7 @@ padding:
 <%@ include file="/front-end/files/frontend_importJs.file"%>
 <br>本網頁的路徑:<br><b>
    <font color=blue>request.getServletPath():</font> <%=request.getServletPath()%><br>
-   <font color=blue>request.getRequestURI(): </font> <%=request.getRequestURI()%> </b>   
+   <font color=blue>request.getRequestURI(): </font> <%=request.getRequestURI()%> </b>  
+
 </body>
 </html>

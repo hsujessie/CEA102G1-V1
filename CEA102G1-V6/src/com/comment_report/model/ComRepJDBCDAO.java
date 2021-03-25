@@ -272,4 +272,10 @@ public class ComRepJDBCDAO implements ComRepDAO_interface{
 		return null;
 	}
 
+	@Override
+	public Integer findRepeatedComRep(Integer comNo, Integer memNo, String comRepReason) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
 }

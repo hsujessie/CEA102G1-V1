@@ -16,4 +16,6 @@ public interface AdmDAO_interface {
 	public List<AdmAutVO> getAuthsByAdmNo(Integer admNo);
 	public AdmVO findByprimaryKey(Integer admNo);
 	public AdmVO allowAdmin(String admAccount, String admPassword);
+	
+	public boolean checkRepeat(String admAccount);
 }
