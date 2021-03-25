@@ -187,12 +187,12 @@
 								    </c:if>
 								    <c:if test="${expOne == null}"> <!-- 此會員未給期待度 -->
 								        <input type="hidden" name="memNo" value="${MemberVO.memNo}" />
-								        <input class="combtn" type="submit" value="送出" style="margin-left: 13.4%; padding: 2px 10px;">
+								        <input class="combtn" type="submit" value="送出" style="margin-left: 2%;">
 								    </c:if>
 	                            </c:if> <!-- 已登入 End --> 
 	                            
 	                    		<c:if test="${empty MemberVO.memAccount}"> <!-- 未登入 Start --> 
-	                    			<a class="combtn" style="margin-left: 5%; padding: 5px 10px;" href="${loginUrl}">送出</a>
+	                    			<a class="combtn" style="margin-left: 2%; padding: 5px 10px;" href="${loginUrl}">送出</a>
 	                            </c:if> <!-- 未登入 End --> 
                             </form>
                             

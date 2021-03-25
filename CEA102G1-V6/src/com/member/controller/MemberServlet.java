@@ -44,7 +44,6 @@ public class MemberServlet extends HttpServlet {
 			    HttpSession session = req.getSession();
 			    if (session != null) {
 			      session.removeAttribute("MemberVO");
-			      session.removeAttribute("moviesSubpage");
 			    }
 
 ///****************查詢完成,準備轉交(Send the Success view)***************/

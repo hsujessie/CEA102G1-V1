@@ -81,6 +81,11 @@ public class MovServlet extends HttpServlet{
 				
 				String fromFrontend = req.getParameter("fromFrontend");
 				if("true".equals(fromFrontend) ) {
+					/* remove a attribute which is from frontend movies_subpage.jsp through login page */
+					HttpSession session = req.getSession();
+					if (session.getAttribute("moviesSubpage") != null) {
+					    session.removeAttribute("moviesSubpage");
+					}
 					url = "/front-end/movies/movies_subpage.jsp";
 				}
 				
