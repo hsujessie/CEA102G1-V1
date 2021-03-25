@@ -124,7 +124,7 @@
 							             <option value=""></option>
 							             <c:forEach var="movVO" items="${movSvc.all}" >											
 											<jsp:useBean id="now" class="java.util.Date"/>
-											<c:if test="${movVO.movoffdate le now}">                                                         <!-- 在SesServlet.java 驗證，若有不符驗證，會丟 a movNo attribute 到 jsp，為了留住原本已選的電影。 -->
+											<c:if test="${movVO.movoffdate ge now}">                                                         <!-- 在SesServlet.java 驗證，若有不符驗證，會丟 a movNo attribute 到 jsp，為了留住原本已選的電影。 -->
 												<option value="${movVO.movno}" data-movver="${movVO.movver}" data-movondate="${movVO.movondate}" <c:if test="${not empty movNo and movNo == movVO.movno}">selected</c:if>>${movVO.movname}
 											</c:if>
 							             </c:forEach>
