@@ -10,6 +10,15 @@
 <link rel="stylesheet" type="text/css" href="<%=request.getContextPath()%>/resource/bootstrap/css3/login3.css">
 </head>
 <body>
+<style>
+#preview{
+	float:left;
+}
+img{
+    width: 40px;
+}
+
+</style>
         <div class="wrapper"><!-- wrapper Start -->
             <!-- Nav Bar Start -->
 			<c:set value="${pageContext.request.requestURI}" var="urlRecog"></c:set>
@@ -92,7 +101,16 @@
 													<input type="text"  name="memAccount" placeholder="Account" />
 													<input type="password" name="memPassword"  placeholder="Password" />
 													<input type="text"  name="memMail" placeholder="Mail" />
-													<input type="file" name="memImg" placeholder="Img" width="40" height="40"/>
+													
+													 
+													<div class="row">
+													<div id="preview" style="padding:5px;"  ></div>
+											            <input  id="myImg" type="file" name="memImg" placeholder="Img" style="padding:5px;width:90px;margin-right: 50px;" />
+											        </div> 
+											           
+													
+											        
+													
 													<button type="submit" class="btn_sign_up" onclick="cambiar_sign_up()">SIGN UP</button>
 													<input type="hidden" name="action" value="signup">
 												</div>
@@ -108,6 +126,39 @@
        
         
 <%@ include file="/front-end/files/frontend_importJs.file"%>
-<script src="<%=request.getContextPath()%>/resource/bootstrap/js3/newlogin.js"></script>   
+<script src="<%=request.getContextPath()%>/resource/bootstrap/js3/newlogin.js"></script>
+<script>
+function init() {
+
+    var myFile = document.getElementById("myImg");
+       var preview = document.getElementById('preview');
+    myFile.addEventListener('change', function(e) {
+        let files = e.target.files;
+        if (files) {
+            for (let i = 0; i < files.length; i++) {
+                let file = files[i];
+                if (file.type.indexOf('image') > -1) {
+                    let reader = new FileReader();
+                    reader.addEventListener('load', function(e) {
+                        let result = e.target.result;
+                        console.log(result);
+                        let img = document.createElement('img');
+                        img.setAttribute('src', result);
+                        preview.append(img);
+                    });
+                    reader.readAsDataURL(file); 
+                }
+//                 else {
+//                     // 彈出警告視窗 
+//                     alert('請上傳圖片！');
+//                 }
+            }
+        }
+    });
+
+}
+
+window.onload = init;
+</script> 
 </body>
 </html>
