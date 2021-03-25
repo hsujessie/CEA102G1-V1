@@ -181,18 +181,14 @@
 								<input type="hidden" name="action" value="insert">
 								
 	                    		<c:if test="${not empty MemberVO.memAccount}"> <!-- 已登入 Start --> 
-	                    			<c:forEach var="expList" items="${expSvc.all}" >
-										<c:set var="expMemNo" value="${expList.memNo}"/>
-										<c:set var="movNo" value="${movVO.movno}"/>
-										<c:set var="expOne" value="${expSvc.getOneExp(movNo,expMemNo)}"/>
-									</c:forEach>
-									<c:if test="${expOne.memNo == MemberVO.memNo and expOne.movNo == movVO.movno}"> <!-- 此會員已給期待度 -->
-										<label style="font-size: 14px; color:#aa9166;">【已評分】</label>
-									</c:if>
-									<c:if test="${expOne.memNo != MemberVO.memNo and expOne.movNo != movVO.movno }"> <!-- 此會員未期待度 -->
-	  									<input type="hidden" name="memNo" value="${MemberVO.memNo}" />
-	                            		<input class="combtn" type="submit" value="送出" style="margin-left: 5%; padding: 2px 10px;">
-									</c:if>
+									<c:set var="expOne" value="${expSvc.getOneExp(movVO.movno,MemberVO.memNo)}"/>
+								    <c:if test="${expOne != null}"> <!-- 此會員已給期待度 -->
+								        <label style="font-size: 14px; color:#aa9166;">【已評分】</label>
+								    </c:if>
+								    <c:if test="${expOne == null}"> <!-- 此會員未給期待度 -->
+								        <input type="hidden" name="memNo" value="${MemberVO.memNo}" />
+								        <input class="combtn" type="submit" value="送出" style="margin-left: 13.4%; padding: 2px 10px;">
+								    </c:if>
 	                            </c:if> <!-- 已登入 End --> 
 	                            
 	                    		<c:if test="${empty MemberVO.memAccount}"> <!-- 未登入 Start --> 
