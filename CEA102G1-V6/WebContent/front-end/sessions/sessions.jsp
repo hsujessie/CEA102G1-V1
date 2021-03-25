@@ -164,7 +164,7 @@
 		場次日期搜尋 下拉選單 -> 只顯示當天+6日(共7天日期)
     ==========================================================*/
 	window.onload = function(){
-		let daysDuration = 5;
+		let daysDuration = 7;
 		
 		let today = new Date();	
 		let today_year = today.getFullYear();
