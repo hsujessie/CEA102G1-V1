@@ -80,7 +80,7 @@
 												<input type="hidden" name="action" value="get_Login">
 											</form>
 													<div class="foot-lnk">
-														<a href="<%=request.getContextPath()%>/front-end/Member_Login/forgot_password.jsp">忘記密碼?</a>
+														<a href="<%=request.getContextPath()%>/front-end/Member_Login/forgot_password_new.jsp">忘記密碼?</a>
 													</div>
 										</div>
 <!--============================================================================================-->								  			
