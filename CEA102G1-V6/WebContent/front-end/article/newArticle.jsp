@@ -162,9 +162,7 @@
 	    		    //取得原本類型
 	    		    console.log("artVO.getMovType():<%=artVO.getMovType()%>");
 	    		    debugger;
-	    		    if(<%=artVO.getMovType()%> != null){
-		    		    $('#artMovTypeSelect').val("<%=artVO.getMovType()%>");	
-	    		    }
+		    		$('#artMovTypeSelect').val("<%=artVO.getMovType()%>");	
 		    	},
 		    	error: function(){alert("AJAX-newArt-select發生錯誤囉!")}
 		    });

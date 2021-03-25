@@ -368,7 +368,7 @@ function findArtFavByCompositeQuery(e) {
               $('#artFavListCenter').append(
                   '<div id="movType" class="divWidth divHeight" style="display: inline-block"><div style="display: inline-block">電影類型：</div> <div style="display: inline-block">' +
                   item.artMovType + '</div></div>' +
-                  '<div id="artLike" style="display: inline-block"><button class="artFavButton combtn" title="取消收藏">取消收藏</button></div>' +
+                  '<div id="artLike" style="display: inline-block"><button class="artFavButton combtn" data-value="'+item.artNo+'" title="取消收藏">取消收藏</button></div>' +
                   '<div id="artTitle"><div class="divHeight" style="font-size: 1.2rem;"><b>' + item.artTitle + '</b></div></div>' +
                   '<div id="artFavTime"><div class="divHeight" style="display: inline-block">加入收藏時間：</div> <div class="divHeight" style="display: inline-block">' +
                   moment(item.artFavTime).locale('zh_TW').format('llll') +
@@ -508,7 +508,7 @@ $('#artFavListCenter').on('click', '.artFavButton', function (event){
 	$.ajax({
 		type: 'POST',
 		url: '<%=request.getContextPath()%>/art/artFav.do',
-		data: {'action':'deleteArtFav', 'artNo':$(this).parent('div').siblings('div').children('.artContent').attr('data-value')},
+		data: {'action':'deleteArtFav', 'artNo':$(this).attr('data-value')},
 		dataType: 'json',
 		success: function (){
 					toastr['warning']('刪除收藏', '成功');

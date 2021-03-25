@@ -18,10 +18,24 @@
 		text-align: center;
 	}
 	#artListCenter{
-/* 		border-radius:0.5rem; */
  		line-height: 2rem;
         max-width: 100%;
         margin: 2rem;
+	}
+	.oneArtDiv{
+		margin: 2rem;
+	}
+	.oneArtDiv:hover{
+		position: relative;
+       	top: 5px; 
+      	left: 0;
+      	box-shadow: 10px 10px 10px 0px #aa9166;
+      	animation: moving .3s;
+	}
+	@keyframes moving{
+		0%{top: 0px;}
+		50%{top: 2px;}
+		100%{top: 5px;}
 	}
 	.artTitle{
 		font-size: 1.2rem;
@@ -31,6 +45,7 @@
 		text-overflow:ellipsis;
 	}
 	.artContent{
+		margin: 2%;
 		height: 10vh;
 		white-space:nowrap;
 		overflow:hidden;
@@ -114,11 +129,15 @@
     	display: inline-block;
     	width: 17vw;
     	height:40vh;
-    	background-color: rgba(170,145,102,0.2);
-    	border-radius: 20px;
+    	border-radius: 5%;
+    	box-shadow: 3px 3px 10px #aa9166;
     	padding: 1% 5%;
+    	margin: 1%;
     	vertical-align: top;
     	text-align: left;
+    }
+    .HotArticleDiv:hover{
+    	
     }
     @media (max-width: 991px){
 		.HotArticleDiv {
@@ -153,11 +172,11 @@ function ListArtQuery(){
 			//加入文章內容
 			$(artVO).each(function(i, item){
 				$('#artListCenter').append(
-						'<div id="artAuthor" style="display: inline-block"><div style="display: inline-block">作者：</div> <div style="display: inline-block">'+item.memName+'</div></div>'
+						'<div class="oneArtDiv"><div id="artAuthor" style="display: inline-block"><div style="display: inline-block">作者：</div> <div style="display: inline-block">'+item.memName+'</div></div>'
 						+'<div id="movType" style="display: inline-block"><div style="display: inline-block">電影類型：</div> <div style="display: inline-block">'+item.artMovType+'</div></div>'
 						+'<div id="artTitle"><div style="font-size: 1.2rem;"><b>'+item.artTitle+'</b></div></div>'
 						+'<div id="artTime"><div style="display: inline-block">修改時間：</div> <div style="display: inline-block">'+moment(item.artTime).locale('zh_TW').format('llll')+'</div></div>'
-						+'<div><div class="artContent" data-value="'+item.artNo+'">'+item.artContent+'</div></div><hr>')			
+						+'<div><div class="artContent" data-value="'+item.artNo+'">'+item.artContent+'</div></div></div>')			
 						;
 				});
 			//若無文章
@@ -170,14 +189,14 @@ function ListArtQuery(){
 		
 	//新增或修改完成後開啟燈箱及載入文章內容
 	if('${openModal}' === 'openModal'){
-		//開啟燈箱
-		$('#basicModal').modal('show');
 		$.ajax({
 			type: 'POST',
 			url: '<%=request.getContextPath()%>/art/art.do',
 			data: {'action':'art_Show_By_AJAX', 'artNo':'${artNo}'},
 			dataType: 'json',
 			success: function (artVO){
+				//開啟燈箱
+				$('#basicModal').modal('show');
 				$(artVO).each(function(i, item){
 					clearOneArticle();
 					clearArtReplyno();
@@ -205,12 +224,6 @@ function ListArtQuery(){
 					
 	 			  	//呼叫列全部回文
 	 			    listAllArtRepByArtNo();
-	 			  	
- 					//移除燈箱開關及artNo
- 					<%
- 					session.removeAttribute("openModal");
- 					session.removeAttribute("artNo");
- 					%>
 				});
 			},
 			error: function(){console.log("AJAX-openModal發生錯誤囉!")}
@@ -242,7 +255,7 @@ function ListArtTopThreeQuery(){
 						'<div id="hotArticleDiv" class="HotArticleDiv"><div id="topThreeArticle" style="color: #FF7575;"><i class="fas fa-crown" style="color: #bb9d52; margin: 0px 5px;"></i><b>HOT</b></div><div style="display: inline-block"><div style="display: inline-block">作者：</div> <div style="display: inline-block">'+item.memName+'</div></div>'
 						+'<div id="movType" style="display: inline-block"><div style="display: inline-block">電影類型：</div> <div style="display: inline-block">'+item.artMovType+'</div></div>'
 						+'<div id="artTitle" class="artTitle"><div><b>'+item.artTitle+'</b></div></div>'
-						+'<div id="artTime"><div style="display: inline-block">修改時間：</div> <div style="display: inline-block">'+moment(item.artTime).locale('zh_TW').format('lll')+'</div></div>'
+						+'<div id="artTime"><div style="display: inline-block">'+moment(item.artTime).locale('zh_TW').format('ll')+'</div></div>'
 						+'<div><div class="artContent" data-value="'+item.artNo+'">'+item.artContent+'</div></div></div>')			
 			});
 			$('#Top3Article').append('<hr>');

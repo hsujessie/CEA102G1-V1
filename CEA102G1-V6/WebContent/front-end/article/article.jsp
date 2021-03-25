@@ -313,7 +313,7 @@
                     clearArtList();
                     $(artVO).each(function (i, item) {
                         $('#artListCenter').append(
-                            '<div id="artAuthor" style="display: inline-block"><div style="display: inline-block">作者：</div> <div style="display: inline-block">' +
+                            '<div class="oneArtDiv"><div id="artAuthor" style="display: inline-block"><div style="display: inline-block">作者：</div> <div style="display: inline-block">' +
                             item.memName + '</div></div>' +
                             '<div id="movType" style="display: inline-block"><div style="display: inline-block">電影類型：</div> <div style="display: inline-block">' +
                             item.artMovType + '</div></div>' +
@@ -323,7 +323,7 @@
                             moment(item.artTime).locale('zh_TW').format('llll') +
                             '</div></div>' +
                             '<div><div class="artContent" data-value="' + item.artNo + '">' +
-                            item.artContent + '</div></div><hr>');
+                            item.artContent + '</div></div></div>');
                         $('#artListCenter .artContent').css({
                             'height': '10vh',
                             'white-space': 'nowrap',
