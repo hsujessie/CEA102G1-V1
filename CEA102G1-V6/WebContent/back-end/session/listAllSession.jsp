@@ -77,8 +77,8 @@
 						
                     	<!-- search Start -->
                     	<div class="row " style="margin: -60px 0 20px 50px;">          
-			                <div class="col-1"></div>
-	                        <div class="col-11">          
+			                <div class="col-2"></div>
+	                        <div class="col-10">          
 		            			<jsp:useBean id="movSvcAll" scope="page" class="com.movie.model.MovService"/>                        
 	                           	<FORM class="form-sty" METHOD="post" ACTION="<%=request.getContextPath()%>/session/ses.do">				                        
 			                        <b>電影名稱</b>
@@ -93,7 +93,7 @@
 			                        ~ <input class="sty-input time-input-sty" name="sesDateEnd" id="sesdate_End" type="text" value="">
 			                        
 			                        <input type="hidden" name="action" value="listSessions_ByCompositeQuery" style="margin-right:1.5%;">
-				        			<a class="btn btn-light btn-brd grd1 effect-1">
+				        			<a class="btn btn-light btn-brd grd1 effect-1" style="margin-left: .5%;">
 										<input type="submit" value="搜尋" class="input-pos">
 				        			</a>
 		                    	</FORM>                    
