@@ -7,18 +7,14 @@
 <jsp:useBean id="artSvc" scope="page" class="com.art.model.ArtService" />
 
 <!DOCTYPE html>
-<%		
-	if(session.getAttribute("MemberVO") != null){
-		MemberVO memberVO = (MemberVO)session.getAttribute("MemberVO");
-		session.setAttribute("memNo", memberVO.getMemNo());
-		session.getAttribute("memNo");			
-	}
-%>
 <html>
 
 <head>
     <meta charset="UTF-8">
-
+<!-- swiper -->
+	<link rel="stylesheet" href="https://unpkg.com/swiper/swiper-bundle.min.css" />
+	<script src="https://unpkg.com/swiper/swiper-bundle.min.js"></script>
+<!-- 	jQuery -->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
 <!--     datetimepicker -->
     <link rel="stylesheet" type="text/css"
@@ -44,7 +40,7 @@
 	<script src="<%=request.getContextPath()%>/resource/owlcarousel/owl.carousel.min.js"></script>
 	<script src="<%=request.getContextPath()%>/resource/js/frontend.js"></script>
 
-    <script>
+	<script>
         toastr.options = {
             // 參數設定
             "closeButton": false,
@@ -63,7 +59,7 @@
             "showMethod": "fadeIn",
             "hideMethod": "fadeOut"
         }
-    </script>
+	</script>
     <style>
         * {
             box-sizing: border-box;
@@ -112,6 +108,54 @@
         #artMovTypeList li:hover{
         	cursor: pointer;
         }
+        .swiper-container {
+            width: 100%;
+            padding-top: 50px;
+            padding-bottom: 50px;
+        }
+        .swiper-slide {
+            background-position: center;
+            background-size: cover;
+            width: 300px;
+            height: 300px;
+
+        }
+        .ellipse{
+			background: -webkit-radial-gradient(ellipse,rgba(255, 255, 255, 0),rgba(170, 145, 102, 0.3));
+			background: -o-radial-gradient(ellipse,rgba(255, 255, 255, 0),rgba(170, 145, 102, 0.3));
+			background: -moz-radial-gradient(ellipse,rgba(255, 255, 255, 0),rgba(170, 145, 102, 0.3));
+			background: radial-gradient(ellipse,white,rgba(255, 255, 255, 0),rgba(170, 145, 102, 0.3));
+		}
+		.authorIMG{
+			width: 20%;
+			height: 20%;
+			border-radius: 50%;
+			margin: 4%;
+		}
+		.repAuthorIMG{
+			width: 5%;
+			height: 5%;
+			border-radius: 50%;
+		}
+		.form-control {
+		    display: block;
+		    width: 100%;
+		    height: calc(1.5em + .75rem + 2px);
+		    padding: 1.21rem .75rem;
+		    font-size: 1rem;
+		    font-weight: 400;
+		    line-height: 1.5;
+		    color: #495057;
+		    background-color: #fff;
+		    background-clip: padding-box;
+		    border: 2px solid #AA9166;
+		    border-radius: .25rem;
+		    transition: border-color .15s ease-in-out,box-shadow .15s ease-in-out;
+		}
+		#artRepButton:hover{
+			cursor: pointer;
+			color: #AA9166;
+		}
     </style>
 
     <script>
@@ -160,7 +204,7 @@
                             console.log("item.memNo:" + item.memNo);
 
                             //判斷是否為會員本人發表的文章
-                            if (item.memNo == '${memNo}') {
+                            if (item.memNo == '${memNo}' && '${MemberVO}' != "") {
                                 $('#memUpdateArt').show();
                                 $('#artUpdateMemNo').val(item.memNo);
                                 $('#artUpdateArtNo').val(item.artNo);
@@ -170,7 +214,7 @@
 
         					//判斷是否已收藏
         					debugger;
-        					if('${memNo}' != ""){
+        					if('${memNo}' != "" && '${MemberVO}' != ""){
         						isArtFav();
         					}
 
@@ -211,23 +255,24 @@
             
             //返回討論區首頁
             $('#returnArticle').click(function(){
-                //清空文章列表
-                clearArtList();
+//                 //清空文章列表
+//                 clearArtList();
                 
-              	//清空熱門文章列表
-    			clearListArtTopThreeQuery();
+//               	//清空熱門文章列表
+//     			clearListArtTopThreeQuery();
               	
-              	//清除選擇電影類型
-    			$('.selectedMovType').removeClass('selectedMovType');
+//               	//清除選擇電影類型
+//     			$('.selectedMovType').removeClass('selectedMovType');
               	
-              	//reset find by title text
-              	document.getElementById("artTitleByCompositeQuery").placeholder = '搜尋標題';
+//               	//reset find by title text
+//               	document.getElementById("artTitleByCompositeQuery").placeholder = '搜尋標題';
             	
-                //列出全部文章列表
-                ListArtQuery();
+//                 //列出全部文章列表
+//                 ListArtQuery();
                 
-              	//列出前三高點擊文章
-                ListArtTopThreeQuery();
+//               	//列出前三高點擊文章
+//                 ListArtTopThreeQuery();
+					window.location.reload("<%=request.getContextPath()%>/front-end/article/article.jsp");
             });
             
             //時間月曆
@@ -272,6 +317,30 @@
             //清空留言空值警告
             clearArtRepEmptyAlert();
             
+//          Initialize Swiper
+        	var swiper = new Swiper('.swiper-container', {
+        	  	effect: 'coverflow',
+        	    grabCursor: true,
+        	    centeredSlides: true,
+        	    slidesPerView: 'auto',
+        	    coverflowEffect: {
+        	        rotate: 50,
+        	        stretch: 0,
+        	        depth: 100,
+        	        modifier: 1,
+        	        slideShadows: true,
+        	    },
+        	    autoplay: {
+        	        delay: 2500,
+        	        disableOnInteraction: false,
+        	    },
+        	    pagination: {
+        	        el: '.swiper-pagination',
+        	    },
+        	    observer:true,//修改swiper自己或子元素时，自动初始化swiper
+                observeParents:true//修改swiper的父元素时，自动初始化swiper
+        	 });
+        	
         });
 // window load
         
@@ -303,7 +372,7 @@
 
         //文章複合查詢
         function findArtByCompositeQuery(e) {
-            // 	debugger;
+            	debugger;
             $.ajax({
                 type: 'post',
                 url: '<%=request.getContextPath()%>/art/art.do',
@@ -313,7 +382,7 @@
                     clearArtList();
                     $(artVO).each(function (i, item) {
                         $('#artListCenter').append(
-                            '<div class="oneArtDiv"><div id="artAuthor" style="display: inline-block"><div style="display: inline-block">作者：</div> <div style="display: inline-block">' +
+                            '<div class="oneArtDiv"><div id="artAuthor" style="display: inline-block"><div style="display: inline-block"><img class="authorIMG" src="<%=request.getContextPath()%>/util/imgReader?columnName=MEM_IMG&tableName=member&fieldName=MEM_NO&fieldValue='+item.memNo+'></div> <div style="display: inline-block">' +
                             item.memName + '</div></div>' +
                             '<div id="movType" style="display: inline-block"><div style="display: inline-block">電影類型：</div> <div style="display: inline-block">' +
                             item.artMovType + '</div></div>' +
@@ -477,7 +546,7 @@
 	                                                placeholder="搜尋標題" aria-label="Recipient's username"
 	                                                aria-describedby="findArtByTitleButton">
 	                                            <div class="input-group-append">
-	                                                <button class="btn btn-outline-secondary" type="button"
+	                                                <button class="btn combtn" type="button"
 	                                                    id="findArtByTitleButton">查詢</button>
 	                                            </div>
 	                                        </div>
@@ -506,26 +575,24 @@
 	                                    </li>
 	                                    <li>
 	                                        <div id="accordion">
-	                                            <div class="card">
-	                                                <div class="card-header">
-	                                                    <a class="card-link" data-toggle="collapse" href="#collapseOne">
+	                                            <div class="card" style="border-radius: 0; border: 2px #AA9166">
+	                                                <div class="card-link combtn" data-toggle="collapse" href="#collapseOne" style=" cursor:pointer;">
 	                                                        	進階查詢
-	                                                    </a>
 	                                                </div>
 	                                                <div id="collapseOne" class="collapse" data-parent="#accordion">
-	                                                    <div class="card-body">
+	                                                    <div class="card-body" style="border-radius: 0; border: 2px #AA9166">
 	                                                        <table>
 	                                                            <tr>
 	                                                                <td><input type="text" id="artAuthorForByCompositeQuery"
-	                                                                        name="artAuthor" placeholder="搜尋作者"></td>
+	                                                                        class="form-control" name="artAuthor" placeholder="搜尋作者"></td>
 	                                                            </tr>
 	                                                            <tr>
 	                                                                <td><input type="text" id="artTimeForByCompositeQuery"
-	                                                                        name="artTime" placeholder="搜尋發表日期"></td>
+	                                                                        class="form-control" name="artTime" placeholder="搜尋發表日期"></td>
 	                                                            </tr>
 	                                                            <tr>
 	                                                                <td><input id="findArtByCompositeQueryButton"
-	                                                                        class="btn btn-outline-secondary" type="button"
+	                                                                        class="btn combtn" type="button"
 	                                                                        value="查詢"></td>
 	                                                            </tr>
 	                                                        </table>

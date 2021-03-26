@@ -75,6 +75,7 @@ public class ArtRptServlet extends HttpServlet {
 				JSONObject obj = new JSONObject();
 				try { 
 					obj.put("artNo", artRptVO.getArtNo());
+					obj.put("memAccount", memSvc.getOneMember(artDAO.findByPrimaryKey(artRptVO.getArtNo()).getMemNo()).getMemAccount());
 					obj.put("memName", memSvc.getOneMember(artDAO.findByPrimaryKey(artRptVO.getArtNo()).getMemNo()).getMemName());
 					obj.put("artRptNo", artRptVO.getArtRptNo());
 					obj.put("artRptContent", artRptVO.getArtRptReson());
@@ -88,6 +89,7 @@ public class ArtRptServlet extends HttpServlet {
 						obj.put("artRptStatus", "已檢舉");
 					}
 					
+					obj.put("reportMemAccount", memSvc.getOneMember(artRptVO.getMemNo()).getMemAccount());
 					obj.put("reportMemName", memSvc.getOneMember(artRptVO.getMemNo()).getMemName());
 					obj.put("artTitle", artDAO.findByPrimaryKey(artRptVO.getArtNo()).getArtTitle());
 				} catch (JSONException e) {

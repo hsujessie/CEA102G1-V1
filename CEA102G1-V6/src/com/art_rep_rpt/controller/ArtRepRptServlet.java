@@ -79,6 +79,7 @@ public class ArtRepRptServlet extends HttpServlet {
 				try { 
 					obj.put("artRepNo", artRepRptVO.getArtRepNo());
 					obj.put("artTitle", artSvc.getOneArt(artRepRptVO.getArtRepNo()).getArtTitle());
+					obj.put("memAccount", memSvc.getOneMember(artSvc.getOneArt(artRepRptVO.getArtRepNo()).getMemNo()).getMemAccount());
 					obj.put("memName", memSvc.getOneMember(artSvc.getOneArt(artRepRptVO.getArtRepNo()).getMemNo()).getMemName());
 					obj.put("artRepRptNo", artRepRptVO.getArtRepRptNo());
 					obj.put("artRepRptReson", artRepRptVO.getArtRepRptReson());
@@ -92,6 +93,7 @@ public class ArtRepRptServlet extends HttpServlet {
 						obj.put("artRepRptStatus", "已檢舉");
 					}
 					
+					obj.put("reportMemAccount", memSvc.getOneMember(artRepRptVO.getMemNo()).getMemAccount());
 					obj.put("reportMemName", memSvc.getOneMember(artRepRptVO.getMemNo()).getMemName());
 					obj.put("artRepContent", artRepSvc.getOneArtRep(artRepRptVO.getArtRepNo()).getArtRepContent());
 				} catch (JSONException e) {

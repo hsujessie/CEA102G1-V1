@@ -22,7 +22,7 @@
 <style>	
 	.topDiv{
 		margin: 0 auto 5vh auto;
-    	width: 20vw;
+    	width: 17vw;
     	height: 10vh;
     	display: inline-block;
   	}
@@ -72,6 +72,21 @@
 		display: block;
     	margin-left: auto;
 	}
+	.form-control {
+	    display: block;
+	    width: 100%;
+	    height: calc(1.5em + .75rem + 2px);
+	    padding: 1.21rem .75rem;
+	    font-size: 1rem;
+	    font-weight: 400;
+	    line-height: 1.5;
+	    color: #495057;
+	    background-color: #fff;
+	    background-clip: padding-box;
+	    border: 2px solid #AA9166;
+	    border-radius: .25rem;
+	    transition: border-color .15s ease-in-out,box-shadow .15s ease-in-out;
+	}
 </style>
 <title>Article Manage</title>
 
@@ -118,7 +133,7 @@
 			                            <input type="text" id="artTitleByCompositeQuery" class="form-control" placeholder="搜尋文章標題"
 			                                aria-label="Recipient's username" aria-describedby="findArtByTitleButton">
 			                            <div class="input-group-append">
-			                                <button class="btn btn-outline-secondary" type="button"
+			                                <button class="btn combtn" type="button"
 			                                    id="findArtByTitleButton">查詢</button>
 			                            </div>
 			                        </div>
@@ -128,7 +143,7 @@
 			                            <input type="date" id="artTimeForByCompositeQuery" class="form-control" placeholder="依日期搜尋"
 			                                aria-label="Recipient's username" aria-describedby="findArtByTimeButton">
 			                            <div class="input-group-append">
-			                                <button class="btn btn-outline-secondary" type="button"
+			                                <button class="btn combtn" type="button"
 			                                    id="findArtByTimeButton">查詢</button>
 			                            </div>
 			                        </div>
@@ -145,7 +160,7 @@
 			                                placeholder="搜尋收藏文章標題" aria-label="Recipient's username"
 			                                aria-describedby="findArtFavTitleByButton">
 			                            <div class="input-group-append">
-			                                <button class="btn btn-outline-secondary" type="button"
+			                                <button class="btn combtn" type="button"
 			                                    id="findArtFavTitleByButton">查詢</button>
 			                            </div>
 			                        </div>
@@ -155,7 +170,7 @@
 			                            <input type="date" id="artFavTimeByCompositeQuery" class="form-control" placeholder="依日期搜尋"
 			                                aria-label="Recipient's username" aria-describedby="findArtFavTimeByButton">
 			                            <div class="input-group-append">
-			                                <button class="btn btn-outline-secondary" type="button"
+			                                <button class="btn combtn" type="button"
 			                                    id="findArtFavTimeByButton">查詢</button>
 			                            </div>
 			                        </div>
@@ -172,7 +187,7 @@
 			                                placeholder="搜尋留言文章標題" aria-label="Recipient's username"
 			                                aria-describedby="findArtRepTitleByButton">
 			                            <div class="input-group-append">
-			                                <button class="btn btn-outline-secondary" type="button"
+			                                <button class="btn combtn" type="button"
 			                                    id="findArtRepTitleByButton">查詢</button>
 			                            </div>
 			                        </div>
@@ -182,7 +197,7 @@
 			                            <input type="date" id="artRepTimeByCompositeQuery" class="form-control" placeholder="依日期搜尋"
 			                                aria-label="Recipient's username" aria-describedby="findArtRepTimeByButton">
 			                            <div class="input-group-append">
-			                                <button class="btn btn-outline-secondary" type="button"
+			                                <button class="btn combtn" type="button"
 			                                    id="findArtRepTimeByButton">查詢</button>
 			                            </div>
 			                        </div>
