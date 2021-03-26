@@ -181,22 +181,18 @@
 								<input type="hidden" name="action" value="insert">
 								
 	                    		<c:if test="${not empty MemberVO.memAccount}"> <!-- 已登入 Start --> 
-	                    			<c:forEach var="expList" items="${expSvc.all}" >
-										<c:set var="expMemNo" value="${expList.memNo}"/>
-										<c:set var="movNo" value="${movVO.movno}"/>
-										<c:set var="expOne" value="${expSvc.getOneExp(movNo,expMemNo)}"/>
-									</c:forEach>
-									<c:if test="${expOne.memNo == MemberVO.memNo and expOne.movNo == movVO.movno}"> <!-- 此會員已給期待度 -->
-										<label style="font-size: 14px; color:#aa9166;">【已評分】</label>
-									</c:if>
-									<c:if test="${expOne.memNo != MemberVO.memNo and expOne.movNo != movVO.movno }"> <!-- 此會員未期待度 -->
-	  									<input type="hidden" name="memNo" value="${MemberVO.memNo}" />
-	                            		<input class="combtn" type="submit" value="送出" style="margin-left: 5%; padding: 2px 10px;">
-									</c:if>
+									<c:set var="expOne" value="${expSvc.getOneExp(movVO.movno,MemberVO.memNo)}"/>
+								    <c:if test="${expOne != null}"> <!-- 此會員已給期待度 -->
+								        <label style="font-size: 14px; color:#aa9166;">【已評分】</label>
+								    </c:if>
+								    <c:if test="${expOne == null}"> <!-- 此會員未給期待度 -->
+								        <input type="hidden" name="memNo" value="${MemberVO.memNo}" />
+								        <input class="combtn" type="submit" value="送出" style="margin-left: 2%;">
+								    </c:if>
 	                            </c:if> <!-- 已登入 End --> 
 	                            
 	                    		<c:if test="${empty MemberVO.memAccount}"> <!-- 未登入 Start --> 
-	                    			<a class="combtn" style="margin-left: 5%; padding: 5px 10px;" href="${loginUrl}">送出</a>
+	                    			<a class="combtn" style="margin-left: 2%; padding: 5px 10px;" href="${loginUrl}">送出</a>
 	                            </c:if> <!-- 未登入 End --> 
                             </form>
                             
@@ -296,10 +292,16 @@
 		                                																														
 										<jsp:useBean id="memSvc" scope="page" class="com.member.model.MemberService"/>
 										<c:set value="${memSvc.getOneMember(comVO.memNo)}" var="memObj"></c:set>
-		                                <span>發表人 <label style="color:#aa9166;">${memObj.memName}</label>&emsp;|&emsp;</span>
+		                                <span>發表人 <label style="color:#aa9166;">${memObj.memName}</label>&emsp;|</span>
 		                                
-		                                <span>發表時間 <label style="color:#aa9166;"><fmt:formatDate value="${comVO.comTime}" pattern="yyy-MM-dd HH:mm" type="DATE"/></label>&emsp;|&emsp;</span>
-                   						<span id="comrep" onclick='openComRepLightbox(this,${comVO.comNo},${comVO.memNo},${comVO.movNo})'><a>檢舉</a></span>   
+		                                <span style="padding-left: 8px;">發表時間 <label style="color:#aa9166;"><fmt:formatDate value="${comVO.comTime}" pattern="yyy-MM-dd HH:mm" type="DATE"/></label></span>
+		                                
+		                                <c:if test="${not empty MemberVO.memAccount}"> <!-- 已登入 Start -->
+                   							<span id="comrep" onclick='openComRepLightbox(this,${comVO.comNo},${comVO.memNo},${comVO.movNo})' ${comVO.memNo == MemberVO.memNo ? 'style="display:none;"' : 'style="display:inline-block;"'} >&emsp;<a> 檢舉</a></span> 
+	                            		</c:if> <!-- 已登入 End -->   
+		                                <c:if test="${empty MemberVO.memAccount}"> <!-- 未登入 Start -->
+                   							<span id="comrep"><a href="${loginUrl}">檢舉</a></span> 
+	                            		</c:if> <!-- 未登入 End -->   
 		                            </div>
 		                        </div>
 		                      </c:if>                 

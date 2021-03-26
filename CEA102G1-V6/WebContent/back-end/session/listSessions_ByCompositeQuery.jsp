@@ -22,7 +22,7 @@
 	.success-span{
 	    color: #bb9d52;
 		position: absolute;
-	    top: 10%;
+	    top: 50px;
 	    left: 20%;
 	    font-size: 16px;
 	}

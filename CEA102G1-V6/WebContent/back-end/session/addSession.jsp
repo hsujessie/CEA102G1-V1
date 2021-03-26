@@ -124,7 +124,7 @@
 							             <option value=""></option>
 							             <c:forEach var="movVO" items="${movSvc.all}" >											
 											<jsp:useBean id="now" class="java.util.Date"/>
-											<c:if test="${movVO.movoffdate le now}">                                                         <!-- 在SesServlet.java 驗證，若有不符驗證，會丟 a movNo attribute 到 jsp，為了留住原本已選的電影。 -->
+											<c:if test="${movVO.movoffdate ge now}">                                                         <!-- 在SesServlet.java 驗證，若有不符驗證，會丟 a movNo attribute 到 jsp，為了留住原本已選的電影。 -->
 												<option value="${movVO.movno}" data-movver="${movVO.movver}" data-movondate="${movVO.movondate}" <c:if test="${not empty movNo and movNo == movVO.movno}">selected</c:if>>${movVO.movname}
 											</c:if>
 							             </c:forEach>
@@ -278,15 +278,6 @@
 	let theNothree = $("input[name='theNo']")[3];
 	let theNoFour = $("input[name='theNo']")[4];
 	let theNoFif = $("input[name='theNo']")[5];
-	let theNoSix = $("input[name='theNo']")[6];
-	let theNoSev = $("input[name='theNo']")[7];
-	let theNoEig = $("input[name='theNo']")[8];
-	let theNoNin = $("input[name='theNo']")[9];
-	let theNoTen = $("input[name='theNo']")[10];
-	let theNoEle = $("input[name='theNo']")[11];
-	let theNoTwe = $("input[name='theNo']")[12];
-	let theNoThirt = $("input[name='theNo']")[13];
-	let theNoFourt = $("input[name='theNo']")[14];
 	
 	/* =====================================================================================================
 		    * 在SesServlet.java 驗證，若有不符驗證，會丟 a theNoList attribute 到 jsp，為了留住原本已勾選的廳院。
@@ -315,33 +306,6 @@
 	 		if(theNoArr[i] == "6"){	// IMAX
 	 			theNoFif.checked = true;
 			}
-			if(theNoArr[i] == "7"){	// 2D
-				theNoSix.checked = true;
-			}
-			if(theNoArr[i] == "8"){	// 3D
-				theNoSev.checked = true;
-			}
-			if(theNoArr[i] == "9"){	// IMAX
-				theNoEig.checked = true;
-			} 
-			if(theNoArr[i] == "10"){ // 2D
-				theNoNin.checked = true;
-			} 
-			if(theNoArr[i] == "11"){ // 3D
-				theNoTen.checked = true;
-			} 
-			if(theNoArr[i] == "12"){ // IMAX
-				theNoEle.checked = true;
-			} 
-			if(theNoArr[i] == "13"){ // 2D
-				theNoTwe.checked = true;
-			} 
-			if(theNoArr[i] == "14"){ // 3D
-				theNoThirt.checked = true;
-			} 
-			if(theNoArr[i] == "15"){ // IMAX
-				theNoFourt.checked = true;
-			}  
 		}
  	</c:if> 
  
@@ -362,39 +326,18 @@
 			theNothree.checked = false;
 			theNoFour.checked = false;
 			theNoFif.checked = false;
-			theNoSix.checked = false;
-			theNoSev.checked = false;
-			theNoEig.checked = false;
-			theNoNin.checked = false;
-			theNoTen.checked = false;
-			theNoEle.checked = false;
-			theNoNin.checked = false;
-			theNoTen.checked = false;
-			theNoEle.checked = false;
-			theNoTwe.checked = false;
-			theNoThirt.checked = false;
-			theNoFourt.checked = false;
 						
 			if(movVer == "2D"){
 				theNoZero.checked = true;
 				theNothree.checked = true;
-				theNoSix.checked = true;
-				theNoNin.checked = true;
-				theNoTwe.checked = true;
 			}
 			if(movVer == "3D"){
 				theNoFirst.checked = true;
 				theNoFour.checked = true;
-				theNoSev.checked = true;
-				theNoTen.checked = true;
-				theNoThirt.checked = true;
 			}
 			if(movVer == "IMAX"){
 				theNoSecond.checked = true;
 				theNoFif.checked = true;
-				theNoEig.checked = true;
-				theNoEle.checked = true;
-				theNoFourt.checked = true;
 			}	
 		}else{
 			
@@ -404,18 +347,6 @@
 			theNothree.checked = false;
 			theNoFour.checked = false;
 			theNoFif.checked = false;
-			theNoSix.checked = false;
-			theNoSev.checked = false;
-			theNoEig.checked = false;
-			theNoNin.checked = false;
-			theNoTen.checked = false;
-			theNoEle.checked = false;
-			theNoNin.checked = false;
-			theNoTen.checked = false;
-			theNoEle.checked = false;
-			theNoTwe.checked = false;
-			theNoThirt.checked = false;
-			theNoFourt.checked = false;
 			
 			/* ================================================================================================
 			    * 新增電影時，movver是checkbox多選，用字串串接的方式存進db, so that it has to split the string here.
@@ -426,23 +357,14 @@
 				if(movVerArr[i] == "2D"){
 					theNoZero.checked = true;
 					theNothree.checked = true;
-					theNoSix.checked = true;
-					theNoNin.checked = true;
-					theNoTwe.checked = true;
 				}
 				if(movVerArr[i] == "3D"){
 					theNoFirst.checked = true;
 					theNoFour.checked = true;
-					theNoSev.checked = true;
-					theNoTen.checked = true;
-					theNoThirt.checked = true;
 				}
 				if(movVerArr[i] == "IMAX"){
 					theNoSecond.checked = true;
 					theNoFif.checked = true;
-					theNoEig.checked = true;
-					theNoEle.checked = true;
-					theNoFourt.checked = true;
 				}	
 			}
 		}
@@ -514,16 +436,7 @@
 	theNothree.addEventListener('change', isEmpty, false);
 	theNoFour.addEventListener('change', isEmpty, false);
 	theNoFif.addEventListener('change', isEmpty, false);
-	theNoSix.addEventListener('change', isEmpty, false);
-	theNoSev.addEventListener('change', isEmpty, false);
-	theNoEig.addEventListener('change', isEmpty, false);	
-	theNoNin.addEventListener('change', isEmpty, false);
-	theNoTen.addEventListener('change', isEmpty, false);
-	theNoEle.addEventListener('change', isEmpty, false);
-	theNoTwe.addEventListener('change', isEmpty, false);
-	theNoThirt.addEventListener('change', isEmpty, false);
-	theNoFourt.addEventListener('change', isEmpty, false);
-	movNoselect.addEventListener('change', isEmpty, false);
+	
 	addtime.addEventListener("click", isEmpty, false);
 	$('#sesdate_begin').change(isEmpty);
 	$('#sesdate_end').change(isEmpty);
@@ -541,10 +454,7 @@
 	
 	function isEmpty(e){
 		if(!theNoZero.checked && !theNoFirst.checked && !theNoSecond.checked && 
-		   !theNothree.checked && !theNoFour.checked && !theNoFif.checked &&
-		   !theNoSix.checked && !theNoSev.checked && !theNoEig.checked &&
-		   !theNoNin.checked && !theNoTen.checked && !theNoEle.checked &&
-		   !theNoTwe.checked && !theNoThirt.checked && !theNoFourt.checked){
+		   !theNothree.checked && !theNoFour.checked && !theNoFif.checked){
 			$("#abled-btn").css('display','none');
 			$("#disabled-btn").css('display','block'); 
 			$("#theNo-errmsg").css('display','inline-block'); 
@@ -552,10 +462,7 @@
 		}
 		
 		if(theNoZero.checked || theNoFirst.checked || theNoSecond.checked ||
-		   theNothree.checked || theNoFour.checked || theNoFif.checked ||
-		   theNoSix.checked || theNoSev.checked || theNoEig.checked ||
-		   theNoNin.checked || theNoTen.checked || theNoEle.checked ||
-		   theNoTwe.checked || theNoThirt.checked || theNoFourt.checked){
+		   theNothree.checked || theNoFour.checked || theNoFif.checked){
 			$("#abled-btn").css('display','block');
 			$("#disabled-btn").css('display','none'); 
 			$("#theNo-errmsg").css('display','none'); 

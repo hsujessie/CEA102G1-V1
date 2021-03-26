@@ -123,11 +123,11 @@
 							%>
 							<tr>
 								<th>上映日期</th>
-								<td><input class="sty-input mr-left mr-btm-normal" name="movondate" id="mov_ondate" type="text" value="<%=movondate%>"></td>
+								<td><input class="sty-input mr-left mr-btm-normal" name="movondate" id="mov_ondate" type="date" value="<%=movondate%>"></td>
 							</tr>
 							<tr>
 								<th>下檔日期</th>
-								<td><input class="sty-input mr-left mr-btm-normal" name="movoffdate" id="mov_offdate" type="text" value=""></td>
+								<td><input class="sty-input mr-left mr-btm-normal" name="movoffdate" id="mov_offdate" type="date" value=""></td>
 							</tr>
 							<tr>
 								<th>片長</th>
@@ -229,7 +229,7 @@
 		<script src="<%=request.getContextPath()%>/resource/datetimepicker/jquery.datetimepicker.full.js"></script>
 
 <script>
-	$.datetimepicker.setLocale('zh');
+	/* $.datetimepicker.setLocale('zh');
 	$(function(){
 		 $('#mov_ondate').datetimepicker({
 		  theme:'dark',
@@ -252,7 +252,7 @@
 		  },
 		  timepicker:false
 		 });
-	});
+	}); */
 	
 /* =========================================================================================== */
 								/* Varify Inputs */

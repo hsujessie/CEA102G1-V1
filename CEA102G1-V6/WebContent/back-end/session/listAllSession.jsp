@@ -20,7 +20,7 @@
 	.success-span{
 	    color: #bb9d52;
 		position: absolute;
-	    top: 7.5%;
+	    top: 50px;
 	    left: 17%;
 	    font-size: 16px;
 	}
@@ -139,17 +139,17 @@
 												 <a class="btn btn-light btn-brd grd1 effect-1" onclick="updateData(this,${sesVO.sesNo})" >
 													<input type="submit" value="修改" class="input-pos">
 							        			 </a>
-										     </c:if>
-											 <c:if test="${result eq false}">
-												<c:choose>
-												    <c:when test="${sesVO.sesDate le today}">			
-													    已上映
-												    </c:when>
-												    <c:otherwise>
-												    	即將上映
-												    </c:otherwise>
-												</c:choose>	
-											 </c:if>
+										    </c:if>
+										    <c:if test="${result eq false}">
+											<c:choose>
+											    <c:when test="${sesVO.sesDate le today}">			
+												    已上映
+											    </c:when>
+											    <c:otherwise>
+											    	即將上映
+											    </c:otherwise>
+											</c:choose>	
+											</c:if>
 										</td>
 									</tr>
 								   </c:forEach>

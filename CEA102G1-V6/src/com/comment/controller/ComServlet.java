@@ -27,7 +27,6 @@ public class ComServlet extends HttpServlet {
 	public void doPost(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException{
 		req.setCharacterEncoding("UTF-8");
 		String action = req.getParameter("action");
-		System.out.println("comment action: "+action);
 		
 
 		// 來自前台 movies_subpage.jsp的請求
@@ -59,11 +58,6 @@ public class ComServlet extends HttpServlet {
 					errorMsgs.put("comContent","comContent is null.");
 				}
 				java.sql.Timestamp comTime = new Timestamp(System.currentTimeMillis());
-
-				System.out.println("movNo= " + movNo);
-				System.out.println("memNo= " + memNo);
-				System.out.println("comContent= " + comContent);
-				System.out.println("comTime= " + comTime);
 				
 				Integer comStatus = 0;
 				ComVO comVO = new ComVO();

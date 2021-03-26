@@ -81,6 +81,11 @@ public class MovServlet extends HttpServlet{
 				
 				String fromFrontend = req.getParameter("fromFrontend");
 				if("true".equals(fromFrontend) ) {
+					/* remove a attribute which is from frontend movies_subpage.jsp through login page */
+					HttpSession session = req.getSession();
+					if (session.getAttribute("moviesSubpage") != null) {
+					    session.removeAttribute("moviesSubpage");
+					}
 					url = "/front-end/movies/movies_subpage.jsp";
 				}
 				
@@ -169,7 +174,7 @@ public class MovServlet extends HttpServlet{
 
 				java.sql.Date movoffdate = null;
 				try {
-					movoffdate = java.sql.Date.valueOf(req.getParameter("movondate").trim());
+					movoffdate = java.sql.Date.valueOf(req.getParameter("movoffdate").trim());
 					
 				} catch (IllegalArgumentException e) {
 					movoffdate = new java.sql.Date(System.currentTimeMillis());
@@ -200,7 +205,7 @@ public class MovServlet extends HttpServlet{
 
 				byte[] movpos = null;
 				Part movposPart = req.getPart("movpos");
-				/* 新增時，若沒寫以下判斷，沒有選圖片時，把瀏覽器預設的圖寫進db，在修改時，會顯示broken image */
+				/* 新增時，若沒寫以下判斷，沒有選圖片時，會把瀏覽器預設的圖寫進db，在修改時，會顯示broken image */
 				if(movposPart.getContentType() != null && movposPart.getContentType().indexOf("image") >= 0) {  // movposPart.getContentType() 印出image/jpeg
 					 InputStream movposis = movposPart.getInputStream();
 					 movpos = new byte[movposis.available()];
@@ -250,7 +255,8 @@ public class MovServlet extends HttpServlet{
 					
 				/***************************3.新增完成,準備轉交(Send the Success view)***********/				
 				String addSuccess = "【  " + movname + " 】" + "新增成功";
-				req.setAttribute("addSuccess", addSuccess);	
+				req.setAttribute("addSuccess", addSuccess);
+				req.setAttribute("movname", movname);		
 				
 				String url = "/back-end/movie/listAllMovie.jsp";
 				RequestDispatcher successView = req.getRequestDispatcher(url);
@@ -571,7 +577,7 @@ public class MovServlet extends HttpServlet{
 					session.setAttribute("map",map1);
 					map = map1;
 				}
-				System.out.println("map.size()= " + map.size());
+//				System.out.println("map.size()= " + map.size());
 
 			/***************************2.開始複合查詢***************************************/
 			MovService movSvc = new MovService();
