@@ -92,7 +92,7 @@
 			                        <input class="sty-input time-input-sty" name="sesDateBegin" id="sesdate_Begin" type="text" value=""> 
 			                        ~ <input class="sty-input time-input-sty" name="sesDateEnd" id="sesdate_End" type="text" value="">
 			                        
-			                        <input type="hidden" name="action" value="listSessions_ByCompositeQuery" style="margin-right:1.5%;">
+			                        <input type="hidden" name="action" value="listSessions_ByCompositeQuery">
 				        			<a class="btn btn-light btn-brd grd1 effect-1" style="margin-left: .5%;">
 										<input type="submit" value="搜尋" class="input-pos">
 				        			</a>
