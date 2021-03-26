@@ -16,11 +16,9 @@ public class jdbcUtil_CompositeQuery_Movie {
 		}else if( "mov_ondate_year".equals(columnName)) {
 			columnName = "mov_ondate";
 			aCondition = "YEAR(" + columnName + ") " + "=" + "'" + value + "'";
-			System.out.println("aCondition= " + aCondition);
 		}else if( "mov_ondate_month".equals(columnName)) {
 			columnName = "mov_ondate";
 			aCondition = "MONTH(" + columnName + ") " + "=" + "'" + value + "'";
-			System.out.println("aCondition= " + aCondition);
 		}	
 
 		return aCondition + " ";
@@ -42,7 +40,7 @@ public class jdbcUtil_CompositeQuery_Movie {
 					whereCondition.append(" and " + aCondition);
 				}
 
-				System.out.println("有送出查詢資料的欄位數count = " + count);
+//				System.out.println("有送出查詢資料的欄位數count = " + count);
 			}
 		}
 		

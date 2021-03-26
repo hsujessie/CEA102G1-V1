@@ -205,7 +205,7 @@ public class MovServlet extends HttpServlet{
 
 				byte[] movpos = null;
 				Part movposPart = req.getPart("movpos");
-				/* 新增時，若沒寫以下判斷，沒有選圖片時，把瀏覽器預設的圖寫進db，在修改時，會顯示broken image */
+				/* 新增時，若沒寫以下判斷，沒有選圖片時，會把瀏覽器預設的圖寫進db，在修改時，會顯示broken image */
 				if(movposPart.getContentType() != null && movposPart.getContentType().indexOf("image") >= 0) {  // movposPart.getContentType() 印出image/jpeg
 					 InputStream movposis = movposPart.getInputStream();
 					 movpos = new byte[movposis.available()];
@@ -576,7 +576,7 @@ public class MovServlet extends HttpServlet{
 					session.setAttribute("map",map1);
 					map = map1;
 				}
-				System.out.println("map.size()= " + map.size());
+//				System.out.println("map.size()= " + map.size());
 
 			/***************************2.開始複合查詢***************************************/
 			MovService movSvc = new MovService();

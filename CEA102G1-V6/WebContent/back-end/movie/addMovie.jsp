@@ -115,13 +115,10 @@
 							</tr>
 							<%
 							  java.sql.Date movondate = null;
-							  java.sql.Date movoffdate = null;
 							  try {
 								  movondate = movVO.getMovondate();
-								  movoffdate = movVO.getMovoffdate();
 							   } catch (Exception e) {
 								   movondate = new java.sql.Date(System.currentTimeMillis());
-								   movoffdate = new java.sql.Date(System.currentTimeMillis());
 							   }
 							%>
 							<tr>

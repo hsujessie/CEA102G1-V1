@@ -98,7 +98,7 @@ public class SesServlet extends HttpServlet {
 					session.setAttribute("map",map1);
 					map = map1;
 				}
-				System.out.println("map.size()= " + map.size());
+//				System.out.println("map.size()= " + map.size());
 
 			/***************************2.開始複合查詢***************************************/
 			SesService sesSvc = new SesService();

@@ -7,8 +7,8 @@ import java.util.TreeMap;
 public class jdbcUtil_CompositeQuery_Session {
 	public static String get_aCondition_For_MySql(String columnName, String value) {
 		String aCondition = null;
-		System.out.println("columnName: " + columnName);
-		System.out.println("value: " + value);
+//		System.out.println("columnName: " + columnName);
+//		System.out.println("value: " + value);
 		
 		if("movNo".equals(columnName)) {
 			columnName = "mov_no";
@@ -17,12 +17,10 @@ public class jdbcUtil_CompositeQuery_Session {
 		else if("sesDateBegin".equals(columnName)) {
 			columnName = "ses_date";
 			aCondition = columnName + " >= " + "'" + value + "'" ;
-			System.out.println("aCondition= " + aCondition);
 		}
 		else if("sesDateEnd".equals(columnName)) {
 			columnName = "ses_date";
 			aCondition = columnName + " <= " + "'" + value + "'" ;
-			System.out.println("aCondition= " + aCondition);
 		}
 
 		return aCondition + " ";
@@ -44,7 +42,7 @@ public class jdbcUtil_CompositeQuery_Session {
 					whereCondition.append(" and " + aCondition);
 				}
 
-				System.out.println("有送出查詢資料的欄位數count = " + count);
+//				System.out.println("有送出查詢資料的欄位數count = " + count);
 			}
 		}
 		
