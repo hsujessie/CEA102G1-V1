@@ -168,10 +168,10 @@ public class TheServlet extends HttpServlet {
 				/***************************2.�}�l�s�W���***************************************/
 				TheService theSvc = new TheService();
 				theaterVO = theSvc.addTheater(movver_no, the_seat, the_seatno);
-				
+				Integer the_no = theaterVO.getThe_no();
 				/***************************3.�s�W����,�ǳ����(Send the Success view)***********/
-				String url = "/back-end/theater/listAllTheater.jsp";
-				RequestDispatcher successView = req.getRequestDispatcher(url);
+				String url = "/back-end/theater/listAllTheater.jsp?the_no=";
+				RequestDispatcher successView = req.getRequestDispatcher(url+the_no);
 				successView.forward(req, res);				
 				
 				/***************************��L�i�઺���~�B�z**********************************/

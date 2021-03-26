@@ -16,8 +16,8 @@ public class FaqService {
 		faqVO.setFaqtyp_no(faqtyp_no);
 		faqVO.setFaq_question(faq_question);
 		faqVO.setFaq_answer(faq_answer);
-		dao.insert(faqVO);
-		
+		Integer faq_no=dao.insert(faqVO);
+		faqVO.setFaq_no(faq_no);
 		return faqVO;
 	}
 	

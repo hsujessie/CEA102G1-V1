@@ -33,21 +33,26 @@ public class FaqDAO implements FaqDAO_interface{
 			"UPDATE FAQ SET FAQTYP_NO=?,FAQ_QUESTION=?,FAQ_ANSWER=? where faq_no =?";
 
 	@Override
-	public void insert(FaqVO faqVO) {
+	public Integer insert(FaqVO faqVO) {
 		Connection con = null;
 		PreparedStatement pstmt = null;
-
+		Integer faq_no = null;
 		try {
 
 			con = ds.getConnection();
-			pstmt = con.prepareStatement(INSERT_STMT);
+			String[] cols = {"faq_no"};
+			pstmt = con.prepareStatement(INSERT_STMT,cols);
 
 			pstmt.setInt(1,faqVO.getFaqtyp_no());
 			pstmt.setString(2,faqVO.getFaq_question());
 			pstmt.setString(3,faqVO.getFaq_answer());
 
 			pstmt.executeUpdate();
-
+			
+			ResultSet rs = pstmt.getGeneratedKeys();
+			if(rs.next()) {
+				faq_no = new Integer(rs.getString(1));
+			}
 			// Handle any SQL errors
 		} catch (SQLException se) {
 			throw new RuntimeException("A database error occured. "
@@ -69,7 +74,7 @@ public class FaqDAO implements FaqDAO_interface{
 				}
 			}
 		}
-		
+		return faq_no;
 	}
 
 	@Override

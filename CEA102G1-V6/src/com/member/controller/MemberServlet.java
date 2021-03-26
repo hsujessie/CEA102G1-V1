@@ -931,7 +931,18 @@ public class MemberServlet extends HttpServlet {
 				failureView.forward(req, res);
 			}
 		}
-
+//		*********************************這是祥德的，請不要砍掉!!!*************************
+		if("ajaxGetMemberName".equals(action)) { 
+		res.setCharacterEncoding("UTF-8");
+		res.setContentType("text; charset=utf-8");
+		PrintWriter out = res.getWriter();
+		Integer memNo = new Integer(req.getParameter("memNo").trim());
+		MemberService memSvc = new MemberService();
+		String memName = memSvc.getOneMember(memNo).getMemName();
+		out.print(memName);
+		return;
+	}
+//		*********************************這是祥德的，請不要砍掉!!!*************************
 //==================================結束==============================		
 	}
 }
