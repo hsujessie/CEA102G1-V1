@@ -154,9 +154,9 @@ padding:
         </div>
         
 <%@ include file="/front-end/files/frontend_importJs.file"%>
-<br>本網頁的路徑:<br><b>
-   <font color=blue>request.getServletPath():</font> <%=request.getServletPath()%><br>
-   <font color=blue>request.getRequestURI(): </font> <%=request.getRequestURI()%> </b>  
+<!-- <br>本網頁的路徑:<br><b> -->
+<%--    <font color=blue>request.getServletPath():</font> <%=request.getServletPath()%><br> --%>
+<%--    <font color=blue>request.getRequestURI(): </font> <%=request.getRequestURI()%> </b>   --%>
    <script language=javascript>
 		setTimeout('window.location="<%=request.getContextPath()%>/front-end/index.jsp"', 5000)  <%-- 三秒後轉登入畫面--%>
 	</script> 

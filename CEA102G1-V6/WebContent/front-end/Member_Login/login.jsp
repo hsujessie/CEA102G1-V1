@@ -32,6 +32,7 @@
             "showMethod": "fadeIn",
             "hideMethod": "fadeOut"
         }
+        
     </script>
 <style>
 #preview{
@@ -42,6 +43,24 @@ img{
 }
 
 </style>
+<script>
+					//修改成功訊息 -->
+					if ('${not empty success}') {
+					   
+					    <c:forEach var="message" items="${success}">
+					    		<h5><span style="color: green">toastr['success'](${message}); </span></h5><br> 
+					    </c:forEach> 
+					}
+					<!-- 									 //錯誤訊息 -->
+					if ('${not empty errorMsgs}') {
+					   
+					    <c:forEach var="message" items="${errorMsgs}">
+					    		<h5><span style="color: red">toastr['errorMsgs'](${message}); </span></h5><br> 
+					    </c:forEach> 
+					}
+
+
+</script>
         <div class="wrapper"><!-- wrapper Start -->
             <!-- Nav Bar Start -->
 			<c:set value="${pageContext.request.requestURI}" var="urlRecog"></c:set>
@@ -72,14 +91,10 @@ img{
 <%-- 										</c:forEach> --%>
 <%-- 								</c:if> --%>
 <!-- 						   </div> -->
-								 //修改成功訊息
-								            if ('${updateSuccess}' == 'updateSuccess') {
-								                //      	debugger;
-								                <%
-								                session.removeAttribute("updateSuccess"); 
-								                %>
-								                toastr['success']('修改成功！！', '成功'); 
-								            }
+<!-- 								     
+								
+								
+								
 								
 								            //新增成功訊息
 								            if ('${addSuccess}' == 'addSuccess') {
@@ -199,6 +214,7 @@ function init() {
 }
 
 window.onload = init;
+}
 </script> 
 </body>
 </html>

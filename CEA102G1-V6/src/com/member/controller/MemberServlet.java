@@ -423,24 +423,7 @@ public class MemberServlet extends HttpServlet {
 				} else if (!memPassword.trim().matches(memPasswordReg)) {
 					errorMsgs.add("會員信箱: 只能是英文字母、數字和@_ , 且長度必需在2到10之間");
 				}
-				// <錢包>
-				// Integer memWallet = null;
-				// try {
-				// memWallet = new Integer(req.getParameter("memWallet").trim());
-				// memWallet= 0;
-				// } catch (NumberFormatException e) {
-				// errorMsgs.add("請填數字,");
-				// }
-
-				// <狀態>
-				// Integer memstatus = null;
-				// try {
-				// memstatus = new Integer(req.getParameter("memStatus").trim());
-				// } catch (NumberFormatException e) {
-				// memstatus = 0;
-				// errorMsgs.add("memstatus請填數字");
-				// }
-
+				
 				// <頭像>
 				byte[] memImg = null;
 				Part part = req.getPart("memImg");
@@ -454,8 +437,6 @@ public class MemberServlet extends HttpServlet {
 				memberVO.setMemAccount(memAccount);
 				memberVO.setMemPassword(memPassword);
 				memberVO.setMemMail(memMail);
-				// memberVO.setMemWallet(memWallet);
-				// memberVO.setMemstatus(memstatus);
 				memberVO.setMemImg(memImg);
 
 				MemberService memberSvc = new MemberService();

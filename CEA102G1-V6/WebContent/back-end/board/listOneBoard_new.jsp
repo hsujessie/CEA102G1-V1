@@ -114,8 +114,8 @@ System.out.println("進入jsp");
         				
 		<%@ include file="/back-end/files/sb_importJs.file"%> <!-- 引入template要用的js -->
 		
-<br>本網頁的路徑:<br><b>
-   <font color=blue>request.getServletPath():</font> <%=request.getServletPath()%><br>
-   <font color=blue>request.getRequestURI(): </font> <%=request.getRequestURI()%> </b>		
+<!-- <br>本網頁的路徑:<br><b> -->
+<%--    <font color=blue>request.getServletPath():</font> <%=request.getServletPath()%><br> --%>
+<%--    <font color=blue>request.getRequestURI(): </font> <%=request.getRequestURI()%> </b>		 --%>
 </body>
 </html>
