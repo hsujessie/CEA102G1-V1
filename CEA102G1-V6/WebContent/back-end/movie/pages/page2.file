@@ -1,13 +1,13 @@
 <%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
-<b style="font-size:14px;">共<font color=#bb9d52><%=rowNumber%></font>筆</b>
+<b style="font-size:14px;">A total of <font color=#bb9d52><%=rowNumber%></font> entries</b>
   <%if (rowsPerPage<rowNumber) {%>
     <%if(pageIndex>=rowsPerPage){%>
-         <span style="font-size:14px;">｜ </span><A id="a-color" href="<%=request.getRequestURI()%>?whichPage=1">至第一頁</A>
-         <span style="font-size:14px;">｜ </span><A id="a-color" href="<%=request.getRequestURI()%>?whichPage=<%=whichPage-1%>">上一頁</A>
+         <span style="font-size:14px;">｜ </span><A id="a-color" href="<%=request.getRequestURI()%>?whichPage=1">The first page</A>
+         <span style="font-size:14px;">｜ </span><A id="a-color" href="<%=request.getRequestURI()%>?whichPage=<%=whichPage-1%>">Previous </A>
     <%}%>
 
     <%if(pageIndex<pageIndexArray[pageNumber-1]){%>
-        <A id="a-color" href="<%=request.getRequestURI()%>?whichPage=<%=whichPage+1%>">下一頁</A>
-        <span style="font-size:14px;">｜ </span><A id="a-color" href="<%=request.getRequestURI()%>?whichPage=<%=pageNumber%>">到最後一頁</A>
+        <span style="font-size:14px;">｜ </span><A id="a-color" href="<%=request.getRequestURI()%>?whichPage=<%=whichPage+1%>"> Next</A>
+        <span style="font-size:14px;">｜ </span><A id="a-color" href="<%=request.getRequestURI()%>?whichPage=<%=pageNumber%>">The last page</A>
     <%}%>
   <%}%>
