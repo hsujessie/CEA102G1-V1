@@ -129,7 +129,7 @@
 							<tbody>
 								<%@ include file="/back-end/movie/pages/page1.file" %> 
 								<c:forEach var="movVO" items="${list}" varStatus="no" begin="<%=pageIndex%>" end="<%=pageIndex+rowsPerPage-1%>">					
-								<tr class="sty-height" valign='middle' ${(movVO.movno==param.movno) ? 'style="background-color:#bb9d52; color:#fff;"':''}>
+								<tr class="sty-height" valign='middle' ${movVO.movno == param.movno or movVO.movname == movname ? 'style="background-color:#bb9d52; color:#fff;"':''}>
 									<td>${no.index+1}</td>
 									<td>${movVO.getMovname()}</td>
 									<td>${movVO.getMovondate()}</td>

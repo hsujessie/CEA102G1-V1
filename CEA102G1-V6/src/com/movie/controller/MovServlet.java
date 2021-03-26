@@ -255,7 +255,8 @@ public class MovServlet extends HttpServlet{
 					
 				/***************************3.新增完成,準備轉交(Send the Success view)***********/				
 				String addSuccess = "【  " + movname + " 】" + "新增成功";
-				req.setAttribute("addSuccess", addSuccess);	
+				req.setAttribute("addSuccess", addSuccess);
+				req.setAttribute("movname", movname);		
 				
 				String url = "/back-end/movie/listAllMovie.jsp";
 				RequestDispatcher successView = req.getRequestDispatcher(url);
