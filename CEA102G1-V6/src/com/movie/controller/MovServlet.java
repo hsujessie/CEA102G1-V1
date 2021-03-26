@@ -174,7 +174,7 @@ public class MovServlet extends HttpServlet{
 
 				java.sql.Date movoffdate = null;
 				try {
-					movoffdate = java.sql.Date.valueOf(req.getParameter("movondate").trim());
+					movoffdate = java.sql.Date.valueOf(req.getParameter("movoffdate").trim());
 					
 				} catch (IllegalArgumentException e) {
 					movoffdate = new java.sql.Date(System.currentTimeMillis());
