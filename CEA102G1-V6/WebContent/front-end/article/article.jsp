@@ -214,7 +214,7 @@
 
         					//判斷是否已收藏
         					debugger;
-        					if('${memNo}' != "" && '${MemberVO}' != ""){
+        					if("${memNo}" != "" && '${MemberVO}' != ""){
         						isArtFav();
         					}
 
