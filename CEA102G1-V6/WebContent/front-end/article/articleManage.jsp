@@ -22,7 +22,7 @@
 <style>	
 	.topDiv{
 		margin: 0 auto 5vh auto;
-    	width: 20vw;
+    	width: 17vw;
     	height: 10vh;
     	display: inline-block;
   	}
@@ -72,6 +72,21 @@
 		display: block;
     	margin-left: auto;
 	}
+	.form-control {
+	    display: block;
+	    width: 100%;
+	    height: calc(1.5em + .75rem + 2px);
+	    padding: 1.21rem .75rem;
+	    font-size: 1rem;
+	    font-weight: 400;
+	    line-height: 1.5;
+	    color: #495057;
+	    background-color: #fff;
+	    background-clip: padding-box;
+	    border: 2px solid #AA9166;
+	    border-radius: .25rem;
+	    transition: border-color .15s ease-in-out,box-shadow .15s ease-in-out;
+	}
 </style>
 <title>Article Manage</title>
 
@@ -118,7 +133,7 @@
 			                            <input type="text" id="artTitleByCompositeQuery" class="form-control" placeholder="搜尋文章標題"
 			                                aria-label="Recipient's username" aria-describedby="findArtByTitleButton">
 			                            <div class="input-group-append">
-			                                <button class="btn btn-outline-secondary" type="button"
+			                                <button class="btn combtn" type="button"
 			                                    id="findArtByTitleButton">查詢</button>
 			                            </div>
 			                        </div>
@@ -128,7 +143,7 @@
 			                            <input type="date" id="artTimeForByCompositeQuery" class="form-control" placeholder="依日期搜尋"
 			                                aria-label="Recipient's username" aria-describedby="findArtByTimeButton">
 			                            <div class="input-group-append">
-			                                <button class="btn btn-outline-secondary" type="button"
+			                                <button class="btn combtn" type="button"
 			                                    id="findArtByTimeButton">查詢</button>
 			                            </div>
 			                        </div>
@@ -145,7 +160,7 @@
 			                                placeholder="搜尋收藏文章標題" aria-label="Recipient's username"
 			                                aria-describedby="findArtFavTitleByButton">
 			                            <div class="input-group-append">
-			                                <button class="btn btn-outline-secondary" type="button"
+			                                <button class="btn combtn" type="button"
 			                                    id="findArtFavTitleByButton">查詢</button>
 			                            </div>
 			                        </div>
@@ -155,7 +170,7 @@
 			                            <input type="date" id="artFavTimeByCompositeQuery" class="form-control" placeholder="依日期搜尋"
 			                                aria-label="Recipient's username" aria-describedby="findArtFavTimeByButton">
 			                            <div class="input-group-append">
-			                                <button class="btn btn-outline-secondary" type="button"
+			                                <button class="btn combtn" type="button"
 			                                    id="findArtFavTimeByButton">查詢</button>
 			                            </div>
 			                        </div>
@@ -172,7 +187,7 @@
 			                                placeholder="搜尋留言文章標題" aria-label="Recipient's username"
 			                                aria-describedby="findArtRepTitleByButton">
 			                            <div class="input-group-append">
-			                                <button class="btn btn-outline-secondary" type="button"
+			                                <button class="btn combtn" type="button"
 			                                    id="findArtRepTitleByButton">查詢</button>
 			                            </div>
 			                        </div>
@@ -182,7 +197,7 @@
 			                            <input type="date" id="artRepTimeByCompositeQuery" class="form-control" placeholder="依日期搜尋"
 			                                aria-label="Recipient's username" aria-describedby="findArtRepTimeByButton">
 			                            <div class="input-group-append">
-			                                <button class="btn btn-outline-secondary" type="button"
+			                                <button class="btn combtn" type="button"
 			                                    id="findArtRepTimeByButton">查詢</button>
 			                            </div>
 			                        </div>
@@ -368,7 +383,7 @@ function findArtFavByCompositeQuery(e) {
               $('#artFavListCenter').append(
                   '<div id="movType" class="divWidth divHeight" style="display: inline-block"><div style="display: inline-block">電影類型：</div> <div style="display: inline-block">' +
                   item.artMovType + '</div></div>' +
-                  '<div id="artLike" style="display: inline-block"><button class="artFavButton combtn" title="取消收藏">取消收藏</button></div>' +
+                  '<div id="artLike" style="display: inline-block"><button class="artFavButton combtn" data-value="'+item.artNo+'" title="取消收藏">取消收藏</button></div>' +
                   '<div id="artTitle"><div class="divHeight" style="font-size: 1.2rem;"><b>' + item.artTitle + '</b></div></div>' +
                   '<div id="artFavTime"><div class="divHeight" style="display: inline-block">加入收藏時間：</div> <div class="divHeight" style="display: inline-block">' +
                   moment(item.artFavTime).locale('zh_TW').format('llll') +
@@ -508,7 +523,7 @@ $('#artFavListCenter').on('click', '.artFavButton', function (event){
 	$.ajax({
 		type: 'POST',
 		url: '<%=request.getContextPath()%>/art/artFav.do',
-		data: {'action':'deleteArtFav', 'artNo':$(this).parent('div').siblings('div').children('.artContent').attr('data-value')},
+		data: {'action':'deleteArtFav', 'artNo':$(this).attr('data-value')},
 		dataType: 'json',
 		success: function (){
 					toastr['warning']('刪除收藏', '成功');

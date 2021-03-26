@@ -79,6 +79,7 @@ public class ArtRepRptServlet extends HttpServlet {
 				try { 
 					obj.put("artRepNo", artRepRptVO.getArtRepNo());
 					obj.put("artTitle", artSvc.getOneArt(artRepRptVO.getArtRepNo()).getArtTitle());
+					obj.put("memAccount", memSvc.getOneMember(artSvc.getOneArt(artRepRptVO.getArtRepNo()).getMemNo()).getMemAccount());
 					obj.put("memName", memSvc.getOneMember(artSvc.getOneArt(artRepRptVO.getArtRepNo()).getMemNo()).getMemName());
 					obj.put("artRepRptNo", artRepRptVO.getArtRepRptNo());
 					obj.put("artRepRptReson", artRepRptVO.getArtRepRptReson());
@@ -92,6 +93,7 @@ public class ArtRepRptServlet extends HttpServlet {
 						obj.put("artRepRptStatus", "已檢舉");
 					}
 					
+					obj.put("reportMemAccount", memSvc.getOneMember(artRepRptVO.getMemNo()).getMemAccount());
 					obj.put("reportMemName", memSvc.getOneMember(artRepRptVO.getMemNo()).getMemName());
 					obj.put("artRepContent", artRepSvc.getOneArtRep(artRepRptVO.getArtRepNo()).getArtRepContent());
 				} catch (JSONException e) {
@@ -121,21 +123,17 @@ public class ArtRepRptServlet extends HttpServlet {
 			
 			/*====================修改資料===================*/
 			ArtRepService artRepSvc = new ArtRepService();
-			Integer artRepStatus = artRepSvc.getOneArtRep(artRepNo).getArtRepStatus();
-			if(artRepStatus == 0) {
-				artRepSvc.updateStatus(artRepNo, 1);
-			}else {
-				artRepSvc.updateStatus(artRepNo, 0);
-			}
-			System.out.println("新的ArtRepStatus:"+artRepSvc.getOneArtRep(artRepNo).getArtRepStatus());
-			
+
 			ArtRepRptService artRepRptSvc = new ArtRepRptService();
 			Integer artRepRptStatus = artRepRptSvc.getOneArtRepRpt(artRepRptNo).getArtRepRptStatus();
 			if(artRepRptStatus == 0) {
+				artRepSvc.updateStatus(artRepNo, 1);
 				artRepRptSvc.updateArtRepRpt(artRepRptNo, 1);
 			}else {
+				artRepSvc.updateStatus(artRepNo, 0);
 				artRepRptSvc.updateArtRepRpt(artRepRptNo, 0);
 			}
+			System.out.println("新的ArtRepStatus:"+artRepSvc.getOneArtRep(artRepNo).getArtRepStatus());
 			System.out.println("新的ArtRepRptStatus"+artRepRptSvc.getOneArtRepRpt(artRepRptNo).getArtRepRptStatus());
 			
 			/*==============放入JSONObject==============*/

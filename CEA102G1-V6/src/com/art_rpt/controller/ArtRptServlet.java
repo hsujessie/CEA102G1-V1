@@ -75,6 +75,7 @@ public class ArtRptServlet extends HttpServlet {
 				JSONObject obj = new JSONObject();
 				try { 
 					obj.put("artNo", artRptVO.getArtNo());
+					obj.put("memAccount", memSvc.getOneMember(artDAO.findByPrimaryKey(artRptVO.getArtNo()).getMemNo()).getMemAccount());
 					obj.put("memName", memSvc.getOneMember(artDAO.findByPrimaryKey(artRptVO.getArtNo()).getMemNo()).getMemName());
 					obj.put("artRptNo", artRptVO.getArtRptNo());
 					obj.put("artRptContent", artRptVO.getArtRptReson());
@@ -88,6 +89,7 @@ public class ArtRptServlet extends HttpServlet {
 						obj.put("artRptStatus", "已檢舉");
 					}
 					
+					obj.put("reportMemAccount", memSvc.getOneMember(artRptVO.getMemNo()).getMemAccount());
 					obj.put("reportMemName", memSvc.getOneMember(artRptVO.getMemNo()).getMemName());
 					obj.put("artTitle", artDAO.findByPrimaryKey(artRptVO.getArtNo()).getArtTitle());
 				} catch (JSONException e) {
@@ -117,21 +119,17 @@ public class ArtRptServlet extends HttpServlet {
 			
 			/*====================修改資料===================*/
 			ArtService artSvc = new ArtService();
-			Integer artStatus = artSvc.getOneArt(artNo).getArtStatus();
-			if(artStatus == 0) {
-				artSvc.updateStatus(artNo, 1);
-			}else {
-				artSvc.updateStatus(artNo, 0);
-			}
-			System.out.println("新的ArtStatus:"+artSvc.getOneArt(artNo).getArtStatus());
 			
 			ArtRptService artRptSvc = new ArtRptService();
 			Integer artRptStatus = artRptSvc.getOneArtRpt(artRptNo).getArtRptStatus();
 			if(artRptStatus == 0) {
+				artSvc.updateStatus(artNo, 1);
 				artRptSvc.updateArtRpt(1, artRptNo);
 			}else {
+				artSvc.updateStatus(artNo, 0);
 				artRptSvc.updateArtRpt(0, artRptNo);
 			}
+			System.out.println("新的ArtStatus:"+artSvc.getOneArt(artNo).getArtStatus());
 			System.out.println("新的ArtRptStatus"+artRptSvc.getOneArtRpt(artRptNo).getArtRptStatus());
 			
 			/*==============放入JSONObject==============*/

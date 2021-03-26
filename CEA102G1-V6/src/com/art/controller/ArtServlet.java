@@ -22,6 +22,7 @@ import org.json.JSONObject;
 import com.art.model.ArtService;
 import com.art.model.ArtVO;
 import com.member.model.MemberService;
+import com.member.model.MemberVO;
 
 import redis.JedisUtil;
 import redis.clients.jedis.Jedis;
@@ -56,7 +57,7 @@ public class ArtServlet extends HttpServlet {
 			request.setAttribute("artVO", artVO);
 			HttpSession session = request.getSession();
 			
-			if(request.getSession().getAttribute("memNo") != null) {
+			if(request.getSession().getAttribute("MemberVO") != null) {
 				
 				/*====================轉送至新增文章===================*/
 				String url = "/front-end/article/newArticle.jsp";
@@ -118,6 +119,7 @@ public class ArtServlet extends HttpServlet {
 				System.out.println("insert new an art");				
 				
 				Integer artNo = artVO.getArtNo();
+				System.out.println("新增的artNo:"+artNo);
 				session.setAttribute("artNo", artNo);
 				
 				//Bootstrap_modal
@@ -221,11 +223,6 @@ public class ArtServlet extends HttpServlet {
 				System.out.println("updateArt_editor："+request.getParameter("editor"));
 				artVO = artSvc.updateArt(artNo, artTitle, artContent, artMovTypeSelect);
 				
-				//Bootstrap_modal
-				String openModal="openModal";
-				session.setAttribute("openModal",openModal );
-				
-				session.setAttribute("artNo", artNo);
 				//updateSuccess
 				session.setAttribute("updateSuccess", "updateSuccess");
 				System.out.println("updateArt_ok");	
@@ -238,6 +235,11 @@ public class ArtServlet extends HttpServlet {
 					response.sendRedirect(url);
 					return;
 				}else {
+					//Bootstrap_modal
+					String openModal="openModal";
+					session.setAttribute("openModal",openModal );
+					session.setAttribute("artNo", artNo);
+					
 					String url = request.getContextPath()+"/front-end/article/article.jsp";
 					System.out.println(url);
 //					RequestDispatcher showUpdateArticle = request.getRequestDispatcher(url);			
@@ -258,15 +260,24 @@ public class ArtServlet extends HttpServlet {
 		//Using AJAX start
 		//article.jsp呼叫，show all article with AJAX or show an article with AJAX
 		if("art_Show_By_AJAX".equals(action)) {
+			HttpSession session = request.getSession();
+			session.removeAttribute("openModal");
 			JSONArray array = new JSONArray();
 			//建立redis連線
 			Jedis jedis = pool.getResource();
 			jedis.auth("123456");
+			session.removeAttribute("memNo");
+			if(session.getAttribute("MemberVO") != null){
+				MemberVO memberVO = (MemberVO)session.getAttribute("MemberVO");
+				session.setAttribute("memNo", memberVO.getMemNo());
+				session.getAttribute("memNo");			
+			}
 			
 			if(request.getParameter("artNo") == null) {
 				System.out.println("artNo == null");
 				ArtService artSvc = new ArtService();
 				MemberService memSvc = new MemberService();
+				
 				List<ArtVO> list = artSvc.getAll();	
 				/*==============放入JSONObject==============*/
 				for (ArtVO artVO : list) {
@@ -276,16 +287,17 @@ public class ArtServlet extends HttpServlet {
 						if(jedis.hexists("artNo:"+artVO.getArtNo(), "clickTimes") == false) {
 							Integer clickTimesN = 0;
 							String clickTimes = String.valueOf(clickTimesN);
-							jedis.hset("artNo:"+artVO.getArtNo(), "movType", artVO.getMovType());
 							jedis.hset("artNo:"+artVO.getArtNo(), "clickTimes", clickTimes);							
 						}
-
+						jedis.hset("artNo:"+artVO.getArtNo(), "movType", artVO.getMovType());
+						
 						//把該movType的artNo新增至redis，判斷個別分類文章Top3時使用
 						jedis.sadd("movType:"+artVO.getMovType(), String.valueOf(artVO.getArtNo()));
 						//新增artNo至redis，判斷全部文章Top3時使用
 						jedis.sadd("all:artNo", String.valueOf(artVO.getArtNo()));
 						
 						obj.put("artNo", artVO.getArtNo());
+						obj.put("memNo", artVO.getMemNo());
 						obj.put("memName", memSvc.getOneMember((artVO.getMemNo())).getMemName());
 						obj.put("artTitle", artVO.getArtTitle());
 						obj.put("artContent", artVO.getArtContent());
@@ -304,12 +316,21 @@ public class ArtServlet extends HttpServlet {
 				JSONObject obj = new JSONObject();
 				ArtService artSvc = new ArtService();
 				MemberService memSvc = new MemberService();
+				session.removeAttribute("openModal");
 				
 				try {
 					System.out.println("artNo:"+request.getParameter("artNo"));
 					/*====================請求參數===================*/	
 					Integer artNo = Integer.parseInt(request.getParameter("artNo"));
 					ArtVO artVO = artSvc.getOneArt(artNo);
+					
+					//新增文章時
+					if(jedis.hexists("artNo:"+artVO.getArtNo(), "clickTimes") == false) {
+						Integer clickTimesN = 0;
+						String clickTimes = String.valueOf(clickTimesN);
+						jedis.hset("artNo:"+artVO.getArtNo(), "movType", artVO.getMovType());
+						jedis.hset("artNo:"+artVO.getArtNo(), "clickTimes", clickTimes);							
+					}
 					
 					System.out.println(jedis.hget("artNo:"+artVO.getArtNo(), "clickTimes"));
 					
@@ -331,6 +352,7 @@ public class ArtServlet extends HttpServlet {
 					obj.put("artReplyno", artVO.getArtReplyno());
 					
 					array.put(obj);
+					session.removeAttribute("artNo");
 					System.out.println("=================art_Show_One_By_AJAX==============");
 				} catch (JSONException e) {
 					e.printStackTrace();
@@ -526,6 +548,8 @@ public class ArtServlet extends HttpServlet {
 		if("find_MoveType_By_AJAX".equals(action)) {
 			JSONArray array = new JSONArray();
 			ArtService artSvc = new ArtService();
+			Jedis jedis = pool.getResource();
+			jedis.auth("123456");
 			
 			List<String> movTypeList = artSvc.getAllMoveType();
 			System.out.println("movTypeList:"+movTypeList);
@@ -538,6 +562,7 @@ public class ArtServlet extends HttpServlet {
 				if(i % 2 == 0) {
 					obj = new JSONObject();
 					try {
+						jedis.del("movType:"+movTypeList.get(i));
 						obj.put("artMovType", movTypeList.get(i));
 						System.out.println("XXXXXXX"+movTypeList.get(i)+"XXXXXXX");
 					} catch (JSONException e) {
@@ -556,6 +581,7 @@ public class ArtServlet extends HttpServlet {
 					System.out.println("movTypeList put times:"+count);
 				}
 			}
+			jedis.close();
 			System.out.println("=================find_MoveType_By_AJAX==============");
 			
 			/*==============傳回=============*/
