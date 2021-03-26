@@ -172,6 +172,7 @@
 		let today_date = getDate(today);	
 		let today_day = today.getDay();	
 		let show_day = "";
+		let date = getDays(today_month,today_year);
 		
 		for (let i = 0; i < daysDuration; i++){
 			
@@ -206,6 +207,19 @@
 
 			today_date++;
 			today_day++;
+			
+			if(today_date > date){
+				today_month++;   // 超過當月的最後一天，月份+1
+				today_date = 1;  // 超過當月的最後一天，日期回歸1號
+
+		        if(today_month < 10){
+		        	today_month = '0' + today_month;
+		        }
+
+		        if(today_date < 10){
+		        	today_date = '0' + today_date;
+		        }
+			}
 		}
 	}
 	
@@ -218,6 +232,30 @@
 	  var date = date.getDate();
 	  return date < 10 ? '0' + date : '' + date;
 	}
+	
+	// 判斷大小月＆閏平年的 天數
+    function getDays(month,year){
+        let mDays = 31;
+        month = parseInt(month);
+        year = parseInt(year);
+        if(month%2 === 0 && month != 2 && month < 7){
+            mDays = 30;
+        }
+        if(month ===  2){
+            if(year%4 === 0 | year%400 === 0){
+                mDays = 29;
+            }else{
+                mDays = 28;
+            }
+        }
+        if(month ===  9){
+            mDays = 30;
+        }
+        if(month%2 != 0 && month > 10){
+            mDays = 30;
+        }
+        return mDays;
+    }
 </script>
 </body>
 </html>
