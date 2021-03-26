@@ -292,12 +292,12 @@
 		                                																														
 										<jsp:useBean id="memSvc" scope="page" class="com.member.model.MemberService"/>
 										<c:set value="${memSvc.getOneMember(comVO.memNo)}" var="memObj"></c:set>
-		                                <span>發表人 <label style="color:#aa9166;">${memObj.memName}</label>&emsp;|&emsp;</span>
+		                                <span>發表人 <label style="color:#aa9166;">${memObj.memName}</label>&emsp;|</span>
 		                                
-		                                <span>發表時間 <label style="color:#aa9166;"><fmt:formatDate value="${comVO.comTime}" pattern="yyy-MM-dd HH:mm" type="DATE"/></label></span>
+		                                <span style="padding-left: 8px;">發表時間 <label style="color:#aa9166;"><fmt:formatDate value="${comVO.comTime}" pattern="yyy-MM-dd HH:mm" type="DATE"/></label></span>
 		                                
 		                                <c:if test="${not empty MemberVO.memAccount}"> <!-- 已登入 Start -->
-                   							<span id="comrep" onclick='openComRepLightbox(this,${comVO.comNo},${comVO.memNo},${comVO.movNo})' ${comVO.memNo == MemberVO.memNo ? 'style="display:none;"' : 'style="display:inline-block;"'} >&emsp;|&emsp;<a>檢舉</a></span> 
+                   							<span id="comrep" onclick='openComRepLightbox(this,${comVO.comNo},${comVO.memNo},${comVO.movNo})' ${comVO.memNo == MemberVO.memNo ? 'style="display:none;"' : 'style="display:inline-block;"'} >&emsp;<a> 檢舉</a></span> 
 	                            		</c:if> <!-- 已登入 End -->   
 		                                <c:if test="${empty MemberVO.memAccount}"> <!-- 未登入 Start -->
                    							<span id="comrep"><a href="${loginUrl}">檢舉</a></span> 
