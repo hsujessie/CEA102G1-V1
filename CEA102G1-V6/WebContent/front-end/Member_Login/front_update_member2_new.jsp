@@ -123,7 +123,7 @@ padding:
 					</tr>  
 					<tr>
 						<th>會員密碼:</th>
-						<td><input type="TEXT" name="memPassword" size="45"	value="<%=memberVO.getMemPassword()%>" /></td>
+						<td><input type="password" name="memPassword" size="45"	value="<%=memberVO.getMemPassword()%>" /></td>
 					</tr>
 					<tr>
 						<th>會員信箱:<font color=red><b>*</b></font></td>
@@ -131,7 +131,7 @@ padding:
 					</tr>
 					<tr>
 						<th>會員大頭照:</th>
-						<td><img src="<%=request.getContextPath()%>/util/imgReader${MemberVO.memImgParam}" width="100" height="100">
+						<td><img src="<%=request.getContextPath()%>/util/imgReader${MemberVO.memImgParam}" style="width:100px; height:100px">
 						<input class=img type="file" name="memImg" size="45"value="" /></td>
 					</tr>
 				</table>

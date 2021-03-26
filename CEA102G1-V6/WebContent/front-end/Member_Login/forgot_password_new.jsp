@@ -85,9 +85,6 @@ body{
 div.container{
 text-align: center; 
 }
-form{
-margin: 0  auto;
-}
 
 
 /* 	================================== */
@@ -115,17 +112,17 @@ margin: 0  auto;
                 <div class="container">
                     <div class="row">
                         <div class="col-12">
-                            <h2>Front-End</h2> 
+                            <h2>找回密碼</h2> 
                         </div>
                     </div>
                 </div>
             </div>
             <!-- Page Header End -->
             <div class="container">
-						<h1>找回密碼</h1>				
 						<p><a href="login.jsp">
-						<img src="<%=request.getContextPath()%>/resource/images/forgot.jpg" width="100" height="100" border="0">回登陸頁面</a></p>
+						<img src="<%=request.getContextPath()%>/resource/images/forgot.jpg" style="width: 250px;hight:250px"><span style="font-color:#FFA600;">回登入頁面</span></a></p>
 			</div>
+			<div class="form_01" style="border-color:#FFA600;border-style:dashed;border-width:3px 11px 7px 11px;padding:5px;width: 490px;margin-left:34%;b">
 			<FORM METHOD="post" ACTION="<%=request.getContextPath()%>/Member/member.do" name="form"  style="width: 450px;">
 
 					<div class="form-group">
@@ -138,10 +135,10 @@ margin: 0  auto;
 					</div>
 					<br>
 					<input class="form-control" type="hidden" name="action" value="forgot_password">
-					<button type="submit" class="btn btn-primary">送出驗證</button>
+					<button type="submit" class="btn btn-primary" style="margin-left: 42%;">送出驗證</button>
 					<br>
 			</Form>	
-
+			</div>
             <!-- PUT HERE Start -->
             
             

@@ -8,6 +8,7 @@ public interface BoardDAO_interface {
           public Boolean delete(Integer boaNo);
           public BoardVO findByPrimaryKey(Integer boaNo);
           public List<BoardVO> findByFK(Integer boatypNo);
+          public List<BoardVO> findByPrimaryKey2(Integer boaNo);
           public List<BoardVO> getAll();
 //          
 

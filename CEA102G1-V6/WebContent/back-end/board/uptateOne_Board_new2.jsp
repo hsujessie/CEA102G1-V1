@@ -2,17 +2,17 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%@ page import="java.util.*"%>
-<%@ page import="com.member.model.*"%>
+<%@ page import="com.board.model.*"%>
 <%@ page import = "javax.servlet.http.* " %>
 <%	
-// List<MemberVO> memberVO = (List<MemberVO>)request.getAttribute("list");//從controller傳回View,jsp不能簡寫唷!!
-MemberVO memberVO = (MemberVO) request.getAttribute("MemberVO");
-// List<MemberVO> list = (List<MemberVO>)session.getAttribute("list");
-// pageContext.setAttribute("memberVO",memberVO);
+
+BoardVO boardVO = (BoardVO) request.getAttribute("BoardVO");
+pageContext.setAttribute("boardVO", boardVO);
+
 %>
 <html>
 <head>
-	<title>Sessions Management</title>
+	<title>公告資料已修改</title>
 	<%@ include file="/back-end/files/sb_head.file"%>
 	<link rel="stylesheet" type="text/css" href="<%=request.getContextPath()%>/resource/datetimepicker/jquery.datetimepicker.css" />
 </head>
@@ -25,8 +25,35 @@ MemberVO memberVO = (MemberVO) request.getAttribute("MemberVO");
 	    font-size: 16px;
 	}
 	.form-sty{
-		margin: 20px 0 0 0;
+		margin: 20px 0 0 100px;
+		 width: 100%;
+		 border-collapse: collapse;
 	}
+ 	.btn-pos{ 
+	position: absolute; 
+   
+     right:40%; 
+     } 
+     .h3-style{
+     padding: 10px 0 0 50px;
+     }
+/* 	================================== */
+
+.but-01 {
+    position: absolute;
+    top: 40%;
+    
+    left: 8%;
+    bottom: 0;
+    font-size: 14px;
+    text-decoration: none;
+    background-color: transparent;
+    border: 0px;
+    color: #fff
+    }
+
+
+/* 	================================== */
 </style>
 <body class="sb-nav-fixed">
 		<%@ include file="/back-end/files/sb_navbar.file"%> <!-- 引入navbar (上方) -->
@@ -39,7 +66,7 @@ MemberVO memberVO = (MemberVO) request.getAttribute("MemberVO");
                 <main>
                     <div class="container-fluid">
                     
-                    	<h3 class="h3-style" style="display: inline-block;">已修改會員資料</h3>
+                    	<h3 class="h3-style" style="display: inline-block;">修改會員資料</h3>
 						<!-- success message Start -->
 <%-- 						<c:if test="${addSuccess != null}"> --%>
 <!-- 							<span class="success-span">  -->
@@ -53,43 +80,69 @@ MemberVO memberVO = (MemberVO) request.getAttribute("MemberVO");
 <!-- 								<i class="far fa-smile-wink"></i> -->
 <!-- 							</span> -->
 <%-- 						</c:if> --%>
-							
+							<c:if test="${not empty errorMsgs}">
+								<font style="color:red">請修正以下錯誤:</font>
+								<ul>
+									<c:forEach var="message" items="${errorMsgs}">
+										<li style="color:red">${message}</li>
+									</c:forEach>
+								</ul>
+							</c:if>
                     	<!-- success message End -->
 						
                     	<!-- search Start -->
-                    	<div class="row " style="margin: 0px 0 20px -200px;">          
-			                <div class="col-2"></div>
+                    	<div class="row " style="margin: 0px 0 20px -400px;">          
 	                        <div class="col-10">          
+			         				 <div class="main">
+<!-- 											<table> -->
+<!-- 												<tr> -->
+<!-- 													<th>公告編號</th> -->
+<!-- 													<th>公告種類編號</th> -->
+<!-- 													<th>公告內容</th> -->
+<!-- 													<th>公告日期日期</th> -->
+<!-- 												</tr> -->
+<!-- 												<tr> -->
+<%-- 													<td>${BoardVO.boaNo}</td> --%>
+<%-- 													<td>${BoardVO.boatypNo}</td> --%>
+<%-- 													<td>${BoardVO.boaContent}</td> --%>
+<%-- 													<td>${BoardVO.boaTime}</td> --%>
+<!-- 												</tr> -->
+<!-- 											</table> -->
+									</div>
                         	</div>                 
                         </div>
+                        
                     	<!-- search End -->
                         
                     	<!-- listSession Start -->
-			            <table class="table table-hover">
+			           <table class="table table-hover">
 							<thead>
 								<tr style="border-bottom: 3px solid #bb9d52;">
-									<th>會員編號</th>
-									<th>會員名稱</th>
-									<th>會員帳號</th>
-									<th>會員密碼</th>
-									<th>會員信箱</th>
-									<td>會員圖片</td>
-									<th>會員狀態</th>
+									<tr>
+										<th>公告編號</th>
+										<th>公告種類編號</th>
+										<th>公告內容</th>
+										<th>公告日期日期</th>
+										<th>修改</th>
+								   </tr>
 								</tr>				
 							</thead>
 									
 							<tbody>
-								<tr class="sty-height" valign='middle'>
-									<td>${MemberVO.memNo}</td>
-									<td>${MemberVO.memName}</td>
-									<td>${MemberVO.memAccount}</td>
-									<td>${MemberVO.memPassword}</td>
-									<td>${MemberVO.memMail}</td>
-									<td><img src="<%=request.getContextPath()%>/util/imgReader${MemberVO.memImgParam}" width="100" height="100"></td>
- 									<td>${(MemberVO.memstatus==0)?"未啟動":(MemberVO.memstatus==1?"已啟動":"已停權")}</td>
-								</tr>
+									<tr class="sty-height" valign='middle'>
+										<td>${BoardVO.boaNo}</td>
+										<td>${BoardVO.boatypNo}</td>
+										<td>${BoardVO.boaContent}</td>
+										<td>${BoardVO.boaTime}</td>
+<%-- 										<td>${(memberVO.memstatus==0)?"未啟動":(memberVO.memstatus==1?"已啟動":"已停權")}</td> --%>
+									</tr>
 							</tbody>
 						</table>
+						<div class="but-01" style="margin-left: 45%;"> 
+							<a href="<%=request.getContextPath()%>/back-end/board/listAllBoard_new.jsp">
+								<button  style="width:70px;height:30px;text-align:center;font-size:18px;color:#aa9166;">回上頁</button>
+							</a> 
+						</div>
                        <!-- listSession End -->
                     
                     </div>
@@ -98,8 +151,9 @@ MemberVO memberVO = (MemberVO) request.getAttribute("MemberVO");
             </div>
         </div>
 		<%@ include file="/back-end/files/sb_importJs.file"%> <!-- 引入template要用的js -->
-</body>
-<br>本網頁的路徑:<br><b>
+		
+	<br>本網頁的路徑:<br><b>
    <font color=blue>request.getServletPath():</font> <%=request.getServletPath()%><br>
    <font color=blue>request.getRequestURI(): </font> <%=request.getRequestURI()%> </b>
+</body>
 </html>

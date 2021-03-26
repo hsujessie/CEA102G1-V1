@@ -81,6 +81,9 @@ table td{
   item-align: center;
   width: 80%;
 }
+#table:hover{
+background:#cd9a0b;
+}
 
 
 /* 	================================== */
@@ -151,7 +154,9 @@ table td{
 											  </tr>
 											  <tr>
 											    <th>會員照片:</th>
-											    <td><img src="<%=request.getContextPath()%>/util/imgReader${MemberVO.memImgParam}" width="100" height="100"></td>
+											    <td>
+											    <img src="<%=request.getContextPath()%>/util/imgReader${MemberVO.memImgParam}" style="width:100px; height:100px;">
+											    </td>
 											  </tr>
 										</table>
 									</div>

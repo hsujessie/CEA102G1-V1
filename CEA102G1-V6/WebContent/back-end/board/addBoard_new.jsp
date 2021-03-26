@@ -59,7 +59,7 @@
 	                        <div class="col-10">  
 	                        	<FORM class="form-sty" METHOD="post" ACTION="<%=request.getContextPath() %>/Board/board.do">        
 	                           	  <jsp:useBean id="boardTypeSvc" scope="page" class="com.board_type.model.BoardTypeService" />
-										<tr>
+										
 											<td>公告種類編號:<font color=red><b>*</b></font></td>
 											<td>
 												<select size="1" name="boatypNo">
@@ -67,13 +67,12 @@
 														<option value="${boardTypeVO.boatypNo}" ${(BoardVO.boatypNo==boardTypeVO.boatypNo) ? 'selected' : ' ' } >${boardTypeVO.boatypName} </option>
 														</c:forEach>
 												</select>
-											</td>
-										</tr> <br><br>  
+											</td>  
+											<br><br>
 										
-										<tr>
 											<td>公告內容:</td>
 											<td><input type="TEXT" name="boaContent" size="45" value=" ${(empty boardVO) ? ' 請輸入公告' : '${boardVO.boaContent}'  }" /></td>
-										</tr>   
+										  	<br><br>
 										<a class="btn btn-light btn-brd grd1 effect-1">
 										   <input type="hidden" name="action" value="insert">
 										   <input type="submit" value="新增" class="input-pos"></FORM>

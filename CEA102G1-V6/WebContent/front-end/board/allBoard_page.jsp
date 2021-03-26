@@ -11,9 +11,10 @@ pageContext.setAttribute("list",list);
 %>
 <html>
 <head>
-	<title>Sessions Management</title>
-	<%@ include file="/back-end/files/sb_head.file"%>
-	<link rel="stylesheet" type="text/css" href="<%=request.getContextPath()%>/resource/datetimepicker/jquery.datetimepicker.css" />
+	<meta charset="UTF-8">
+<title>Front-End</title>
+<%@ include file="/front-end/files/frontend_importCss.file"%>
+<link rel="stylesheet" type="text/css" href="<%=request.getContextPath()%>/resource/datetimepicker/jquery.datetimepicker.css" />
 </head>
 <style>
 	.success-span{
@@ -32,19 +33,26 @@ pageContext.setAttribute("list",list);
     td{
     margin-right: 60px;
     }
+  .nav-bar .navbar {
+   height: 8%;
+    padding: 0;
+    }
 </style>
-<body class="sb-nav-fixed">
-		<%@ include file="/back-end/files/sb_navbar.file"%> <!-- 引入navbar (上方) -->
-        <div id="layoutSidenav">
-            <div id="layoutSidenav_nav">
-				<c:set value="${pageContext.request.requestURI}" var="urlRecog"></c:set> <!-- 給sb_sidebar.file的參數-Home -->
-				<%@ include file="/back-end/files/sb_sidebar.file"%> <!-- 引入sidebar (左方) -->
-            </div>
-            <div id="layoutSidenav_content">
-                <main>
-                    <div class="container-fluid">
-                    
-                    	<h3 class="h3-style" style="display: inline-block;">所有公告資料</h3>
+<body>
+			  <div class="wrapper">
+			            <!-- Nav Bar Start -->
+					<c:set value="${pageContext.request.requestURI}" var="urlRecog"></c:set>
+					<%@ include file="/front-end/files/frontend_navbar.file"%>
+					<!-- Nav Bar End -->
+			    </div>        
+				<c:if test="${not empty errorMsgs}">
+					<font style="color:red">請修正以下錯誤:</font>
+						<ul>
+							<c:forEach var="message" items="${errorMsgs}">
+								<li style="color:red">${message}</li>
+							</c:forEach>
+						</ul>
+				</c:if>
 						<!-- success message Start -->
 <%-- 						<c:if test="${addSuccess != null}"> --%>
 <!-- 							<span class="success-span">  -->
@@ -76,7 +84,7 @@ pageContext.setAttribute("list",list);
 												</select>
 												
 											 <a class="btn btn-light btn-brd grd1 effect-1">
-												  <input type="hidden" name="action" value="getOne_For_Display">
+												  <input type="hidden" name="action" value="get_For_Display">
 												  <input type="submit" value="送出" class="input-pos">
 				                        	 </a>
 			                        </FORM>
@@ -91,7 +99,7 @@ pageContext.setAttribute("list",list);
 				                        
 					        			<a class="btn btn-light btn-brd grd1 effect-1">
 											<input type="submit" value="送出" class="input-pos">
-											<input type="hidden" name="action" value="getOne_For_Display2">
+											<input type="hidden" name="action" value="get_For_Display2">
 					        			</a>
 		                    		</FORM>                 
                         	</div>                 
@@ -107,42 +115,31 @@ pageContext.setAttribute("list",list);
 										<th>公告種類編號</th>
 										<th>公告內容</th>
 										<th>公告日期日期</th>
-										<th>修改</th>
 								   </tr>
 								</tr>				
 							</thead>
 									
 							<tbody>
-							<%@ include file="/back-end/Board/pages/page1.file" %> 
-	<c:forEach var="boardVO" items="${list}" begin="<%=pageIndex%>" end="<%=pageIndex+rowsPerPage-1%>">
+							<%@ include file="/back-end/board/pages/page1.file" %> 
+								<c:forEach var="boardVO" items="${list}" begin="<%=pageIndex%>" end="<%=pageIndex+rowsPerPage-1%>">
 								
-									<tr class="sty-height" valign='middle'>
+									<tr class="sty-height" valign='middle'onMouseOver="this.style.backgroundColor='ddca64';" onMouseOut="this.style.backgroundColor='ffffff';">
+									
 										<td>${boardVO.boaNo}</td>
 										<td>${boardVO.boatypNo}</td>
 										<td>${boardVO.boaContent}</td>
 										<td>${boardVO.boaTime}</td>
-<%-- 										<td>${(memberVO.memstatus==0)?"未啟動":(memberVO.memstatus==1?"已啟動":"已停權")}</td> --%>
-																				
-										<td>
-											<FORM METHOD="post" ACTION="<%=request.getContextPath() %>/Board/board.do">
-												<a class="btn btn-light btn-brd grd1 effect-1">
-													<input type="submit" value="修改" class="input-pos">
-								        			<input type="hidden" name="boaNo"  value="${boardVO.boaNo}">
-													<input type="hidden" name="action"	value="getOne_For_Update">
-							        			</a>
-											</FORM>
-										</td>
-										
+<%-- 								<td>${(memberVO.memstatus==0)?"未啟動":(memberVO.memstatus==1?"已啟動":"已停權")}</td> --%>
 									</tr>
 								</c:forEach>
 							</tbody>
 						</table>
-						<%@ include file="/back-end/Board/pages/page2.file" %> 
+						<%@ include file="/back-end/board/pages/page2.file" %> 
                        <!-- listSession End -->
                     
-                    </div>
+                    
                 </main>
-                <%@ include file="/back-end/files/sb_footer.file"%>
+              
             </div>
         </div>
 		<%@ include file="/back-end/files/sb_importJs.file"%> <!-- 引入template要用的js -->

@@ -673,8 +673,9 @@ public class MemberServlet extends HttpServlet {
 
 				MailService2 mailSvc = new MailService2();
 				String subject = "會員註冊驗證通知";
-				String link = "http://localhost:8081/CEA102G1/Member/member.do?action=updateStatus&memuuid="
-						+ memberVO.getMemuuid();
+//				String link = req.getScheme()+"://"+req.getServerName()+"/CEA102G1/Member/member.do?action=updateStatus&memuuid="
+//						+ memberVO.getMemuuid();
+				String link ="http://localhost:8081/CEA102G1/Member/member.do?action=updateStatus&memuuid="+ memberVO.getMemuuid();
 				mailSvc.sendMail(memberVO.getMemMail(), subject, mailSvc.getMessageText(memberVO.getMemName(), link));
 
 /*************************** 3.新增完成,準備轉交(Send the Success view) ***********/
@@ -801,6 +802,8 @@ public class MemberServlet extends HttpServlet {
 
 				MailService2 mailSvc = new MailService2(); // 寄信
 				String subject = "忘記啟用通知";
+//				String link = req.getScheme()+"://"+req.getServerName()+"/CEA102G1/Member/member.do?action=forgot_update&memuuid="
+//						+ memberVO.getMemuuid();
 				String link = "http://localhost:8081/CEA102G1/Member/member.do?action=forgot_update&memuuid="
 						+ memberVO.getMemuuid();
 				mailSvc.sendMail(memberVO.getMemMail(), subject, mailSvc.getMessageText2(memberVO.getMemName(), link));

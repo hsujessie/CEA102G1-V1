@@ -12,7 +12,7 @@ pageContext.setAttribute("boardVO", boardVO);
 %>
 <html>
 <head>
-	<title>Sessions Management</title>
+	<title>修改公告資料</title>
 	<%@ include file="/back-end/files/sb_head.file"%>
 	<link rel="stylesheet" type="text/css" href="<%=request.getContextPath()%>/resource/datetimepicker/jquery.datetimepicker.css" />
 </head>
@@ -166,18 +166,6 @@ table td{
                     	<!-- search End -->
                         
                     	<!-- listSession Start -->
-<!-- 			            <table class="table table-hover"> -->
-<!-- 							<thead> -->
-<!-- 								<tr style="border-bottom: 3px solid #bb9d52;"> -->
-<!-- 									
-<!-- 								</tr>				 -->
-<!-- 							</thead> -->
-									
-<!-- 							<tbody> -->
-
-<!-- 									
-<!-- 							</tbody> -->
-<!-- 						</table> -->
                        <!-- listSession End -->
                     
                     </div>

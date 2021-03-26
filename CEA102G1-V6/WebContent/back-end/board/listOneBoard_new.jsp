@@ -5,7 +5,7 @@
 <%@ page import="com.board.model.*"%>
 <%@ page import = "javax.servlet.http.* " %>
 <%	
-BoardVO boardVO = (BoardVO) request.getAttribute("BoardVO");
+List<BoardVO> boardVO = (List<BoardVO>) request.getAttribute("BoardNolist");
 System.out.println("進入jsp");
 %>
 <html>
@@ -25,6 +25,18 @@ System.out.println("進入jsp");
 	.form-sty{
 		margin: 20px 0 0 0;
 	}
+	.but-01 {
+    position: absolute;
+    top: 40%;
+    right: 0;
+    left: 8%;
+    bottom: 20px;
+    font-size: 14px;
+    text-decoration: none;
+    background-color: transparent;
+    border: 20px;
+    color: #fff
+    }
 </style>
 <body class="sb-nav-fixed">
 		<%@ include file="/back-end/files/sb_navbar.file"%> <!-- 引入navbar (上方) -->
@@ -74,21 +86,32 @@ System.out.println("進入jsp");
 							</thead>
 									
 							<tbody>
+							<c:forEach var="boardVO" items="${BoardNolist}" >
 								<tr class="sty-height" valign='middle'>
-									<td>${BoardVO.boaNo}</td>
-									<td>${BoardVO.boatypNo}</td>
-									<td>${BoardVO.boaContent}</td>
-									<td>${BoardVO.boaTime}</td>
+									<td>${boardVO.boaNo}</td>
+									<td>${boardVO.boatypNo}</td>
+									<td>${boardVO.boaContent}</td>
+									<td>${boardVO.boaTime}</td>
 								</tr>
+							</c:forEach>
 							</tbody>
+							 
+						</div>
 						</table>
+						<div class="but-01" style="margin-left: 45%;"> 
+								<a href="<%=request.getContextPath()%>/back-end/board/listAllBoard_new.jsp">
+									<button  style="width:70px;height:30px;text-align:center;font-size:18px;color:#aa9166;">回上頁</button>
+								</a>
                        <!-- listSession End -->
                     
                     </div>
+                    
                 </main>
                 
             </div>
+            
         </div>
+        				
 		<%@ include file="/back-end/files/sb_importJs.file"%> <!-- 引入template要用的js -->
 		
 <br>本網頁的路徑:<br><b>

@@ -5,12 +5,13 @@
 <%@ page import="com.board.model.*"%>
 <%@ page import = "javax.servlet.http.* " %>
 <%	
-List<BoardVO> boardVO = (List<BoardVO>) request.getAttribute("BoatypNolist");
-System.out.println(boardVO+"  got?  ");
+BoardService boardSvc_useBean = new BoardService();
+List<BoardVO> list = boardSvc_useBean.getAll();
+pageContext.setAttribute("list",list);
 %>
 <html>
 <head>
-	<title>公告種類資料 - listOneBoard2.jsp</title>
+	<title></title>
 	<%@ include file="/back-end/files/sb_head.file"%>
 	<link rel="stylesheet" type="text/css" href="<%=request.getContextPath()%>/resource/datetimepicker/jquery.datetimepicker.css" />
 </head>
@@ -23,8 +24,14 @@ System.out.println(boardVO+"  got?  ");
 	    font-size: 16px;
 	}
 	.form-sty{
-		margin: 20px 0 0 0;
+		margin: 20 0 20 0;
 	}
+	input, button, select, optgroup, textarea {
+    margin-right: 8px;
+    }
+    td{
+    margin-right: 60px;
+    }
 </style>
 <body class="sb-nav-fixed">
 		<%@ include file="/back-end/files/sb_navbar.file"%> <!-- 引入navbar (上方) -->
@@ -37,19 +44,24 @@ System.out.println(boardVO+"  got?  ");
                 <main>
                     <div class="container-fluid">
                     
-                    	<h3 class="h3-style" style="display: inline-block;">查詢公告種類資料</h3>
-						
+                    	<h3 class="h3-style" style="display: inline-block;">所有公告資料</h3>
+						<!-- success message Start -->
+<%-- 						<c:if test="${addSuccess != null}"> --%>
+<!-- 							<span class="success-span">  -->
+<%-- 								${addSuccess} --%>
+<!-- 								<i class="far fa-smile-wink"></i> -->
+<!-- 							</span> -->
+<%-- 						</c:if> --%>
+<%-- 						<c:if test="${updateSuccess != null }"> --%>
+<!-- 							<span class="success-span">  -->
+<%-- 								${updateSuccess} --%>
+<!-- 								<i class="far fa-smile-wink"></i> -->
+<!-- 							</span> -->
+<%-- 						</c:if> --%>
                     	<!-- success message End -->
 						
                     	<!-- search Start -->
-                    	<div class="row " style="margin: 0px 0 20px -200px;">          
-			                <div class="col-2"></div>
-	                        <div class="col-10">          
-	                           	                 
-                        	</div>                 
-                        </div>
-                    	<!-- search End -->
-                        <FORM class="pure-form" METHOD="post" ACTION="<%=request.getContextPath() %>/Board/board.do">		
+                    	<FORM class="pure-form" METHOD="post" ACTION="<%=request.getContextPath() %>/Board/board.do">		
 			                        
 			                        	<jsp:useBean id="boardSvc" scope="page" class="com.board.model.BoardService" />
 
@@ -79,43 +91,61 @@ System.out.println(boardVO+"  got?  ");
 											<input  type="submit" value="送出" class="input-pos">
 										</a>
 		                    		</FORM>     
+                    	<!-- search End -->
+                        
                     	<!-- listSession Start -->
 			            <table class="table table-hover">
 							<thead>
 								<tr style="border-bottom: 3px solid #bb9d52;">
-									<th>公告編號</th>
-									<th>公告種類編號</th>
-									<th>公告內容</th>
-									<th>公告日期日期</th>
+									<tr>
+										<th>公告編號</th>
+										<th>公告種類編號</th>
+										<th>公告內容</th>
+										<th>公告日期日期</th>
+										<th>修改</th>
+								   </tr>
 								</tr>				
 							</thead>
 									
 							<tbody>
-								<c:forEach var="boardVO" items="${BoatypNolist}" >
+							<%@ include file="/back-end/board/pages/page1.file" %> 
+	<c:forEach var="boardVO" items="${list}" begin="<%=pageIndex%>" end="<%=pageIndex+rowsPerPage-1%>">
+								
 									<tr class="sty-height" valign='middle'>
 										<td>${boardVO.boaNo}</td>
 										<td>${boardVO.boatypNo}</td>
 										<td>${boardVO.boaContent}</td>
 										<td>${boardVO.boaTime}</td>
+<%-- 										<td>${(memberVO.memstatus==0)?"未啟動":(memberVO.memstatus==1?"已啟動":"已停權")}</td> --%>
+																				
+										<td>
+											<FORM METHOD="post" ACTION="<%=request.getContextPath() %>/Board/board.do">
+												<a class="btn btn-light btn-brd grd1 effect-1">
+													<input type="submit" value="修改" class="input-pos">
+								        			<input type="hidden" name="boaNo"  value="${boardVO.boaNo}">
+													<input type="hidden" name="action"	value="getOne_For_Update">
+							        			</a>
+											</FORM>
+										</td>
+										
 									</tr>
 								</c:forEach>
 							</tbody>
 						</table>
+						<%@ include file="/back-end/board/pages/page2.file" %> 
                        <!-- listSession End -->
-                    <div style="margin-left: 45%;"> 
-						<a href="<%=request.getContextPath()%>/back-end/board/listAllBoard_new.jsp">
-							<button  style="width:70px;height:30px;text-align:center;font-size:18px;color:#aa9166;">回上頁</button>
-						</a> 
-					</div>
+                    
                     </div>
                 </main>
-                
+                <%@ include file="/back-end/files/sb_footer.file"%>
             </div>
         </div>
 		<%@ include file="/back-end/files/sb_importJs.file"%> <!-- 引入template要用的js -->
-		
+
 <br>本網頁的路徑:<br><b>
    <font color=blue>request.getServletPath():</font> <%=request.getServletPath()%><br>
-   <font color=blue>request.getRequestURI(): </font> <%=request.getRequestURI()%> </b>		
+   <font color=blue>request.getRequestURI(): </font> <%=request.getRequestURI()%> </b>
+
+
 </body>
 </html>

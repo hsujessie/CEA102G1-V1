@@ -6,7 +6,7 @@
 <c:set var="sessions" value="${pageContext.request.contextPath}/front-end/sessions/sessions.jsp"/>
 <c:set var="movies" value="${pageContext.request.contextPath}/front-end/movies/movies.jsp"/>
 <c:set var="forum" value="${pageContext.request.contextPath}/front-end/article/article.jsp"/>
-<c:set var="notices" value="${pageContext.request.contextPath}/front-end/notices.jsp"/>
+<c:set var="notices" value="${pageContext.request.contextPath}/front-end/board/allBoard_page_new.jsp"/>
 <c:set var="faqs" value="${pageContext.request.contextPath}/front-end/faq/faq.jsp"/>
 <c:set var="articlemanage" value="${pageContext.request.contextPath}/front-end/article/articleManage.jsp"/>
 <c:set var="members" value="${pageContext.request.contextPath}/front-end/Member_Login/login.jsp"/>

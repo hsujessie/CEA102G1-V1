@@ -120,7 +120,7 @@ padding:
 								</tr>  
 								<tr>
 									<th>會員密碼:</th>
-									<td><input type="TEXT" name="memPassword" size="45"	value="<%=memberVO.getMemPassword()%>" /></td>
+									<td><input type="password" name="memPassword" size="45"	value="<%=memberVO.getMemPassword()%>" /></td>
 								</tr>
 								<tr>
 									<th>會員信箱:<font color=red><b>*</b></font></td>

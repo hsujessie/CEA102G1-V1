@@ -8,8 +8,31 @@
 <title>Front-End</title>
 <%@ include file="/front-end/files/frontend_importCss.file"%>
 <link rel="stylesheet" type="text/css" href="<%=request.getContextPath()%>/resource/bootstrap/css3/login3.css">
+ <!-- toastr v2.1.4 -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/2.1.4/toastr.min.css" rel="stylesheet" />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/2.1.4/toastr.min.js"></script>
 </head>
 <body>
+<script>
+        toastr.options = {
+            // 參數設定
+            "closeButton": false,
+            "debug": false,
+            "newestOnTop": false,
+            "progressBar": true,
+            "positionClass": "toast-top-right",
+            "preventDuplicates": false,
+            "onclick": null,
+            "showDuration": "300",
+            "hideDuration": "1000",
+            "timeOut": "5000",
+            "extendedTimeOut": "1000",
+            "showEasing": "swing",
+            "hideEasing": "linear",
+            "showMethod": "fadeIn",
+            "hideMethod": "fadeOut"
+        }
+    </script>
 <style>
 #preview{
 	float:left;
@@ -30,25 +53,42 @@ img{
             <!-- PUT HERE Start -->
             <div class="cotn_principal">
 				<div class="cont_centrar">
-				 			<div class="success">
-								<%-- 成功表列 --%>
-								<c:if test="${not empty success}">
-										<c:forEach var="message" items="${success}">
-											<h5><span style="color: green">${message}</span></h5><br>
-										</c:forEach>
-								</c:if>
-						   </div>
+<!-- 				 			<div class="success"> -->
+<%-- 								成功表列 --%>
+<%-- 								<c:if test="${not empty success}"> --%>
+<%-- 										<c:forEach var="message" items="${success}"> --%>
+<%-- 											<h5><span style="color: green">${message}</span></h5><br> --%>
+<%-- 										</c:forEach> --%>
+<%-- 								</c:if> --%>
+<!-- 						   </div> -->
 	   
 	   
-	  						<div class="errorMegs">
-								<%-- 錯誤表列 --%>
-								<c:if test="${not empty errorMsgs}">
-									<h5><font style="color: red">請修正以下錯誤:</font></h5>
-										<c:forEach var="message" items="${errorMsgs}">
-										<h5><span style="color: red">${message}</span></h5><br>
-										</c:forEach>
-								</c:if>
-						   </div>
+<!-- 	  						<div class="errorMegs"> -->
+<%-- 								錯誤表列 --%>
+<%-- 								<c:if test="${not empty errorMsgs}"> --%>
+<!-- 									<h5><font style="color: red">請修正以下錯誤:</font></h5> -->
+<%-- 										<c:forEach var="message" items="${errorMsgs}"> --%>
+<%-- 										<h5><span style="color: red">${message}</span></h5><br> --%>
+<%-- 										</c:forEach> --%>
+<%-- 								</c:if> --%>
+<!-- 						   </div> -->
+								 //修改成功訊息
+								            if ('${updateSuccess}' == 'updateSuccess') {
+								                //      	debugger;
+								                <%
+								                session.removeAttribute("updateSuccess"); 
+								                %>
+								                toastr['success']('修改成功！！', '成功'); 
+								            }
+								
+								            //新增成功訊息
+								            if ('${addSuccess}' == 'addSuccess') {
+								                //      	debugger;
+								                <%
+								                session.removeAttribute("addSuccess"); 
+								                %>
+								                toastr['success']('發文成功！！', '成功'); 
+								            }
 							
 					<div class="cont_login">
 <!--============================================================================================-->						
