@@ -580,7 +580,7 @@ public class MemberServlet extends HttpServlet {
 					String url = location;
 					
 					/* a attribute from frontend movies_subpage.jsp */
-					if (session.getAttribute("moviesSubpage") != null) {
+					if (location.indexOf("movies_subpage.jsp") != -1) {
 						Integer movno = (Integer) session.getAttribute("moviesSubpage");
 						url = req.getContextPath() + "/movie/mov.do?action=getOne_For_Display&fromFrontend=true&movno=" + movno;
 					}
