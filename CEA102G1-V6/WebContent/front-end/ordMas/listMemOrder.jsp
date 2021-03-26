@@ -9,26 +9,7 @@
 <meta charset="UTF-8">
 <title>Front-End</title>
 <%@ include file="/front-end/files/frontend_importCss.file"%>
-<style>
-.success-span {
-	color: #bb9d52;
-	position: absolute;
-	top: 8%;
-	left: 17%;
-}
-
-.th-adjust {
-	width: 120px;
-}
-
-.form-sty {
-	margin: 20px 0 0 10px;
-}
-
-.nav-pills .nav-link.active, .nav-pills .show>.nav-link {
-	background-color: #aa9166;
-}
-</style>
+<link rel="stylesheet" type="text/css" href="<%=request.getContextPath()%>/resource/css/order/listMemOrder.css">
 </head>
 <body>
 	<div class="wrapper">
@@ -92,7 +73,7 @@
 													</form>
 												</td>
 												<td>
-													<form method="post" action="<%=request.getContextPath()%>/ordMas/ordMas.do" id="changeStatusForm">
+													<form method="post" action="<%=request.getContextPath()%>/ordMas/ordMas.do">
 														<input type="hidden" name="action" value="change_status">
 														<input type="hidden" name="ordMasNo" value="${ordMasVO.ordMasNo}">
 													</form>
@@ -161,37 +142,6 @@
 
 	<%@ include file="/front-end/files/frontend_importJs.file"%>
 	<script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
-	<script>
-		$(".look-detail").click(function() {
-			
-		})
-		
-		$(".refund").click(function() {
-			swal({
-                icon: "warning",
-                title: "確定要退票嗎?",
-                buttons: {
-                    a: {
-                        text: "取消",
-                        value: "cancel",
-                        visible: true
-                    },
-                    danger: {
-                        text: "確定",
-                        value: "confirm",
-                        visible: true
-                    }
-                }
-            }).then((value) => {
-                if (value === "confirm") {
-                	$("#changeStatusForm").submit();
-//                     swal("退票成功!", "", "success", { button: "關閉" });
-                }
-            });
-		});
-		
-		
-		
-	</script>
+	<script src="<%=request.getContextPath()%>/resource/js/order/listMemOrder.js"></script>
 </body>
 </html>

@@ -1,0 +1,122 @@
+/* 修改座位的顏色 */
+div.seatCharts-seat {
+	color: black;
+	/* border: 1px solid black; */
+}
+
+div.seatCharts-seat.selected.first-class {
+	color: white;
+	background-color: #7e6946;
+}
+
+div.seatCharts-seat.focused {
+	color: white;
+	background-color: #7e6946;
+}
+
+div.seatCharts-seat.available.first-class {
+	background-color: #cec0a7;
+	color: black;
+	/* background-color: white; */
+}
+
+div.seatCharts-seat.unavailable {
+	background-color: red;
+}
+
+#seat-map {
+	width: 100%;
+	border: 0;
+}
+/* div.front-indicator {
+            width: 100%;
+        } */
+div.seatCharts-legend {
+	position: static;
+}
+
+div>p>span {
+	margin: 0 3px;
+}
+
+div>p>img {
+	width: 30px;
+	height: 40px;
+}
+
+#nextStep {
+	position: absolute;
+	bottom: 1%;
+	right: 5%;
+}
+
+#grade {
+	border: 1px solid black;
+	height: 100px;
+	width: 100px;
+}
+
+#grade-number {
+	color: white;
+}
+
+#grade-number, #grade-word {
+	padding-top: 15px;
+	height: 50px;
+}
+
+.list-group-item, #tabs_item, .card {
+	border: 1px solid #aa9166;
+	margin-bottom: 10px;
+}
+
+.info {
+	border: 0;
+	background-color: #b39d76;
+}
+
+#table-secondary {
+	background-color: #c5b497;
+}
+
+#tabs>.ui-widget-header {
+	background-color: #d7ccb8;
+}
+
+#tabs>ul>li {
+	background-color: #c5b497;
+	border: 1px solid #b39d76;
+}
+
+.ui-widget.ui-widget-content, .ui-widget-content {
+	border: 0;
+}
+
+.card-header {
+	background-color: #c5b497;
+}
+
+.list-group-item+.list-group-item {
+	border: 1px solid #aa9166;
+}
+
+ul.seatCharts-legendList {
+	text-align: center;
+}
+
+li.seatCharts-legendItem {
+	display: inline-block;
+}
+
+.front-indicator {
+	padding: 0px;
+	width: 608px;
+}
+
+.swal-button {
+	background-color: #121518;
+}
+
+p {
+	margin-bottom: 0.5rem;
+}
