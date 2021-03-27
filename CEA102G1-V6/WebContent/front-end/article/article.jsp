@@ -6,6 +6,13 @@
 <%@ page import="com.art.model.*" %>
 <jsp:useBean id="artSvc" scope="page" class="com.art.model.ArtService" />
 
+<%
+if(session.getAttribute("MemberVO") != null){
+	MemberVO memberVO = (MemberVO)session.getAttribute("MemberVO");
+	session.setAttribute("memNo", memberVO.getMemNo());
+	session.getAttribute("memNo");			
+}
+%>
 <!DOCTYPE html>
 <html>
 
@@ -214,7 +221,7 @@
 
         					//判斷是否已收藏
         					debugger;
-        					if("${memNo}" != "" && '${MemberVO}' != ""){
+        					if('${MemberVO}' != ""){
         						isArtFav();
         					}
 
@@ -255,23 +262,6 @@
             
             //返回討論區首頁
             $('#returnArticle').click(function(){
-//                 //清空文章列表
-//                 clearArtList();
-                
-//               	//清空熱門文章列表
-//     			clearListArtTopThreeQuery();
-              	
-//               	//清除選擇電影類型
-//     			$('.selectedMovType').removeClass('selectedMovType');
-              	
-//               	//reset find by title text
-//               	document.getElementById("artTitleByCompositeQuery").placeholder = '搜尋標題';
-            	
-//                 //列出全部文章列表
-//                 ListArtQuery();
-                
-//               	//列出前三高點擊文章
-//                 ListArtTopThreeQuery();
 					window.location.reload("<%=request.getContextPath()%>/front-end/article/article.jsp");
             });
             
@@ -574,32 +564,37 @@
 	                                        <hr>
 	                                    </li>
 	                                    <li>
-	                                        <div id="accordion">
-	                                            <div class="card" style="border-radius: 0; border: 2px #AA9166">
-	                                                <div class="card-link combtn" data-toggle="collapse" href="#collapseOne" style=" cursor:pointer;">
-	                                                        	進階查詢
-	                                                </div>
-	                                                <div id="collapseOne" class="collapse" data-parent="#accordion">
-	                                                    <div class="card-body" style="border-radius: 0; border: 2px #AA9166">
-	                                                        <table>
-	                                                            <tr>
-	                                                                <td><input type="text" id="artAuthorForByCompositeQuery"
-	                                                                        class="form-control" name="artAuthor" placeholder="搜尋作者"></td>
-	                                                            </tr>
-	                                                            <tr>
-	                                                                <td><input type="text" id="artTimeForByCompositeQuery"
-	                                                                        class="form-control" name="artTime" placeholder="搜尋發表日期"></td>
-	                                                            </tr>
-	                                                            <tr>
-	                                                                <td><input id="findArtByCompositeQueryButton"
-	                                                                        class="btn combtn" type="button"
-	                                                                        value="查詢"></td>
-	                                                            </tr>
-	                                                        </table>
-	                                                    </div>
-	                                                </div>
-	                                            </div>
-	                                        </div>
+										    <div class="accordion" id="accordionExample">
+										        <div class="card" style="border-radius: 0; border: 2px #AA9166">
+										          <div class="card-header combtn" id="headingOne">
+										            <h2 class="mb-0">
+										              <button class="btn btn-link btn-block text-left" type="button" data-toggle="collapse" data-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne" style=" color: #AA9166; text-decoration: none;">
+										                進階查詢
+										              </button>
+										            </h2>
+										          </div>
+										      
+										          <div id="collapseOne" class="collapse show" aria-labelledby="headingOne" data-parent="#accordionExample">
+										            <div class="card-body" style="border-radius: 0; border: 2px #AA9166">
+										                <table>
+										                    <tr>
+										                        <td><input type="text" id="artAuthorForByCompositeQuery"
+										                                class="form-control" name="artAuthor" placeholder="搜尋作者"></td>
+										                    </tr>
+										                    <tr>
+										                        <td><input type="text" id="artTimeForByCompositeQuery"
+										                                class="form-control" name="artTime" placeholder="搜尋發表日期"></td>
+										                    </tr>
+										                    <tr>
+										                        <td><input id="findArtByCompositeQueryButton"
+										                                class="btn combtn" type="button"
+										                                value="查詢"></td>
+										                    </tr>
+										                </table>
+										            </div>
+										          </div>
+										        </div>
+										    </div>
 	                                    </li>
 	                                </div>
 	                            </ul>

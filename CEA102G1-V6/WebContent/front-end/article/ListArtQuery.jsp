@@ -461,7 +461,7 @@ function listAllArtRepByArtNo(){
 		                moment(item.artRepTime).locale('zh_TW').format('llll') +
 		                '</div><c:if test="${MemberVO != null}"><i id="artRepRpt_icon'+item.artRepNo+'" class="fas fa-exclamation-circle dropdown-toggle dropdown" data-toggle="dropdown" title="檢舉留言" style="font-size: 1.5rem; color: #94B8D5;"></i></c:if><div class="dropdown-menu"><div class="form-group" data-value=' +
 		                item.artRepNo +
-		                '>檢舉留言<input type="text" class="form-control artRepRptReson" placeholder="輸入原因" style="width: 100%;"></div><button class="btn btn-outline-secondary artRepRptButton">確定</button></div><div class="artRepContentList" style="text-indent: 2em; padding: 10px 0;">' +
+		                '>檢舉留言<input type="text" class="form-control artRepRptReson" placeholder="輸入原因" style="width: 100%;"></div><button class="btn combtn artRepRptButton">確定</button></div><div class="artRepContentList" style="text-indent: 2em; padding: 10px 0;">' +
 		                item.artRepContent + '</div><hr>');
 		            
 		            	if(item.artRepStatus == 1){
@@ -571,7 +571,7 @@ function clearRepRptReson(){
 						              <div id="artRptAlert"></div>
 						              <input type="text" class="form-control" id="artRptReson" placeholder="輸入原因" style="width: 100%;">
 						         </div>
-						         <button id="artRptButton" class="btn btn-outline-secondary">確定</button>
+						         <button id="artRptButton" class="btn combtn">確定</button>
 						    </div>
 						 </div>
 						                          
