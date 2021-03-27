@@ -44,20 +44,22 @@ img{
 
 </style>
 <script>
-					//修改成功訊息 -->
-					if ('${not empty success}') {
+// // 					//修改成功訊息 -->
+// 					var ss = ${not empty success}
+// 					if ('${not empty success}') {
+// 						 console.log(ss)
+// 					    <c:forEach var="message" items="${success}">
+// 					    		<h5><span style="color: green">toastr['success'](${message}); </span></h5><br> 
+// 					    </c:forEach> 
+// 					}
+					
+// 					<!-- 									 //錯誤訊息 -->
+// 					if ('${not empty errorMsgs}') {
 					   
-					    <c:forEach var="message" items="${success}">
-					    		<h5><span style="color: green">toastr['success'](${message}); </span></h5><br> 
-					    </c:forEach> 
-					}
-					<!-- 									 //錯誤訊息 -->
-					if ('${not empty errorMsgs}') {
-					   
-					    <c:forEach var="message" items="${errorMsgs}">
-					    		<h5><span style="color: red">toastr['errorMsgs'](${message}); </span></h5><br> 
-					    </c:forEach> 
-					}
+// 					    <c:forEach var="message" items="${errorMsgs}">
+// 					    		<h5><span style="color: red">toastr['errorMsgs'](${message}); </span></h5><br> 
+// 					    </c:forEach> 
+// 					}
 
 
 </script>
@@ -72,38 +74,39 @@ img{
             <!-- PUT HERE Start -->
             <div class="cotn_principal">
 				<div class="cont_centrar">
-<!-- 				 			<div class="success"> -->
-<%-- 								成功表列 --%>
-<%-- 								<c:if test="${not empty success}"> --%>
-<%-- 										<c:forEach var="message" items="${success}"> --%>
-<%-- 											<h5><span style="color: green">${message}</span></h5><br> --%>
-<%-- 										</c:forEach> --%>
-<%-- 								</c:if> --%>
-<!-- 						   </div> -->
+				 			<div class="success">
+								成功表列
+								<c:if test="${not empty success}">
+										<c:forEach var="message" items="${success}">
+											<h5><span style="color: green">${message}</span></h5><br>
+										</c:forEach>
+								</c:if>
+						   </div>
 	   
 	   
-<!-- 	  						<div class="errorMegs"> -->
-<%-- 								錯誤表列 --%>
-<%-- 								<c:if test="${not empty errorMsgs}"> --%>
-<!-- 									<h5><font style="color: red">請修正以下錯誤:</font></h5> -->
-<%-- 										<c:forEach var="message" items="${errorMsgs}"> --%>
-<%-- 										<h5><span style="color: red">${message}</span></h5><br> --%>
-<%-- 										</c:forEach> --%>
-<%-- 								</c:if> --%>
-<!-- 						   </div> -->
+	  						<div class="errorMegs">
+								錯誤表列
+								<c:if test="${not empty errorMsgs}">
+									<h5><font style="color: red">請修正以下錯誤:</font></h5>
+										<c:forEach var="message" items="${errorMsgs}">
+										<h5><span style="color: red">${message}</span></h5><br>
+										</c:forEach>
+								</c:if>
+						   </div>
 <!-- 								     
 								
 								
 								
 								
 								            //新增成功訊息
-								            if ('${addSuccess}' == 'addSuccess') {
-								                //      	debugger;
-								                <%
-								                session.removeAttribute("addSuccess"); 
-								                %>
-								                toastr['success']('發文成功！！', '成功'); 
-								            }
+<!-- 								            if ('${addSuccess}' == 'addSuccess') { -->
+<!-- 								                //      	debugger; -->
+								                
+<%-- 								                <% --%>
+<!--   								                session.removeAttribute("addSuccess");   -->
+<%-- < 								                %> --%>
+<!-- 								                toastr['success']('發文成功！！', '成功');  -->
+<!-- 								            } -->
 							
 					<div class="cont_login">
 <!--============================================================================================-->						
@@ -214,7 +217,7 @@ function init() {
 }
 
 window.onload = init;
-}
+
 </script> 
 </body>
 </html>
