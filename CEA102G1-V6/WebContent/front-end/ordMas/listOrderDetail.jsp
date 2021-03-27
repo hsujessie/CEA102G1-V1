@@ -9,62 +9,8 @@
 <meta charset="UTF-8">
 <title>Front-End</title>
 <%@ include file="/front-end/files/frontend_importCss.file"%>
-<style>
-table {
-	/* 	width: 750px; */
-	margin: 5px auto 5px auto;
-	background-color: rgb(255, 255, 255);
-	border-radius: 10px;
-	-webkit-box-shadow: 0px 3px 5px rgb(8, 8, 8, 0.3);
-	-moz-box-shadow: 0px 3px 5px rgb(8, 8, 8, 0.3);
-	box-shadow: 0px 3px 5px rgb(8, 8, 8, 0.3);
-}
+<link rel="stylesheet" type="text/css" href="<%=request.getContextPath()%>/resource/css/order/listOrderDetail.css">
 
-th, td {
-	box-sizing: border-box;
-	border-radius: 10px;
-}
-
-th {
-	width: 200px;
-	padding: 10px 0px 10px 70px;
-}
-
-td {
-	width: 250px;
-	padding: 10px 20px 10px 30px;
-	border-bottom: 2px dotted #bb9d52;
-}
-
-.listOne-h3-pos, #a-color {
-	margin-left: 50%;
-}
-
-.listOne-h3-pos {
-	display: inline-block;
-}
-
-#a-color {
-	font-size: 16px;
-}
-
-.detail {
-	display: inline-block;
-}
-
-.detailBlock {
-	position: relative;
-}
-
-.detail.price {
-	position: absolute;
-	right: 0%;
-}
-
-#status {
-	margin-left: 180px;
-}
-</style>
 </head>
 <body>
 	<div class="wrapper">

@@ -50,7 +50,7 @@ public class AdmServlet extends HttpServlet {
 				
 				// 員工姓名
 				String admName = req.getParameter("admName");
-				String admNameReg = "^[(\u4e00-\u9fa5)(a-zA-Z0-9_)]{3,10}$";
+				String admNameReg = "^[(\u4e00-\u9fa5)(a-zA-Z0-9_)]{2,10}$";
 				if (admName == null || admName.trim().isEmpty()) {
 					errorMsgs.put("admName", "姓名不可為空白");
 				} else if(!admName.trim().matches(admNameReg)) { //以下練習正則(規)表示式(regular-expression)
@@ -140,7 +140,7 @@ public class AdmServlet extends HttpServlet {
 
 				// 員工姓名
 				String admName = req.getParameter("admName");
-				String admNameReg = "^[(\u4e00-\u9fa5)(a-zA-Z0-9_)]{3,10}$";
+				String admNameReg = "^[(\u4e00-\u9fa5)(a-zA-Z0-9_)]{2,10}$";
 				if (admName == null || admName.trim().isEmpty()) {
 					errorMsgs.put("admName", "姓名不可為空白");
 				} else if(!admName.trim().matches(admNameReg)) { //以下練習正則(規)表示式(regular-expression)
@@ -155,8 +155,6 @@ public class AdmServlet extends HttpServlet {
 					errorMsgs.put("admAccount", "帳號不可為空白");
 				} else if(!admAccount.trim().matches(admAccountReg)) { //以下練習正則(規)表示式(regular-expression)
 					errorMsgs.put("admAccount","帳號只能是英文字母、數字和, 且長度必需在3到10之間");
-	            } else if (admSvc.checkRepeat(admAccount)) {
-	            	errorMsgs.put("admAccount","帳號重覆，請重新輸入");
 	            }
 
 				

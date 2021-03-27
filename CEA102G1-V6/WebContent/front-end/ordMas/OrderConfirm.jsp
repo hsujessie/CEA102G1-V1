@@ -9,82 +9,9 @@
 <meta charset="UTF-8">
 <title>Front-End</title>
 <%@ include file="/front-end/files/frontend_importCss.file"%>
-<link rel="stylesheet" type="text/css"
-	href="<%=request.getContextPath()%>/resource/css/creditCard/card.css">
-<style>
-#nextStep {
-	position: absolute;
-	bottom: 1%;
-	right: 5%;
-}
+<link rel="stylesheet" type="text/css" href="<%=request.getContextPath()%>/resource/css/creditCard/card.css">
+<link rel="stylesheet" type="text/css" href="<%=request.getContextPath()%>/resource/css/order/OrderConfirm.css">
 
-div>p>img {
-	width: 30px;
-	height: 40px;
-}
-
-#grade {
-	border: 1px solid black;
-	height: 100px;
-	width: 100px;
-}
-
-#grade-number {
-	color: white;
-}
-
-#grade-number, #grade-word {
-	padding-top: 15px;
-	height: 50px;
-}
-
-.list-group-item, #tabs_item, .card {
-	border: 1px solid #aa9166;
-	margin-bottom: 10px;
-}
-
-#table-secondary {
-	background-color: #c5b497;
-}
-
-#tabs>.ui-widget-header {
-	background-color: #d7ccb8;
-}
-
-#tabs>ul>li {
-	background-color: #c5b497;
-	border: 1px solid #b39d76;
-}
-
-.ui-widget.ui-widget-content, .ui-widget-content {
-	border: 0;
-}
-
-.card-header {
-	background-color: #c5b497;
-}
-
-.list-group-item+.list-group-item {
-	border: 1px solid #aa9166;
-}
-
-div>p>span {
-	margin: 0 3px;
-}
-
-.info {
-	border: 0;
-	background-color: #b39d76;
-}
-
-.jp-card-front {
-	background-color: black !important;
-}
-
-p {
-	margin-bottom: 0.5rem;
-}
-</style>
 </head>
 <body>
 	<div class="wrapper">
@@ -264,69 +191,13 @@ p {
 	</div>
 
 	<%@ include file="/front-end/files/frontend_importJs.file"%>
-	<script
-		src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
-	<script
-		src="<%=request.getContextPath()%>/resource/js/creditCard/jquery.card.js"></script>
+	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+	<script src="<%=request.getContextPath()%>/resource/js/creditCard/jquery.card.js"></script>
 	<script>
-		$('#creditCard').card({
-			container : '.card-wrapper',
-			width : 280,
-			formSelectors : {
-				nameInput : 'input[name="first-name"], input[name="last-name"]'
-			}
-		});
-	</script>
-	<script>
-		$("#grade-number").text(getGradeNumber($("#grade-word").text()));
-
-		function getGradeNumber(gradeWord) {
-			if ("普遍級" === gradeWord) {
-				$("#grade-number").css("background-color", "#00A600");
-				return "0+";
-			} else if ("保護級" === gradeWord) {
-				$("#grade-number").css("background-color", "#2894FF");
-				return "6+";
-			} else if ("輔導級" === gradeWord) {
-				$("#grade-number").css("background-color", "#FFE153");
-				return "12+";
-			} else {
-				$("#grade-number").css("background-color", "#EA0000");
-				return "18+";
-			}
-		}
-
 		let chooseSeatNo = "${param.chooseSeatNo}";
-		$("#chooseSeatNo").text(addComma(chooseSeatNo));
-
-		function addComma(chooseSeatNo) {
-			let result = "";
-			for (let i = 0; i < chooseSeatNo.length; i += 3) {
-				let subStr = chooseSeatNo.substring(i, i + 3);
-				if (i + 3 !== chooseSeatNo.length) {
-					result = result + subStr + ", ";
-				} else {
-					result = result + subStr;
-				}
-			}
-			return result;
-		}
-
-		$("#nextStep").click(function() {
-			$("#form").submit();
-		});
-
-		$("#totalPrice").text(getTotalPrice());
-		function getTotalPrice() {
-			let total = 0;
-			let items = $(".subtotal");
-
-			for (let i = 0; i < items.length; i++) {
-				total += parseInt($(items[i]).text());
-			}
-			return total;
-		}
-
+	</script>
+	<script src="<%=request.getContextPath()%>/resource/js/order/OrderConfirm.js"></script>
+	<script>
 		let sec = 59;
 		setInterval(function() {
 			$("#timeOut").text(timeFormat(sec));
@@ -334,10 +205,9 @@ p {
 		}, 1000)
 
 		setTimeout(
-				function() {
-					window.location
-							.replace("${pageContext.request.contextPath}/front-end/index.jsp");
-				}, sec * 1000);
+			function() {
+				window.location.replace("${pageContext.request.contextPath}/front-end/index.jsp");
+			}, sec * 1000);
 
 		function timeFormat(second) {
 			let minute = parseInt(second / 60);

@@ -1,0 +1,68 @@
+#nextStep {
+	position: absolute;
+	bottom: 1%;
+	right: 5%;
+}
+
+div>p>img {
+	width: 30px;
+	height: 40px;
+}
+
+#grade {
+	border: 1px solid black;
+	height: 100px;
+	width: 100px;
+}
+
+#grade-number {
+	color: white;
+}
+
+#grade-number, #grade-word {
+	padding-top: 15px;
+	height: 50px;
+}
+
+.list-group-item, #tabs_item, .card {
+	border: 1px solid #aa9166;
+	margin-bottom: 10px;
+}
+
+#table-secondary {
+	background-color: #c5b497;
+}
+
+#tabs>.ui-widget-header {
+	background-color: #d7ccb8;
+}
+
+#tabs>ul>li {
+	background-color: #c5b497;
+	border: 1px solid #b39d76;
+}
+
+.ui-widget.ui-widget-content, .ui-widget-content {
+	border: 0;
+}
+
+.card-header {
+	background-color: #c5b497;
+}
+
+.list-group-item+.list-group-item {
+	border: 1px solid #aa9166;
+}
+
+div>p>span {
+	margin: 0 3px;
+}
+
+.info {
+	border: 0;
+	background-color: #b39d76;
+}
+
+p {
+	margin-bottom: 0.5rem;
+}

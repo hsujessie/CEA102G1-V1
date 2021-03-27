@@ -67,8 +67,8 @@
 						<h3 class="h3-style listOne-h3-pos">員工新增</h3>
 						<table>
 							<tr>
-								<th style="color:red;">姓名</th>
-								<td><input class="sty-input mr-left mr-btm-normal form-control" type="text" name="admName" value="${addAdmVO.admName}" required/>${errorMsgs.admName}</td>		
+								<th>姓名</th>
+								<td style="color:red;"><input class="sty-input mr-left mr-btm-normal form-control" type="text" name="admName" value="${addAdmVO.admName}" required/>${errorMsgs.admName}</td>		
 							</tr>
 							<tr>
 								<th>照片</th>
