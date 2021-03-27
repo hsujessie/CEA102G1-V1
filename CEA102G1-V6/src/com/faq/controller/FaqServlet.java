@@ -173,9 +173,10 @@ public class FaqServlet extends HttpServlet{
 				/***************************2.�}�l�s�W���***************************************/
 				FaqService faqsvc = new FaqService();
 				faqVO = faqsvc.addFaq(faqtyp_no, faq_question, faq_answer);
+				Integer faq_no = faqVO.getFaq_no();
 				/***************************3.�s�W����,�ǳ����(Send the Success view)***********/
-				String url = "/back-end/faq/listAllFaq.jsp";
-				RequestDispatcher successView = req.getRequestDispatcher(url); // �s�W���\�����listAllEmp.jsp
+				String url = "/back-end/faq/listAllFaq.jsp?faq_no=";
+				RequestDispatcher successView = req.getRequestDispatcher(url+faq_no); // �s�W���\�����listAllEmp.jsp
 				successView.forward(req, res);				
 				
 				/***************************��L�i�઺���~�B�z**********************************/

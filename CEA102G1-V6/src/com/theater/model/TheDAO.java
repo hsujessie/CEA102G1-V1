@@ -32,21 +32,26 @@ public class TheDAO implements TheDAO_interface{
 	private static final String UPDATE =
 			"UPDATE Theater set movver_no= ?, the_seat= ?, the_seatno= ? where the_no= ?";
 	@Override
-	public void insert(TheVO theaterVO) {
+	public Integer insert(TheVO theaterVO) {
 		Connection con = null;
 		PreparedStatement pstmt = null;
-		
+		Integer the_no=null;
 		try {
 			
 			
 			con = ds.getConnection();
-			pstmt = con.prepareStatement(INSERT_STMT);
+			String[] cols = {"the_no"};
+			pstmt = con.prepareStatement(INSERT_STMT,cols);
 			
 			pstmt.setInt(1, theaterVO.getMovver_no());
 			pstmt.setString(2, theaterVO.getThe_seat());
 			pstmt.setString(3, theaterVO.getThe_seatno());
 			
 			pstmt.executeUpdate();
+			ResultSet rs = pstmt.getGeneratedKeys();
+			if(rs.next()) {
+				the_no = new Integer(rs.getString(1));
+			}
 		} catch (SQLException se) {
 			throw new RuntimeException("A database error occured. "
 					+ se.getMessage());
@@ -67,6 +72,7 @@ public class TheDAO implements TheDAO_interface{
 				}
 			}
 		}
+		return the_no;
 	}
 
 	@Override

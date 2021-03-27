@@ -1,6 +1,6 @@
 
 		  var INDEX = 0; 
-		  var memberImg = "<%=request.getContextPath()%>/Member/reader.do?memNo=${MemberVO.memNo}";
+		  var memberImg = "<%=request.getContextPath()%>/util/imgReader?columnName=mem_img&tableName=member&fieldName=mem_no&fieldValue=${MemberVO.memNo}";
 		  var admImg = "<%=request.getContextPath()%>/resource/images/clientAdm.png";
 		  $("#chat-submit").click(sendMessage);
 		  

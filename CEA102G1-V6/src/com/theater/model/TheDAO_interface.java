@@ -3,7 +3,7 @@ package com.theater.model;
 import java.util.*;
 public interface TheDAO_interface {
 	
-	public void insert(TheVO theaterVO);
+	public Integer insert(TheVO theaterVO);
 	public void update(TheVO theaterVO);
 	public void delete(Integer the_no);
 	public TheVO findByPrimaryKey(Integer the_no);

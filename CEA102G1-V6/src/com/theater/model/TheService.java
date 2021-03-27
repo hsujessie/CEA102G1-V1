@@ -16,7 +16,8 @@ public class TheService {
 		theaterVO.setMovver_no(movver_no);
 		theaterVO.setThe_seat(the_seat);
 		theaterVO.setThe_seatno(the_seatno);
-		dao.insert(theaterVO);
+		Integer the_no = new Integer(dao.insert(theaterVO));
+		theaterVO.setThe_no(the_no);
 		
 		return theaterVO;
 	}

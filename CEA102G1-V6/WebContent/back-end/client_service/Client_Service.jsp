@@ -134,7 +134,7 @@
 							memNo = sender.split("-")[1];
 							admNo = receiver.split("-")[1];
 							div.classList.add("you");
-							img.setAttribute("src","<%=request.getContextPath()%>/Member/reader.do?memNo=" + memNo);
+							img.setAttribute("src","<%=request.getContextPath()%>/util/imgReader?columnName=mem_img&tableName=member&fieldName=mem_no&fieldValue=" + memNo);
 							img.classList.add("mempic");
 							div.append(span);
 							div.append(img);
@@ -167,7 +167,7 @@
 						memNo = jsonObj.sender.split("-")[1];
 						admNo = jsonObj.receiver.split("-")[1];
 						div.classList.add("you");
-						img.setAttribute("src", "<%=request.getContextPath()%>/Member/reader.do?memNo=" + memNo);
+						img.setAttribute("src", "<%=request.getContextPath()%>/util/imgReader?columnName=mem_img&tableName=member&fieldName=mem_no&fieldValue=" + memNo);
 						img.classList.add("mempic");
 						div.append(span);
 						div.append(img);
@@ -272,7 +272,7 @@
 						memberList.innerHTML += 
 							`
 							<li class="person" id="\${memNo}" data-mbid="\${memNo}" data-mbname="\${memName}">
-		                            <img src="<%=request.getContextPath()%>/Member/reader.do?memNo=\${memNo}" alt="" />
+		                            <img src="<%=request.getContextPath()%>/util/imgReader?columnName=mem_img&tableName=member&fieldName=mem_no&fieldValue=\${memNo}" alt="" />
 		                            <span class="name">\${memName}</span>
 		                            <span class="preview"></span>
 		                            <span class="unread">-1</span>

@@ -29,7 +29,7 @@
   	padding: 10px 20px 10px 30px;
     border-bottom: 2px dotted #bb9d52;
   }
-  .listOne-h3-pos{
+  .listOne-h3-pos,#a-color{
   	display: inline-block;	
   	margin-left: 45%;
   }
