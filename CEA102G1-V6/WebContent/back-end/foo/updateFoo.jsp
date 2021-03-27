@@ -95,7 +95,7 @@
 								<td>
 									<select name="fooStatus" class="form-control">
 										<c:forEach varStatus="i" begin="0" end="1">
-											<option value="${i.index}" ${i.index==oneAdmVO.admStatus ? "selected" :""}>${i.index=="0" ? "上架" : "下架"}
+											<option value="${i.index}" ${i.index==fooVO.fooStatus ? "selected" :""}>${i.index=="0" ? "上架" : "下架"}
 										</c:forEach>
 									</select>
 								</td>
