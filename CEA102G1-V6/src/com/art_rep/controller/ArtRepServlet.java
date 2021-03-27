@@ -95,6 +95,7 @@ public class ArtRepServlet extends HttpServlet {
 				if(artRepVO.getArtRepStatus() == 0) {
 					try {
 						obj.put("artNo", artRepVO.getArtNo());
+						obj.put("memNo", artRepVO.getMemNo());
 						obj.put("memName", memSvc.getOneMember(artRepVO.getMemNo()).getMemName());
 						obj.put("artRepNo", artRepVO.getArtRepNo());
 						obj.put("artRepContent", artRepVO.getArtRepContent());

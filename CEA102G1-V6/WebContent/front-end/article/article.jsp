@@ -134,14 +134,14 @@ if(session.getAttribute("MemberVO") != null){
 			background: radial-gradient(ellipse,white,rgba(255, 255, 255, 0),rgba(170, 145, 102, 0.3));
 		}
 		.authorIMG{
-			width: 20%;
-			height: 20%;
+			width: 2.7vw;
+			height: 5vh;
 			border-radius: 50%;
 			margin: 4%;
 		}
 		.repAuthorIMG{
-			width: 5%;
-			height: 5%;
+			width: 2.7vw;
+			height: 5vh;
 			border-radius: 50%;
 		}
 		.form-control {
@@ -372,7 +372,7 @@ if(session.getAttribute("MemberVO") != null){
                     clearArtList();
                     $(artVO).each(function (i, item) {
                         $('#artListCenter').append(
-                            '<div class="oneArtDiv"><div id="artAuthor" style="display: inline-block"><div style="display: inline-block"><img class="authorIMG" src="<%=request.getContextPath()%>/util/imgReader?columnName=MEM_IMG&tableName=member&fieldName=MEM_NO&fieldValue='+item.memNo+'></div> <div style="display: inline-block">' +
+                            '<div class="oneArtDiv"><div id="artAuthor" style="display: inline-block"><div style="display: inline-block"><img class="authorIMG" src="<%=request.getContextPath()%>/util/imgReader?columnName=MEM_IMG&tableName=member&fieldName=MEM_NO&fieldValue='+item.memNo+'"></div> <div style="display: inline-block">' +
                             item.memName + '</div></div>' +
                             '<div id="movType" style="display: inline-block"><div style="display: inline-block">電影類型：</div> <div style="display: inline-block">' +
                             item.artMovType + '</div></div>' +

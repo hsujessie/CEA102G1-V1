@@ -214,7 +214,7 @@ function ListArtQuery(){
 			//加入文章內容
 			$(artVO).each(function(i, item){
 				$('#artListCenter').append(
-						'<div class="oneArtDiv"><div id="artAuthor" style="display: inline-block"><div style="display: inline-block"><img class="authorIMG" src="<%=request.getContextPath()%>/util/imgReader?columnName=MEM_IMG&tableName=member&fieldName=MEM_NO&fieldValue='+item.memNo+'></div><div style="display: inline-block">'+item.memName+'</div></div>'
+						'<div class="oneArtDiv"><div id="artAuthor" style="display: inline-block"><div style="display: inline-block"><img class="authorIMG" src="<%=request.getContextPath()%>/util/imgReader?columnName=MEM_IMG&tableName=member&fieldName=MEM_NO&fieldValue='+item.memNo+'"></div><div style="display: inline-block">'+item.memName+'</div></div>'
 						+'<div id="movType" style="display: inline-block"><div style="display: inline-block">電影類型：</div> <div style="display: inline-block">'+item.artMovType+'</div></div>'
 						+'<div id="artTitle"><div style="font-size: 1.2rem;"><b>'+item.artTitle+'</b></div></div>'
 						+'<div id="artTime"><div style="display: inline-block">修改時間：</div> <div style="display: inline-block">'+moment(item.artTime).locale('zh_TW').format('llll')+'</div></div>'
@@ -302,7 +302,7 @@ function ListArtTopThreeQuery(){
 			}
 			$(artVO).each(function(i, item){
 				$('#Top3Article').append(
-						'<div id="hotArticleDiv" class="HotArticleDiv swiper-slide"><div id="topThreeArticle" style="color: #FF7575;"><i class="fas fa-crown" style="color: #bb9d52; margin: 0px 5px;"></i><b>HOT</b></div><div style="display: inline-block"><div style="display: inline-block"><img class="authorIMG" src="<%=request.getContextPath()%>/util/imgReader?columnName=MEM_IMG&tableName=member&fieldName=MEM_NO&fieldValue='+item.memNo+'></div> <div style="display: inline-block">'+item.memName+'</div></div>'
+			            '<div id="hotArticleDiv" class="HotArticleDiv swiper-slide"><div id="topThreeArticle" style="color: #FF7575;"><i class="fas fa-crown" style="color: #bb9d52; margin: 0px 5px;"></i><b>HOT</b></div><div style="display: inline-block"><div style="display: inline-block"><img class="authorIMG" src="<%=request.getContextPath()%>/util/imgReader?columnName=MEM_IMG&tableName=member&fieldName=MEM_NO&fieldValue='+item.memNo+'"></div><div style="display: inline-block">'+item.memName+'</div></div>'
 						+'<div id="movType" style="display: inline-block"><div style="display: inline-block">電影類型：</div> <div style="display: inline-block">'+item.artMovType+'</div></div>'
 						+'<div id="artTitle" class="artTitle"><div><b>'+item.artTitle+'</b></div></div>'
 						+'<div id="artTime"><div style="display: inline-block">'+moment(item.artTime).locale('zh_TW').format('ll')+'</div></div>'
@@ -454,7 +454,7 @@ function listAllArtRepByArtNo(){
 			}else{
 		        $(artRepVO).each(function (i, item) {
 		            $('#artRep').append(
-		            	'<img class="repAuthorIMG" src="<%=request.getContextPath()%>/util/imgReader?columnName=MEM_IMG&tableName=member&fieldName=MEM_NO&fieldValue='+item.memNo+'>'+
+		            	'<img class="repAuthorIMG" src="<%=request.getContextPath()%>/util/imgReader?columnName=MEM_IMG&tableName=member&fieldName=MEM_NO&fieldValue='+item.memNo+'">'+
 		                '<div style="line-height: 300%"><div id="memName" style="display:inline-block; width: 17%;">' +
 		                item.memName +
 		                '</div><div id="artRepTime" style="display:inline-block; color: #6C6C6C; width: 40%">' +
