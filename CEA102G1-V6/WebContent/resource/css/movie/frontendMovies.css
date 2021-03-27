@@ -54,7 +54,7 @@
 }
 
 .movies .movies-item:hover {
-    margin-top: -10px;
+    transform: scale(1.1);
 }
 
 .movies .movies-wrap {
