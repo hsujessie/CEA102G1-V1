@@ -200,7 +200,11 @@
 			if( today_day == 6){
 				show_day = "六";
 			}
-			
+
+
+	        if(today_date < 10){
+	        	today_date = '0' + today_date;
+	        }
 			
  			let sesDateValue = today_year + "-" + today_month + "-" + today_date;
  			 $('#sesDateId').append("<option value=" + "\"" + sesDateValue + "\"" +">" + today_year + "-" + today_month + "-" + today_date + " 星期" + show_day + "</option>");
@@ -214,10 +218,6 @@
 
 		        if(today_month < 10){
 		        	today_month = '0' + today_month;
-		        }
-
-		        if(today_date < 10){
-		        	today_date = '0' + today_date;
 		        }
 			}
 		}
