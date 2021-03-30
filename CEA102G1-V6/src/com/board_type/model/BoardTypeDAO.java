@@ -140,8 +140,8 @@ pstmt.executeUpdate("set auto_increment_increment=1;");
 			
 			con.commit();
 			con.setAutoCommit(true);
-			System.out.println("刪除公告編號" + boatypNo + "時,共有幾筆" + updateCount_EMPs
-					+ "公告同時被刪除");
+			System.out.println("�����楊���" + boatypNo + "���,���嗾蝑�" + updateCount_EMPs
+					+ "�����◤��");
 			
 			
 		} catch (SQLException se) {

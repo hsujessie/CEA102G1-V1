@@ -120,7 +120,7 @@ padding:
 								</tr>  
 								<tr>
 									<th>會員密碼:</th>
-									<td><input type="TEXT" name="memPassword" size="45"	value="<%=memberVO.getMemPassword()%>" /></td>
+									<td><input type="password" name="memPassword" size="45"	value="<%=memberVO.getMemPassword()%>" /></td>
 								</tr>
 								<tr>
 									<th>會員信箱:<font color=red><b>*</b></font></td>
@@ -160,8 +160,8 @@ padding:
         </div>
         
 <%@ include file="/front-end/files/frontend_importJs.file"%>   
-<br>本網頁的路徑:<br><b>
-   <font color=blue>request.getServletPath():</font> <%=request.getServletPath()%><br>
-   <font color=blue>request.getRequestURI(): </font> <%=request.getRequestURI()%> </b>
+<!-- <br>本網頁的路徑:<br><b> -->
+<%--    <font color=blue>request.getServletPath():</font> <%=request.getServletPath()%><br> --%>
+<%--    <font color=blue>request.getRequestURI(): </font> <%=request.getRequestURI()%> </b> --%>
 </body>
 </html>

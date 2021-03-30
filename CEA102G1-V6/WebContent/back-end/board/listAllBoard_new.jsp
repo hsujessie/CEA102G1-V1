@@ -11,7 +11,7 @@ pageContext.setAttribute("list",list);
 %>
 <html>
 <head>
-	<title>Sessions Management</title>
+	<title></title>
 	<%@ include file="/back-end/files/sb_head.file"%>
 	<link rel="stylesheet" type="text/css" href="<%=request.getContextPath()%>/resource/datetimepicker/jquery.datetimepicker.css" />
 </head>
@@ -46,25 +46,11 @@ pageContext.setAttribute("list",list);
                     
                     	<h3 class="h3-style" style="display: inline-block;">所有公告資料</h3>
 						<!-- success message Start -->
-<%-- 						<c:if test="${addSuccess != null}"> --%>
-<!-- 							<span class="success-span">  -->
-<%-- 								${addSuccess} --%>
-<!-- 								<i class="far fa-smile-wink"></i> -->
-<!-- 							</span> -->
-<%-- 						</c:if> --%>
-<%-- 						<c:if test="${updateSuccess != null }"> --%>
-<!-- 							<span class="success-span">  -->
-<%-- 								${updateSuccess} --%>
-<!-- 								<i class="far fa-smile-wink"></i> -->
-<!-- 							</span> -->
-<%-- 						</c:if> --%>
+
                     	<!-- success message End -->
 						
                     	<!-- search Start -->
-                    	<div class="row " style="margin: 0px 0 20px -200px;">          
-			                <div class="col-2"></div>
-	                        <div class="col-10">          
-		                           	<FORM class="form-sty" METHOD="post" ACTION="<%=request.getContextPath() %>/Board/board.do">		
+                    	<FORM class="pure-form" METHOD="post" ACTION="<%=request.getContextPath() %>/Board/board.do">		
 			                        
 			                        	<jsp:useBean id="boardSvc" scope="page" class="com.board.model.BoardService" />
 
@@ -76,12 +62,12 @@ pageContext.setAttribute("list",list);
 												</select>
 												
 											 <a class="btn btn-light btn-brd grd1 effect-1">
-												  <input type="hidden" name="action" value="getOne_For_Display">
-												  <input type="submit" value="送出" class="input-pos">
+												  <input  type="hidden" name="action" value="getOne_For_Display">
+												  <input  type="submit" value="送出" class="input-pos" >
 				                        	 </a>
 			                        </FORM>
 			                        <jsp:useBean id="boardTypeSvc" scope="page" class="com.board_type.model.BoardTypeService" />
-										<FORM METHOD="post" ACTION="<%=request.getContextPath()%>/Board/board.do" >
+										<FORM  class="pure-form" METHOD="post" ACTION="<%=request.getContextPath()%>/Board/board.do" >
 											<b>選擇公告種類編號:</b>
 												 <select size="1" name="boatypNo">
 												    <c:forEach var="boardTypeVO" items="${boardTypeSvc.all}" > 
@@ -90,12 +76,10 @@ pageContext.setAttribute("list",list);
 												  </select>
 				                        
 					        			<a class="btn btn-light btn-brd grd1 effect-1">
-											<input type="submit" value="送出" class="input-pos">
-											<input type="hidden" name="action" value="getOne_For_Display2">
-					        			</a>
-		                    		</FORM>                 
-                        	</div>                 
-                        </div>
+					        				<input  type="hidden" name="action" value="getOne_For_Display2">
+											<input  type="submit" value="送出" class="input-pos">
+										</a>
+		                    		</FORM>     
                     	<!-- search End -->
                         
                     	<!-- listSession Start -->
@@ -113,7 +97,7 @@ pageContext.setAttribute("list",list);
 							</thead>
 									
 							<tbody>
-							<%@ include file="/back-end/Board/pages/page1.file" %> 
+							<%@ include file="/back-end/board/pages/page1.file" %> 
 	<c:forEach var="boardVO" items="${list}" begin="<%=pageIndex%>" end="<%=pageIndex+rowsPerPage-1%>">
 								
 									<tr class="sty-height" valign='middle'>
@@ -137,7 +121,7 @@ pageContext.setAttribute("list",list);
 								</c:forEach>
 							</tbody>
 						</table>
-						<%@ include file="/back-end/Board/pages/page2.file" %> 
+						<%@ include file="/back-end/board/pages/page2.file" %> 
                        <!-- listSession End -->
                     
                     </div>
@@ -147,9 +131,9 @@ pageContext.setAttribute("list",list);
         </div>
 		<%@ include file="/back-end/files/sb_importJs.file"%> <!-- 引入template要用的js -->
 
-<br>本網頁的路徑:<br><b>
-   <font color=blue>request.getServletPath():</font> <%=request.getServletPath()%><br>
-   <font color=blue>request.getRequestURI(): </font> <%=request.getRequestURI()%> </b>
+<!-- <br>本網頁的路徑:<br><b> -->
+<%--    <font color=blue>request.getServletPath():</font> <%=request.getServletPath()%><br> --%>
+<%--    <font color=blue>request.getRequestURI(): </font> <%=request.getRequestURI()%> </b> --%>
 
 
 </body>

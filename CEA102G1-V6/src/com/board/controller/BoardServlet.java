@@ -41,7 +41,7 @@ import com.board_type.model.BoardTypeVO;
 /****************查詢完成,準備轉交(Send the Success view)*************/
 						req.setAttribute("boardTypeVOList", boardTypeVOList);
 					
-						String url = "/back-end/Board/addBoard_new.jsp";
+						String url = "/back-end/board/addBoard_new.jsp";
 						RequestDispatcher successView = req.getRequestDispatcher(url);// 成功轉交listAllEmp2_getFromSession.jsp
 						successView.forward(req, res);
 						return;
@@ -50,7 +50,7 @@ import com.board_type.model.BoardTypeVO;
 /***************************完成一個流程***************************/
 					if ("getAll".equals(action)) {
 /***************************開始查詢資料 ***************************/
-						BoardJDBCDAO dao = new BoardJDBCDAO();
+						BoardJNDIDAO dao = new BoardJNDIDAO();
 						List<BoardVO> list = dao.getAll();
 		
 /****************查詢完成,準備轉交(Send the Success view)***************/
@@ -58,14 +58,13 @@ import com.board_type.model.BoardTypeVO;
 						
 						req.setAttribute("list", list); 
 						
-						String url = "/back-end/Board/listAllBoard_new.jsp";
+						String url = "/back-end/board/listAllBoard_new.jsp";
 						RequestDispatcher successView = req.getRequestDispatcher(url);
 						successView.forward(req, res);
 						return;
 					}
 /***************************完成一個流程***************************/
 					if ("getOne_For_Display".equals(action)) { 
-				System.out.println("進入");
 						List<String> errorMsgs = new LinkedList<String>();
 						
 						req.setAttribute("errorMsgs", errorMsgs);
@@ -76,10 +75,9 @@ import com.board_type.model.BoardTypeVO;
 							if (str == null || (str.trim()).length() == 0) {
 								errorMsgs.add("請輸入公告編號");
 							}
-							
 							if (!errorMsgs.isEmpty()) {
 								RequestDispatcher failureView = req
-										.getRequestDispatcher("/back-end/Board/listAllBoard_new.jsp");
+										.getRequestDispatcher("/back-end/board/listAllBoard_new.jsp");
 								failureView.forward(req, res);
 								return;
 							}
@@ -90,42 +88,88 @@ import com.board_type.model.BoardTypeVO;
 							} catch (Exception e) {
 								errorMsgs.add("公告編號格式不正確");
 							}
-							
 							if (!errorMsgs.isEmpty()) {
 								RequestDispatcher failureView = req
-										.getRequestDispatcher("/back-end/Board/listAllBoard_new.jsp");
+										.getRequestDispatcher("/back-end/board/listAllBoard_new.jsp");
 								failureView.forward(req, res);
 								return;
 							}
 /***************************2.開始查詢資料***********************/
-							BoardService boardSvcbox = new BoardService();
-							BoardVO boardVO = boardSvcbox.getOneBoard(boaNo);
-							if (boardVO == null) {
+							BoardJNDIDAO dao = new BoardJNDIDAO();
+							List<BoardVO> boardNolist = dao.findByPrimaryKey2(boaNo);
+							if (boardNolist == null) {
 								errorMsgs.add("查無資料");
 							}
 							
 							if (!errorMsgs.isEmpty()) {
 								RequestDispatcher failureView = req
-										.getRequestDispatcher("/back-end/Board/listAllBoard_new.jsp");
+										.getRequestDispatcher("/back-end/board/listAllBoard_new.jsp");
 								failureView.forward(req, res);
 								return;
 							}
 /**************3.查詢完成,準備轉交(Send the Success view)*************/
-							req.setAttribute("BoardVO", boardVO);
-							String url = "/back-end/Board/listOneBoard_new.jsp";
+							req.setAttribute("BoardNolist", boardNolist);
+//							req.setAttribute("BoardVO", boardVO);
+							String url = "/back-end/board/listOneBoard_new.jsp";
 							RequestDispatcher successView = req.getRequestDispatcher(url);
 							successView.forward(req, res);
-							
 /***************************其他可能的錯誤處理************************/
 						} catch (Exception e) {
 							errorMsgs.add("無法取得資料:" + e.getMessage());
 							RequestDispatcher failureView = req
-									.getRequestDispatcher("/back-end/Board/listAllBoard_new.jsp");
+									.getRequestDispatcher("/back-end/board/listAllBoard_new.jsp");
 							failureView.forward(req, res);
 						}
 					}
 /***************************完成一個流程***************************/
-	
+					if ("get_For_Display".equals(action)) { 
+
+								List<String> errorMsgs = new LinkedList<String>();
+								
+								req.setAttribute("errorMsgs", errorMsgs);
+
+								try {
+		/***************************1.接收請求參數 - 輸入格式的錯誤處理**********************/
+									String str = req.getParameter("boaNo");
+
+									Integer boaNo = new Integer(str);
+
+									if (!errorMsgs.isEmpty()) {
+										RequestDispatcher failureView = req
+												.getRequestDispatcher("/front-end/board/allBoard_new.jsp");
+										failureView.forward(req, res);
+										return;
+									}
+		/***************************2.開始查詢資料***********************/
+									BoardService boardSvcbox = new BoardService();
+									BoardVO boardVO = boardSvcbox.getOneBoard(boaNo);
+
+									if (boardVO == null) {
+										errorMsgs.add("查無資料");
+									}
+									
+									if (!errorMsgs.isEmpty()) {
+										RequestDispatcher failureView = req
+												.getRequestDispatcher("/front-end/board/allBoard_new.jsp");
+										failureView.forward(req, res);
+										return;
+									}
+		/**************3.查詢完成,準備轉交(Send the Success view)*************/
+									req.setAttribute("BoardVO", boardVO);
+									
+									String url = "/front-end/board/listOneBoard_new.jsp";
+									RequestDispatcher successView = req.getRequestDispatcher(url);
+									successView.forward(req, res);
+									
+		/***************************其他可能的錯誤處理************************/
+								} catch (Exception e) {
+									errorMsgs.add("無法取得資料:" + e.getMessage());
+									RequestDispatcher failureView = req
+											.getRequestDispatcher("/front-end/board/allBoard_page.jsp");
+									failureView.forward(req, res);
+								}
+							}
+		/***************************完成一個流程***************************/
 					if ("insert".equals(action)) {   
 						
 						List<String> errorMsgs = new LinkedList<String>();
@@ -146,7 +190,7 @@ import com.board_type.model.BoardTypeVO;
 							if (!errorMsgs.isEmpty()) {					
 								req.setAttribute("BoardVO", boardVO); 
 								RequestDispatcher failureView = req
-										.getRequestDispatcher("/back-end/Board/addBoard_new.jsp");
+										.getRequestDispatcher("/back-end/board/addBoard_new.jsp");
 								failureView.forward(req, res);
 								return;
 							}
@@ -155,7 +199,7 @@ import com.board_type.model.BoardTypeVO;
 							BoardService boardSvc = new BoardService();							//使用BoardService的addBoard方法將值傳到前端
 							boardVO = boardSvc.addBoard(Integer.parseInt(boatypNo), boaContent);
 /***************************3.新增完成,準備轉交(Send the Success view)****/
-							String url = "/back-end/Board/listAllBoard_new.jsp";
+							String url = "/back-end/board/listAllBoard_new.jsp";
 							RequestDispatcher successView = req.getRequestDispatcher(url); // 新增成功後轉交listAllEmp.jsp
 							successView.forward(req, res);				
 							
@@ -163,7 +207,7 @@ import com.board_type.model.BoardTypeVO;
 						} catch (Exception e) {
 							errorMsgs.add(e.getMessage());
 							RequestDispatcher failureView = req
-									.getRequestDispatcher("/back-end/Board/addBoard_new.jsp");
+									.getRequestDispatcher("/back-end/board/addBoard_new.jsp");
 							failureView.forward(req, res);
 						}
 					}
@@ -178,14 +222,14 @@ import com.board_type.model.BoardTypeVO;
 							Integer boaNo = new Integer(req.getParameter("boaNo"));
 							
 /***************************2.開始刪除資料**************************/
-							BoardJDBCDAO BoardJDBCDAO = new BoardJDBCDAO();
-							BoardJDBCDAO.delete(boaNo);
+							BoardJNDIDAO boardJNDIDAO = new BoardJNDIDAO();
+							boardJNDIDAO.delete(boaNo);
 							
-							List<BoardVO> list = BoardJDBCDAO.getAll();
+							List<BoardVO> list = boardJNDIDAO.getAll();
 							req.setAttribute("list", list);
 							
 /***************************3.刪除完成,準備轉交(Send the Success view)****/								
-							String url = "/back-end/Board/listAllBoard.jsp";
+							String url = "/back-end/board/listAllBoard.jsp";
 							RequestDispatcher successView = req.getRequestDispatcher(url);// 刪除成功後,轉交回送出刪除的來源網頁
 							successView.forward(req, res);
 							
@@ -193,13 +237,13 @@ import com.board_type.model.BoardTypeVO;
 						} catch (Exception e) {
 							errorMsgs.add("刪除資料失敗:"+e.getMessage());
 							RequestDispatcher failureView = req
-									.getRequestDispatcher("/back-end/Board/listAllBoard.jsp");
+									.getRequestDispatcher("/back-end/board/listAllBoard.jsp");
 							failureView.forward(req, res);
 						}
 					}
 /***************************完成一個流程****************************/						
 					if ("getOne_For_Update".equals(action)) { 
-System.out.println("進入修改程序");
+
 						List<String> errorMsgs = new LinkedList<String>();
 						req.setAttribute("errorMsgs", errorMsgs);
 						
@@ -207,6 +251,7 @@ System.out.println("進入修改程序");
 /***************************1.接收請求參數***************************/
 							Integer boaNo = new Integer(req.getParameter("boaNo"));
 /***************************2.開始查詢資料***************************/
+							
 							BoardService boardService = new BoardService();
 							BoardVO boardVO = boardService.getOneBoard(boaNo);
 							BoardTypeService boardTypeService = new BoardTypeService();
@@ -215,17 +260,17 @@ System.out.println("進入修改程序");
 
 							req.setAttribute("BoardVO", boardVO);         
 							req.setAttribute("boardTypeVOList", boardTypeVOList);
-							String url = "/back-end/Board/uptateOne_Board_new.jsp";
+							String url = "/back-end/board/uptateOne_Board_new.jsp";
 							
 							RequestDispatcher successView = req.getRequestDispatcher(url);
 							successView.forward(req, res);
-System.out.println("轉交完成"+  33333);
+
 /***************************其他可能的錯誤處理*************************/
 						} catch (Exception e) {
 							
 							errorMsgs.add("無法取得要修改的資料:" + e.getMessage());
 							RequestDispatcher failureView = req
-									.getRequestDispatcher("/back-end/Board/listAllBoard_new.jsp");
+									.getRequestDispatcher("/back-end/board/listAllBoard_new.jsp");
 							failureView.forward(req, res);
 						}
 					}
@@ -252,7 +297,7 @@ System.out.println("轉交完成"+  33333);
 
 								req.setAttribute("BoardVO", boardVO); // 含有輸入格式錯誤的empVO物件,也存入req
 								RequestDispatcher failureView = req
-										.getRequestDispatcher("/back-end/Board/uptateOne_Board_new.jsp");
+										.getRequestDispatcher("/back-end/board/uptateOne_Board_new.jsp");
 								failureView.forward(req, res);
 								return; 
 							}
@@ -262,7 +307,7 @@ System.out.println("轉交完成"+  33333);
 							boardVO = boardSvc.getOneBoard(boaNo);
 /***************************3.修改完成,準備轉交(Send the Success view)*******/
 							req.setAttribute("BoardVO", boardVO);
-							String url = "/back-end/Board/listOneBoard_new.jsp";
+							String url = "/back-end/board/uptateOne_Board_new2.jsp";
 							RequestDispatcher successView = req.getRequestDispatcher(url); 
 							successView.forward(req, res);
 /***************************其他可能的錯誤處理****************************/
@@ -271,7 +316,7 @@ System.out.println("轉交完成"+  33333);
 
 							errorMsgs.add("修改資料失敗:"+e.getMessage());
 							RequestDispatcher failureView = req
-									.getRequestDispatcher("/back-end/Board/uptateOne_Board_new.jsp");
+									.getRequestDispatcher("/back-end/board/uptateOne_Board_new.jsp");
 							failureView.forward(req, res);
 						}
 					}
@@ -287,7 +332,7 @@ System.out.println("轉交完成"+  33333);
 
 							if (!errorMsgs.isEmpty()) {
 								RequestDispatcher failureView = req
-										.getRequestDispatcher("/back-end/Board/listAllBoard_new.jsp");
+										.getRequestDispatcher("/back-end/board/listAllBoard_new.jsp");
 								failureView.forward(req, res);
 								return;
 							}
@@ -301,13 +346,13 @@ System.out.println("轉交完成"+  33333);
 							
 							if (!errorMsgs.isEmpty()) {
 								RequestDispatcher failureView = req
-										.getRequestDispatcher("/back-end/Board/listAllBoard_new.jsp");
+										.getRequestDispatcher("/back-end/board/listAllBoard_new.jsp");
 								failureView.forward(req, res);
 								return;
 							}
 							
 /***************************2.開始查詢資料***********************/
-							BoardJDBCDAO dao = new BoardJDBCDAO();
+							BoardJNDIDAO dao = new BoardJNDIDAO();
 							List<BoardVO> boatypNolist = dao.findByFK(boatypNo);
 							
 							if (boatypNolist == null) {
@@ -316,7 +361,7 @@ System.out.println("轉交完成"+  33333);
 							
 							if (!errorMsgs.isEmpty()) {
 								RequestDispatcher failureView = req
-										.getRequestDispatcher("/back-end/Board/listAllBoard_new.jsp");
+										.getRequestDispatcher("/back-end/board/listAllBoard_new.jsp");
 								failureView.forward(req, res);
 								return;
 							}
@@ -335,8 +380,54 @@ System.out.println("轉交完成"+  33333);
 						}
 					}
 /***************************完成一個流程***************************/					
+					if ("get_For_Display2".equals(action)) { 
+						
+						List<String> errorMsgs = new LinkedList<String>();
+						req.setAttribute("errorMsgs", errorMsgs);
 
-			
+						try {
+/***************************1.接收請求參數 - 輸入格式的錯誤處理**********************/
+							String str = req.getParameter("boatypNo");
+						
+							Integer	boatypNo = new Integer(str);
+							
+							if (!errorMsgs.isEmpty()) {
+								RequestDispatcher failureView = req
+										.getRequestDispatcher("/front-end/board/allBoard_page.jsp");
+								failureView.forward(req, res);
+								return;
+							}
+							
+/***************************2.開始查詢資料***********************/
+							BoardJNDIDAO dao = new BoardJNDIDAO();
+							List<BoardVO> boatypNolist = dao.findByFK(boatypNo);
+							
+							if (boatypNolist == null) {
+								errorMsgs.add("查無資料");
+							}
+							
+							if (!errorMsgs.isEmpty()) {
+								RequestDispatcher failureView = req
+										.getRequestDispatcher("/front-end/board/allBoard_page.jsp");
+								failureView.forward(req, res);
+								return;
+							}
+/**************3.查詢完成,準備轉交(Send the Success view)*************/
+							req.setAttribute("BoatypNolist", boatypNolist);
+							String url = "/front-end/board/listOneBoard_new2.jsp";
+							RequestDispatcher successView = req.getRequestDispatcher(url);
+							successView.forward(req, res);
+
+/***************************其他可能的錯誤處理************************/
+						} catch (Exception e) {
+							errorMsgs.add("無法取得資料:" + e.getMessage());
+							RequestDispatcher failureView = req
+									.getRequestDispatcher("/front-end/board/allBoard_page.jsp");
+							failureView.forward(req, res);
+						}
+					}
+/***************************完成一個流程***************************/	
+//==============================================================			
 	 }
 }
 

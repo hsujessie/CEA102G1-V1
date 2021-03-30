@@ -13,10 +13,9 @@ List<MemberVO> memberVOList = (List<MemberVO>)request.getAttribute("list");
 <title>Front-End</title>
 <%@ include file="/front-end/files/frontend_importCss.file"%>
 <link rel="stylesheet" type="text/css" href="<%=request.getContextPath()%>/resource/datetimepicker/jquery.datetimepicker.css" />
-<link rel="stylesheet" href="<%=request.getContextPath()%>/resource/bootstrap/css/bootstrap.min.css">
+<link rel="stylesheet" href="https://unpkg.com/purecss@2.0.5/build/pure-min.css" integrity="sha384-LTIDeidl25h2dPxrB2Ekgc9c7sEC3CWGM6HeFmuDNUjX76Ert4Z4IY714dhZHPLd" crossorigin="anonymous">
 <script src="<%=request.getContextPath()%>/resource/jquery/jquery-3.5.1.min.js"></script>
 <script src="<%=request.getContextPath()%>/resource/popper/popper.min.js"></script>
-<script src="<%=request.getContextPath()%>/resource/bootstrap/js/bootstrap.min.js"></script>
 </head>
 <style>
 /* 	================================== */
@@ -85,10 +84,35 @@ body{
 div.container{
 text-align: center; 
 }
-form{
-margin: 0  auto;
-}
+ .message{ 
+font-size:16px;
+border-width:0px;
+border-style:dashed;
+border-color:;
+padding:5px;
+width:320px;
+height:35px;
+top:350px;
+left:650px;
+position:absolute;
 
+ }
+ .form_01 {
+ border-color: #000000;
+ border-style:ridge;
+ border-width:1px 15px 9px 3px;
+ padding:5px;
+ width: 490px;
+ margin-left:34%;
+ background: linear-gradient(270deg,  #cfd8dc 1%,#aa9166 100%,#aa9166 90%);
+ border-radius: 40px 20px 40px 20px;
+ 
+ }
+ .btn {
+ margin-left: 42%;
+/*  background: linear-gradient(90deg,  #001cff  10%,#007dff  50%,  #cfd8dc 100%);  */
+ }
+ 
 
 /* 	================================== */
 
@@ -100,66 +124,62 @@ margin: 0  auto;
 			<c:set value="${pageContext.request.requestURI}" var="urlRecog"></c:set>
             <%@ include file="/front-end/files/frontend_navbar.file"%>
             <!-- Nav Bar End -->
-            
-				<c:if test="${not empty errorMsgs}">
-					<font style="color:red">請修正以下錯誤:</font>
-						<ul>
-							<c:forEach var="message" items="${errorMsgs}">
-								<li style="color:red">${message}</li>
-							</c:forEach>
-						</ul>
-				</c:if>
-
+         </div>
             <!-- Page Header Start --> <!-- 看自己需不需要標題 -->
             <div class="page-header">
                 <div class="container">
                     <div class="row">
                         <div class="col-12">
-                            <h2>Front-End</h2> 
+                            <h2>找回密碼</h2> 
                         </div>
                     </div>
                 </div>
             </div>
             <!-- Page Header End -->
             <div class="container">
-						<h1>找回密碼</h1>				
 						<p><a href="login.jsp">
-						<img src="<%=request.getContextPath()%>/resource/images/forgot.jpg" width="100" height="100" border="0">回登陸頁面</a></p>
+						<img src="<%=request.getContextPath()%>/resource/images/forgot.jpg" style="width: 250px;hight:250px"><b><span style="font-color:#cfd8dc;">回登入頁面</span></b></a></p>
 			</div>
-			<FORM METHOD="post" ACTION="<%=request.getContextPath()%>/Member/member.do" name="form"  style="width: 450px;">
-
-					<div class="form-group">
-						<label for="exampleInputAccount">請輸入帳號:</label> 
-						<input class="form-control" type="TEXT" name="memAccount" size="45" value="" />
-					</div>
-					<div class="form-group">
-						<label for="exampleInputmail">請輸入信箱:</label> 
-						<input class="form-control" type="TEXT" name="memMail" size="45" value="" />
-					</div>
-					<br>
-					<input class="form-control" type="hidden" name="action" value="forgot_password">
-					<button type="submit" class="btn btn-primary">送出驗證</button>
-					<br>
+						<!--錯誤表列 -->
+						<div class="message" >
+							<c:if test="${not empty errorMsgs}">
+								<b>	<font style="color:red">請修正以下錯誤:</font></b>
+											<c:forEach var="message" items="${errorMsgs}">
+												<b><span style="color: red">${message}</span></b>
+											</c:forEach>
+								</c:if>
+							</div>
+							<hr style="border-width:3px;border-color:#aaa400;width:700px;">
+			<div class="form_01 pure-form" >
+				<FORM METHOD="post" ACTION="<%=request.getContextPath()%>/Member/member.do" name="form"  style="width: 450px;">
+					<div class="form-group pure-input-rounded">
+						<h3><label for="exampleInputAccount">請輸入帳號:</label></h3> 
+						<input class="form-control" type="TEXT" name="memAccount" size="45" value="" style="border-width:5px"/>
+						
+						<h3><label for="exampleInputmail">請輸入信箱:</label></h3> 
+						<input class="form-control" type="TEXT" name="memMail" size="45" value="" style="border-width:5px" />
+					</div><br>
+						<input class="form-control" type="hidden" name="action" value="forgot_password">
+						<button type="submit" class="btn combtn " >送出驗證</button><br>
 			</Form>	
-
+			</div>
+			<hr style="border-width:3px;border-color:#aaa400;width:700px;">
             <!-- PUT HERE Start -->
             
             
             <!-- PUT HERE End -->
             
-            <!-- Book Tickets Start -->
-            <%@ include file="/front-end/files/frontend_bookTicketsTamplate.file"%>
-            <!-- Book Tickets End -->
+          
 
             <!-- Footer Start -->
             <%@ include file="/front-end/files/frontend_footer.file"%>
             <!-- Footer End -->
-        </div>
+        
         
 <%@ include file="/front-end/files/frontend_importJs.file"%>
-<br>本網頁的路徑:<br><b>
-   <font color=blue>request.getServletPath():</font> <%=request.getServletPath()%><br>
-   <font color=blue>request.getRequestURI(): </font> <%=request.getRequestURI()%> </b>  
+<!-- <br>本網頁的路徑:<br><b> -->
+<%--    <font color=blue>request.getServletPath():</font> <%=request.getServletPath()%><br> --%>
+<%--    <font color=blue>request.getRequestURI(): </font> <%=request.getRequestURI()%> </b>   --%>
 
 </body>
 </html>

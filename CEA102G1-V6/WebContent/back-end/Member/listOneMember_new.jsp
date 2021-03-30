@@ -41,19 +41,7 @@ MemberVO memberVO = (MemberVO) request.getAttribute("MemberVO");
                     
                     	<h3 class="h3-style" style="display: inline-block;">已修改會員資料</h3>
 						<!-- success message Start -->
-<%-- 						<c:if test="${addSuccess != null}"> --%>
-<!-- 							<span class="success-span">  -->
-<%-- 								${addSuccess} --%>
-<!-- 								<i class="far fa-smile-wink"></i> -->
-<!-- 							</span> -->
-<%-- 						</c:if> --%>
-<%-- 						<c:if test="${updateSuccess != null }"> --%>
-<!-- 							<span class="success-span">  -->
-<%-- 								${updateSuccess} --%>
-<!-- 								<i class="far fa-smile-wink"></i> -->
-<!-- 							</span> -->
-<%-- 						</c:if> --%>
-							
+						
                     	<!-- success message End -->
 						
                     	<!-- search Start -->
@@ -99,4 +87,7 @@ MemberVO memberVO = (MemberVO) request.getAttribute("MemberVO");
         </div>
 		<%@ include file="/back-end/files/sb_importJs.file"%> <!-- 引入template要用的js -->
 </body>
+<br>本網頁的路徑:<br><b>
+   <font color=blue>request.getServletPath():</font> <%=request.getServletPath()%><br>
+   <font color=blue>request.getRequestURI(): </font> <%=request.getRequestURI()%> </b>
 </html>

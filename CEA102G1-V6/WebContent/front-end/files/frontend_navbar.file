@@ -57,11 +57,11 @@
                         <c:choose>
 						   <c:when test="${empty MemberVO}">
 						      <a href="${membersdata}" class="dropdown-item"style="display:none">會員資料管理</a>
-						   </c:when>
-						   <c:otherwise>
-						      <a href="${membersdata}" class="dropdown-item" >會員資料管理</a>
-						   </c:otherwise>
-						</c:choose>
+							   </c:when>
+							   <c:otherwise>
+							      <a href="${membersdata}" class="dropdown-item" >會員資料管理</a>
+							   </c:otherwise>
+							</c:choose>
                             <a href="${searchTickets}" class="dropdown-item">購票管理</a>
                             <a href="${articlemanage}" class="dropdown-item">文章管理</a>
 

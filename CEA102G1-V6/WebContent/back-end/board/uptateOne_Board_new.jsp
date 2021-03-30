@@ -12,7 +12,7 @@ pageContext.setAttribute("boardVO", boardVO);
 %>
 <html>
 <head>
-	<title>Sessions Management</title>
+	<title>修改公告資料</title>
 	<%@ include file="/back-end/files/sb_head.file"%>
 	<link rel="stylesheet" type="text/css" href="<%=request.getContextPath()%>/resource/datetimepicker/jquery.datetimepicker.css" />
 </head>
@@ -39,8 +39,9 @@ pageContext.setAttribute("boardVO", boardVO);
      }
 /* 	================================== */
 table{
-  width: 100%;
+  width: 70%;
   border-collapse: collapse;
+  margin-left:100px;
 }
 
 table tr{
@@ -87,6 +88,19 @@ table td{
   width: 80%;
 }
 
+.message{ 
+font-size:16px;
+border-width:;
+border-style:dashed;
+border-color:#ffffff;
+padding:5px;
+width:550px;
+height:35px;
+top:20px;
+left:430px;
+position:absolute;
+
+ }
 
 /* 	================================== */
 </style>
@@ -101,28 +115,17 @@ table td{
                 <main>
                     <div class="container-fluid">
                     
-                    	<h3 class="h3-style" style="display: inline-block;">修改會員資料</h3>
-						<!-- success message Start -->
-<%-- 						<c:if test="${addSuccess != null}"> --%>
-<!-- 							<span class="success-span">  -->
-<%-- 								${addSuccess} --%>
-<!-- 								<i class="far fa-smile-wink"></i> -->
-<!-- 							</span> -->
-<%-- 						</c:if> --%>
-<%-- 						<c:if test="${updateSuccess != null }"> --%>
-<!-- 							<span class="success-span">  -->
-<%-- 								${updateSuccess} --%>
-<!-- 								<i class="far fa-smile-wink"></i> -->
-<!-- 							</span> -->
-<%-- 						</c:if> --%>
+                    	<h3 class="h3-style" style="display: inline-block;">修改公告資料</h3>
+
+							<!--錯誤表列 -->
+						<div class="message" ">
 							<c:if test="${not empty errorMsgs}">
-								<font style="color:red">請修正以下錯誤:</font>
-								<ul>
-									<c:forEach var="message" items="${errorMsgs}">
-										<li style="color:red">${message}</li>
-									</c:forEach>
-								</ul>
-							</c:if>
+								<b>	<font style="color:red">請修正以下錯誤:</font></b>
+											<c:forEach var="message" items="${errorMsgs}">
+												<b><span style="color: red">${message}</span></b>
+											</c:forEach>
+								</c:if>
+							</div>
                     	<!-- success message End -->
 						
                     	<!-- search Start -->
@@ -134,12 +137,12 @@ table td{
 			         				 <div class="main">
 											<table>
 											  <tr>
-												    <th>公告編號:<font color=red><b>*</b></font></th>
+												    <th>公告編號:<font color=red></font></th>
 												    <td class="text"><%=boardVO.getBoaNo()%></td>
 											  </tr>
 											  <jsp:useBean id="boardTypeSvc" scope="page" class="com.board_type.model.BoardTypeService" />
 											  <tr>
-												    <th>公告種類編號:<font color=red><b>*</b></font></th>
+												    <th>公告種類編號:<font color=red></font></th>
 												    <td class="text">
 													    <select size="1" name="boatypNo">
 															<c:forEach var="boardTypeVO" items="${boardTypeSvc.all}">
@@ -166,18 +169,6 @@ table td{
                     	<!-- search End -->
                         
                     	<!-- listSession Start -->
-<!-- 			            <table class="table table-hover"> -->
-<!-- 							<thead> -->
-<!-- 								<tr style="border-bottom: 3px solid #bb9d52;"> -->
-<!-- 									
-<!-- 								</tr>				 -->
-<!-- 							</thead> -->
-									
-<!-- 							<tbody> -->
-
-<!-- 									
-<!-- 							</tbody> -->
-<!-- 						</table> -->
                        <!-- listSession End -->
                     
                     </div>
@@ -187,8 +178,8 @@ table td{
         </div>
 		<%@ include file="/back-end/files/sb_importJs.file"%> <!-- 引入template要用的js -->
 		
-	<br>本網頁的路徑:<br><b>
-   <font color=blue>request.getServletPath():</font> <%=request.getServletPath()%><br>
-   <font color=blue>request.getRequestURI(): </font> <%=request.getRequestURI()%> </b>
+<!-- 	<br>本網頁的路徑:<br><b> -->
+<%--    <font color=blue>request.getServletPath():</font> <%=request.getServletPath()%><br> --%>
+<%--    <font color=blue>request.getRequestURI(): </font> <%=request.getRequestURI()%> </b> --%>
 </body>
 </html>

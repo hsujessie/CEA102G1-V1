@@ -27,7 +27,11 @@
 
 .form-sty {
 	margin: 20px 0 0 0;
+	}
+.table th, .table td{
+vertical-align:middle;
 }
+
 </style>
 <body class="sb-nav-fixed">
 	<%@ include file="/back-end/files/sb_navbar.file"%>
@@ -36,7 +40,7 @@
 		<div id="layoutSidenav_nav">
 			<c:set value="${pageContext.request.requestURI}" var="urlRecog"></c:set>
 			<!-- 給sb_sidebar.file的參數-Home -->
-			<%@ include file="/back-end/files/sb_sidebar.file"%>
+				<%@ include file="/back-end/files/sb_sidebar.file"%>
 			<!-- 引入sidebar (左方) -->
 		</div>
 		<div id="layoutSidenav_content">
@@ -44,19 +48,6 @@
 				<div class="container-fluid">
 
 					<h3 class="h3-style" style="display: inline-block;">所有會員資料</h3>
-					<!-- success message Start -->
-					<%-- 						<c:if test="${addSuccess != null}"> --%>
-					<!-- 							<span class="success-span">  -->
-					<%-- 								${addSuccess} --%>
-					<!-- 								<i class="far fa-smile-wink"></i> -->
-					<!-- 							</span> -->
-					<%-- 						</c:if> --%>
-					<%-- 						<c:if test="${updateSuccess != null }"> --%>
-					<!-- 							<span class="success-span">  -->
-					<%-- 								${updateSuccess} --%>
-					<!-- 								<i class="far fa-smile-wink"></i> -->
-					<!-- 							</span> -->
-					<%-- 						</c:if> --%>
 					<c:if test="${not empty errorMsgs}">
 						<font style="color: red">請修正以下錯誤:</font>
 						<br>
@@ -87,15 +78,15 @@
 					<!-- search End -->
 
 					<!-- listSession Start -->
-					<table class="table table-hover">
-						<thead>
+					<table class="table table-hover" >
+						<thead >
 							<tr style="border-bottom: 3px solid #bb9d52;">
 								<th>會員編號</th>
 								<th>會員名稱</th>
 								<th>會員帳號</th>
 								<th>會員密碼</th>
 								<th>會員信箱</th>
-								<td>會員圖片</td>
+								<th>會員圖片</th>
 								<th>會員狀態</th>
 								<th>修改</th>
 								<th>修改狀態</th>
@@ -107,37 +98,37 @@
 							<c:forEach var="memberVO" items="${list}" begin="<%=pageIndex%>"
 								end="<%=pageIndex+rowsPerPage-1%>">
 
-								<tr class="sty-height" valign='middle'>
+								<tr class="sty-height" valign='middle' >
 									<td>${memberVO.memNo}</td>
 									<td>${memberVO.memName}</td>
 									<td>${memberVO.memAccount}</td>
 									<td>${memberVO.memPassword}</td>
-									<td>${memberVO.memMail}</td>
-									<td><img src="<%=request.getContextPath()%>/util/imgReader${MemberVO.memImgParam}" width="100" height="100"></td>
+									<td style="word-break: break-all;">${memberVO.memMail}</td>
+									<td><img src="<%=request.getContextPath()%>/util/imgReader${memberVO.memImgParam}" width="100" height="100"></td>
 									<td>${(memberVO.memstatus==0)?"未啟動":(memberVO.memstatus==1?"已啟動":"已停權")}</td>
 
 									<td>
-										<FORM METHOD="post"
-											ACTION="<%=request.getContextPath()%>/Member/member.do">
-											<a class="btn btn-light btn-brd grd1 effect-1"> <input
-												type="submit" value="修改" class="input-pos"> <input
-												type="hidden" name="memNo" value="${memberVO.memNo}">
-												<input type="hidden" name="action" value="getOne_For_Update">
-											</a>
-										</FORM>
+											<FORM METHOD="post"
+												ACTION="<%=request.getContextPath()%>/Member/member.do">
+												<a class="btn btn-light btn-brd grd1 effect-1"> <input
+													type="submit" value="修改" class="input-pos"> <input
+													type="hidden" name="memNo" value="${memberVO.memNo}">
+													<input type="hidden" name="action" value="getOne_For_Update">
+												</a>
+											</FORM>
 									</td>
 									<td>
-										<FORM METHOD="post"
-											ACTION="<%=request.getContextPath()%>/Member/member.do">
-											<a class="btn btn-light btn-brd grd1 effect-1"> <input
-												type="submit"
-												value=${(memberVO.memstatus==0)?"啟動":(memberVO.memstatus==1?"停權":"啟動")}
-												class="input-pos"> <input type="hidden"
-												name="requestURL" value="<%=request.getServletPath()%>">
-												<input type="hidden" name="memNo" value="${memberVO.memNo}">
-												<input type="hidden" name="action" value="change_Status">
-											</a>
-										</FORM>
+											<FORM METHOD="post"
+												ACTION="<%=request.getContextPath()%>/Member/member.do">
+												<a class="btn btn-light btn-brd grd1 effect-1"> <input
+													type="submit"
+													value=${(memberVO.memstatus==0)?"啟動":(memberVO.memstatus==1?"停權":"啟動")}
+													class="input-pos"> <input type="hidden"
+													name="requestURL" value="<%=request.getServletPath()%>">
+													<input type="hidden" name="memNo" value="${memberVO.memNo}">
+													<input type="hidden" name="action" value="change_Status">
+												</a>
+											</FORM>
 									</td>
 								</tr>
 							</c:forEach>
@@ -153,5 +144,6 @@
 	</div>
 	<%@ include file="/back-end/files/sb_importJs.file"%>
 	<!-- 引入template要用的js -->
+	
 </body>
 </html>

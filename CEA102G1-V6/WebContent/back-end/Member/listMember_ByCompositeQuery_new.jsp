@@ -39,20 +39,8 @@
                 <main>
                     <div class="container-fluid">
                     
-                    	<h3 class="h3-style" style="display: inline-block;">複合查詢員工資料 -listAllEmp.jsp</h3>
-						<!-- success message Start -->
-<%-- 						<c:if test="${addSuccess != null}"> --%>
-<!-- 							<span class="success-span">  -->
-<%-- 								${addSuccess} --%>
-<!-- 								<i class="far fa-smile-wink"></i> -->
-<!-- 							</span> -->
-<%-- 						</c:if> --%>
-<%-- 						<c:if test="${updateSuccess != null }"> --%>
-<!-- 							<span class="success-span">  -->
-<%-- 								${updateSuccess} --%>
-<!-- 								<i class="far fa-smile-wink"></i> -->
-<!-- 							</span> -->
-<%-- 						</c:if> --%>
+                    	<h3 class="h3-style" style="display: inline-block;">查詢員工資料</h3>
+
 							<c:if test="${not empty errorMsgs}">
 								<font style="color:red">請修正以下錯誤:</font><br>
 									<c:forEach var="message" items="${errorMsgs}">
@@ -111,8 +99,8 @@
 										<td>${memberVO.memName}</td>
 										<td>${memberVO.memAccount}</td>
 										<td>${memberVO.memPassword}</td>
-										<td>${memberVO.memMail}</td>
-										<td><img src="<%=request.getContextPath()%>/util/imgReader${memberVO.memImg}"width="50" height="50"></td>
+										<td style="word-break: break-all;">${memberVO.memMail}</td>
+										<td><img src="<%=request.getContextPath()%>/util/imgReader${memberVO.memImgParam}" width="100" height="100"></td>
 										<td>${(memberVO.memstatus==0)?"未啟動":(memberVO.memstatus==1?"已啟動":"已停權")}</td>
 																				
 										<td>

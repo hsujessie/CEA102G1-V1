@@ -8,8 +8,34 @@
 <title>Front-End</title>
 <%@ include file="/front-end/files/frontend_importCss.file"%>
 <link rel="stylesheet" type="text/css" href="<%=request.getContextPath()%>/resource/bootstrap/css3/login3.css">
+ <!-- toastr v2.1.4 -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/2.1.4/toastr.min.css" rel="stylesheet" />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/2.1.4/toastr.min.js"></script>
 </head>
 <body>
+
+<style>
+#preview{
+	float:left;
+}
+img{
+    width: 40px;
+}
+.message{
+font-size:16px;
+border-width:0px;
+border-style:dashed;
+border-color:#ffffff;
+padding:5px;
+width:600px;
+height:35px;
+top:100px;
+left:462px;
+position: absolute;
+}
+
+</style>
+
         <div class="wrapper"><!-- wrapper Start -->
             <!-- Nav Bar Start -->
 			<c:set value="${pageContext.request.requestURI}" var="urlRecog"></c:set>
@@ -21,26 +47,6 @@
             <!-- PUT HERE Start -->
             <div class="cotn_principal">
 				<div class="cont_centrar">
-				 			<div class="success">
-								<%-- 成功表列 --%>
-								<c:if test="${not empty success}">
-										<c:forEach var="message" items="${success}">
-											<h5><span style="color: green">${message}</span></h5><br>
-										</c:forEach>
-								</c:if>
-						   </div>
-	   
-	   
-	  						<div class="errorMegs">
-								<%-- 錯誤表列 --%>
-								<c:if test="${not empty errorMsgs}">
-									<h5><font style="color: red">請修正以下錯誤:</font></h5>
-										<c:forEach var="message" items="${errorMsgs}">
-										<h5><span style="color: red">${message}</span></h5><br>
-										</c:forEach>
-								</c:if>
-						   </div>
-							
 					<div class="cont_login">
 <!--============================================================================================-->						
 						<div class="cont_info_log_sign_up">
@@ -71,14 +77,16 @@
 								 </div>
 								       	
 								       	<div class="cont_form_login">
-										   <form METHOD="post" ACTION="<%=request.getContextPath()%>/Member/member.do" name="form1">
-												<a class="login-a-sty" href="#" onclick="ocultar_login_sign_up()" ><i class="material-icons">Back</i></a>
-										  		<h2 class="login-sty">LOGIN</h2>
-										 		<input class="login-input-sty" type="text"  name ="memAccount" placeholder="Account" />
-												<input class="login-input-sty"  type="password"  name ="memPassword" placeholder="Password" />
-												<button type="submit" class="btn_login" onclick="cambiar_login()">LOGIN</button>
-												<input type="hidden" name="action" value="get_Login">
-											</form>
+												   <form METHOD="post" ACTION="<%=request.getContextPath()%>/Member/member.do" name="form1">
+														<a class="login-a-sty" href="#" onclick="ocultar_login_sign_up()" ><i class="material-icons">Back</i></a>
+												  		<h2 class="login-sty">LOGIN</h2>
+												  		
+													   
+												 		<input class="login-input-sty" type="text"  name ="memAccount" placeholder="Account" />
+														<input class="login-input-sty"  type="password"  name ="memPassword" placeholder="Password" />
+														<button type="submit" class="btn_login" onclick="cambiar_login()">LOGIN</button>
+														<input type="hidden" name="action" value="get_Login">
+													</form>
 													<div class="foot-lnk">
 														<a href="<%=request.getContextPath()%>/front-end/Member_Login/forgot_password_new.jsp">忘記密碼?</a>
 													</div>
@@ -92,22 +100,80 @@
 													<input type="text"  name="memAccount" placeholder="Account" />
 													<input type="password" name="memPassword"  placeholder="Password" />
 													<input type="text"  name="memMail" placeholder="Mail" />
-													<input type="file" name="memImg" placeholder="Img" width="40" height="40"/>
-													<button type="submit" class="btn_sign_up" onclick="cambiar_sign_up()">SIGN UP</button>
-													<input type="hidden" name="action" value="signup">
+													<div class="row">
+															<div id="preview" style="padding:5px;width:90px;margin-right: 50px;"  ></div>
+													            <input  id="myImg" type="file" name="memImg" placeholder="Img" style="padding:5px;width:90px;margin-right: 50px;position:relative" />
+													    </div> 
+														<button type="submit" class="btn_sign_up" onclick="cambiar_sign_up()">SIGN UP</button>
+														<input type="hidden" name="action" value="signup">
 												</div>
 										 </form>
 <!--============================================================================================-->										 
 								</div>
 							</div>
+							<div class="message" >
+							<!--錯誤表列 -->
+										<div class="errorMegs" style="color: red;">
+											<c:if test="${not empty errorMsgs}">
+												<b><font >請修正錯誤:</font></b>
+													<c:forEach var="message" items="${errorMsgs}">
+															<b><span style="color: red">${message}</span></b>
+													</c:forEach>
+											</c:if>
+										</div>
+										<!-- 成功表列 -->	
+											<div class="success" style="color: green;"> 
+												<c:if test="${not empty success}">
+														<c:forEach var="message" items="${success}">
+															<b><span style="color: green">${message}</span></b>
+														</c:forEach>
+												</c:if>
+								   			</div>
+						   			</div>
+								</div>
 						</div>
-					</div>
+					
+					
             
             <!-- PUT HERE End -->
             
        
         
 <%@ include file="/front-end/files/frontend_importJs.file"%>
-<script src="<%=request.getContextPath()%>/resource/bootstrap/js3/newlogin.js"></script>   
+<script src="<%=request.getContextPath()%>/resource/bootstrap/js3/newlogin.js"></script>
+<script>
+function init() {
+
+    var myFile = document.getElementById("myImg");
+       var preview = document.getElementById('preview');
+    myFile.addEventListener('change', function(e) {
+        let files = e.target.files;
+        if (files) {
+            for (let i = 0; i < files.length; i++) {
+                let file = files[i];
+                if (file.type.indexOf('image') > -1) {
+                    let reader = new FileReader();
+                    reader.addEventListener('load', function(e) {
+                        let result = e.target.result;
+                        console.log(result);
+                        let img = document.createElement('img');
+                        img.setAttribute('src', result);
+                        preview.append(img);
+                    });
+                    reader.readAsDataURL(file); 
+                }
+//                 else {
+//                     // 彈出警告視窗 
+//                     alert('請上傳圖片！');
+//                 }
+            }
+        }
+    });
+
+}
+
+window.onload = init;
+
+</script> 
 </body>
 </html>

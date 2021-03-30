@@ -5,12 +5,14 @@
 <%@ page import="com.board.model.*"%>
 <%@ page import = "javax.servlet.http.* " %>
 <%	
-List<BoardVO> boardVO = (List<BoardVO>) request.getAttribute("BoatypNolist");
-System.out.println(boardVO+"  got?  ");
+
+BoardVO boardVO = (BoardVO) request.getAttribute("BoardVO");
+pageContext.setAttribute("boardVO", boardVO);
+
 %>
 <html>
 <head>
-	<title>公告種類資料 - listOneBoard2.jsp</title>
+	<title>公告資料已修改</title>
 	<%@ include file="/back-end/files/sb_head.file"%>
 	<link rel="stylesheet" type="text/css" href="<%=request.getContextPath()%>/resource/datetimepicker/jquery.datetimepicker.css" />
 </head>
@@ -23,8 +25,35 @@ System.out.println(boardVO+"  got?  ");
 	    font-size: 16px;
 	}
 	.form-sty{
-		margin: 20px 0 0 0;
+		margin: 20px 0 0 100px;
+		 width: 100%;
+		 border-collapse: collapse;
 	}
+ 	.btn-pos{ 
+	position: absolute; 
+   
+     right:40%; 
+     } 
+     .h3-style{
+     padding: 10px 0 0 50px;
+     }
+/* 	================================== */
+
+.but-01 {
+    position: absolute;
+    top: 40%;
+    
+    left: 8%;
+    bottom: 0;
+    font-size: 14px;
+    text-decoration: none;
+    background-color: transparent;
+    border: 0px;
+    color: #fff
+    }
+
+
+/* 	================================== */
 </style>
 <body class="sb-nav-fixed">
 		<%@ include file="/back-end/files/sb_navbar.file"%> <!-- 引入navbar (上方) -->
@@ -37,52 +66,65 @@ System.out.println(boardVO+"  got?  ");
                 <main>
                     <div class="container-fluid">
                     
-                    	<h3 class="h3-style" style="display: inline-block;">查詢公告種類資料</h3>
+                    	<h3 class="h3-style" style="display: inline-block;">修改公告資料</h3>
 						
+							<c:if test="${not empty errorMsgs}">
+								<font style="color:red">請修正以下錯誤:</font>
+								<ul>
+									<c:forEach var="message" items="${errorMsgs}">
+										<li style="color:red">${message}</li>
+									</c:forEach>
+								</ul>
+							</c:if>
                     	<!-- success message End -->
 						
                     	<!-- search Start -->
-                    	<div class="row " style="margin: 0px 0 20px -200px;">          
-			                <div class="col-2"></div>
+                    	<div class="row " style="margin: 0px 0 20px -400px;">          
 	                        <div class="col-10">          
-	                           	                 
+			         				 <div class="main">
+									</div>
                         	</div>                 
                         </div>
+                        
                     	<!-- search End -->
                         
                     	<!-- listSession Start -->
-			            <table class="table table-hover">
+			           <table class="table table-hover">
 							<thead>
 								<tr style="border-bottom: 3px solid #bb9d52;">
-									<th>公告編號</th>
-									<th>公告種類編號</th>
-									<th>公告內容</th>
-									<th>公告日期日期</th>
+									<tr>
+										<th>公告編號</th>
+										<th>公告種類編號</th>
+										<th>公告內容</th>
+										<th>公告日期日期</th>
+										<th>修改</th>
+								   </tr>
 								</tr>				
 							</thead>
 									
 							<tbody>
-								<c:forEach var="boardVO" items="${BoatypNolist}" >
 									<tr class="sty-height" valign='middle'>
-										<td>${boardVO.boaNo}</td>
-										<td>${boardVO.boatypNo}</td>
-										<td>${boardVO.boaContent}</td>
-										<td>${boardVO.boaTime}</td>
+										<td>${BoardVO.boaNo}</td>
+										<td>${BoardVO.boatypNo}</td>
+										<td>${BoardVO.boaContent}</td>
+										<td>${BoardVO.boaTime}</td>
 									</tr>
-								</c:forEach>
 							</tbody>
 						</table>
+						<div class="but-01" style="margin-left: 45%;"> 
+							<a href="<%=request.getContextPath()%>/back-end/board/listAllBoard_new.jsp">
+								<button  style="width:70px;height:30px;text-align:center;font-size:18px;color:#aa9166;">回上頁</button>
+							</a> 
+						</div>
                        <!-- listSession End -->
                     
                     </div>
                 </main>
-                
+                <%@ include file="/back-end/files/sb_footer.file"%>
             </div>
         </div>
 		<%@ include file="/back-end/files/sb_importJs.file"%> <!-- 引入template要用的js -->
 		
-<br>本網頁的路徑:<br><b>
-   <font color=blue>request.getServletPath():</font> <%=request.getServletPath()%><br>
-   <font color=blue>request.getRequestURI(): </font> <%=request.getRequestURI()%> </b>		
+	
 </body>
 </html>

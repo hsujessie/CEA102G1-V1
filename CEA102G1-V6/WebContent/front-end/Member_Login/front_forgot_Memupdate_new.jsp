@@ -19,8 +19,13 @@
 <style>
 /* 	================================== */
 table{
-  width: 100%;
+  width: 55%;
   border-collapse: collapse;
+  margin-left:340px;
+  border-width:3px;
+ border-style:dashed;
+ border-color:#FFAC55;
+ padding:5px;
 }
 
 table tr{
@@ -75,7 +80,18 @@ padding:
    
      right:50%; 
      } 
-
+.errorMegs{
+font-size:16px;
+border-width:0px;
+border-style:dashed;
+border-color:#ffffff;
+padding:5px;
+width:600px;
+height:35px;
+top:150px;
+left:462px;
+position: absolute;
+}
 
 /* 	================================== */
 
@@ -87,25 +103,28 @@ padding:
 			<c:set value="${pageContext.request.requestURI}" var="urlRecog"></c:set>
             <%@ include file="/front-end/files/frontend_navbar.file"%>
             <!-- Nav Bar End -->
-				<c:if test="${not empty errorMsgs}">
-					<font style="color:red">請修正以下錯誤:</font>
-						<ul>
-							<c:forEach var="message" items="${errorMsgs}">
-								<li style="color:red">${message}</li>
-							</c:forEach>
-						</ul>
-				</c:if>
+				
 
             <!-- Page Header Start --> <!-- 看自己需不需要標題 -->
             <div class="page-header">
                 <div class="container">
                     <div class="row">
                         <div class="col-12">
-                            <h2>Front-End</h2> 
+                            <h2 style="color: rgba(192,210,256,0.8);text-shadow: 7px 5px 4px rgba(0,0,0,1);">會員修改資料</h2> 
                         </div>
                     </div>
                 </div>
             </div>
+            <!--錯誤表列 -->
+            
+            <div class="errorMegs" style="color: red;">
+				<c:if test="${not empty errorMsgs}">
+					<b><font >請修正錯誤:</font></b>
+						<c:forEach var="message" items="${errorMsgs}">
+							<b><span style="color: red">${message}</span></b>
+						</c:forEach>
+				</c:if>
+			</div>
             <!-- Page Header End -->
 			<FORM METHOD="post" ACTION="<%=request.getContextPath()%>/Member/member.do" name="form1" enctype="multipart/form-data">
 					<table>
@@ -115,15 +134,15 @@ padding:
 									<td><input type="TEXT" name="memName" size="45"	value="<%=memberVO.getMemName()%>" /></td>
 								</tr>
 								<tr>
-									<th>會員帳號:<font color=red><b>*</b></font></th>
+									<th>會員帳號:<font color=red></font></th>
 									<td><%=memberVO.getMemAccount()%></td>
 								</tr>  
 								<tr>
 									<th>會員密碼:</th>
-									<td><input type="TEXT" name="memPassword" size="45"	value="<%=memberVO.getMemPassword()%>" /></td>
+									<td><input type="password" name="memPassword" size="45"	value="<%=memberVO.getMemPassword()%>" /></td>
 								</tr>
 								<tr>
-									<th>會員mail:<font color=red><b>*</b></font></td>
+									<th>會員mail:<font color=red></font></td>
 									<td><%=memberVO.getMemMail()%></td>
 								</tr>
 								<tr>
@@ -140,7 +159,7 @@ padding:
 								<input type="hidden" name="memMail" value="<%=memberVO.getMemMail()%>">
 								<input type="hidden" name="memWallet" value="<%=memberVO.getMemWallet()%>" />
 								<input type="hidden" name="memstatus" value="<%=memberVO.getMemstatus()%>" />
-								<a class="btn btn-light btn-brd grd1 effect-1 btn-pos">
+								<a class="btn btn-light btn-brd grd1 effect-1 btn-pos" style="text-align:center;font-size:18px;left:700px;top:20px;position:relative;border-width:3px;">
 								<input type="submit" value="送出修改" class="input-pos">
 								</a>	
 		 	</FORM>
@@ -160,8 +179,8 @@ padding:
         </div>
         
 <%@ include file="/front-end/files/frontend_importJs.file"%>
-<br>本網頁的路徑:<br><b>
-   <font color=blue>request.getServletPath():</font> <%=request.getServletPath()%><br>
-   <font color=blue>request.getRequestURI(): </font> <%=request.getRequestURI()%> </b>   
+<!-- <br>本網頁的路徑:<br><b> -->
+<%--    <font color=blue>request.getServletPath():</font> <%=request.getServletPath()%><br> --%>
+<%--    <font color=blue>request.getRequestURI(): </font> <%=request.getRequestURI()%> </b>    --%>
 </body>
 </html>

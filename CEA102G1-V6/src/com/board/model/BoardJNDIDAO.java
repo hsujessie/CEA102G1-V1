@@ -36,6 +36,8 @@ public class BoardJNDIDAO implements BoardDAO_interface {
 			"SELECT boa_No , boatyp_No, boa_Content, boa_Time FROM board where boa_No = ?";
 	private static final String GET_ONE_STMT2 = 
 			"SELECT boa_NO , boatyp_NO, boa_CONTENT, boa_Time FROM board where boatyp_NO = ?";
+	private static final String GET_ONE_STMT3 = 
+			"SELECT boa_NO , boatyp_NO, boa_CONTENT, boa_Time FROM board where boa_No = ?";
 
 	
 				@Override
@@ -344,7 +346,64 @@ public class BoardJNDIDAO implements BoardDAO_interface {
 					return list;
 				}
 
-	
+				@Override
+				public List<BoardVO> findByPrimaryKey2(Integer boaNo) {
+					List<BoardVO> list = new ArrayList<BoardVO>();
+					BoardVO boardVO = null;
+					Connection con = null;
+					PreparedStatement pstmt = null;
+					ResultSet rs = null;
+
+					try {
+						con = ds.getConnection();
+						pstmt = con.prepareStatement(GET_ONE_STMT3);
+
+						pstmt.setInt(1, boaNo);
+
+						rs = pstmt.executeQuery();
+
+						while (rs.next()) {
+							
+							boardVO = new BoardVO();
+							
+							boardVO.setBoatypNo(rs.getInt("boatyp_No"));
+							boardVO.setBoaNo(rs.getInt("boa_No"));
+							boardVO.setBoaContent(rs.getString("boa_Content"));
+							boardVO.setBoaTime(rs.getDate("boa_Time"));
+							
+							list.add(boardVO);
+						}
+					}
+
+						catch (SQLException se) {
+						throw new RuntimeException("A database error occured. "
+								+ se.getMessage());
+						
+					} finally {
+						if (rs != null) {
+							try {
+								rs.close();
+							} catch (SQLException se) {
+								se.printStackTrace(System.err);
+							}
+						}
+						if (pstmt != null) {
+							try {
+								pstmt.close();
+							} catch (SQLException se) {
+								se.printStackTrace(System.err);
+							}
+						}
+						if (con != null) {
+							try {
+								con.close();
+							} catch (Exception e) {
+								e.printStackTrace(System.err);
+							}
+						}
+					}
+					return list;
+				}
 	
 	
 	

@@ -5,7 +5,9 @@
 <%@ page import="java.util.*"%>
 <%
 MemberVO memberVO = (MemberVO) request.getAttribute("MemberVO"); 
+System.out.println(memberVO);
 List<MemberVO> memberVOList = (List<MemberVO>)request.getAttribute("list");
+
 %>
 <!DOCTYPE html>
 <html>
@@ -18,8 +20,13 @@ List<MemberVO> memberVOList = (List<MemberVO>)request.getAttribute("list");
 <style>
 /* 	================================== */
 table{
-  width: 100%;
+ width: 55%;
   border-collapse: collapse;
+  margin-left:340px;
+ border-width:3px;
+ border-style:dashed;
+ border-color:#FFAC55;
+ padding:5px;"
 }
 
 table tr{
@@ -34,7 +41,7 @@ table th{
   position: relative;
   width: 25%;
   background-color: rgba(170,145,102,0.8);
-  color: white;
+  color: #000000;
   text-align: center;
   padding: 10px 0;
 }
@@ -72,9 +79,23 @@ padding:
 .btn-pos{ 
 	position: absolute; 
    
-     right:50%; 
+     right:40%; 
      } 
-
+ 
+ }    
+     
+.errorMegs{
+font-size:16px;
+border-width:0px;
+border-style:dashed;
+border-color:#ffffff;
+padding:5px;
+width:600px;
+height:35px;
+top:153px;
+left:462px;
+position: absolute;
+}
 
 /* 	================================== */
 
@@ -86,27 +107,32 @@ padding:
 			<c:set value="${pageContext.request.requestURI}" var="urlRecog"></c:set>
             <%@ include file="/front-end/files/frontend_navbar.file"%>
             <!-- Nav Bar End -->
+         </div>
+			<!-- Page Header Start --> <!-- 看自己需不需要標題 -->
+            
+            <!-- Page Header End -->
+			<!--錯誤表列 -->
+            <div class="errorMegs" style="color: red;">
 				<c:if test="${not empty errorMsgs}">
-					<font style="color:red">請修正以下錯誤:</font>
-						<ul>
-							<c:forEach var="message" items="${errorMsgs}">
-								<li style="color:red">${message}</li>
-							</c:forEach>
-						</ul>
+					<b><font >請修正錯誤:</font></b>
+						<c:forEach var="message" items="${errorMsgs}">
+							<b><span style="color: red">${message}</span></b>
+						</c:forEach>
 				</c:if>
+			</div>
 
             <!-- Page Header Start --> <!-- 看自己需不需要標題 -->
             <div class="page-header">
                 <div class="container">
                     <div class="row">
                         <div class="col-12">
-                            <h2>Front-End</h2> 
+                            <h2 style="color: rgba(192,210,256,0.8);text-shadow: 7px 5px 4px rgba(0,0,0,1);">已更新會員資料</h2> 
                         </div>
                     </div>
                 </div>
             </div>
             <!-- Page Header End -->
-			<FORM METHOD="post" ACTION="<%=request.getContextPath()%>/Member/member.do" name="form1" enctype="multipart/form-data">
+			<FORM class="from1"METHOD="post" ACTION="<%=request.getContextPath()%>/Member/member.do" name="form1" enctype="multipart/form-data">
 					<table>
 				<tr>
 					<th>會員名稱:</th>
@@ -130,15 +156,17 @@ padding:
 				</tr>
 				<tr>
 					<th>會員圖像</th>
-					<td><img src="<%=request.getContextPath()%>/util/imgReader${MemberVO.memImgParam}" width="100" height="100"></td>
+					<td><img src="<%=request.getContextPath()%>/util/imgReader${MemberVO.memImgParam}" style="width:100px; height:100px"></td>
 				</tr>
 				
 				
 			</table>
-		
-								
 		 	</FORM>
-
+							<div style="width:100px;height:30px;left:720px;top:20px;position:relative;border-width:3px;">
+								<a href="<%=request.getContextPath()%>/front-end/index.jsp">
+							    	<button style="text-align:center;font-size:18px;top:20px;">回上頁</button>
+							    </a> 
+							 </div>   
             <!-- PUT HERE Start -->
             
             
@@ -151,14 +179,14 @@ padding:
             <!-- Footer Start -->
             <%@ include file="/front-end/files/frontend_footer.file"%>
             <!-- Footer End -->
-        </div>
+        
         
 <%@ include file="/front-end/files/frontend_importJs.file"%>
-<br>本網頁的路徑:<br><b>
-   <font color=blue>request.getServletPath():</font> <%=request.getServletPath()%><br>
-   <font color=blue>request.getRequestURI(): </font> <%=request.getRequestURI()%> </b>  
+<!-- <br>本網頁的路徑:<br><b> -->
+<%--    <font color=blue>request.getServletPath():</font> <%=request.getServletPath()%><br> --%>
+<%--    <font color=blue>request.getRequestURI(): </font> <%=request.getRequestURI()%> </b>   --%>
    <script language=javascript>
-		setTimeout('window.location="<%=request.getContextPath()%>/front-end/index.jsp"', 5000)  <%-- 三秒後轉登入畫面--%>
-	</script> 
+		setTimeout('window.location="<%=request.getContextPath()%>/front-end/index.jsp"', 3000)  <%--三秒後轉登入畫面--%>
+   </script> 
 </body>
 </html>

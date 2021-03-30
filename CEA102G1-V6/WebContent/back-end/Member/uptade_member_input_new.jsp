@@ -34,8 +34,9 @@
      } 
 	/* 	================================== */
 table{
-  width: 100%;
+  width: 70%;
   border-collapse: collapse;
+  margin-left:100px;
 }
 
 table tr{
@@ -81,7 +82,22 @@ table td{
   item-align: center;
   width: 80%;
 }
+#table:hover{
+background:#cd9a0b;
+}
+.message{ 
+font-size:16px;
+border-width:;
+border-style:dashed;
+border-color:#ffffff;
+padding:5px;
+width:550px;
+height:35px;
+top:20px;
+left:430px;
+position:absolute;
 
+ }
 
 /* 	================================== */
 </style>
@@ -97,25 +113,16 @@ table td{
                     <div class="container-fluid">
                     
                     	<h3 class="h3-style" style="display: inline-block;">修改會員資料</h3>
-						<!-- success message Start -->
-<%-- 						<c:if test="${addSuccess != null}"> --%>
-<!-- 							<span class="success-span">  -->
-<%-- 								${addSuccess} --%>
-<!-- 								<i class="far fa-smile-wink"></i> -->
-<!-- 							</span> -->
-<%-- 						</c:if> --%>
-<%-- 						<c:if test="${updateSuccess != null }"> --%>
-<!-- 							<span class="success-span">  -->
-<%-- 								${updateSuccess} --%>
-<!-- 								<i class="far fa-smile-wink"></i> -->
-<!-- 							</span> -->
-<%-- 						</c:if> --%>
+						
+							<!--錯誤表列 -->
+						<div class="message" ">
 							<c:if test="${not empty errorMsgs}">
-								<font style="color:red">請修正以下錯誤:</font><br>
-									<c:forEach var="message" items="${errorMsgs}">
-										<span style="color:red">${message}</span>
-								</c:forEach>
-							</c:if>
+								<b>	<font style="color:red">請修正以下錯誤:</font></b>
+											<c:forEach var="message" items="${errorMsgs}">
+												<b><span style="color: red">${message}</span></b>
+											</c:forEach>
+								</c:if>
+							</div>
                     	<!-- success message End -->
 						
                     	<!-- search Start -->
@@ -151,7 +158,9 @@ table td{
 											  </tr>
 											  <tr>
 											    <th>會員照片:</th>
-											    <td><img src="<%=request.getContextPath()%>/util/imgReader${MemberVO.memImgParam}" width="100" height="100"></td>
+											    <td>
+											    <img src="<%=request.getContextPath()%>/util/imgReader${MemberVO.memImgParam}" style="width:100px; height:100px;">
+											    </td>
 											  </tr>
 										</table>
 									</div>
