@@ -160,7 +160,7 @@
 												<c:set var="left" value="18"/>
     										</c:otherwise>
 										</c:choose>
-										<span class="ml-ten">${theVO.the_no}廳</span><span style="padding-left:${left}px;">【<c:forEach var="movVerVO" items="${movVerSvc.all}"><c:if test="${theVO.movver_no == movVerVO.movver_no}">${movVerVO.movver_name}</c:if></c:forEach>】</span><br>
+										<span class="ml-ten">${theVO.the_no}廳</span><span style="padding-left:${left}px;">【<c:forEach var="movVerVO" items="${movVerSvc.all}"><c:if test="${theVO.movver_no == movVerVO.movver_no}"><span class="movverName">${movVerVO.movver_name}</span></c:if></c:forEach>】</span><br>
 									</c:forEach>
 									<span id="theNo-errmsg" style="display:none;">			
 										<i class="far fa-hand-point-up" style="color:#bb9d52;"></i>
@@ -308,7 +308,11 @@
 			}
 		}
  	</c:if> 
- 
+
+
+	let theNo = $("input[name='theNo']");
+	let movVerName = $('.movverName');
+	
 	$('select[name="movNo"]').change(function(){
 		/* =========================================================================================== */
 										/* 選擇電影後，自動勾選相對應的廳院 */
@@ -316,18 +320,32 @@
 		let movVer = $("select[name='movNo'] :selected").data('movver');
 		let movVerArr = [];
 		if(movVer.indexOf(",") == -1){
-			
+			/* for(let i = 0; i < theNo.length; i++){
+				console.log("theNoVal= " + theNo[i].value);
+			} */
 			/* ========================================================================================================
 			  	   * have to make 「checked false」 to prevent the remained 「checked」 which are from other checkboxes
 			=========================================================================================================== */
+			
 			theNoZero.checked = false;
 			theNoFirst.checked = false;
 			theNoSecond.checked = false;
 			theNothree.checked = false;
 			theNoFour.checked = false;
 			theNoFif.checked = false;
-						
-			if(movVer == "2D"){
+			
+		/* 	let movverNames = $('.movverName');
+			console.log("length= " + movverNames.length);
+			let movTxt = '';
+			for(let i = 0; i < movverNames.length; i++){
+				let movTxt = movverNames[i].innerText;
+				
+				if(movVer == movTxt){ 
+					console.log("==enter== "+movTxt);
+			 	} 
+			} */
+			
+			/* if(movVer == "2D"){
 				theNoZero.checked = true;
 				theNothree.checked = true;
 			}
@@ -338,7 +356,7 @@
 			if(movVer == "IMAX"){
 				theNoSecond.checked = true;
 				theNoFif.checked = true;
-			}	
+			} */	
 		}else{
 			
 			theNoZero.checked = false;
@@ -352,8 +370,27 @@
 			    * 新增電影時，movver是checkbox多選，用字串串接的方式存進db, so that it has to split the string here.
 			=================================================================================================== */
 			movVerArr = movVer.split(",")
+
+			/* for(let i = 0; i < theNo.length; i++){
+				console.log("theNoVal= " + theNo[i].value);
+			} */ 
+
+			let movTxt = '';
+			for(let i = 0; i < 3; i++){
+				movTxt.push(movVerName[i].innerText);
+				console.log("movTxt= " + movTxt);
+			}
+			
 			for(let i = 0; i < movVerArr.length; i++){
-				console.log(movVerArr[i]);	
+				console.log("movVerArr= " + movVerArr[i]);	
+				
+				console.log("movTxt= " + movTxt);	
+				if(movVerArr[i] == movTxt){
+					console.log("---enter---");
+					continue;
+				}
+				
+				/* 
 				if(movVerArr[i] == "2D"){
 					theNoZero.checked = true;
 					theNothree.checked = true;
@@ -365,7 +402,7 @@
 				if(movVerArr[i] == "IMAX"){
 					theNoSecond.checked = true;
 					theNoFif.checked = true;
-				}	
+				}	 */
 			}
 		}
 		
