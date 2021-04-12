@@ -219,7 +219,7 @@ public class ExpJDBCDAO implements ExpDAO_interface{
 		ResultSet rs = null;
 		
 
-		Double expRatingAvg = null; // 包裝型別才有null   //基本資料別沒有null	//這邊宣告null，是因為讓 前台 EL 取資料，若是空值，就不顯示	
+		Double expRatingAvg = null; // 包裝類別才有null   //基本資料別沒有null	//這邊宣告null，是因為讓 前台 EL 取資料，若是空值，就不顯示	
 		try {
 			Class.forName(driver);
 			con = DriverManager.getConnection(url, userid, passwd);
