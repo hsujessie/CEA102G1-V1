@@ -36,6 +36,11 @@ public class MovServlet extends HttpServlet{
 	public void doPost(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException{
 		req.setCharacterEncoding("UTF-8");
 		String action = req.getParameter("action");
+
+		HttpSession session = req.getSession();
+		if (session.getAttribute("addSuccess") != null) {
+		    session.removeAttribute("addSuccess");
+		}
 		
 		// 來自select_page.jsp的請求
 		if("getOne_For_Display".equals(action)) { 
@@ -82,7 +87,6 @@ public class MovServlet extends HttpServlet{
 				String fromFrontend = req.getParameter("fromFrontend");
 				if("true".equals(fromFrontend) ) {
 					/* remove a attribute which is from frontend movies_subpage.jsp through login page */
-					HttpSession session = req.getSession();
 					if (session.getAttribute("moviesSubpage") != null) {
 					    session.removeAttribute("moviesSubpage");
 					}
@@ -263,12 +267,13 @@ public class MovServlet extends HttpServlet{
 					
 				/***************************3.新增完成,準備轉交(Send the Success view)***********/				
 				String addSuccess = "【  " + movname + " 】" + "新增成功";
-				req.setAttribute("addSuccess", addSuccess);
-				req.setAttribute("movname", movname);		
+				session.setAttribute("addSuccess", addSuccess);
+				session.setAttribute("movname", movname);		
 				
-				String url = "/back-end/movie/listAllMovie.jsp";
-				RequestDispatcher successView = req.getRequestDispatcher(url);
-				successView.forward(req, res);	
+                /* 用foward，因為action的值會一直在，若refresh頁面，因url是mov.do，會再呼叫controller，進入insert方法。 */
+//				RequestDispatcher successView = req.getRequestDispatcher("/back-end/movie/listAllMovie.jsp");
+//				successView.forward(req, res);	
+				res.sendRedirect(req.getContextPath()+"/back-end/movie/listAllMovie.jsp");
 				
 				/***************************其他可能的錯誤處理**********************************/
 			}catch (Exception e) {
@@ -304,7 +309,6 @@ public class MovServlet extends HttpServlet{
 								
 				/***************************3.查詢完成,準備轉交(Send the Success view)************/
 	            if(requestURL.equals("/back-end/movie/listMovies_ByCompositeQuery.jsp")){
-					HttpSession session = req.getSession();
 					Map<String, String[]> map = (Map<String, String[]>)session.getAttribute("map");
 					List<MovVO> list  = movSvc.getAll(map);
 					req.setAttribute("listMovies_ByCompositeQuery",list); //  複合查詢, 資料庫取出的list物件,存入
@@ -330,7 +334,7 @@ public class MovServlet extends HttpServlet{
 		if ("update".equals(action)) {
 			Map<String,String> errorMsgs = new LinkedHashMap<String,String>();
 			req.setAttribute("errorMsgs", errorMsgs);
-			
+
 			String requestURL = req.getParameter("requestURL");
 			
 			try {
@@ -442,11 +446,8 @@ public class MovServlet extends HttpServlet{
 				movondateMil.setTime(movondate.getTime());
 				java.util.Date movoffdateMil = new java.util.Date();
 				movoffdateMil.setTime(movoffdate.getTime());
-				String movOndateErrmsg = null;
-				String movOffdateErrmsg = null;
 				if(movondateMil.after(movoffdateMil)) {
-					movOndateErrmsg = "上映日期不可於下檔日期之後";
-					movOffdateErrmsg = "下檔日期不可於上映日期之前";
+					errorMsgs.put("dateErrmsg"," 上映日期不可於下檔日期之後");
 				}
 				
 				//單選下拉選單
@@ -543,11 +544,9 @@ public class MovServlet extends HttpServlet{
 				movVO.setMovdes(movdes);
 				
 				// Send the use back to the form, if there were errors
-				if (!errorMsgs.isEmpty() || movOndateErrmsg != null) {
+				if (!errorMsgs.isEmpty()) {
 					System.out.println("errorMsgs= " + errorMsgs);
 					req.setAttribute("movVO", movVO);     
-					req.setAttribute("movOndateErrmsg", movOndateErrmsg);  
-					req.setAttribute("movOffdateErrmsg", movOffdateErrmsg);  
 					RequestDispatcher failureView = req.getRequestDispatcher(requestURL);
 					failureView.forward(req, res);
 					return;
@@ -558,7 +557,7 @@ public class MovServlet extends HttpServlet{
 				
 				/***************************3.修改完成,準備轉交(Send the Success view)*************/	
 				if(requestURL.equals("/back-end/movie/listMovies_ByCompositeQuery.jsp")){
-					HttpSession session = req.getSession();
+					//HttpSession session = req.getSession();
 					Map<String, String[]> map = (Map<String, String[]>)session.getAttribute("map");
 					List<MovVO> list  = movSvc.getAll(map);
 					req.setAttribute("listMovies_ByCompositeQuery",list); //  複合查詢, 資料庫取出的list物件,存入
@@ -590,7 +589,6 @@ public class MovServlet extends HttpServlet{
 			req.setAttribute("errorMsgs", errorMsgs);
 			
 			try {
-				HttpSession session = req.getSession();
 				Map<String, String[]> map = (Map<String,String[]>)session.getAttribute("map");
 				if(req.getParameter("whichPage") == null) {
 					HashMap<String, String[]> map1 = new HashMap<String, String[]>(req.getParameterMap());
@@ -656,7 +654,7 @@ public class MovServlet extends HttpServlet{
 		}
 	
 	} 
-	
+
 	public String[] token(String str, String[] token){
 		if(str != null) {
 			token = str.split(",");
