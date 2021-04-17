@@ -89,3 +89,40 @@
 		 }
 	 }
 	 
+
+	
+	
+/* =========================================================================================== */
+	    						/* CALCULATE mov_ondate & mov_offdate */
+/* =========================================================================================== */
+	<%@ include file="/back-end/movie/files/changeMovOffDate.file"%>
+		let mov_ondate = document.getElementById('mov_ondate');
+		let mov_offdate = document.getElementById('mov_offdate');
+		
+		if(mov_offdate.value.length == 0){
+			changeMovOffDate();
+		}
+		mov_ondate.addEventListener('change',function(){
+			changeMovOffDate();
+			varifyDate();
+		});
+		mov_offdate.addEventListener('change',function(){
+			varifyDate();
+		});
+		
+		/* =========================================================================================== */
+								/* Varify 上映日不可於下檔日之後 */
+		/* =========================================================================================== */
+		function varifyDate(){
+			let ondateParse = Date.parse(mov_ondate.value);
+			let offdateParse = Date.parse(mov_offdate.value);
+			
+			if(ondateParse < offdateParse){
+				 $("#disabled-btn").css('display','none'); 
+				 $("#abled-btn").css('display','block');
+			} else{
+				 $("#disabled-btn").css('display','block'); 
+				 $("#abled-btn").css('display','none');
+			}
+		}
+	 

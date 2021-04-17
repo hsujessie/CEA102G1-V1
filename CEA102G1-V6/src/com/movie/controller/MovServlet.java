@@ -185,11 +185,8 @@ public class MovServlet extends HttpServlet{
 				movondateMil.setTime(movondate.getTime());
 				java.util.Date movoffdateMil = new java.util.Date();
 				movoffdateMil.setTime(movoffdate.getTime());
-				String movOndateErrmsg = null;
-				String movOffdateErrmsg = null;
 				if(movondateMil.after(movoffdateMil)) {
-					movOndateErrmsg = "上映日期不可於下檔日期之後";
-					movOffdateErrmsg = "下檔日期不可於上映日期之前";
+					errorMsgs.put("dateErrmsg"," 上映日期不可於下檔日期之後");
 				}
 
 				//單選下拉選單
@@ -251,11 +248,9 @@ public class MovServlet extends HttpServlet{
 				movVO.setMovtra(movtra);
 				
 				// Send the use back to the form, if there were errors
-				if (!errorMsgs.isEmpty() || movOndateErrmsg != null) {
+				if (!errorMsgs.isEmpty()) {
 					System.out.println("errorMsgs= " + errorMsgs);
-					req.setAttribute("movVO", movVO);     
-					req.setAttribute("movOndateErrmsg", movOndateErrmsg);  
-					req.setAttribute("movOffdateErrmsg", movOffdateErrmsg);         
+					req.setAttribute("movVO", movVO);
 					RequestDispatcher failureView = req.getRequestDispatcher("/back-end/movie/addMovie.jsp");
 					failureView.forward(req, res);
 					return;

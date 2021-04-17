@@ -115,11 +115,13 @@
 							</tr>
 							<tr>
 								<th>上映日期</th>
-								<td><input class="sty-input mr-left mr-btm-normal" name="movondate" id="mov_ondate" type="text" value="<c:if test="${not empty movVO.movondate}">${movVO.movondate}</c:if>"></td>
+								<td><input class="sty-input mr-left mr-btm-normal" name="movondate" id="mov_ondate" type="date" value="<c:if test="${not empty movVO.movondate}">${movVO.movondate}</c:if>"></td>
+								<%-- <td><input class="sty-input mr-left mr-btm-normal" name="movondate" id="mov_ondate" type="text" value="<c:if test="${not empty movVO.movondate}">${movVO.movondate}</c:if>"></td> --%>
 							</tr>
 							<tr>
 								<th>下檔日期</th>
-								<td><input class="sty-input mr-left mr-btm-normal" name="movoffdate" id="mov_offdate" type="text" value="<c:if test="${not empty movVO.movoffdate}">${movVO.movoffdate}</c:if>"></td>
+								<td><input class="sty-input mr-left mr-btm-normal" name="movoffdate" id="mov_offdate" type="date" value="<c:if test="${not empty movVO.movoffdate}">${movVO.movoffdate}</c:if>"></td>
+								<%-- <td><input class="sty-input mr-left mr-btm-normal" name="movoffdate" id="mov_offdate" type="text" value="<c:if test="${not empty movVO.movoffdate}">${movVO.movoffdate}</c:if>"></td> --%>
 							</tr>
 							<tr>
 								<th>片長</th>
@@ -233,7 +235,7 @@
 		<script src="<%=request.getContextPath()%>/resource/datetimepicker/jquery.datetimepicker.full.js"></script>
 
 <script>
-	$.datetimepicker.setLocale('zh');
+	/* $.datetimepicker.setLocale('zh');
 	$(function(){
 		 $('#mov_ondate').datetimepicker({
 		  theme:'dark',
@@ -256,7 +258,7 @@
 		  },
 		  timepicker:false
 		 });
-	});
+	}); */
 	
 /* =========================================================================================== */
 								/* Varify Inputs */
@@ -265,17 +267,8 @@
 	
 	
 /* =========================================================================================== */
-	    						/* CALCULATE mov_ondate & mov_offdate */
+	   							/* SHOW a UPLOADED IMAGE & VIDEO */
 /* =========================================================================================== */
-	<%@ include file="/back-end/movie/files/changeMovOffDate.file"%>
-		let mov_ondate = document.getElementById('mov_ondate');
-		mov_ondate.addEventListener('change',function(){
-			changeMovOffDate();
-		});
-		
-	/* =========================================================================================== */
-    								/* 以下 SHOW a UPLOADED IMAGE & VIDEO */
-	/* =========================================================================================== */
 function init(){
     let uploadFile = document.getElementById('uploadFile');
     let fileImg = document.getElementById('fileImg');
