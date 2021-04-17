@@ -180,6 +180,17 @@ public class MovServlet extends HttpServlet{
 					movoffdate = new java.sql.Date(System.currentTimeMillis());
 					errorMsgs.put("movoffdate"," 請輸入下檔日期");
 				}	
+				
+				java.util.Date movondateMil = new java.util.Date();
+				movondateMil.setTime(movondate.getTime());
+				java.util.Date movoffdateMil = new java.util.Date();
+				movoffdateMil.setTime(movoffdate.getTime());
+				String movOndateErrmsg = null;
+				String movOffdateErrmsg = null;
+				if(movondateMil.after(movoffdateMil)) {
+					movOndateErrmsg = "上映日期不可於下檔日期之後";
+					movOffdateErrmsg = "下檔日期不可於上映日期之前";
+				}
 
 				//單選下拉選單
 				Integer movdurat = new Integer(req.getParameter("movdurat").trim());
@@ -240,10 +251,12 @@ public class MovServlet extends HttpServlet{
 				movVO.setMovtra(movtra);
 				
 				// Send the use back to the form, if there were errors
-				if (!errorMsgs.isEmpty()) {
+				if (!errorMsgs.isEmpty() || movOndateErrmsg != null) {
 					System.out.println("errorMsgs= " + errorMsgs);
-					req.setAttribute("movVO", movVO);        
-					RequestDispatcher failureView = req.getRequestDispatcher("back-end/movie/addMovie.jsp");
+					req.setAttribute("movVO", movVO);     
+					req.setAttribute("movOndateErrmsg", movOndateErrmsg);  
+					req.setAttribute("movOffdateErrmsg", movOffdateErrmsg);         
+					RequestDispatcher failureView = req.getRequestDispatcher("/back-end/movie/addMovie.jsp");
 					failureView.forward(req, res);
 					return;
 				}
@@ -430,6 +443,17 @@ public class MovServlet extends HttpServlet{
 					}
 				}
 				
+				java.util.Date movondateMil = new java.util.Date();
+				movondateMil.setTime(movondate.getTime());
+				java.util.Date movoffdateMil = new java.util.Date();
+				movoffdateMil.setTime(movoffdate.getTime());
+				String movOndateErrmsg = null;
+				String movOffdateErrmsg = null;
+				if(movondateMil.after(movoffdateMil)) {
+					movOndateErrmsg = "上映日期不可於下檔日期之後";
+					movOffdateErrmsg = "下檔日期不可於上映日期之前";
+				}
+				
 				//單選下拉選單
 				Integer movdurat = new Integer(req.getParameter("movdurat").trim());
 				
@@ -524,9 +548,11 @@ public class MovServlet extends HttpServlet{
 				movVO.setMovdes(movdes);
 				
 				// Send the use back to the form, if there were errors
-				if (!errorMsgs.isEmpty()) {
+				if (!errorMsgs.isEmpty() || movOndateErrmsg != null) {
 					System.out.println("errorMsgs= " + errorMsgs);
-					req.setAttribute("movVO", movVO);        
+					req.setAttribute("movVO", movVO);     
+					req.setAttribute("movOndateErrmsg", movOndateErrmsg);  
+					req.setAttribute("movOffdateErrmsg", movOffdateErrmsg);  
 					RequestDispatcher failureView = req.getRequestDispatcher(requestURL);
 					failureView.forward(req, res);
 					return;

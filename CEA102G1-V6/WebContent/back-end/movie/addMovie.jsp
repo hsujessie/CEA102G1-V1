@@ -65,7 +65,7 @@
 						<table>
 							<tr>
 								<th>名稱</th>
-								<td><input class="sty-input mr-left mr-btm-normal" type="text" name="movname" value="" />
+								<td><input class="sty-input mr-left mr-btm-normal" type="text" name="movname" value="<c:if test="${not empty movVO}">${movVO.movname}</c:if>" />
 									<span id="movname-errmsg" style="display:none;">			
 										<i class="far fa-hand-point-left" style="color:#bb9d52;"></i>
 										<label id="movname-errmsg-txt" class="err-color"></label>
@@ -78,7 +78,7 @@
 									<!-- 多選checkbox -->
 									<jsp:useBean id="movVerSvc" scope="page" class="com.movie_version.model.MovVerService"/>
 									<c:forEach var="movVerVO" items="${movVerSvc.all}" >	
-										<input class="mr-left mr-btm-sm" type="checkbox" name="movver" value="${movVerVO.movver_name}"><span class="ml-ten">【${movVerVO.movver_name}】</span><br>
+										<input class="mr-left mr-btm-sm" type="checkbox" name="movver" value="${movVerVO.movver_name}" <c:if test="${not empty movVO and movVerVO.movver_name == movVO.movver}">checked</c:if>><span class="ml-ten">【${movVerVO.movver_name}】</span><br>
 									</c:forEach>
 									<span id="movver-errmsg" style="display:none;">			
 										<i class="far fa-hand-point-up" style="color:#bb9d52;"></i>
@@ -90,13 +90,13 @@
 								<th>類型</th>
 								<td>
 									<select class="mr-left mr-btm-normal" name="movtype">
-										<option value="劇情片">劇情片</option>
-										<option value="動作片">動作片</option>
-										<option value="動畫片">動畫片</option>
-										<option value="喜劇片">喜劇片</option>
-										<option value="愛情片">愛情片</option>
-										<option value="科幻片">科幻片</option>
-										<option value="恐怖片">恐怖片</option>
+										<option value="劇情片" <c:if test="${not empty movVO and movVO.movtype.contains('劇情片')}">selected</c:if>>劇情片</option>
+										<option value="動作片" <c:if test="${not empty movVO and movVO.movtype.contains('動作片')}">selected</c:if>>動作片</option>
+										<option value="動畫片" <c:if test="${not empty movVO and movVO.movtype.contains('動畫片')}">selected</c:if>>動畫片</option>
+										<option value="喜劇片" <c:if test="${not empty movVO and movVO.movtype.contains('喜劇片')}">selected</c:if>>喜劇片</option>
+										<option value="愛情片" <c:if test="${not empty movVO and movVO.movtype.contains('愛情片')}">selected</c:if>>愛情片</option>
+										<option value="科幻片" <c:if test="${not empty movVO and movVO.movtype.contains('科幻片')}">selected</c:if>>科幻片</option>
+										<option value="恐怖片" <c:if test="${not empty movVO and movVO.movtype.contains('恐怖片')}">selected</c:if>>恐怖片</option>
 									</select>
 								</td>
 							</tr>
@@ -104,15 +104,16 @@
 								<th>語言</th>
 								<td>
 									<!-- 多選checkbox -->
-									<input class="mr-left mr-btm-sm" type="checkbox" name="movlan" value="英文"><span class="ml-ten">英文</span><br>
-									<input class="mr-left mr-btm-sm" type="checkbox" name="movlan" value="中文"><span class="ml-ten">中文</span><br>
-									<input class="mr-left mr-btm-sm" type="checkbox" name="movlan" value="日文"><span class="ml-ten">日文</span><br>
+									<input class="mr-left mr-btm-sm" type="checkbox" name="movlan" value="英文" <c:if test="${not empty movVO and movVO.movlan.contains('英文')}">checked</c:if>><span class="ml-ten">英文</span><br>
+									<input class="mr-left mr-btm-sm" type="checkbox" name="movlan" value="中文" <c:if test="${not empty movVO and movVO.movlan.contains('中文')}">checked</c:if>><span class="ml-ten">中文</span><br>
+		 							<input class="mr-left mr-btm-sm" type="checkbox" name="movlan" value="日文" <c:if test="${not empty movVO and movVO.movlan.contains('日文')}">checked</c:if>><span class="ml-ten">日文</span><br>
 									<span id="movlan-errmsg" style="display:none;">			
 										<i class="far fa-hand-point-up" style="color:#bb9d52;"></i>
 										<label id="movlan-errmsg-txt" class="err-color"></label>
 									</span>
 								</td>
 							</tr>
+							
 							<%
 							  java.sql.Date movondate = null;
 							  try {
@@ -123,18 +124,32 @@
 							%>
 							<tr>
 								<th>上映日期</th>
-								<td><input class="sty-input mr-left mr-btm-normal" name="movondate" id="mov_ondate" type="date" value="<%=movondate%>"></td>
+								<td><input class="sty-input mr-left mr-btm-normal" name="movondate" id="mov_ondate" type="date" value="<%=movondate%>">
+									<c:if test="${not empty movOndateErrmsg}">
+										<span style="display:inline-block;">
+								        	<i class="far fa-hand-point-up" style="color:#bb9d52;"></i>
+								        	<label class="err-color">${movOndateErrmsg}</label>
+								        </span>
+								    </c:if>
+								</td>
 							</tr>
 							<tr>
 								<th>下檔日期</th>
-								<td><input class="sty-input mr-left mr-btm-normal" name="movoffdate" id="mov_offdate" type="date" value=""></td>
+								<td><input class="sty-input mr-left mr-btm-normal" name="movoffdate" id="mov_offdate" type="date" value="<c:if test="${not empty movVO}">${movVO.movoffdate}</c:if>">
+									<c:if test="${not empty movOffdateErrmsg}">
+										<span style="display:inline-block;">
+								        	<i class="far fa-hand-point-up" style="color:#bb9d52;"></i>
+								        	<label class="err-color">${movOffdateErrmsg}</label>
+								        </span>
+								    </c:if>
+								</td>
 							</tr>
 							<tr>
 								<th>片長</th>
 								<td class="fake-txt">
 									<select class="mr-left mr-btm-normal" name="movdurat">										
 										<c:forEach var="mins" begin="60" end="240">
-											<option value="${mins}" >${mins}分鐘</option>
+											<option value="${mins}" <c:if test="${not empty movVO and movVO.movdurat == mins}">selected</c:if>>${mins}分鐘</option>
 										</c:forEach>
 									</select>
 								</td>
@@ -143,16 +158,16 @@
 								<th>級數</th>
 								<td>
 									<select class="mr-left mr-btm-normal" name="movrating">
-										<option value="普遍級">普遍級</option>
-										<option value="保護級">保護級</option>
-										<option value="輔導級">輔導級</option>
-										<option value="限制級">限制級</option>
+										<option value="普遍級" <c:if test="${not empty movVO and movVO.movrating.contains('普遍級')}">selected</c:if>>普遍級</option>
+										<option value="保護級" <c:if test="${not empty movVO and movVO.movrating.contains('保護級')}">selected</c:if>>保護級</option>
+										<option value="輔導級" <c:if test="${not empty movVO and movVO.movrating.contains('輔導級')}">selected</c:if>>輔導級</option>
+										<option value="限制級" <c:if test="${not empty movVO and movVO.movrating.contains('限制級')}">selected</c:if>>限制級</option>
 									</select>
 								</td>
 							</tr>
 							<tr>
 								<th>導演</th>
-								<td><input id="movDitor" class="sty-input mr-left mr-btm-normal" type="text" name="movditor" value="" />
+								<td><input id="movDitor" class="sty-input mr-left mr-btm-normal" type="text" name="movditor" value="<c:if test="${not empty movVO}">${movVO.movditor}</c:if>" />
 									<span id="movditor-errmsg" style="display:none;">			
 								        <i class="far fa-hand-point-left" style="color:#bb9d52;"></i>
 								        <label id="movditor-errmsg-txt" class="err-color"></label>
@@ -161,7 +176,7 @@
 							</tr>
 							<tr>
 								<th>演員</th>
-								<td><input id="movCast" class="sty-input mr-left mr-btm-normal" type="text" name="movcast" value="" />
+								<td><input id="movCast" class="sty-input mr-left mr-btm-normal" type="text" name="movcast" value="<c:if test="${not empty movVO}">${movVO.movcast}</c:if>" />
 									<span id="movcast-errmsg" style="display:none;">			
 								        <i class="far fa-hand-point-left" style="color:#bb9d52;"></i>
 								        <label id="movcast-errmsg-txt" class="err-color"></label>
@@ -170,7 +185,7 @@
 							</tr>
 							<tr>
 								<th>簡介</th>
-								<td><textarea id="movDes" name="movdes" class="sty-input mr-left"></textarea>
+								<td><textarea id="movDes" name="movdes" class="sty-input mr-left"><c:if test="${not empty movVO}">${movVO.movdes}</c:if></textarea>
 									<span id="movdes-errmsg" style="display:none;">			
 								        <i class="far fa-hand-point-left" style="color:#bb9d52;"></i>
 								        <label id="movdes-errmsg-txt" class="err-color"></label>
@@ -265,14 +280,34 @@
 /* =========================================================================================== */
 	<%@ include file="/back-end/movie/files/changeMovOffDate.file"%>
 		let mov_ondate = document.getElementById('mov_ondate');
-		let mov_offdate_val = document.getElementById('mov_offdate').value;
-		if(mov_offdate_val.length == 0){
+		let mov_offdate = document.getElementById('mov_offdate');
+		
+		if(mov_offdate.value.length == 0){
 			changeMovOffDate();
 		}
 		mov_ondate.addEventListener('change',function(){
 			changeMovOffDate();
+			varifyDate();
+		});
+		mov_offdate.addEventListener('change',function(){
+			varifyDate();
 		});
 		
+		/* =========================================================================================== */
+								/* Varify 上映日不可於下檔日之後 */
+		/* =========================================================================================== */
+		function varifyDate(){
+			let ondateParse = Date.parse(mov_ondate.value);
+			let offdateParse = Date.parse(mov_offdate.value);
+			
+			if(ondateParse < offdateParse){
+				 $("#disabled-btn").css('display','none'); 
+				 $("#abled-btn").css('display','block');
+			} else{
+				 $("#disabled-btn").css('display','block'); 
+				 $("#abled-btn").css('display','none');
+			}
+		}
 		
 /* =========================================================================================== */
    							/* SHOW a UPLOADED IMAGE & VIDEO */
