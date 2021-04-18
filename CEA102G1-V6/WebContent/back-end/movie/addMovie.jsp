@@ -288,7 +288,7 @@ function init(){
         let files = e.target.files;
         if(files){
             for(let i = 0; i<files.length; i++){
-                let file = files[i];
+                let file = files[0];  //限制只能上傳一張圖片
                 if(file.type.indexOf('image') != -1){
                     let reader = new FileReader();
                     reader.addEventListener('load',function(e){
@@ -311,7 +311,7 @@ function init(){
         let files = e.target.files;
         if(files){
             for(let i = 0; i<files.length; i++){
-                let file = files[i];
+                let file = files[0];  //限制只能上傳一個video
                 if(file.type.indexOf('video') != -1 ){
                     let reader = new FileReader();
                     reader.addEventListener('load',function(e){
